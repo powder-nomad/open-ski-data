@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schemas/place.schema.json",
+  "slug": "eiger-north-face",
+  "name": "Eiger North Face",
+  "region": "Bernese Oberland",
+  "country": "Switzerland",
+  "coordinates": {
+    "latitude": 46.5778,
+    "longitude": 8.0053
+  },
+  "elevations": {
+    "base_m": 1034,
+    "summit_m": 3967
+  },
+  "tags": ["extreme", "alpine", "glacier"]
+}

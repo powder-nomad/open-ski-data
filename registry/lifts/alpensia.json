@@ -1,0 +1,74 @@
+{
+  "$schema": "../../schemas/lift.schema.json",
+  "resort_slug": "alpensia",
+  "lifts": [
+    {
+      "id": "lift-0",
+      "name": "Lift 1",
+      "localized_name": {
+        "ko": "리프트 1",
+        "en": "Lift 1",
+        "ja": "ライハウパウ 1"
+      },
+      "length_m": 541,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": 45,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 2400,
+      "connected_slope_ids": [
+        "slope-0"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-1",
+      "name": "Lift 2",
+      "localized_name": {
+        "ko": "리프트 2",
+        "en": "Lift 2",
+        "ja": "ライハウパウ 2"
+      },
+      "length_m": 664,
+      "elevation_gain_m": null,
+      "seats": 6,
+      "cabin_count": 43,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 3085,
+      "connected_slope_ids": [
+        "slope-1",
+        "slope-2",
+        "slope-3",
+        "slope-4",
+        "slope-5"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-2",
+      "name": "Lift 3",
+      "localized_name": {
+        "ko": "리프트 3",
+        "en": "Lift 3",
+        "ja": "ライハウパウ 3"
+      },
+      "length_m": 651,
+      "elevation_gain_m": null,
+      "seats": 6,
+      "cabin_count": 44,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 3085,
+      "connected_slope_ids": [
+        "slope-1",
+        "slope-2",
+        "slope-3",
+        "slope-4",
+        "slope-5"
+      ],
+      "connected_lift_ids": []
+    }
+  ]
+}

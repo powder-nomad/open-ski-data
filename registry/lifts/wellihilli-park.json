@@ -1,0 +1,150 @@
+{
+  "$schema": "../../schemas/lift.schema.json",
+  "resort_slug": "wellihilli-park",
+  "lifts": [
+    {
+      "id": "lift-0",
+      "name": "Alpha",
+      "localized_name": {
+        "ko": "알파",
+        "en": "Alpha",
+        "ja": "ジャアルハア"
+      },
+      "length_m": 484,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": 130,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-1",
+      "name": "New Alpha",
+      "localized_name": {
+        "ko": "뉴알파",
+        "en": "New Alpha",
+        "ja": "ナユジャアルハア"
+      },
+      "length_m": 464,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": 125,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-2",
+      "name": "Bravo",
+      "localized_name": {
+        "ko": "브라보",
+        "en": "Bravo",
+        "ja": "バウラアバオ"
+      },
+      "length_m": 776,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": 209,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-3",
+      "name": "Delta",
+      "localized_name": {
+        "ko": "델타",
+        "en": "Delta",
+        "ja": "ダエルパア"
+      },
+      "length_m": 580,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": 154,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-4",
+      "name": "Echo",
+      "localized_name": {
+        "ko": "에코",
+        "en": "Echo",
+        "ja": "ジャエタオ"
+      },
+      "length_m": 642,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": 170,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-5",
+      "name": "Family",
+      "localized_name": {
+        "ko": "패밀리",
+        "en": "Family",
+        "ja": "ハアマイルライ"
+      },
+      "length_m": 743,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": 195,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-6",
+      "name": "Challenge",
+      "localized_name": {
+        "ko": "첼린지",
+        "en": "Challenge",
+        "ja": "カエルラインチャイ"
+      },
+      "length_m": 765,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": 200,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-7",
+      "name": "Gondola",
+      "localized_name": {
+        "ko": "곤돌라",
+        "en": "Gondola",
+        "ja": "ガオンダオルラア"
+      },
+      "length_m": 1302,
+      "elevation_gain_m": null,
+      "seats": 8,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": 285,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}

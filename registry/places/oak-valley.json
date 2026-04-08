@@ -1,0 +1,36 @@
+{
+  "$schema": "../../schemas/place.schema.json",
+  "slug": "oak-valley",
+  "name": "Oak Valley",
+  "region": "South Korea",
+  "country": "KR",
+  "coordinates": {
+    "latitude": 37.4031964505172,
+    "longitude": 127.817056509833
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "links": {
+    "homepage": "https://oakvalley.co.kr/ski/introduction/slope",
+    "weather": "https://www.weather.go.kr/w/index.do#dong/5113033000/37.4031964505172/127.817056509833/"
+  },
+  "names": {
+    "ko": "오크밸리",
+    "en": "Oak Valley",
+    "ja": "オークバレー"
+  },
+  "stats": {
+    "run_count": 10,
+    "lift_count": 3,
+    "webcam_count": 5
+  },
+  "source": {
+    "seed": "paulkim-xr/SkiWatch"
+  }
+}

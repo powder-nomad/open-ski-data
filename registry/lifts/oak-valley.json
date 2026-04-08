@@ -1,0 +1,60 @@
+{
+  "$schema": "../../schemas/lift.schema.json",
+  "resort_slug": "oak-valley",
+  "lifts": [
+    {
+      "id": "lift-0",
+      "name": "Flower",
+      "localized_name": {
+        "ko": "플라워",
+        "en": "Flower",
+        "ja": "ハウルラアジャウォ"
+      },
+      "length_m": 483,
+      "elevation_gain_m": null,
+      "seats": 6,
+      "cabin_count": 33,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 3200,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-1",
+      "name": "Bird",
+      "localized_name": {
+        "ko": "버드",
+        "en": "Bird",
+        "ja": "バオダウ"
+      },
+      "length_m": 495,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": 39,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 2400,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-2",
+      "name": "Mountain",
+      "localized_name": {
+        "ko": "마운틴",
+        "en": "Mountain",
+        "ja": "マアジャウンパイン"
+      },
+      "length_m": 931,
+      "elevation_gain_m": null,
+      "seats": 8,
+      "cabin_count": null,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 3400,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "../../schemas/webcam.schema.json",
+  "resort_slug": "eiger-north-face",
+  "webcams": [
+    {
+      "label": "Summit North View",
+      "url": "https://webcam-provider.com/eiger/summit.jpg",
+      "type": "image",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Glacier Base",
+      "url": "https://webcam-provider.com/eiger/base.jpg",
+      "type": "image",
+      "refresh_interval_ms": 120000
+    }
+  ]
+}

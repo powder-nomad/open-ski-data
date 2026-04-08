@@ -1,0 +1,168 @@
+{
+  "$schema": "../../schemas/lift.schema.json",
+  "resort_slug": "phoenix-park",
+  "lifts": [
+    {
+      "id": "lift-0",
+      "name": "Penguin",
+      "localized_name": {
+        "ko": "펭귄",
+        "en": "Penguin",
+        "ja": "ハエンガウィン"
+      },
+      "length_m": 640,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-1",
+      "name": "Sparrow",
+      "localized_name": {
+        "ko": "스패로우",
+        "en": "Sparrow",
+        "ja": "サウハアラオジャウ"
+      },
+      "length_m": 935.2,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-2",
+      "name": "Mountain",
+      "localized_name": {
+        "ko": "도도",
+        "en": "Mountain",
+        "ja": "ダオダオ"
+      },
+      "length_m": 295.9,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-3",
+      "name": "Hawk",
+      "localized_name": {
+        "ko": "호크",
+        "en": "Hawk",
+        "ja": "ハオタウ"
+      },
+      "length_m": 627.4,
+      "elevation_gain_m": null,
+      "seats": 6,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-4",
+      "name": "Dove",
+      "localized_name": {
+        "ko": "도브",
+        "en": "Dove",
+        "ja": "ダオバウ"
+      },
+      "length_m": 529.5,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-5",
+      "name": "Falcon",
+      "localized_name": {
+        "ko": "팔콘",
+        "en": "Falcon",
+        "ja": "ハアルタオン"
+      },
+      "length_m": 934,
+      "elevation_gain_m": null,
+      "seats": 6,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-6",
+      "name": "Eagle",
+      "localized_name": {
+        "ko": "이글",
+        "en": "Eagle",
+        "ja": "ジャイガウル"
+      },
+      "length_m": 1006.7,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-7",
+      "name": "Gondola",
+      "localized_name": {
+        "ko": "곤돌라",
+        "en": "Gondola",
+        "ja": "ガオンダオルラア"
+      },
+      "length_m": 1683,
+      "elevation_gain_m": null,
+      "seats": 8,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-8",
+      "name": "Condor",
+      "localized_name": {
+        "ko": "콘돌",
+        "en": "Condor",
+        "ja": "タオンダオル"
+      },
+      "length_m": 889,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}

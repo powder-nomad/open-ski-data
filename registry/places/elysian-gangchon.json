@@ -1,0 +1,36 @@
+{
+  "$schema": "../../schemas/place.schema.json",
+  "slug": "elysian-gangchon",
+  "name": "Elysian Gangchon",
+  "region": "South Korea",
+  "country": "KR",
+  "coordinates": {
+    "latitude": 37.822145126315334,
+    "longitude": 127.58991724984118
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "links": {
+    "homepage": "https://www.elysian.co.kr/",
+    "weather": "https://www.weather.go.kr/w/index.do#dong/4182025000/37.822145126315334/127.58991724984118"
+  },
+  "names": {
+    "ko": "엘리시안 강촌",
+    "en": "Elysian Gangchon",
+    "ja": "エリシアン・ガンチョン"
+  },
+  "stats": {
+    "run_count": 9,
+    "lift_count": 6,
+    "webcam_count": 2
+  },
+  "source": {
+    "seed": "paulkim-xr/SkiWatch"
+  }
+}

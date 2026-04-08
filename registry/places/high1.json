@@ -1,0 +1,36 @@
+{
+  "$schema": "../../schemas/place.schema.json",
+  "slug": "high1",
+  "name": "High1",
+  "region": "South Korea",
+  "country": "KR",
+  "coordinates": {
+    "latitude": 37.20814465709975,
+    "longitude": 128.82597024482814
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "links": {
+    "homepage": "https://www.high1.com/ski/index.do",
+    "weather": "https://www.weather.go.kr/w/index.do#dong/5177025300/37.20814465709975/128.82597024482814/"
+  },
+  "names": {
+    "ko": "하이원",
+    "en": "High1",
+    "ja": "ハイワン"
+  },
+  "stats": {
+    "run_count": 19,
+    "lift_count": 9,
+    "webcam_count": 18
+  },
+  "source": {
+    "seed": "paulkim-xr/SkiWatch"
+  }
+}

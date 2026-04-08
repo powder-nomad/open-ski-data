@@ -1,0 +1,168 @@
+{
+  "$schema": "../../schemas/lift.schema.json",
+  "resort_slug": "high1",
+  "lifts": [
+    {
+      "id": "lift-0",
+      "name": "Jupiter",
+      "localized_name": {
+        "ko": "주피터",
+        "en": "Jupiter",
+        "ja": "チャウハイパオ"
+      },
+      "length_m": 950,
+      "elevation_gain_m": null,
+      "seats": 6,
+      "cabin_count": null,
+      "speed_mps": 5,
+      "ride_time_s": 240,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-1",
+      "name": "Zeus",
+      "localized_name": {
+        "ko": "제우스",
+        "en": "Zeus",
+        "ja": "チャエジャウサウ"
+      },
+      "length_m": 1912,
+      "elevation_gain_m": null,
+      "seats": 6,
+      "cabin_count": null,
+      "speed_mps": 5,
+      "ride_time_s": 420,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-2",
+      "name": "Victoria",
+      "localized_name": {
+        "ko": "빅토리아",
+        "en": "Victoria",
+        "ja": "バイクパオライジャア"
+      },
+      "length_m": 1323,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": 5,
+      "ride_time_s": 300,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-3",
+      "name": "Hera",
+      "localized_name": {
+        "ko": "헤라",
+        "en": "Hera",
+        "ja": "ハエラア"
+      },
+      "length_m": 1221,
+      "elevation_gain_m": null,
+      "seats": 6,
+      "cabin_count": null,
+      "speed_mps": 5,
+      "ride_time_s": 300,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-4",
+      "name": "Apollo",
+      "localized_name": {
+        "ko": "아폴로",
+        "en": "Apollo",
+        "ja": "ジャアハオルラオ"
+      },
+      "length_m": 1232,
+      "elevation_gain_m": null,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": 5,
+      "ride_time_s": 360,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-5",
+      "name": "Athena",
+      "localized_name": {
+        "ko": "아테나",
+        "en": "Athena",
+        "ja": "ジャアパエナア"
+      },
+      "length_m": 1547,
+      "elevation_gain_m": null,
+      "seats": 6,
+      "cabin_count": null,
+      "speed_mps": 5,
+      "ride_time_s": 360,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-6",
+      "name": "Valley",
+      "localized_name": {
+        "ko": "밸리",
+        "en": "Valley",
+        "ja": "バアルライ"
+      },
+      "length_m": 1243,
+      "elevation_gain_m": null,
+      "seats": 8,
+      "cabin_count": null,
+      "speed_mps": 5,
+      "ride_time_s": 360,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-7",
+      "name": "Mountain",
+      "localized_name": {
+        "ko": "마운틴",
+        "en": "Mountain",
+        "ja": "マアジャウンパイン"
+      },
+      "length_m": 2832,
+      "elevation_gain_m": null,
+      "seats": 8,
+      "cabin_count": null,
+      "speed_mps": 5,
+      "ride_time_s": 720,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-8",
+      "name": "Palace",
+      "localized_name": {
+        "ko": "팰리스",
+        "en": "Palace",
+        "ja": "ハアルライサウ"
+      },
+      "length_m": 2523,
+      "elevation_gain_m": null,
+      "seats": 8,
+      "cabin_count": null,
+      "speed_mps": 5,
+      "ride_time_s": 600,
+      "capacity_pph": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}

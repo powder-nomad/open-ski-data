@@ -1,0 +1,186 @@
+{
+  "$schema": "../../schemas/slope.schema.json",
+  "resort_slug": "elysian-gangchon",
+  "slopes": [
+    {
+      "id": "slope-0",
+      "name": "Panda",
+      "localized_name": {
+        "ko": "팬더",
+        "en": "Panda",
+        "ja": "ハアンダオ"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 306,
+      "width_m": null,
+      "area_m2": null,
+      "elevation_drop_m": 21,
+      "min_angle_deg": null,
+      "avg_angle_deg": 5.142764557884242,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-1",
+      "name": "Rabbit",
+      "localized_name": {
+        "ko": "래빗",
+        "en": "Rabbit",
+        "ja": "ラアバイス"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 436,
+      "width_m": null,
+      "area_m2": null,
+      "elevation_drop_m": 34,
+      "min_angle_deg": null,
+      "avg_angle_deg": null,
+      "max_angle_deg": 7.40691212849523,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-2",
+      "name": "Dragon/Rabbit",
+      "localized_name": {
+        "ko": "드래곤/래빗",
+        "en": "Dragon/Rabbit",
+        "ja": "ダウラアガオン/ラアバイス"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1500,
+      "width_m": null,
+      "area_m2": null,
+      "elevation_drop_m": 165,
+      "min_angle_deg": null,
+      "avg_angle_deg": null,
+      "max_angle_deg": 12.952764513375518,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-3",
+      "name": "Horse/Zebra",
+      "localized_name": {
+        "ko": "호스/제브라",
+        "en": "Horse/Zebra",
+        "ja": "ハオサウ/チャエバウラア"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1032,
+      "width_m": null,
+      "area_m2": null,
+      "elevation_drop_m": 165,
+      "min_angle_deg": null,
+      "avg_angle_deg": null,
+      "max_angle_deg": 19.29004621918873,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-4",
+      "name": "Horse/Pegasus",
+      "localized_name": {
+        "ko": "호스/페가수스",
+        "en": "Horse/Pegasus",
+        "ja": "ハオサウ/ハエガアサウサウ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1045,
+      "width_m": null,
+      "area_m2": null,
+      "elevation_drop_m": 172,
+      "min_angle_deg": null,
+      "avg_angle_deg": null,
+      "max_angle_deg": 17.223436191131462,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-5",
+      "name": "Deer",
+      "localized_name": {
+        "ko": "디어",
+        "en": "Deer",
+        "ja": "ダイジャオ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 945,
+      "width_m": null,
+      "area_m2": null,
+      "elevation_drop_m": 172,
+      "min_angle_deg": null,
+      "avg_angle_deg": null,
+      "max_angle_deg": 18.26288994219413,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-6",
+      "name": "Puma",
+      "localized_name": {
+        "ko": "퓨마",
+        "en": "Puma",
+        "ja": "ハユマア"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1175,
+      "width_m": null,
+      "area_m2": null,
+      "elevation_drop_m": 120,
+      "min_angle_deg": null,
+      "avg_angle_deg": null,
+      "max_angle_deg": 9.090276920822323,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-7",
+      "name": "Leopard",
+      "localized_name": {
+        "ko": "레퍼드",
+        "en": "Leopard",
+        "ja": "ラエハオダウ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 518,
+      "width_m": null,
+      "area_m2": null,
+      "elevation_drop_m": 124,
+      "min_angle_deg": null,
+      "avg_angle_deg": null,
+      "max_angle_deg": 27.47443162627713,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-8",
+      "name": "Jaguar",
+      "localized_name": {
+        "ko": "재규어",
+        "en": "Jaguar",
+        "ja": "チャアガユジャオ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 524,
+      "width_m": null,
+      "area_m2": null,
+      "elevation_drop_m": null,
+      "min_angle_deg": null,
+      "avg_angle_deg": null,
+      "max_angle_deg": 28.36904629327858,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}

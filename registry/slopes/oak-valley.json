@@ -1,0 +1,206 @@
+{
+  "$schema": "../../schemas/slope.schema.json",
+  "resort_slug": "oak-valley",
+  "slopes": [
+    {
+      "id": "slope-0",
+      "name": "A",
+      "localized_name": {
+        "ko": "A",
+        "en": "A",
+        "ja": "A"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1610,
+      "width_m": 52,
+      "area_m2": 73314,
+      "elevation_drop_m": 262,
+      "min_angle_deg": null,
+      "avg_angle_deg": 9.090276920822323,
+      "max_angle_deg": 16.69924423399362,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-1",
+      "name": "B",
+      "localized_name": {
+        "ko": "B",
+        "en": "B",
+        "ja": "B"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 885,
+      "width_m": 49,
+      "area_m2": 36317,
+      "elevation_drop_m": 205,
+      "min_angle_deg": null,
+      "avg_angle_deg": 12.952764513375518,
+      "max_angle_deg": 21.801409486351815,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-2",
+      "name": "C",
+      "localized_name": {
+        "ko": "C",
+        "en": "C",
+        "ja": "C"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 375,
+      "width_m": 46,
+      "area_m2": 15691,
+      "elevation_drop_m": 197,
+      "min_angle_deg": null,
+      "avg_angle_deg": 17.744671625056935,
+      "max_angle_deg": 24.702430227771316,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-3",
+      "name": "D",
+      "localized_name": {
+        "ko": "D",
+        "en": "D",
+        "ja": "D"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 885,
+      "width_m": 55,
+      "area_m2": 46052,
+      "elevation_drop_m": 230,
+      "min_angle_deg": null,
+      "avg_angle_deg": 16.17215901578255,
+      "max_angle_deg": 20.806791012711226,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-4",
+      "name": "D-1",
+      "localized_name": {
+        "ko": "D-1",
+        "en": "D-1",
+        "ja": "D-1"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 240,
+      "width_m": 45,
+      "area_m2": 8727,
+      "elevation_drop_m": 94,
+      "min_angle_deg": null,
+      "avg_angle_deg": 15.109575122340466,
+      "max_angle_deg": 19.79887635452493,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-5",
+      "name": "E",
+      "localized_name": {
+        "ko": "E",
+        "en": "E",
+        "ja": "E"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 485,
+      "width_m": 50,
+      "area_m2": 5731,
+      "elevation_drop_m": 120,
+      "min_angle_deg": null,
+      "avg_angle_deg": 11.309932474020215,
+      "max_angle_deg": 17.223436191131462,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-6",
+      "name": "F",
+      "localized_name": {
+        "ko": "F",
+        "en": "F",
+        "ja": "F"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 604,
+      "width_m": 49,
+      "area_m2": 17134,
+      "elevation_drop_m": 143,
+      "min_angle_deg": null,
+      "avg_angle_deg": 14.036243467926479,
+      "max_angle_deg": 22.782405730481685,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-7",
+      "name": "G",
+      "localized_name": {
+        "ko": "G",
+        "en": "G",
+        "ja": "G"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 724,
+      "width_m": 51,
+      "area_m2": 28793,
+      "elevation_drop_m": 171,
+      "min_angle_deg": null,
+      "avg_angle_deg": 10.757967088390005,
+      "max_angle_deg": 16.17215901578255,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-8",
+      "name": "H",
+      "localized_name": {
+        "ko": "H",
+        "en": "H",
+        "ja": "H"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 625,
+      "width_m": 45,
+      "area_m2": 30592,
+      "elevation_drop_m": 99,
+      "min_angle_deg": null,
+      "avg_angle_deg": 6.2772984895975545,
+      "max_angle_deg": 14.036243467926479,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-9",
+      "name": "I",
+      "localized_name": {
+        "ko": "I",
+        "en": "I",
+        "ja": "I"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 550,
+      "width_m": 46,
+      "area_m2": 21585,
+      "elevation_drop_m": 49,
+      "min_angle_deg": null,
+      "avg_angle_deg": 5.142764557884242,
+      "max_angle_deg": 9.090276920822323,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}

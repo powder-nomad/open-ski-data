@@ -1,0 +1,96 @@
+{
+  "$schema": "../../schemas/lift.schema.json",
+  "resort_slug": "konjiam",
+  "lifts": [
+    {
+      "id": "lift-0",
+      "name": "Whisen",
+      "localized_name": {
+        "ko": "휘센",
+        "en": "Whisen",
+        "ja": "ハウィサエン"
+      },
+      "length_m": 304,
+      "elevation_gain_m": 304,
+      "seats": 4,
+      "cabin_count": 26,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 2400,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-1",
+      "name": "Ixio",
+      "localized_name": {
+        "ko": "익시오",
+        "en": "Ixio",
+        "ja": "ジャイクサイジャオ"
+      },
+      "length_m": 680,
+      "elevation_gain_m": 680,
+      "seats": 6,
+      "cabin_count": 44,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 3600,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-2",
+      "name": "Gram",
+      "localized_name": {
+        "ko": "그램",
+        "en": "Gram",
+        "ja": "ガウラアム"
+      },
+      "length_m": 853,
+      "elevation_gain_m": 853,
+      "seats": 6,
+      "cabin_count": 53,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 3600,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-3",
+      "name": "ThinQ",
+      "localized_name": {
+        "ko": "씽큐",
+        "en": "ThinQ",
+        "ja": "サインタユ"
+      },
+      "length_m": 1325,
+      "elevation_gain_m": 1325,
+      "seats": 6,
+      "cabin_count": 80,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 3600,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-4",
+      "name": "CNP",
+      "localized_name": {
+        "ko": "CNP",
+        "en": "CNP",
+        "ja": "CNP"
+      },
+      "length_m": 1306,
+      "elevation_gain_m": 1306,
+      "seats": 6,
+      "cabin_count": 80,
+      "speed_mps": 5,
+      "ride_time_s": null,
+      "capacity_pph": 3600,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}

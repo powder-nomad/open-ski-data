@@ -1,0 +1,36 @@
+{
+  "$schema": "../../schemas/place.schema.json",
+  "slug": "muju",
+  "name": "Muju",
+  "region": "South Korea",
+  "country": "KR",
+  "coordinates": {
+    "latitude": 35.88956946780578,
+    "longitude": 127.73198583536177
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "links": {
+    "homepage": "https://mdysresort.com/",
+    "weather": "https://www.weather.go.kr/w/index.do#dong/5273034000/35.88956946780578/127.73198583536177/"
+  },
+  "names": {
+    "ko": "무주",
+    "en": "Muju",
+    "ja": "ムジュ"
+  },
+  "stats": {
+    "run_count": 21,
+    "lift_count": 14,
+    "webcam_count": 11
+  },
+  "source": {
+    "seed": "paulkim-xr/SkiWatch"
+  }
+}

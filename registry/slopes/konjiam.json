@@ -1,0 +1,206 @@
+{
+  "$schema": "../../schemas/slope.schema.json",
+  "resort_slug": "konjiam",
+  "slopes": [
+    {
+      "id": "slope-0",
+      "name": "Whisen",
+      "localized_name": {
+        "ko": "휘센",
+        "en": "Whisen",
+        "ja": "ハウィサエン"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 497,
+      "width_m": 74,
+      "area_m2": 29743,
+      "elevation_drop_m": 60,
+      "min_angle_deg": null,
+      "avg_angle_deg": 7,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-1",
+      "name": "Ixio",
+      "localized_name": {
+        "ko": "익시오",
+        "en": "Ixio",
+        "ja": "ジャイクサイジャオ"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 757,
+      "width_m": 76,
+      "area_m2": 72539,
+      "elevation_drop_m": 119,
+      "min_angle_deg": null,
+      "avg_angle_deg": 10.4,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-2",
+      "name": "Gram 1",
+      "localized_name": {
+        "ko": "그램1",
+        "en": "Gram 1",
+        "ja": "ガウラアム1"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 548,
+      "width_m": 61,
+      "area_m2": 33712,
+      "elevation_drop_m": 171,
+      "min_angle_deg": null,
+      "avg_angle_deg": 17.3,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-3",
+      "name": "Gram 2",
+      "localized_name": {
+        "ko": "그램2",
+        "en": "Gram 2",
+        "ja": "ガウラアム2"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 828,
+      "width_m": 54,
+      "area_m2": 45190,
+      "elevation_drop_m": 200,
+      "min_angle_deg": null,
+      "avg_angle_deg": 13.6,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-4",
+      "name": "ThinQ 1",
+      "localized_name": {
+        "ko": "씽큐1",
+        "en": "ThinQ 1",
+        "ja": "サインタユ1"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 380,
+      "width_m": 55,
+      "area_m2": 21646,
+      "elevation_drop_m": 104,
+      "min_angle_deg": null,
+      "avg_angle_deg": 14.2,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-5",
+      "name": "ThinQ 2",
+      "localized_name": {
+        "ko": "씽큐2",
+        "en": "ThinQ 2",
+        "ja": "サインタユ2"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 1049,
+      "width_m": 55,
+      "area_m2": 54859,
+      "elevation_drop_m": 215,
+      "min_angle_deg": null,
+      "avg_angle_deg": 12.9,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-6",
+      "name": "ThinQ 3",
+      "localized_name": {
+        "ko": "씽큐3",
+        "en": "ThinQ 3",
+        "ja": "サインタユ3"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 462,
+      "width_m": 68,
+      "area_m2": 25894,
+      "elevation_drop_m": 117,
+      "min_angle_deg": null,
+      "avg_angle_deg": 14.2,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-7",
+      "name": "ThinQ Br",
+      "localized_name": {
+        "ko": "씽큐Br",
+        "en": "ThinQ Br",
+        "ja": "サインタユBr"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 204,
+      "width_m": 31,
+      "area_m2": 6454,
+      "elevation_drop_m": 23,
+      "min_angle_deg": null,
+      "avg_angle_deg": 10.9,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-8",
+      "name": "CNP1",
+      "localized_name": {
+        "ko": "CNP1",
+        "en": "CNP1",
+        "ja": "CNP1"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 549,
+      "width_m": 31,
+      "area_m2": 15330,
+      "elevation_drop_m": 98,
+      "min_angle_deg": null,
+      "avg_angle_deg": 10.9,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-9",
+      "name": "CNP2",
+      "localized_name": {
+        "ko": "CNP2",
+        "en": "CNP2",
+        "ja": "CNP2"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1087,
+      "width_m": 66,
+      "area_m2": 52870,
+      "elevation_drop_m": 239,
+      "min_angle_deg": null,
+      "avg_angle_deg": 14,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}

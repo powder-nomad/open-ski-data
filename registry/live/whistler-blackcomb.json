@@ -1,0 +1,14 @@
+{
+  "$schema": "../../schemas/conditions.schema.json",
+  "slug": "whistler-blackcomb",
+  "last_updated": "2026-03-28T16:00:00Z",
+  "snowfall_24h_cm": 15.5,
+  "snowfall_7d_cm": 42.0,
+  "temperature_c": -8.5,
+  "wind_kph": 22.0,
+  "status": "open",
+  "source_debug": {
+    "home_server_id": "hs-01-vancouver",
+    "provider": "local-sensor-v3"
+  }
+}

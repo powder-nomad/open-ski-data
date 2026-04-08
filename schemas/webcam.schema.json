@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altera Webcam Registry",
+  "type": "object",
+  "properties": {
+    "resort_slug": { "type": "string" },
+    "webcams": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "localized_label": {
+            "type": "object",
+            "properties": {
+              "ko": { "type": "string" },
+              "en": { "type": "string" },
+              "ja": { "type": "string" }
+            }
+          },
+          "url": { "type": "string", "format": "uri" },
+          "type": { "enum": ["image", "stream"] },
+          "source_type": { "type": "string" },
+          "refresh_interval_ms": { "type": "integer" },
+          "metadata": { "type": ["object", "null"] }
+        },
+        "required": ["label", "url", "type"]
+      }
+    }
+  },
+  "required": ["resort_slug", "webcams"]
+}

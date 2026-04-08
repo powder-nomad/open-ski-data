@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altera Place",
+  "description": "A canonical skiable location in the Altera platform",
+  "type": "object",
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "names": {
+      "type": "object",
+      "properties": {
+        "ko": { "type": "string" },
+        "en": { "type": "string" },
+        "ja": { "type": "string" }
+      }
+    },
+    "region": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "coordinates": {
+      "type": "object",
+      "properties": {
+        "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+        "longitude": { "type": "number", "minimum": -180, "maximum": 180 }
+      },
+      "required": ["latitude", "longitude"]
+    },
+    "elevations": {
+      "type": "object",
+      "properties": {
+        "base_m": { "type": "integer" },
+        "summit_m": { "type": "integer" }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "homepage": { "type": "string", "format": "uri" },
+        "weather": { "type": "string" }
+      }
+    },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "run_count": { "type": "integer" },
+        "lift_count": { "type": "integer" },
+        "webcam_count": { "type": "integer" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "seed": { "type": "string" }
+      }
+    }
+  },
+  "required": ["slug", "name", "coordinates"]
+}

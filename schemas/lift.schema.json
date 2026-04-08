@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ski Lift Registry",
+  "type": "object",
+  "properties": {
+    "resort_slug": { "type": "string" },
+    "lifts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "localized_name": {
+            "type": "object",
+            "properties": {
+              "ko": { "type": "string" },
+              "en": { "type": "string" },
+              "ja": { "type": "string" }
+            }
+          },
+          "length_m": { "type": ["number", "null"] },
+          "elevation_gain_m": { "type": ["number", "null"] },
+          "seats": { "type": ["integer", "null"] },
+          "cabin_count": { "type": ["integer", "null"] },
+          "speed_mps": { "type": ["number", "null"] },
+          "ride_time_s": { "type": ["number", "null"] },
+          "capacity_pph": { "type": ["integer", "null"] },
+          "connected_slope_ids": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "connected_lift_ids": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["id", "name"]
+      }
+    }
+  },
+  "required": ["resort_slug", "lifts"]
+}

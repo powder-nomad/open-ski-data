@@ -1,0 +1,96 @@
+{
+  "$schema": "../../schemas/lift.schema.json",
+  "resort_slug": "jisan",
+  "lifts": [
+    {
+      "id": "lift-0",
+      "name": "Lemon",
+      "localized_name": {
+        "ko": "레몬",
+        "en": "Lemon",
+        "ja": "ラエマオン"
+      },
+      "length_m": 300,
+      "elevation_gain_m": 42,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": 1280,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-1",
+      "name": "Orange",
+      "localized_name": {
+        "ko": "오렌지",
+        "en": "Orange",
+        "ja": "ジャオラエンチャイ"
+      },
+      "length_m": 300,
+      "elevation_gain_m": 44,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": 2400,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-2",
+      "name": "New Orange",
+      "localized_name": {
+        "ko": "뉴오렌지",
+        "en": "New Orange",
+        "ja": "ナユジャオラエンチャイ"
+      },
+      "length_m": 716,
+      "elevation_gain_m": 145,
+      "seats": 6,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": 3200,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-3",
+      "name": "Blue",
+      "localized_name": {
+        "ko": "블루",
+        "en": "Blue",
+        "ja": "バウルラウ"
+      },
+      "length_m": 760,
+      "elevation_gain_m": 145,
+      "seats": 4,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": 2400,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "lift-4",
+      "name": "Silver",
+      "localized_name": {
+        "ko": "실버",
+        "en": "Silver",
+        "ja": "サイルバオ"
+      },
+      "length_m": 652,
+      "elevation_gain_m": 209,
+      "seats": 6,
+      "cabin_count": null,
+      "speed_mps": null,
+      "ride_time_s": null,
+      "capacity_pph": 3200,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}

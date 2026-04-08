@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Live Resort Conditions",
+  "description": "Dynamic data updated by external producers (Home Servers)",
+  "type": "object",
+  "properties": {
+    "slug": { "type": "string" },
+    "last_updated": { "type": "string", "format": "date-time" },
+    "snowfall_24h_cm": { "type": "number" },
+    "snowfall_7d_cm": { "type": "number" },
+    "temperature_c": { "type": "number" },
+    "wind_kph": { "type": "number" },
+    "status": {
+      "type": "string",
+      "enum": ["open", "closed", "hold", "limited"]
+    },
+    "source_debug": { "type": "object" }
+  },
+  "required": ["slug", "last_updated", "snowfall_24h_cm", "status"]
+}

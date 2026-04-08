@@ -1,0 +1,36 @@
+{
+  "$schema": "../../schemas/place.schema.json",
+  "slug": "alpensia",
+  "name": "Alpensia",
+  "region": "South Korea",
+  "country": "KR",
+  "coordinates": {
+    "latitude": 37.656374437920505,
+    "longitude": 128.6733956273516
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "links": {
+    "homepage": "https://www.alpensia.com/main.do",
+    "weather": "https://www.weather.go.kr/w/index.do#dong/5176038000/37.656374437920505/128.6733956273516"
+  },
+  "names": {
+    "ko": "알펜시아",
+    "en": "Alpensia",
+    "ja": "アルペンシア"
+  },
+  "stats": {
+    "run_count": 6,
+    "lift_count": 3,
+    "webcam_count": 1
+  },
+  "source": {
+    "seed": "paulkim-xr/SkiWatch"
+  }
+}

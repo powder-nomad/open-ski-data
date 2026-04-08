@@ -1,0 +1,36 @@
+{
+  "$schema": "../../schemas/place.schema.json",
+  "slug": "eden-valley",
+  "name": "Eden Valley",
+  "region": "South Korea",
+  "country": "KR",
+  "coordinates": {
+    "latitude": 35.4248265727876,
+    "longitude": 128.985235423114
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "links": {
+    "homepage": "https://www.edenvalley.co.kr/",
+    "weather": "https://www.weather.go.kr/w/index.do#dong/4833033000/35.4248265727876/128.985235423114"
+  },
+  "names": {
+    "ko": "에덴밸리",
+    "en": "Eden Valley",
+    "ja": "エデンバレー"
+  },
+  "stats": {
+    "run_count": 7,
+    "lift_count": 3,
+    "webcam_count": 2
+  },
+  "source": {
+    "seed": "paulkim-xr/SkiWatch"
+  }
+}

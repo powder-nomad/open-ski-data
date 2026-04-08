@@ -1,0 +1,145 @@
+{
+  "$schema": "../../schemas/slope.schema.json",
+  "resort_slug": "alpensia",
+  "slopes": [
+    {
+      "id": "slope-0",
+      "name": "Alpha",
+      "localized_name": {
+        "ko": "알파",
+        "en": "Alpha",
+        "ja": "ジャアルハア"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 648,
+      "width_m": null,
+      "area_m2": 32481,
+      "elevation_drop_m": 78,
+      "min_angle_deg": null,
+      "avg_angle_deg": 3.9471525884133127,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": [
+        "lift-0"
+      ]
+    },
+    {
+      "id": "slope-1",
+      "name": "Bravo",
+      "localized_name": {
+        "ko": "브라보",
+        "en": "Bravo",
+        "ja": "バウラアバオ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1351,
+      "width_m": null,
+      "area_m2": 49115,
+      "elevation_drop_m": 194,
+      "min_angle_deg": null,
+      "avg_angle_deg": 4.915342887157992,
+      "max_angle_deg": null,
+      "connected_slope_ids": [
+        "slope-0"
+      ],
+      "connected_lift_ids": [
+        "lift-1",
+        "lift-2"
+      ]
+    },
+    {
+      "id": "slope-2",
+      "name": "Charlie",
+      "localized_name": {
+        "ko": "찰리",
+        "en": "Charlie",
+        "ja": "カアルライ"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 374,
+      "width_m": null,
+      "area_m2": 13794,
+      "elevation_drop_m": 194,
+      "min_angle_deg": null,
+      "avg_angle_deg": 11.914643827788685,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": [
+        "lift-1",
+        "lift-2"
+      ]
+    },
+    {
+      "id": "slope-3",
+      "name": "Delta",
+      "localized_name": {
+        "ko": "델타",
+        "en": "Delta",
+        "ja": "ダエルパア"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 634,
+      "width_m": null,
+      "area_m2": 12990,
+      "elevation_drop_m": 170,
+      "min_angle_deg": null,
+      "avg_angle_deg": 9.369385096487484,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": [
+        "lift-1",
+        "lift-2"
+      ]
+    },
+    {
+      "id": "slope-4",
+      "name": "Echo",
+      "localized_name": {
+        "ko": "에코",
+        "en": "Echo",
+        "ja": "ジャエタオ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 762,
+      "width_m": null,
+      "area_m2": 43110,
+      "elevation_drop_m": 194,
+      "min_angle_deg": null,
+      "avg_angle_deg": 9.034402602139247,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": [
+        "lift-1",
+        "lift-2"
+      ]
+    },
+    {
+      "id": "slope-5",
+      "name": "Foxtrot",
+      "localized_name": {
+        "ko": "폭스트롯",
+        "en": "Foxtrot",
+        "ja": "ハオクサウパウラオス"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 826,
+      "width_m": null,
+      "area_m2": 26158,
+      "elevation_drop_m": 194,
+      "min_angle_deg": null,
+      "avg_angle_deg": 8.194263334630211,
+      "max_angle_deg": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": [
+        "lift-1",
+        "lift-2"
+      ]
+    }
+  ]
+}

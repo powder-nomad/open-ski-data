@@ -1,0 +1,386 @@
+{
+  "$schema": "../../schemas/slope.schema.json",
+  "resort_slug": "high1",
+  "slopes": [
+    {
+      "id": "slope-0",
+      "name": "Zeus 1",
+      "localized_name": {
+        "ko": "제우스 1",
+        "en": "Zeus 1",
+        "ja": "チャエジャウサウ 1"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 2328,
+      "width_m": 41.3,
+      "area_m2": null,
+      "elevation_drop_m": 370,
+      "min_angle_deg": null,
+      "avg_angle_deg": 9.48,
+      "max_angle_deg": 13.6,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-1",
+      "name": "Zeus 2",
+      "localized_name": {
+        "ko": "제우스 2",
+        "en": "Zeus 2",
+        "ja": "チャエジャウサウ 2"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 2198,
+      "width_m": 19.9,
+      "area_m2": null,
+      "elevation_drop_m": 95.61,
+      "min_angle_deg": null,
+      "avg_angle_deg": 7.49,
+      "max_angle_deg": 13.5,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-2",
+      "name": "Zeus 3",
+      "localized_name": {
+        "ko": "제우스 3",
+        "en": "Zeus 3",
+        "ja": "チャエジャウサウ 3"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 1835,
+      "width_m": 71.2,
+      "area_m2": null,
+      "elevation_drop_m": 273,
+      "min_angle_deg": null,
+      "avg_angle_deg": 8.73,
+      "max_angle_deg": 13.8,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-3",
+      "name": "Zeus 3-1",
+      "localized_name": {
+        "ko": "제우스 3-1",
+        "en": "Zeus 3-1",
+        "ja": "チャエジャウサウ 3-1"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 1023,
+      "width_m": 71.2,
+      "area_m2": null,
+      "elevation_drop_m": 121,
+      "min_angle_deg": null,
+      "avg_angle_deg": 6.8,
+      "max_angle_deg": 10.8,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-4",
+      "name": "Victoria 1",
+      "localized_name": {
+        "ko": "빅토리아 1",
+        "en": "Victoria 1",
+        "ja": "バイクパオライジャア 1"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1439,
+      "width_m": 49.1,
+      "area_m2": null,
+      "elevation_drop_m": 379,
+      "min_angle_deg": null,
+      "avg_angle_deg": 15.58,
+      "max_angle_deg": 27.7,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-5",
+      "name": "Victoria 2",
+      "localized_name": {
+        "ko": "빅토리아 2",
+        "en": "Victoria 2",
+        "ja": "バイクパオライジャア 2"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1382,
+      "width_m": 36.1,
+      "area_m2": null,
+      "elevation_drop_m": 269,
+      "min_angle_deg": null,
+      "avg_angle_deg": 18.72,
+      "max_angle_deg": 25.8,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-6",
+      "name": "Victoria 3",
+      "localized_name": {
+        "ko": "빅토리아 3",
+        "en": "Victoria 3",
+        "ja": "バイクパオライジャア 3"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 1311,
+      "width_m": 34.1,
+      "area_m2": null,
+      "elevation_drop_m": 376,
+      "min_angle_deg": null,
+      "avg_angle_deg": 17.01,
+      "max_angle_deg": 35.4,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-7",
+      "name": "Hera 1",
+      "localized_name": {
+        "ko": "헤라 1",
+        "en": "Hera 1",
+        "ja": "ハエラア 1"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1508,
+      "width_m": 39.4,
+      "area_m2": null,
+      "elevation_drop_m": 197.03,
+      "min_angle_deg": null,
+      "avg_angle_deg": 14.86,
+      "max_angle_deg": 21.8,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-8",
+      "name": "Hera 2",
+      "localized_name": {
+        "ko": "헤라 2",
+        "en": "Hera 2",
+        "ja": "ハエラア 2"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1301,
+      "width_m": 38.8,
+      "area_m2": null,
+      "elevation_drop_m": 294.73,
+      "min_angle_deg": null,
+      "avg_angle_deg": 17.4,
+      "max_angle_deg": 24.2,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-9",
+      "name": "Hera 3",
+      "localized_name": {
+        "ko": "헤라 3",
+        "en": "Hera 3",
+        "ja": "ハエラア 3"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1278,
+      "width_m": 36.6,
+      "area_m2": null,
+      "elevation_drop_m": 262.12,
+      "min_angle_deg": null,
+      "avg_angle_deg": 19.75,
+      "max_angle_deg": 25.8,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-10",
+      "name": "Apollo 1",
+      "localized_name": {
+        "ko": "아폴로 1",
+        "en": "Apollo 1",
+        "ja": "ジャアハオルラオ 1"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1506,
+      "width_m": 35,
+      "area_m2": null,
+      "elevation_drop_m": 349.48,
+      "min_angle_deg": null,
+      "avg_angle_deg": 11.35,
+      "max_angle_deg": 25.4,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-11",
+      "name": "Apollo 2",
+      "localized_name": {
+        "ko": "아폴로 2",
+        "en": "Apollo 2",
+        "ja": "ジャアハオルラオ 2"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 863,
+      "width_m": 33.1,
+      "area_m2": null,
+      "elevation_drop_m": 161,
+      "min_angle_deg": null,
+      "avg_angle_deg": 20.32,
+      "max_angle_deg": 24.2,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-12",
+      "name": "Apollo 3",
+      "localized_name": {
+        "ko": "아폴로 3",
+        "en": "Apollo 3",
+        "ja": "ジャアハオルラオ 3"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 754,
+      "width_m": 33.7,
+      "area_m2": null,
+      "elevation_drop_m": 121.39,
+      "min_angle_deg": null,
+      "avg_angle_deg": 15.85,
+      "max_angle_deg": 26.3,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-13",
+      "name": "Apollo 4",
+      "localized_name": {
+        "ko": "아폴로 4",
+        "en": "Apollo 4",
+        "ja": "ジャアハオルラオ 4"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1569,
+      "width_m": 54.7,
+      "area_m2": null,
+      "elevation_drop_m": 409.63,
+      "min_angle_deg": null,
+      "avg_angle_deg": 15.45,
+      "max_angle_deg": 24.2,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-14",
+      "name": "Apollo 5",
+      "localized_name": {
+        "ko": "아폴로 5",
+        "en": "Apollo 5",
+        "ja": "ジャアハオルラオ 5"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 1239,
+      "width_m": 40.8,
+      "area_m2": null,
+      "elevation_drop_m": 266.33,
+      "min_angle_deg": null,
+      "avg_angle_deg": 22.13,
+      "max_angle_deg": 33,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-15",
+      "name": "Apollo 6",
+      "localized_name": {
+        "ko": "아폴로 6",
+        "en": "Apollo 6",
+        "ja": "ジャアハオルラオ 6"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1543,
+      "width_m": 44.3,
+      "area_m2": null,
+      "elevation_drop_m": 193.37,
+      "min_angle_deg": null,
+      "avg_angle_deg": 18.03,
+      "max_angle_deg": 24.3,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-16",
+      "name": "Athena 2",
+      "localized_name": {
+        "ko": "아테나 2",
+        "en": "Athena 2",
+        "ja": "ジャアパエナア 2"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1666,
+      "width_m": 42,
+      "area_m2": null,
+      "elevation_drop_m": 312,
+      "min_angle_deg": null,
+      "avg_angle_deg": 10.7,
+      "max_angle_deg": 15.2,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-17",
+      "name": "Athena 3",
+      "localized_name": {
+        "ko": "아테나 3",
+        "en": "Athena 3",
+        "ja": "ジャアパエナア 3"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 1862,
+      "width_m": 19.2,
+      "area_m2": null,
+      "elevation_drop_m": 228.3,
+      "min_angle_deg": null,
+      "avg_angle_deg": 7.28,
+      "max_angle_deg": 11.3,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "slope-18",
+      "name": "Athena 3-1",
+      "localized_name": {
+        "ko": "아테나 3-1",
+        "en": "Athena 3-1",
+        "ja": "ジャアパエナア 3-1"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 1162,
+      "width_m": 19.2,
+      "area_m2": null,
+      "elevation_drop_m": 138.3,
+      "min_angle_deg": null,
+      "avg_angle_deg": 6.8,
+      "max_angle_deg": 10,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}
