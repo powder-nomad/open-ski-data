@@ -1,7 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const repoRoot = path.resolve("/home/ubuntu/workspaces/ski-reference-data");
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(scriptDir, "..");
 const dataRoot = repoRoot;
 const registryRoot = path.join(dataRoot, "registry");
 
