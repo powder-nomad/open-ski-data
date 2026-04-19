@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../schemas/place.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "phoenix-park",
+  "name": "Phoenix Park",
+  "region": "Gangwon",
+  "country": "South Korea",
+  "coordinates": {
+    "latitude": 37.5835498839915,
+    "longitude": 128.324835376419
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "name_i18n": {
+    "ko": "휘닉스파크",
+    "en": "Phoenix Park",
+    "ja": "ハウィナイクサウハアタウ"
+  },
+  "region_i18n": {
+    "ko": "강원",
+    "en": "Gangwon",
+    "ja": "江原"
+  },
+  "country_i18n": {
+    "ko": "대한민국",
+    "en": "South Korea",
+    "ja": "韓国"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "open-ski-data",
+  "private": true,
+  "scripts": {
+    "check:reference-data": "node scripts/check-reference-data.mjs"
+  }
+}

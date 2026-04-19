@@ -1,0 +1,96 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "vivaldi-park",
+  "lifts": [
+    {
+      "id": 0,
+      "name": "Ballad no.1",
+      "name_i18n": {
+        "ko": "발라드 1호기",
+        "en": "Ballad no.1",
+        "ja": "バアルラアダウ 1ハオガイ"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 468
+    },
+    {
+      "id": 1,
+      "name": "Ballad no.2",
+      "name_i18n": {
+        "ko": "발라드 2호기",
+        "en": "Ballad no.2",
+        "ja": "バアルラアダウ 2ハオガイ"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 492
+    },
+    {
+      "id": 2,
+      "name": "Jazz",
+      "name_i18n": {
+        "ko": "재즈",
+        "en": "Jazz",
+        "ja": "チャアチャウ"
+      },
+      "capacity_per_hour": 3600,
+      "length_m": 855
+    },
+    {
+      "id": 3,
+      "name": "Hip-hop no.1",
+      "name_i18n": {
+        "ko": "힙합 1호기",
+        "en": "Hip-hop no.1",
+        "ja": "ハイプハアプ 1ハオガイ"
+      },
+      "capacity_per_hour": 1800,
+      "length_m": 552
+    },
+    {
+      "id": 4,
+      "name": "Hip-hop no.2",
+      "name_i18n": {
+        "ko": "힙합 2호기",
+        "en": "Hip-hop no.2",
+        "ja": "ハイプハアプ 2ハオガイ"
+      },
+      "capacity_per_hour": 1800,
+      "length_m": 582
+    },
+    {
+      "id": 5,
+      "name": "Techno",
+      "name_i18n": {
+        "ko": "테크노",
+        "en": "Techno",
+        "ja": "パエタウナオ"
+      },
+      "capacity_per_hour": 4800,
+      "length_m": 1008
+    },
+    {
+      "id": 6,
+      "name": "Gondola",
+      "name_i18n": {
+        "ko": "곤돌라",
+        "en": "Gondola",
+        "ja": "ガオンダオルラア"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 1115
+    },
+    {
+      "id": 7,
+      "name": "Snowy Gondola",
+      "name_i18n": {
+        "ko": "스노위곤돌라",
+        "en": "Snowy Gondola",
+        "ja": "サウナオジャウィガオンダオルラア"
+      },
+      "capacity_per_hour": 1101,
+      "length_m": 942
+    }
+  ]
+}

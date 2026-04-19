@@ -1,0 +1,41 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "kr",
+  "region_slug": "gyeongsangnam-do",
+  "place_slug": "eden-valley",
+  "lifts": [
+    {
+      "id": 0,
+      "name": "Eden",
+      "name_i18n": {
+        "ko": "에덴",
+        "en": "Eden",
+        "ja": "ジャエダエン"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 552
+    },
+    {
+      "id": 1,
+      "name": "Valley",
+      "name_i18n": {
+        "ko": "밸리",
+        "en": "Valley",
+        "ja": "バアルライ"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 847
+    },
+    {
+      "id": 2,
+      "name": "Adam",
+      "name_i18n": {
+        "ko": "아담",
+        "en": "Adam",
+        "ja": "ジャアダアム"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 996
+    }
+  ]
+}

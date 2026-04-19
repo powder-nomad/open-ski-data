@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "ch",
+    "name": "Switzerland"
+  },
+  "region": {
+    "region_slug": "bernese-oberland",
+    "name": "Bernese Oberland"
+  },
+  "places": [
+    {
+      "place_slug": "eiger-north-face",
+      "name": "Eiger North Face",
+      "path": "registry/ch/bernese-oberland/eiger-north-face.json",
+      "kind": "mountain-face"
+    }
+  ]
+}

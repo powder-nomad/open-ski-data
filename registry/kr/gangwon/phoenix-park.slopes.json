@@ -1,0 +1,246 @@
+{
+  "$schema": "../../../schemas/slope.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "phoenix-park",
+  "slopes": [
+    {
+      "id": 0,
+      "name": "Sparrow",
+      "name_i18n": {
+        "ko": "스패로우",
+        "en": "Sparrow",
+        "ja": "サウハアラオジャウ"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 978,
+      "elevation_m": 120,
+      "avg_angle_deg": 6.98
+    },
+    {
+      "id": 1,
+      "name": "Penguin",
+      "name_i18n": {
+        "ko": "펭귄",
+        "en": "Penguin",
+        "ja": "ハエンガウィン"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 665,
+      "elevation_m": 94,
+      "avg_angle_deg": 8.33
+    },
+    {
+      "id": 2,
+      "name": "Dodo (Training Only)",
+      "name_i18n": {
+        "ko": "도도(강습전용)",
+        "en": "Dodo (Training Only)",
+        "ja": "ダオダオ(ガアンサウプチャオンジャヨン)"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 350,
+      "elevation_m": 41,
+      "avg_angle_deg": 6.68
+    },
+    {
+      "id": 3,
+      "name": "Kiwi",
+      "name_i18n": {
+        "ko": "키위",
+        "en": "Kiwi",
+        "ja": "タイジャウィ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 550,
+      "elevation_m": 127.5,
+      "avg_angle_deg": 13.0
+    },
+    {
+      "id": 4,
+      "name": "Panorama",
+      "name_i18n": {
+        "ko": "파노라마",
+        "en": "Panorama",
+        "ja": "ハアナオラアマア"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1450,
+      "elevation_m": 390,
+      "avg_angle_deg": 9.97
+    },
+    {
+      "id": 5,
+      "name": "Hawk",
+      "name_i18n": {
+        "ko": "호크",
+        "en": "Hawk",
+        "ja": "ハオタウ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 643,
+      "elevation_m": 128.35,
+      "avg_angle_deg": 11.28
+    },
+    {
+      "id": 6,
+      "name": "Valley",
+      "name_i18n": {
+        "ko": "밸리",
+        "en": "Valley",
+        "ja": "バアルライ"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 1110,
+      "elevation_m": 294,
+      "avg_angle_deg": 15.4
+    },
+    {
+      "id": 7,
+      "name": "Duke",
+      "name_i18n": {
+        "ko": "듀크(이상호)",
+        "en": "Duke",
+        "ja": "ダユタウ(ジャイサアンハオ)"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 818,
+      "elevation_m": 216,
+      "avg_angle_deg": 13.75
+    },
+    {
+      "id": 8,
+      "name": "Slope Style (SS/SBS)",
+      "name_i18n": {
+        "ko": "슬로프스타일(SS/SBS)",
+        "en": "Slope Style (SS/SBS)",
+        "ja": "サウルラオハウサウパアジャイル(SS/SBS)"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 602,
+      "elevation_m": 160.6,
+      "avg_angle_deg": 14.93
+    },
+    {
+      "id": 9,
+      "name": "Champion",
+      "name_i18n": {
+        "ko": "챔피온",
+        "en": "Champion",
+        "ja": "カアムハイジャオン"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 960,
+      "elevation_m": 277,
+      "avg_angle_deg": 16.08
+    },
+    {
+      "id": 10,
+      "name": "Fantasy",
+      "name_i18n": {
+        "ko": "환타지",
+        "en": "Fantasy",
+        "ja": "ハワンパアチャイ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 503,
+      "elevation_m": 89.5,
+      "avg_angle_deg": 10.08
+    },
+    {
+      "id": 11,
+      "name": "Dizzy",
+      "name_i18n": {
+        "ko": "디지",
+        "en": "Dizzy",
+        "ja": "ダイチャイ"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 866,
+      "elevation_m": 238.7,
+      "avg_angle_deg": 15.4
+    },
+    {
+      "id": 12,
+      "name": "Mogul",
+      "name_i18n": {
+        "ko": "모글",
+        "en": "Mogul",
+        "ja": "マオガウル"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 319,
+      "elevation_m": 109.85,
+      "avg_angle_deg": 19.0
+    },
+    {
+      "id": 13,
+      "name": "Paradise",
+      "name_i18n": {
+        "ko": "파라다이스",
+        "en": "Paradise",
+        "ja": "ハアラアダアジャイサウ"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 912,
+      "elevation_m": 255.5,
+      "avg_angle_deg": 15.65
+    },
+    {
+      "id": 14,
+      "name": "Extreme Park (Upper)",
+      "name_i18n": {
+        "ko": "익스트림파크(상단)",
+        "en": "Extreme Park (Upper)",
+        "ja": "ジャイクサウパウライムハアタウ(サアンダアン)"
+      },
+      "type": "run",
+      "difficulty": "park",
+      "length_m": 765,
+      "elevation_m": 126,
+      "avg_angle_deg": 9.35
+    },
+    {
+      "id": 15,
+      "name": "Extreme Park (Lower)",
+      "name_i18n": {
+        "ko": "익스트림파크(하단)",
+        "en": "Extreme Park (Lower)",
+        "ja": "ジャイクサウパウライムハアタウ(ハアダアン)"
+      },
+      "type": "run",
+      "difficulty": "park",
+      "length_m": 765,
+      "elevation_m": 126,
+      "avg_angle_deg": 9.35
+    },
+    {
+      "id": 16,
+      "name": "Halfpipe",
+      "name_i18n": {
+        "ko": "하프파이프",
+        "en": "Halfpipe",
+        "ja": "ハアハウハアジャイハウ"
+      },
+      "type": "run",
+      "difficulty": "park",
+      "length_m": 168,
+      "elevation_m": 50.56,
+      "avg_angle_deg": 16.73
+    }
+  ]
+}

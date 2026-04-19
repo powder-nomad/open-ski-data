@@ -1,0 +1,162 @@
+{
+  "$schema": "../../../schemas/slope.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "vivaldi-park",
+  "slopes": [
+    {
+      "id": 0,
+      "name": "Ballad",
+      "name_i18n": {
+        "ko": "발라드",
+        "en": "Ballad",
+        "ja": "バアルラアダウ"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 508,
+      "width_m": 80,
+      "avg_angle_deg": 8
+    },
+    {
+      "id": 1,
+      "name": "Reggae",
+      "name_i18n": {
+        "ko": "레게",
+        "en": "Reggae",
+        "ja": "ラエガエ"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 570,
+      "width_m": 37,
+      "avg_angle_deg": 14
+    },
+    {
+      "id": 2,
+      "name": "Classic",
+      "name_i18n": {
+        "ko": "클래식",
+        "en": "Classic",
+        "ja": "タウルラアサイク"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 450,
+      "width_m": 35,
+      "avg_angle_deg": 12
+    },
+    {
+      "id": 3,
+      "name": "Funky",
+      "name_i18n": {
+        "ko": "펑키",
+        "en": "Funky",
+        "ja": "ハオンタイ"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 575,
+      "width_m": 30,
+      "avg_angle_deg": 16
+    },
+    {
+      "id": 4,
+      "name": "Techno 1",
+      "name_i18n": {
+        "ko": "테크노 1",
+        "en": "Techno 1",
+        "ja": "パエタウナオ 1"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 480,
+      "width_m": 50,
+      "avg_angle_deg": 11
+    },
+    {
+      "id": 5,
+      "name": "Techno 2",
+      "name_i18n": {
+        "ko": "테크노 2",
+        "en": "Techno 2",
+        "ja": "パエタウナオ 2"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 680,
+      "width_m": 45,
+      "avg_angle_deg": 17
+    },
+    {
+      "id": 6,
+      "name": "Hip-hop 1",
+      "name_i18n": {
+        "ko": "힙합 1",
+        "en": "Hip-hop 1",
+        "ja": "ハイプハアプ 1"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 240,
+      "width_m": 40,
+      "avg_angle_deg": 11
+    },
+    {
+      "id": 7,
+      "name": "Hip-hop 2",
+      "name_i18n": {
+        "ko": "힙합 2",
+        "en": "Hip-hop 2",
+        "ja": "ハイプハアプ 2"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 620,
+      "width_m": 85,
+      "avg_angle_deg": 15
+    },
+    {
+      "id": 8,
+      "name": "Blues",
+      "name_i18n": {
+        "ko": "블루스",
+        "en": "Blues",
+        "ja": "バウルラウサウ"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 365,
+      "width_m": 60,
+      "avg_angle_deg": 4
+    },
+    {
+      "id": 9,
+      "name": "Jazz",
+      "name_i18n": {
+        "ko": "재즈",
+        "en": "Jazz",
+        "ja": "チャアチャウ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 900,
+      "width_m": 75,
+      "avg_angle_deg": 12
+    },
+    {
+      "id": 10,
+      "name": "Rock",
+      "name_i18n": {
+        "ko": "락",
+        "en": "Rock",
+        "ja": "ラアク"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 610,
+      "width_m": 30,
+      "avg_angle_deg": 21
+    }
+  ]
+}

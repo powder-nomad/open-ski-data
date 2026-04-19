@@ -1,0 +1,124 @@
+{
+  "$schema": "../../../schemas/slope.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "alpensia",
+  "slopes": [
+    {
+      "id": 0,
+      "name": "Alpha",
+      "name_i18n": {
+        "ko": "알파",
+        "en": "Alpha",
+        "ja": "ジャアルハア"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 648,
+      "area_m2": 32481,
+      "elevation_m": 78,
+      "avg_angle_deg": 3.947,
+      "connected_lift_ids": [
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Bravo",
+      "name_i18n": {
+        "ko": "브라보",
+        "en": "Bravo",
+        "ja": "バウラアバオ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1351,
+      "area_m2": 49115,
+      "elevation_m": 194,
+      "avg_angle_deg": 4.915,
+      "connected_slope_ids": [
+        0
+      ],
+      "connected_lift_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Charlie",
+      "name_i18n": {
+        "ko": "찰리",
+        "en": "Charlie",
+        "ja": "カアルライ"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 374,
+      "area_m2": 13794,
+      "elevation_m": 194,
+      "avg_angle_deg": 11.915,
+      "connected_lift_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Delta",
+      "name_i18n": {
+        "ko": "델타",
+        "en": "Delta",
+        "ja": "ダエルパア"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 634,
+      "area_m2": 12990,
+      "elevation_m": 170,
+      "avg_angle_deg": 9.369,
+      "connected_lift_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Echo",
+      "name_i18n": {
+        "ko": "에코",
+        "en": "Echo",
+        "ja": "ジャエタオ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 762,
+      "area_m2": 43110,
+      "elevation_m": 194,
+      "avg_angle_deg": 9.034,
+      "connected_lift_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Foxtrot",
+      "name_i18n": {
+        "ko": "폭스트롯",
+        "en": "Foxtrot",
+        "ja": "ハオクサウパウラオス"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 826,
+      "area_m2": 26158,
+      "elevation_m": 194,
+      "avg_angle_deg": 8.194,
+      "connected_lift_ids": [
+        1,
+        2
+      ]
+    }
+  ]
+}

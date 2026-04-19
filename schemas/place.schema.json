@@ -4,26 +4,49 @@
   "description": "A canonical skiable location in the Altera platform",
   "type": "object",
   "properties": {
-    "slug": {
+    "country_code": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$"
+    },
+    "region_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "place_slug": {
       "type": "string",
       "pattern": "^[a-z0-9-]+$"
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Canonical English name. The root of the fallback chain when no name_i18n match exists."
     },
-    "names": {
+    "name_i18n": {
       "type": "object",
-      "properties": {
-        "ko": { "type": "string" },
-        "en": { "type": "string" },
-        "ja": { "type": "string" }
-      }
+      "description": "Locale-keyed display names. Keys are ISO 639-1 language codes (e.g. ko, en, ja). Matches the LocalizedText shape in paulkim-xr/SkiWatch.",
+      "patternProperties": {
+        "^[a-z]{2}$": { "type": "string" }
+      },
+      "additionalProperties": false
     },
     "region": {
       "type": "string"
     },
+    "region_i18n": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2}$": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
     "country": {
       "type": "string"
+    },
+    "country_i18n": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2}$": { "type": "string" }
+      },
+      "additionalProperties": false
     },
     "coordinates": {
       "type": "object",
@@ -43,28 +66,7 @@
     "tags": {
       "type": "array",
       "items": { "type": "string" }
-    },
-    "links": {
-      "type": "object",
-      "properties": {
-        "homepage": { "type": "string", "format": "uri" },
-        "weather": { "type": "string" }
-      }
-    },
-    "stats": {
-      "type": "object",
-      "properties": {
-        "run_count": { "type": "integer" },
-        "lift_count": { "type": "integer" },
-        "webcam_count": { "type": "integer" }
-      }
-    },
-    "source": {
-      "type": "object",
-      "properties": {
-        "seed": { "type": "string" }
-      }
     }
   },
-  "required": ["slug", "name", "coordinates"]
+  "required": ["country_code", "region_slug", "place_slug", "name", "coordinates"]
 }

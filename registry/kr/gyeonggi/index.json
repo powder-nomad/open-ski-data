@@ -1,0 +1,26 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "kr",
+    "name": "South Korea"
+  },
+  "region": {
+    "region_slug": "gyeonggi",
+    "name": "Gyeonggi"
+  },
+  "places": [
+    {
+      "place_slug": "jisan",
+      "name": "Jisan",
+      "path": "registry/kr/gyeonggi/jisan.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "konjiam",
+      "name": "Konjiam",
+      "path": "registry/kr/gyeonggi/konjiam.json",
+      "kind": "resort"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "$schema": "../../../schemas/slope.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "elysian-gangchon",
+  "slopes": [
+    {
+      "id": 0,
+      "name": "Panda",
+      "name_i18n": {
+        "ko": "팬더",
+        "en": "Panda",
+        "ja": "ハアンダオ"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 306,
+      "elevation_m": 21,
+      "avg_angle_deg": 5.143
+    },
+    {
+      "id": 1,
+      "name": "Rabbit",
+      "name_i18n": {
+        "ko": "래빗",
+        "en": "Rabbit",
+        "ja": "ラアバイス"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 436,
+      "elevation_m": 34,
+      "max_angle_deg": 7.407
+    },
+    {
+      "id": 2,
+      "name": "Dragon/Rabbit",
+      "name_i18n": {
+        "ko": "드래곤/래빗",
+        "en": "Dragon/Rabbit",
+        "ja": "ダウラアガオン/ラアバイス"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1500,
+      "elevation_m": 165,
+      "max_angle_deg": 12.953
+    },
+    {
+      "id": 3,
+      "name": "Horse/Zebra",
+      "name_i18n": {
+        "ko": "호스/제브라",
+        "en": "Horse/Zebra",
+        "ja": "ハオサウ/チャエバウラア"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1032,
+      "elevation_m": 165,
+      "max_angle_deg": 19.29
+    },
+    {
+      "id": 4,
+      "name": "Horse/Pegasus",
+      "name_i18n": {
+        "ko": "호스/페가수스",
+        "en": "Horse/Pegasus",
+        "ja": "ハオサウ/ハエガアサウサウ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1045,
+      "elevation_m": 172,
+      "max_angle_deg": 17.223
+    },
+    {
+      "id": 5,
+      "name": "Deer",
+      "name_i18n": {
+        "ko": "디어",
+        "en": "Deer",
+        "ja": "ダイジャオ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 945,
+      "elevation_m": 172,
+      "max_angle_deg": 18.263
+    },
+    {
+      "id": 6,
+      "name": "Puma",
+      "name_i18n": {
+        "ko": "퓨마",
+        "en": "Puma",
+        "ja": "ハユマア"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1175,
+      "elevation_m": 120,
+      "max_angle_deg": 9.09
+    },
+    {
+      "id": 7,
+      "name": "Leopard",
+      "name_i18n": {
+        "ko": "레퍼드",
+        "en": "Leopard",
+        "ja": "ラエハオダウ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 518,
+      "elevation_m": 124,
+      "max_angle_deg": 27.474
+    },
+    {
+      "id": 8,
+      "name": "Jaguar",
+      "name_i18n": {
+        "ko": "재규어",
+        "en": "Jaguar",
+        "ja": "チャアガユジャオ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 524,
+      "max_angle_deg": 28.369
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+name: Reference Data
+
+on:
+  pull_request:
+    paths:
+      - "registry/**"
+      - "schemas/**"
+      - "scripts/check-reference-data.mjs"
+      - ".github/workflows/reference-data.yml"
+      - "package.json"
+  push:
+    branches:
+      - main
+    paths:
+      - "registry/**"
+      - "schemas/**"
+      - "scripts/check-reference-data.mjs"
+      - ".github/workflows/reference-data.yml"
+      - "package.json"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm run check:reference-data

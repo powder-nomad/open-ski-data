@@ -1,43 +1,52 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Ski Lift Registry",
+  "title": "Altera Lifts Registry",
+  "description": "Per-place lift catalog. Imported from SkiWatch (paulkim-xr/SkiWatch) where each lift carries a LocalizedText name plus connectivity to slopes and other lifts.",
   "type": "object",
   "properties": {
-    "resort_slug": { "type": "string" },
+    "country_code": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$"
+    },
+    "region_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "place_slug": { "type": "string" },
     "lifts": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "localized_name": {
-            "type": "object",
-            "properties": {
-              "ko": { "type": "string" },
-              "en": { "type": "string" },
-              "ja": { "type": "string" }
-            }
+          "id": { "type": ["string", "integer"] },
+          "name": {
+            "type": "string",
+            "description": "Canonical English name; fallback when name_i18n lacks the caller's locale."
           },
+          "name_i18n": {
+            "type": "object",
+            "patternProperties": { "^[a-z]{2}$": { "type": "string" } },
+            "additionalProperties": false
+          },
+          "type": {
+            "description": "Lift category — open-ended; SkiWatch doesn't categorize so imports may omit this.",
+            "type": "string"
+          },
+          "capacity_per_hour": { "type": ["integer", "null"] },
           "length_m": { "type": ["number", "null"] },
-          "elevation_gain_m": { "type": ["number", "null"] },
-          "seats": { "type": ["integer", "null"] },
-          "cabin_count": { "type": ["integer", "null"] },
-          "speed_mps": { "type": ["number", "null"] },
-          "ride_time_s": { "type": ["number", "null"] },
-          "capacity_pph": { "type": ["integer", "null"] },
+          "vertical_m": { "type": ["number", "null"] },
           "connected_slope_ids": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": { "type": ["string", "integer"] }
           },
           "connected_lift_ids": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": { "type": ["string", "integer"] }
           }
         },
         "required": ["id", "name"]
       }
     }
   },
-  "required": ["resort_slug", "lifts"]
+  "required": ["country_code", "region_slug", "place_slug", "lifts"]
 }

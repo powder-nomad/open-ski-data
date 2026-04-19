@@ -1,0 +1,140 @@
+{
+  "$schema": "../../../schemas/webcam.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "yongpyong",
+  "webcams": [
+    {
+      "label": "Yellow",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam03.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "옐로우",
+        "en": "Yellow",
+        "ja": "イエロー"
+      }
+    },
+    {
+      "label": "Pink",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam07.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "핑크",
+        "en": "Pink",
+        "ja": "ピンク"
+      }
+    },
+    {
+      "label": "Base Overview / Red Slope",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam10.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "베이스 전경 / 레드 슬로프",
+        "en": "Base Overview / Red Slope",
+        "ja": "ベース全景 ／ レッド コース"
+      }
+    },
+    {
+      "label": "Mega Green",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam01.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "메가그린",
+        "en": "Mega Green",
+        "ja": "メガ グリーン"
+      }
+    },
+    {
+      "label": "Gold Base",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam06.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "골드 베이스",
+        "en": "Gold Base",
+        "ja": "ゴールド ベース"
+      }
+    },
+    {
+      "label": "Gold Peak",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam04.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "골드 정상",
+        "en": "Gold Peak",
+        "ja": "ゴールド 山頂"
+      }
+    },
+    {
+      "label": "Rainbow Base",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam08.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "레인보우 베이스",
+        "en": "Rainbow Base",
+        "ja": "レインボー ベース"
+      }
+    },
+    {
+      "label": "Rainbow Peak",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam14.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "레인보우 정상",
+        "en": "Rainbow Peak",
+        "ja": "レインボー 山頂"
+      }
+    },
+    {
+      "label": "Rainbow Paradise Entrance",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam09.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "레인보우 파라다이스 초입",
+        "en": "Rainbow Paradise Entrance",
+        "ja": "レインボー パラダイス 入口"
+      }
+    },
+    {
+      "label": "Balwangsan Forest Path",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam15.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "발왕산 숲길",
+        "en": "Balwangsan Forest Path",
+        "ja": "バルワンサン フォレスト パス"
+      }
+    },
+    {
+      "label": "Yongpyong Entrance",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam05.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "용평 진입로",
+        "en": "Yongpyong Entrance",
+        "ja": "ヨンピョン 入口"
+      }
+    },
+    {
+      "label": "Water Park",
+      "url": "https://live.yongpyong.co.kr/Ycam1/cam11.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "워터파크",
+        "en": "Water Park",
+        "ja": "Water パーク"
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "kr",
+    "name": "South Korea"
+  },
+  "region": {
+    "region_slug": "jeollabuk-do",
+    "name": "Jeollabuk-do"
+  },
+  "places": [
+    {
+      "place_slug": "muju",
+      "name": "Muju",
+      "path": "registry/kr/jeollabuk-do/muju.json",
+      "kind": "resort"
+    }
+  ]
+}

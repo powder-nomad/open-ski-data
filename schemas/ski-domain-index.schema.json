@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altera Ski Domain Index",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "integer"
+    },
+    "ski_domains": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "country_code": {
+            "type": "string",
+            "pattern": "^[a-z]{2}$"
+          },
+          "region_slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": ["slug", "name", "path"]
+      }
+    }
+  },
+  "required": ["version", "ski_domains"]
+}

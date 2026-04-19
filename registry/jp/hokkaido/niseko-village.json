@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "hokkaido",
+  "place_slug": "niseko-village",
+  "name": "Niseko Village",
+  "region": "Hokkaido",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 42.8614,
+    "longitude": 140.7046
+  },
+  "elevations": {
+    "base_m": 280,
+    "summit_m": 1170
+  },
+  "tags": [
+    "hokkaido",
+    "niseko-united",
+    "resort",
+    "all-mountain-pass"
+  ]
+}

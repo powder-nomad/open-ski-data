@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schemas/country-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "ch",
+    "name": "Switzerland",
+    "default_language": "de"
+  },
+  "regions": [
+    {
+      "region_slug": "bernese-oberland",
+      "name": "Bernese Oberland",
+      "path": "registry/ch/bernese-oberland/index.json"
+    }
+  ]
+}

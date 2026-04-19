@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../schemas/place.schema.json",
+  "country_code": "kr",
+  "region_slug": "gyeonggi",
+  "place_slug": "konjiam",
+  "name": "Konjiam",
+  "region": "Gyeonggi",
+  "country": "South Korea",
+  "coordinates": {
+    "latitude": 37.33691985016501,
+    "longitude": 127.29351991528104
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "name_i18n": {
+    "ko": "곤지암",
+    "en": "Konjiam",
+    "ja": "ゴンジアム"
+  },
+  "region_i18n": {
+    "ko": "경기",
+    "en": "Gyeonggi",
+    "ja": "京畿"
+  },
+  "country_i18n": {
+    "ko": "대한민국",
+    "en": "South Korea",
+    "ja": "韓国"
+  }
+}

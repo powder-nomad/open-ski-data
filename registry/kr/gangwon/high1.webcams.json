@@ -1,0 +1,116 @@
+{
+  "$schema": "../../../schemas/webcam.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "high1",
+  "webcams": [
+    {
+      "label": "Zeus 2 Entrance",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=1",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Hera 2 Entrance",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=2",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "High1 Top",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=3",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Athena 1",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=4",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Mountain Hub",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=5",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Athena 2",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=6",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Mountain Base",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=7",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Athena 2 Bottom",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=8",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Victoria Top",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=9",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Zeus 2",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=10",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Valley Hub",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=11",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Victoria 1",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=12",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Zeus 3",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=13",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Zeus 3 Middle",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=14",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Apollo 4 Middle",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=15",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Apollo Base",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=16",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Zeus 3 Bottom",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=17",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Valley Base",
+      "url": "http://www.high1.com/webcam/pop_webcam.do?ch=18",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    }
+  ]
+}

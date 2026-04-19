@@ -1,0 +1,328 @@
+{
+  "$schema": "../../../schemas/slope.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "yongpyong",
+  "slopes": [
+    {
+      "id": 0,
+      "name": "Yellow",
+      "name_i18n": {
+        "ko": "옐로우",
+        "en": "Yellow",
+        "ja": "ジャイェルラオジャウ"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 600,
+      "elevation_m": 61,
+      "min_angle_deg": 4.0,
+      "avg_angle_deg": 6.8,
+      "max_angle_deg": 9.6
+    },
+    {
+      "id": 1,
+      "name": "New Yellow",
+      "name_i18n": {
+        "ko": "뉴옐로우",
+        "en": "New Yellow",
+        "ja": "ナユジャイェルラオジャウ"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 350,
+      "elevation_m": 60,
+      "min_angle_deg": 4.0,
+      "avg_angle_deg": 6.3,
+      "max_angle_deg": 9.6
+    },
+    {
+      "id": 2,
+      "name": "Pink",
+      "name_i18n": {
+        "ko": "핑크",
+        "en": "Pink",
+        "ja": "ハインタウ"
+      },
+      "type": "run",
+      "difficulty": "be_in",
+      "length_m": 600,
+      "elevation_m": 91,
+      "min_angle_deg": 5.1,
+      "avg_angle_deg": 8.0,
+      "max_angle_deg": 13.0
+    },
+    {
+      "id": 3,
+      "name": "Mega Green",
+      "name_i18n": {
+        "ko": "메가그린",
+        "en": "Mega Green",
+        "ja": "マエガアガウライン"
+      },
+      "type": "run",
+      "difficulty": "be_in",
+      "length_m": 1000,
+      "elevation_m": 108,
+      "min_angle_deg": 6.8,
+      "avg_angle_deg": 8.5,
+      "max_angle_deg": 15.6
+    },
+    {
+      "id": 4,
+      "name": "Red Paradise",
+      "name_i18n": {
+        "ko": "레드파라다이스",
+        "en": "Red Paradise",
+        "ja": "ラエダウハアラアダアジャイサウ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1000,
+      "elevation_m": 150,
+      "min_angle_deg": 7.4,
+      "avg_angle_deg": 12.4,
+      "max_angle_deg": 20.3
+    },
+    {
+      "id": 5,
+      "name": "Gold Paradise",
+      "name_i18n": {
+        "ko": "골드파라다이스",
+        "en": "Gold Paradise",
+        "ja": "ガオルダウハアラアダアジャイサウ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1520,
+      "elevation_m": 222,
+      "min_angle_deg": 4.6,
+      "avg_angle_deg": 7.97,
+      "max_angle_deg": 11.9
+    },
+    {
+      "id": 6,
+      "name": "Silver Paradise",
+      "name_i18n": {
+        "ko": "실버파라다이스",
+        "en": "Silver Paradise",
+        "ja": "サイルバオハアラアダアジャイサウ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1460,
+      "elevation_m": 269,
+      "min_angle_deg": 6.3,
+      "avg_angle_deg": 10.2,
+      "max_angle_deg": 16.2
+    },
+    {
+      "id": 7,
+      "name": "Rainbow Paradise",
+      "name_i18n": {
+        "ko": "레인보우파라다이스",
+        "en": "Rainbow Paradise",
+        "ja": "ラエジャインバオジャウハアラアダアジャイサウ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 5600,
+      "elevation_m": 702,
+      "min_angle_deg": 4.0,
+      "avg_angle_deg": 7.4,
+      "max_angle_deg": 14.6
+    },
+    {
+      "id": 8,
+      "name": "Gold Fantastic",
+      "name_i18n": {
+        "ko": "골드 환타스틱",
+        "en": "Gold Fantastic",
+        "ja": "ガオルダウ ハワンパアサウパイク"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 1850,
+      "elevation_m": 333,
+      "min_angle_deg": 2.9,
+      "avg_angle_deg": 10.2,
+      "max_angle_deg": 18.3
+    },
+    {
+      "id": 9,
+      "name": "Gold Valley",
+      "name_i18n": {
+        "ko": "골드밸리",
+        "en": "Gold Valley",
+        "ja": "ガオルダウバアルライ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1850,
+      "elevation_m": 333,
+      "min_angle_deg": 4.0,
+      "avg_angle_deg": 11.3,
+      "max_angle_deg": 23.3
+    },
+    {
+      "id": 10,
+      "name": "New Red",
+      "name_i18n": {
+        "ko": "뉴레드",
+        "en": "New Red",
+        "ja": "ナユラエダウ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 500,
+      "elevation_m": 194,
+      "min_angle_deg": 14.0,
+      "avg_angle_deg": 19.8,
+      "max_angle_deg": 22.8
+    },
+    {
+      "id": 11,
+      "name": "Blue",
+      "name_i18n": {
+        "ko": "블루",
+        "en": "Blue",
+        "ja": "バウルラウ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 300,
+      "elevation_m": 80,
+      "min_angle_deg": 6.3,
+      "avg_angle_deg": 16.2,
+      "max_angle_deg": 19.8
+    },
+    {
+      "id": 12,
+      "name": "Rainbow 4",
+      "name_i18n": {
+        "ko": "레인보우 4",
+        "en": "Rainbow 4",
+        "ja": "ラエジャインバオジャウ 4"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 635,
+      "elevation_m": 180,
+      "min_angle_deg": 8.5,
+      "avg_angle_deg": 15.6,
+      "max_angle_deg": 24.7
+    },
+    {
+      "id": 13,
+      "name": "Red",
+      "name_i18n": {
+        "ko": "레드",
+        "en": "Red",
+        "ja": "ラエダウ"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 1000,
+      "elevation_m": 194,
+      "min_angle_deg": 5.1,
+      "avg_angle_deg": 11.9,
+      "max_angle_deg": 26.6
+    },
+    {
+      "id": 14,
+      "name": "Silver",
+      "name_i18n": {
+        "ko": "실버",
+        "en": "Silver",
+        "ja": "サイルバオ"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 1000,
+      "elevation_m": 263,
+      "min_angle_deg": 4.0,
+      "avg_angle_deg": 16.2,
+      "max_angle_deg": 26.1
+    },
+    {
+      "id": 15,
+      "name": "New Gold",
+      "name_i18n": {
+        "ko": "뉴골드",
+        "en": "New Gold",
+        "ja": "ナユガオルダウ"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 650,
+      "elevation_m": 180,
+      "min_angle_deg": 10.2,
+      "avg_angle_deg": 17.2,
+      "max_angle_deg": 25.2
+    },
+    {
+      "id": 16,
+      "name": "Rainbow 1",
+      "name_i18n": {
+        "ko": "레인보우 1",
+        "en": "Rainbow 1",
+        "ja": "ラエジャインバオジャウ 1"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 1607,
+      "elevation_m": 500,
+      "min_angle_deg": 8.5,
+      "avg_angle_deg": 17.2,
+      "max_angle_deg": 29.7
+    },
+    {
+      "id": 17,
+      "name": "Rainbow 2",
+      "name_i18n": {
+        "ko": "레인보우 2",
+        "en": "Rainbow 2",
+        "ja": "ラエジャインバオジャウ 2"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 752,
+      "elevation_m": 500,
+      "min_angle_deg": 8.5,
+      "avg_angle_deg": 21.3,
+      "max_angle_deg": 29.2
+    },
+    {
+      "id": 18,
+      "name": "Rainbow 3",
+      "name_i18n": {
+        "ko": "레인보우 3",
+        "en": "Rainbow 3",
+        "ja": "ラエジャインバオジャウ 3"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 1046,
+      "elevation_m": 500,
+      "min_angle_deg": 8.5,
+      "avg_angle_deg": 18.3,
+      "max_angle_deg": 26.1
+    },
+    {
+      "id": 19,
+      "name": "Dragon Park",
+      "name_i18n": {
+        "ko": "드래곤파크",
+        "en": "Dragon Park",
+        "ja": "ダウラアガオンハアタウ"
+      },
+      "type": "run",
+      "difficulty": "park",
+      "length_m": 1046,
+      "elevation_m": 500,
+      "min_angle_deg": 8.5,
+      "avg_angle_deg": 18.3,
+      "max_angle_deg": 26.1
+    }
+  ]
+}

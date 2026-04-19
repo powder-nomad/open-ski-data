@@ -1,75 +1,110 @@
-# Ski Reference Data
+# Open Ski Data
 
-Canonical ski resort reference data for use by apps, APIs, and public websites.
+Canonical ski place reference data for apps, APIs, and public websites.
 
-This repository is intended to become a contributor-maintained data source for ski places around the world. The initial seed is based on data already curated in `paulkim-xr/SkiWatch`, then reorganized into a JSON-first layout designed for direct use from `raw.githubusercontent.com`.
+This repository is intended to become a contributor-maintained public data source for ski areas around the world. It stores mostly static or slow-changing facts such as place identity, geography, terrain metadata, lift metadata, webcams, and ski-domain groupings.
 
-## Goals
+## Purpose
 
-- keep mostly static ski-domain facts in one place
-- separate reference data from user-generated product data
-- make records easy to review and update through pull requests
+- keep ski reference data separate from product code and user-generated data
 - publish stable JSON paths that other projects can consume directly
+- make factual corrections and additions easy to review through pull requests
+- support a world-ready structure without forcing clients to download one giant flat index
 
 ## Repository Layout
 
 ```text
 registry/
   index.json
-  places/
-  slopes/
-  lifts/
-  webcams/
+  kr/
+    index.json
+    gangwon/
+      index.json
+      yongpyong.json
+      yongpyong.slopes.json
+      yongpyong.lifts.json
+      yongpyong.webcams.json
+  jp/
+    index.json
+    hokkaido/
+      index.json
+      niseko-grand-hirafu.json
+  ski-domains/
+    index.json
+    niseko-united.json
   live/
 schemas/
-  place.schema.json
-  slope.schema.json
-  lift.schema.json
-  webcam.schema.json
 scripts/
+  check-reference-data.mjs
   import-skiwatch.mjs
 ```
 
-## Data Model Direction
+## Data Model
+
+Core geography:
+
+- `country`
+- `region`
+- `place`
+
+Cross-place grouping:
+
+- `ski_domain`
+
+Use `place` for the local resort identity.
+Use `ski_domain` for interconnected multi-resort areas such as Niseko United or other linked domains.
+
+## Index Strategy
+
+The repository uses hierarchical indexes as the primary source of truth.
+
+- `registry/index.json` lists countries
+- `registry/<country>/index.json` lists regions
+- `registry/<country>/<region>/index.json` lists places in that region
+- canonical place files live under their country and region path
+- `registry/ski-domains/index.json` lists ski domains
+
+This keeps browsing payloads small, makes pull requests more localized, and avoids one giant global routing file becoming a merge-conflict hotspot.
+
+## Data Categories
 
 Current categories:
 
-- `places`
-  Resort-level identity, names, coordinates, tags, links, and summary counts
-- `slopes`
-  Run and terrain records such as difficulty, length, width, area, angle, and connected lift or slope IDs
-- `lifts`
-  Lift records such as length, seat count, cabin count, speed, ride time, capacity, and connections
-- `webcams`
-  Public camera and stream endpoints
-- `live`
-  Placeholder area for data that changes more often than pure reference records
+- place records
+- slope records
+- lift records
+- webcam records
+- ski-domain records
 
 Planned future categories:
 
-- pass products and lift-ticket pricing
-- operating seasons and opening windows
+- lift ticket pricing
+- season pass products
+- operating dates and hours
 - terrain parks and named features
-- base village and parking metadata
+- parking, shuttle, and village metadata
 - geospatial trail geometry and merge or diverge points
-- lift terminals with lat/lng and altitude
-- resort contact info and official policy links
-- snowmaking coverage and night-ski availability
-- accessibility and family-service metadata
-- source provenance and last-verified timestamps per field
+- lift terminal coordinates and altitude
+- official source links and per-field verification timestamps
+
+## Validation
+
+Run the repository validator locally:
+
+```bash
+node scripts/check-reference-data.mjs
+```
+
+The validator checks JSON sanity, hierarchical path consistency, index integrity, and ski-domain membership references.
 
 ## Raw Usage
 
-Example path pattern:
+Example path patterns:
 
 ```text
-https://raw.githubusercontent.com/<owner>/ski-reference-data/<branch>/registry/places/konjiam.json
-```
-
-Repository-wide index:
-
-```text
-https://raw.githubusercontent.com/<owner>/ski-reference-data/<branch>/registry/index.json
+https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/index.json
+https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/kr/index.json
+https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/kr/gangwon/yongpyong.json
 ```
 
 ## Seed Provenance
@@ -77,6 +112,6 @@ https://raw.githubusercontent.com/<owner>/ski-reference-data/<branch>/registry/i
 Initial records are derived from:
 
 - `paulkim-xr/SkiWatch`
-- the local `ski-platform/packages/reference-data` registry derived from that source
+- `ski-platform/packages/reference-data`
 
-The repository should evolve beyond SkiWatch over time, but the initial dataset keeps that provenance explicit.
+The repository should evolve beyond those seeds over time, but the initial provenance remains relevant for auditing and migration history.

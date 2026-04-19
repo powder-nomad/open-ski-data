@@ -1,166 +1,31 @@
 {
-  "resorts": [
+  "$schema": "../schemas/registry-index.schema.json",
+  "version": 1,
+  "countries": [
     {
-      "slug": "alpensia",
-      "name": "Alpensia",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/alpensia.json",
-        "slopes": "registry/slopes/alpensia.json",
-        "lifts": "registry/lifts/alpensia.json",
-        "webcams": "registry/webcams/alpensia.json"
-      }
+      "country_code": "kr",
+      "name": "South Korea",
+      "default_language": "ko",
+      "path": "registry/kr/index.json"
     },
     {
-      "slug": "eden-valley",
-      "name": "Eden Valley",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/eden-valley.json",
-        "slopes": "registry/slopes/eden-valley.json",
-        "lifts": "registry/lifts/eden-valley.json",
-        "webcams": "registry/webcams/eden-valley.json"
-      }
+      "country_code": "jp",
+      "name": "Japan",
+      "default_language": "jp",
+      "path": "registry/jp/index.json"
     },
     {
-      "slug": "eiger-north-face",
-      "name": "Eiger North Face",
-      "country": "Switzerland",
-      "paths": {
-        "place": "registry/places/eiger-north-face.json",
-        "slopes": "registry/slopes/eiger-north-face.json",
-        "webcams": "registry/webcams/eiger-north-face.json"
-      }
+      "country_code": "ca",
+      "name": "Canada",
+      "default_language": "en",
+      "path": "registry/ca/index.json"
     },
     {
-      "slug": "elysian-gangchon",
-      "name": "Elysian Gangchon",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/elysian-gangchon.json",
-        "slopes": "registry/slopes/elysian-gangchon.json",
-        "lifts": "registry/lifts/elysian-gangchon.json",
-        "webcams": "registry/webcams/elysian-gangchon.json"
-      }
-    },
-    {
-      "slug": "high1",
-      "name": "High1",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/high1.json",
-        "slopes": "registry/slopes/high1.json",
-        "lifts": "registry/lifts/high1.json",
-        "webcams": "registry/webcams/high1.json"
-      }
-    },
-    {
-      "slug": "jisan",
-      "name": "Jisan",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/jisan.json",
-        "slopes": "registry/slopes/jisan.json",
-        "lifts": "registry/lifts/jisan.json",
-        "webcams": "registry/webcams/jisan.json"
-      }
-    },
-    {
-      "slug": "konjiam",
-      "name": "Konjiam",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/konjiam.json",
-        "slopes": "registry/slopes/konjiam.json",
-        "lifts": "registry/lifts/konjiam.json",
-        "webcams": "registry/webcams/konjiam.json"
-      }
-    },
-    {
-      "slug": "muju",
-      "name": "Muju",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/muju.json",
-        "slopes": "registry/slopes/muju.json",
-        "lifts": "registry/lifts/muju.json",
-        "webcams": "registry/webcams/muju.json"
-      }
-    },
-    {
-      "slug": "o2",
-      "name": "O2",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/o2.json",
-        "slopes": "registry/slopes/o2.json",
-        "lifts": "registry/lifts/o2.json",
-        "webcams": "registry/webcams/o2.json"
-      }
-    },
-    {
-      "slug": "oak-valley",
-      "name": "Oak Valley",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/oak-valley.json",
-        "slopes": "registry/slopes/oak-valley.json",
-        "lifts": "registry/lifts/oak-valley.json",
-        "webcams": "registry/webcams/oak-valley.json"
-      }
-    },
-    {
-      "slug": "phoenix-park",
-      "name": "Phoenix Park",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/phoenix-park.json",
-        "slopes": "registry/slopes/phoenix-park.json",
-        "lifts": "registry/lifts/phoenix-park.json",
-        "webcams": "registry/webcams/phoenix-park.json"
-      }
-    },
-    {
-      "slug": "vivaldi-park",
-      "name": "Vivaldi Park",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/vivaldi-park.json",
-        "slopes": "registry/slopes/vivaldi-park.json",
-        "lifts": "registry/lifts/vivaldi-park.json",
-        "webcams": "registry/webcams/vivaldi-park.json"
-      }
-    },
-    {
-      "slug": "wellihilli-park",
-      "name": "WelliHilli Park",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/wellihilli-park.json",
-        "slopes": "registry/slopes/wellihilli-park.json",
-        "lifts": "registry/lifts/wellihilli-park.json",
-        "webcams": "registry/webcams/wellihilli-park.json"
-      }
-    },
-    {
-      "slug": "whistler-blackcomb",
-      "name": "Whistler Blackcomb",
-      "country": "Canada",
-      "paths": {
-        "place": "registry/places/whistler-blackcomb.json",
-        "live": "registry/live/whistler-blackcomb.json"
-      }
-    },
-    {
-      "slug": "yongpyong",
-      "name": "Yongpyong",
-      "country": "KR",
-      "paths": {
-        "place": "registry/places/yongpyong.json",
-        "slopes": "registry/slopes/yongpyong.json",
-        "lifts": "registry/lifts/yongpyong.json",
-        "webcams": "registry/webcams/yongpyong.json"
-      }
+      "country_code": "ch",
+      "name": "Switzerland",
+      "default_language": "de",
+      "path": "registry/ch/index.json"
     }
-  ]
+  ],
+  "ski_domains_path": "registry/ski-domains/index.json"
 }

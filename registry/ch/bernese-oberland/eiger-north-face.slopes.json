@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../schemas/slope.schema.json",
+  "country_code": "ch",
+  "region_slug": "bernese-oberland",
+  "place_slug": "eiger-north-face",
+  "slopes": [
+    {
+      "id": "eigerwall-run",
+      "name": "The Eigerwall",
+      "type": "run",
+      "difficulty": "expert",
+      "coordinates": [
+        {
+          "lat": 46.582,
+          "lon": 8.001
+        },
+        {
+          "lat": 46.5778,
+          "lon": 8.0053
+        }
+      ]
+    },
+    {
+      "id": "eiger-express",
+      "name": "Eiger Express",
+      "type": "lift",
+      "difficulty": "intermediate"
+    }
+  ]
+}

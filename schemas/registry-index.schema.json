@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altera Registry Index",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "integer"
+    },
+    "countries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "country_code": {
+            "type": "string",
+            "pattern": "^[a-z]{2}$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "default_language": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": ["country_code", "name", "path"]
+      }
+    },
+    "ski_domains_path": {
+      "type": "string"
+    }
+  },
+  "required": ["version", "countries"]
+}

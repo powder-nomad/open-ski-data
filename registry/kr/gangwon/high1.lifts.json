@@ -1,0 +1,98 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "high1",
+  "lifts": [
+    {
+      "id": 0,
+      "name": "Jupiter",
+      "name_i18n": {
+        "ko": "주피터",
+        "en": "Jupiter",
+        "ja": "チャウハイパオ"
+      },
+      "length_m": 950
+    },
+    {
+      "id": 1,
+      "name": "Zeus",
+      "name_i18n": {
+        "ko": "제우스",
+        "en": "Zeus",
+        "ja": "チャエジャウサウ"
+      },
+      "length_m": 1912
+    },
+    {
+      "id": 2,
+      "name": "Victoria",
+      "name_i18n": {
+        "ko": "빅토리아",
+        "en": "Victoria",
+        "ja": "バイクパオライジャア"
+      },
+      "length_m": 1323
+    },
+    {
+      "id": 3,
+      "name": "Hera",
+      "name_i18n": {
+        "ko": "헤라",
+        "en": "Hera",
+        "ja": "ハエラア"
+      },
+      "length_m": 1221
+    },
+    {
+      "id": 4,
+      "name": "Apollo",
+      "name_i18n": {
+        "ko": "아폴로",
+        "en": "Apollo",
+        "ja": "ジャアハオルラオ"
+      },
+      "length_m": 1232
+    },
+    {
+      "id": 5,
+      "name": "Athena",
+      "name_i18n": {
+        "ko": "아테나",
+        "en": "Athena",
+        "ja": "ジャアパエナア"
+      },
+      "length_m": 1547
+    },
+    {
+      "id": 6,
+      "name": "Valley",
+      "name_i18n": {
+        "ko": "밸리",
+        "en": "Valley",
+        "ja": "バアルライ"
+      },
+      "length_m": 1243
+    },
+    {
+      "id": 7,
+      "name": "Mountain",
+      "name_i18n": {
+        "ko": "마운틴",
+        "en": "Mountain",
+        "ja": "マアジャウンパイン"
+      },
+      "length_m": 2832
+    },
+    {
+      "id": 8,
+      "name": "Palace",
+      "name_i18n": {
+        "ko": "팰리스",
+        "en": "Palace",
+        "ja": "ハアルライサウ"
+      },
+      "length_m": 2523
+    }
+  ]
+}

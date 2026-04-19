@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altera Ski Domain",
+  "description": "A multi-place ski domain or interconnected resort network",
+  "type": "object",
+  "properties": {
+    "country_code": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$"
+    },
+    "region_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "member_place_slugs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["country_code", "region_slug", "slug", "name", "member_place_slugs"]
+}

@@ -3,30 +3,44 @@
   "title": "Altera Webcam Registry",
   "type": "object",
   "properties": {
-    "resort_slug": { "type": "string" },
+    "country_code": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$"
+    },
+    "region_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "place_slug": { "type": "string" },
     "webcams": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "label": { "type": "string" },
-          "localized_label": {
+          "label_i18n": {
             "type": "object",
-            "properties": {
-              "ko": { "type": "string" },
-              "en": { "type": "string" },
-              "ja": { "type": "string" }
-            }
+            "description": "Locale-keyed labels — SkiWatch's streams.ts carries { ko, en, ja } on every entry.",
+            "patternProperties": { "^[a-z]{2}$": { "type": "string" } },
+            "additionalProperties": false
           },
           "url": { "type": "string", "format": "uri" },
-          "type": { "enum": ["image", "stream"] },
-          "source_type": { "type": "string" },
-          "refresh_interval_ms": { "type": "integer" },
-          "metadata": { "type": ["object", "null"] }
+          "type": {
+            "enum": [
+              "image",
+              "stream",
+              "hls",
+              "iframe",
+              "external",
+              "unavailable",
+              "vivaldi"
+            ]
+          },
+          "refresh_interval_ms": { "type": "integer" }
         },
         "required": ["label", "url", "type"]
       }
     }
   },
-  "required": ["resort_slug", "webcams"]
+  "required": ["country_code", "region_slug", "place_slug", "webcams"]
 }

@@ -1,0 +1,41 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "oak-valley",
+  "lifts": [
+    {
+      "id": 0,
+      "name": "Flower",
+      "name_i18n": {
+        "ko": "플라워",
+        "en": "Flower",
+        "ja": "ハウルラアジャウォ"
+      },
+      "capacity_per_hour": 3200,
+      "length_m": 483
+    },
+    {
+      "id": 1,
+      "name": "Bird",
+      "name_i18n": {
+        "ko": "버드",
+        "en": "Bird",
+        "ja": "バオダウ"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 495
+    },
+    {
+      "id": 2,
+      "name": "Mountain",
+      "name_i18n": {
+        "ko": "마운틴",
+        "en": "Mountain",
+        "ja": "マアジャウンパイン"
+      },
+      "capacity_per_hour": 3400,
+      "length_m": 931
+    }
+  ]
+}

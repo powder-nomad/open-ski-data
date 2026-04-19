@@ -1,0 +1,63 @@
+{
+  "$schema": "../../../schemas/webcam.schema.json",
+  "country_code": "kr",
+  "region_slug": "gyeonggi",
+  "place_slug": "konjiam",
+  "webcams": [
+    {
+      "label": "Summit Rest Area",
+      "url": "http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam01.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "정상 휴게소",
+        "en": "Summit Rest Area",
+        "ja": "山頂 休憩所"
+      }
+    },
+    {
+      "label": "Summit Slope",
+      "url": "http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam02.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "정상부 슬로프",
+        "en": "Summit Slope",
+        "ja": "山頂 コース"
+      }
+    },
+    {
+      "label": "Middle Slope",
+      "url": "http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam05.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "중간 슬로프",
+        "en": "Middle Slope",
+        "ja": "中腹 コース"
+      }
+    },
+    {
+      "label": "Beginners Base",
+      "url": "http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam03.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "초중급 베이스",
+        "en": "Beginners Base",
+        "ja": "初級 ベース"
+      }
+    },
+    {
+      "label": "Intermediate-Advanced Base",
+      "url": "http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam04.stream/playlist.m3u8",
+      "type": "stream",
+      "refresh_interval_ms": 60000,
+      "label_i18n": {
+        "ko": "중상급 베이스",
+        "en": "Intermediate-Advanced Base",
+        "ja": "中上級 ベース"
+      }
+    }
+  ]
+}

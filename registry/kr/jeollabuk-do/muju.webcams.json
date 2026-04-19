@@ -1,0 +1,74 @@
+{
+  "$schema": "../../../schemas/webcam.schema.json",
+  "country_code": "kr",
+  "region_slug": "jeollabuk-do",
+  "place_slug": "muju",
+  "webcams": [
+    {
+      "label": "Seolcheon Peak",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=07",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Seolcheon Top Slope",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=06",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Mozart, Minuet",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=08",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Polka",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=09",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Silk Road, Minuet Bottom",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=10",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Manseon Peak",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=02",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Heidi House",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=03",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Seoyeok Journey, Sundown",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=04",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Connection",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=11",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Seolcheon House",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=05",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Manseon House",
+      "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=01",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    }
+  ]
+}

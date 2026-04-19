@@ -1,0 +1,87 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "jp",
+    "name": "Japan"
+  },
+  "region": {
+    "region_slug": "hokkaido",
+    "name": "Hokkaido"
+  },
+  "places": [
+    {
+      "place_slug": "niseko-annupuri",
+      "name": "Niseko Annupuri",
+      "path": "registry/jp/hokkaido/niseko-annupuri.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "niseko-village",
+      "name": "Niseko Village",
+      "path": "registry/jp/hokkaido/niseko-village.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "niseko-grand-hirafu",
+      "name": "Niseko Grand Hirafu",
+      "path": "registry/jp/hokkaido/niseko-grand-hirafu.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "niseko-hanazono",
+      "name": "Niseko Hanazono",
+      "path": "registry/jp/hokkaido/niseko-hanazono.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "rusutsu",
+      "name": "Rusutsu Resort",
+      "path": "registry/jp/hokkaido/rusutsu.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "kiroro",
+      "name": "Kiroro Snow World",
+      "path": "registry/jp/hokkaido/kiroro.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "furano",
+      "name": "Furano Ski Resort",
+      "path": "registry/jp/hokkaido/furano.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "tomamu",
+      "name": "Hoshino Resorts TOMAMU",
+      "path": "registry/jp/hokkaido/tomamu.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "sapporo-teine",
+      "name": "Sapporo Teine",
+      "path": "registry/jp/hokkaido/sapporo-teine.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "sahoro",
+      "name": "Sahoro Resort",
+      "path": "registry/jp/hokkaido/sahoro.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "kamui-ski-links",
+      "name": "Kamui Ski Links",
+      "path": "registry/jp/hokkaido/kamui-ski-links.json",
+      "kind": "resort"
+    }
+  ],
+  "ski_domains": [
+    {
+      "slug": "niseko-united",
+      "name": "Niseko United",
+      "path": "registry/ski-domains/niseko-united.json"
+    }
+  ]
+}

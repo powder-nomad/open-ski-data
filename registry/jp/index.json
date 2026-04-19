@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schemas/country-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "jp",
+    "name": "Japan",
+    "default_language": "jp"
+  },
+  "regions": [
+    {
+      "region_slug": "hokkaido",
+      "name": "Hokkaido",
+      "path": "registry/jp/hokkaido/index.json"
+    }
+  ]
+}

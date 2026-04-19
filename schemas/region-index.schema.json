@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altera Region Index",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "integer"
+    },
+    "country": {
+      "type": "object",
+      "properties": {
+        "country_code": {
+          "type": "string",
+          "pattern": "^[a-z]{2}$"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["country_code", "name"]
+    },
+    "region": {
+      "type": "object",
+      "properties": {
+        "region_slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["region_slug", "name"]
+    },
+    "places": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "place_slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          }
+        },
+        "required": ["place_slug", "name", "path"]
+      }
+    },
+    "ski_domains": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": ["slug", "name", "path"]
+      }
+    }
+  },
+  "required": ["version", "country", "region", "places"]
+}

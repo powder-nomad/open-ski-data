@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schemas/country-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "ca",
+    "name": "Canada",
+    "default_language": "en"
+  },
+  "regions": [
+    {
+      "region_slug": "british-columbia",
+      "name": "British Columbia",
+      "path": "registry/ca/british-columbia/index.json"
+    }
+  ]
+}

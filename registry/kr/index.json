@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schemas/country-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "kr",
+    "name": "South Korea",
+    "default_language": "ko"
+  },
+  "regions": [
+    {
+      "region_slug": "gangwon",
+      "name": "Gangwon",
+      "path": "registry/kr/gangwon/index.json"
+    },
+    {
+      "region_slug": "gyeonggi",
+      "name": "Gyeonggi",
+      "path": "registry/kr/gyeonggi/index.json"
+    },
+    {
+      "region_slug": "jeollabuk-do",
+      "name": "Jeollabuk-do",
+      "path": "registry/kr/jeollabuk-do/index.json"
+    },
+    {
+      "region_slug": "gyeongsangnam-do",
+      "name": "Gyeongsangnam-do",
+      "path": "registry/kr/gyeongsangnam-do/index.json"
+    }
+  ]
+}

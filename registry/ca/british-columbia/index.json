@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "ca",
+    "name": "Canada"
+  },
+  "region": {
+    "region_slug": "british-columbia",
+    "name": "British Columbia"
+  },
+  "places": [
+    {
+      "place_slug": "whistler-blackcomb",
+      "name": "Whistler Blackcomb",
+      "path": "registry/ca/british-columbia/whistler-blackcomb.json",
+      "kind": "resort"
+    }
+  ]
+}

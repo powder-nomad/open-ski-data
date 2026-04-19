@@ -3,38 +3,59 @@
   "title": "Altera Slopes Registry",
   "type": "object",
   "properties": {
-    "resort_slug": { "type": "string" },
+    "country_code": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$"
+    },
+    "region_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "place_slug": { "type": "string" },
     "slopes": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "localized_name": {
-            "type": "object",
-            "properties": {
-              "ko": { "type": "string" },
-              "en": { "type": "string" },
-              "ja": { "type": "string" }
-            }
+          "id": {
+            "description": "Stable identifier. Historically strings; SkiWatch source uses integers, so both are accepted.",
+            "type": ["string", "integer"]
           },
-          "type": { "enum": ["run", "lift", "access_route", "terrain_park"] },
-          "difficulty": { "enum": ["beginner", "intermediate", "advanced", "expert", "pro", "park"] },
+          "name": { "type": "string" },
+          "name_i18n": {
+            "type": "object",
+            "description": "Locale-keyed names matching SkiWatch's LocalizedText shape.",
+            "patternProperties": { "^[a-z]{2}$": { "type": "string" } },
+            "additionalProperties": false
+          },
+          "type": { "enum": ["run", "lift", "access_route"] },
+          "difficulty": {
+            "description": "Covers SkiWatch's finer-grained levels (be_in / in_ad) and `park` so nothing is lost on import.",
+            "enum": [
+              "beginner",
+              "be_in",
+              "intermediate",
+              "in_ad",
+              "advanced",
+              "expert",
+              "pro",
+              "park"
+            ]
+          },
           "length_m": { "type": ["number", "null"] },
           "width_m": { "type": ["number", "null"] },
           "area_m2": { "type": ["number", "null"] },
-          "elevation_drop_m": { "type": ["number", "null"] },
+          "elevation_m": { "type": ["number", "null"] },
           "min_angle_deg": { "type": ["number", "null"] },
           "avg_angle_deg": { "type": ["number", "null"] },
           "max_angle_deg": { "type": ["number", "null"] },
           "connected_slope_ids": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": { "type": ["string", "integer"] }
           },
           "connected_lift_ids": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": { "type": ["string", "integer"] }
           },
           "coordinates": {
             "type": "array",
@@ -47,9 +68,9 @@
             }
           }
         },
-        "required": ["id", "name", "type"]
+        "required": ["id", "name"]
       }
     }
   },
-  "required": ["resort_slug", "slopes"]
+  "required": ["country_code", "region_slug", "place_slug", "slopes"]
 }

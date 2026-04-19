@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "kr",
+    "name": "South Korea"
+  },
+  "region": {
+    "region_slug": "gyeongsangnam-do",
+    "name": "Gyeongsangnam-do"
+  },
+  "places": [
+    {
+      "place_slug": "eden-valley",
+      "name": "Eden Valley",
+      "path": "registry/kr/gyeongsangnam-do/eden-valley.json",
+      "kind": "resort"
+    }
+  ]
+}

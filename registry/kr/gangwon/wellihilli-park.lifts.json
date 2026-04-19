@@ -1,0 +1,88 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "wellihilli-park",
+  "lifts": [
+    {
+      "id": 0,
+      "name": "Alpha",
+      "name_i18n": {
+        "ko": "알파",
+        "en": "Alpha",
+        "ja": "ジャアルハア"
+      },
+      "length_m": 484
+    },
+    {
+      "id": 1,
+      "name": "New Alpha",
+      "name_i18n": {
+        "ko": "뉴알파",
+        "en": "New Alpha",
+        "ja": "ナユジャアルハア"
+      },
+      "length_m": 464
+    },
+    {
+      "id": 2,
+      "name": "Bravo",
+      "name_i18n": {
+        "ko": "브라보",
+        "en": "Bravo",
+        "ja": "バウラアバオ"
+      },
+      "length_m": 776
+    },
+    {
+      "id": 3,
+      "name": "Delta",
+      "name_i18n": {
+        "ko": "델타",
+        "en": "Delta",
+        "ja": "ダエルパア"
+      },
+      "length_m": 580
+    },
+    {
+      "id": 4,
+      "name": "Echo",
+      "name_i18n": {
+        "ko": "에코",
+        "en": "Echo",
+        "ja": "ジャエタオ"
+      },
+      "length_m": 642
+    },
+    {
+      "id": 5,
+      "name": "Family",
+      "name_i18n": {
+        "ko": "패밀리",
+        "en": "Family",
+        "ja": "ハアマイルライ"
+      },
+      "length_m": 743
+    },
+    {
+      "id": 6,
+      "name": "Challenge",
+      "name_i18n": {
+        "ko": "첼린지",
+        "en": "Challenge",
+        "ja": "カエルラインチャイ"
+      },
+      "length_m": 765
+    },
+    {
+      "id": 7,
+      "name": "Gondola",
+      "name_i18n": {
+        "ko": "곤돌라",
+        "en": "Gondola",
+        "ja": "ガオンダオルラア"
+      },
+      "length_m": 1302
+    }
+  ]
+}

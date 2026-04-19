@@ -1,0 +1,58 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "alpensia",
+  "lifts": [
+    {
+      "id": 0,
+      "name": "Lift 1",
+      "name_i18n": {
+        "ko": "리프트 1",
+        "en": "Lift 1",
+        "ja": "ライハウパウ 1"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 541,
+      "connected_slope_ids": [
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Lift 2",
+      "name_i18n": {
+        "ko": "리프트 2",
+        "en": "Lift 2",
+        "ja": "ライハウパウ 2"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 664,
+      "connected_slope_ids": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Lift 3",
+      "name_i18n": {
+        "ko": "리프트 3",
+        "en": "Lift 3",
+        "ja": "ライハウパウ 3"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 651,
+      "connected_slope_ids": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ]
+}

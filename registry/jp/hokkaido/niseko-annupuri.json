@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "hokkaido",
+  "place_slug": "niseko-annupuri",
+  "name": "Niseko Annupuri",
+  "region": "Hokkaido",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 42.8049,
+    "longitude": 140.6874
+  },
+  "elevations": {
+    "base_m": 330,
+    "summit_m": 1308
+  },
+  "tags": [
+    "hokkaido",
+    "niseko-united",
+    "resort",
+    "all-mountain-pass"
+  ]
+}

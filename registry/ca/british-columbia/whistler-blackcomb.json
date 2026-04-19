@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../schemas/place.schema.json",
+  "country_code": "ca",
+  "region_slug": "british-columbia",
+  "place_slug": "whistler-blackcomb",
+  "name": "Whistler Blackcomb",
+  "region": "British Columbia",
+  "country": "Canada",
+  "coordinates": {
+    "latitude": 50.1163,
+    "longitude": -122.9574
+  },
+  "elevations": {
+    "base_m": 675,
+    "summit_m": 2284
+  },
+  "tags": [
+    "big-mountain",
+    "resort",
+    "alpine"
+  ]
+}

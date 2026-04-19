@@ -1,0 +1,63 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "o2",
+  "lifts": [
+    {
+      "id": 0,
+      "name": "Apple",
+      "name_i18n": {
+        "ko": "애플",
+        "en": "Apple",
+        "ja": "ジャアハウル"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 615
+    },
+    {
+      "id": 1,
+      "name": "Cherry",
+      "name_i18n": {
+        "ko": "체리",
+        "en": "Cherry",
+        "ja": "カエライ"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 1030
+    },
+    {
+      "id": 2,
+      "name": "Orange",
+      "name_i18n": {
+        "ko": "오렌지",
+        "en": "Orange",
+        "ja": "ジャオラエンチャイ"
+      },
+      "capacity_per_hour": 3600,
+      "length_m": 526
+    },
+    {
+      "id": 3,
+      "name": "Tomato",
+      "name_i18n": {
+        "ko": "토마토",
+        "en": "Tomato",
+        "ja": "パオマアパオ"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 865
+    },
+    {
+      "id": 4,
+      "name": "Sweet Shuttle",
+      "name_i18n": {
+        "ko": "스위트셔틀",
+        "en": "Sweet Shuttle",
+        "ja": "サウジャウィパウサヨパウル"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 2161
+    }
+  ]
+}

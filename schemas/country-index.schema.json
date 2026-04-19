@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altera Country Index",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "integer"
+    },
+    "country": {
+      "type": "object",
+      "properties": {
+        "country_code": {
+          "type": "string",
+          "pattern": "^[a-z]{2}$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "default_language": {
+          "type": "string"
+        }
+      },
+      "required": ["country_code", "name"]
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "region_slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": ["region_slug", "name", "path"]
+      }
+    }
+  },
+  "required": ["version", "country", "regions"]
+}

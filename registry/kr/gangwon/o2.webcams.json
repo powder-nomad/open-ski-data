@@ -1,0 +1,56 @@
+{
+  "$schema": "../../../schemas/webcam.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "o2",
+  "webcams": [
+    {
+      "label": "Ski House",
+      "url": "http://118.46.149.144:8080/streaming/streamhls2.jsp?ch=0",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Dream 1",
+      "url": "http://118.46.149.144:8080/streaming/streamhls2.jsp?ch=1",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Beogeum Maru",
+      "url": "http://118.46.149.144:8080/streaming/streamhls2.jsp?ch=2",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Eutteum Maru",
+      "url": "http://118.46.149.144:8080/streaming/streamhls2.jsp?ch=3",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Glory 1",
+      "url": "http://118.46.149.144:8080/streaming/streamhls2.jsp?ch=4",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Happy",
+      "url": "http://118.46.149.144:8080/streaming/streamhls2.jsp?ch=5",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Dream 2",
+      "url": "http://118.46.149.144:8080/streaming/streamhls2.jsp?ch=6",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    },
+    {
+      "label": "Glory 3",
+      "url": "http://118.46.149.144:8080/streaming/streamhls2.jsp?ch=7",
+      "type": "stream",
+      "refresh_interval_ms": 60000
+    }
+  ]
+}

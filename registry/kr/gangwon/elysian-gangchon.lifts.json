@@ -1,0 +1,80 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "elysian-gangchon",
+  "lifts": [
+    {
+      "id": 0,
+      "name": "A1",
+      "name_i18n": {
+        "ko": "A1",
+        "en": "A1",
+        "ja": "A1"
+      },
+      "capacity_per_hour": 1100,
+      "length_m": 210,
+      "vertical_m": 20
+    },
+    {
+      "id": 1,
+      "name": "A",
+      "name_i18n": {
+        "ko": "A",
+        "en": "A",
+        "ja": "A"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 360,
+      "vertical_m": 36
+    },
+    {
+      "id": 2,
+      "name": "B",
+      "name_i18n": {
+        "ko": "B",
+        "en": "B",
+        "ja": "B"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 747,
+      "vertical_m": 166
+    },
+    {
+      "id": 3,
+      "name": "C",
+      "name_i18n": {
+        "ko": "C",
+        "en": "C",
+        "ja": "C"
+      },
+      "capacity_per_hour": 3200,
+      "length_m": 807,
+      "vertical_m": 173
+    },
+    {
+      "id": 4,
+      "name": "D",
+      "name_i18n": {
+        "ko": "D",
+        "en": "D",
+        "ja": "D"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 795,
+      "vertical_m": 173
+    },
+    {
+      "id": 5,
+      "name": "E",
+      "name_i18n": {
+        "ko": "E",
+        "en": "E",
+        "ja": "E"
+      },
+      "capacity_per_hour": 1800,
+      "length_m": 509,
+      "vertical_m": 125
+    }
+  ]
+}

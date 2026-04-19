@@ -1,0 +1,68 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "kr",
+  "region_slug": "gyeonggi",
+  "place_slug": "konjiam",
+  "lifts": [
+    {
+      "id": 0,
+      "name": "Whisen",
+      "name_i18n": {
+        "ko": "휘센",
+        "en": "Whisen",
+        "ja": "ハウィサエン"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 304,
+      "vertical_m": 304
+    },
+    {
+      "id": 1,
+      "name": "Ixio",
+      "name_i18n": {
+        "ko": "익시오",
+        "en": "Ixio",
+        "ja": "ジャイクサイジャオ"
+      },
+      "capacity_per_hour": 3600,
+      "length_m": 680,
+      "vertical_m": 680
+    },
+    {
+      "id": 2,
+      "name": "Gram",
+      "name_i18n": {
+        "ko": "그램",
+        "en": "Gram",
+        "ja": "ガウラアム"
+      },
+      "capacity_per_hour": 3600,
+      "length_m": 853,
+      "vertical_m": 853
+    },
+    {
+      "id": 3,
+      "name": "ThinQ",
+      "name_i18n": {
+        "ko": "씽큐",
+        "en": "ThinQ",
+        "ja": "サインタユ"
+      },
+      "capacity_per_hour": 3600,
+      "length_m": 1325,
+      "vertical_m": 1325
+    },
+    {
+      "id": 4,
+      "name": "CNP",
+      "name_i18n": {
+        "ko": "CNP",
+        "en": "CNP",
+        "ja": "CNP"
+      },
+      "capacity_per_hour": 3600,
+      "length_m": 1306,
+      "vertical_m": 1306
+    }
+  ]
+}

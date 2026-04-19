@@ -1,0 +1,98 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "phoenix-park",
+  "lifts": [
+    {
+      "id": 0,
+      "name": "Penguin",
+      "name_i18n": {
+        "ko": "펭귄",
+        "en": "Penguin",
+        "ja": "ハエンガウィン"
+      },
+      "length_m": 640
+    },
+    {
+      "id": 1,
+      "name": "Sparrow",
+      "name_i18n": {
+        "ko": "스패로우",
+        "en": "Sparrow",
+        "ja": "サウハアラオジャウ"
+      },
+      "length_m": 935.2
+    },
+    {
+      "id": 2,
+      "name": "Mountain",
+      "name_i18n": {
+        "ko": "도도",
+        "en": "Mountain",
+        "ja": "ダオダオ"
+      },
+      "length_m": 295.9
+    },
+    {
+      "id": 3,
+      "name": "Hawk",
+      "name_i18n": {
+        "ko": "호크",
+        "en": "Hawk",
+        "ja": "ハオタウ"
+      },
+      "length_m": 627.4
+    },
+    {
+      "id": 4,
+      "name": "Dove",
+      "name_i18n": {
+        "ko": "도브",
+        "en": "Dove",
+        "ja": "ダオバウ"
+      },
+      "length_m": 529.5
+    },
+    {
+      "id": 5,
+      "name": "Falcon",
+      "name_i18n": {
+        "ko": "팔콘",
+        "en": "Falcon",
+        "ja": "ハアルタオン"
+      },
+      "length_m": 934
+    },
+    {
+      "id": 6,
+      "name": "Eagle",
+      "name_i18n": {
+        "ko": "이글",
+        "en": "Eagle",
+        "ja": "ジャイガウル"
+      },
+      "length_m": 1006.7
+    },
+    {
+      "id": 7,
+      "name": "Gondola",
+      "name_i18n": {
+        "ko": "곤돌라",
+        "en": "Gondola",
+        "ja": "ガオンダオルラア"
+      },
+      "length_m": 1683
+    },
+    {
+      "id": 8,
+      "name": "Condor",
+      "name_i18n": {
+        "ko": "콘돌",
+        "en": "Condor",
+        "ja": "タオンダオル"
+      },
+      "length_m": 889
+    }
+  ]
+}
