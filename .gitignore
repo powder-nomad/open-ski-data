@@ -2,3 +2,9 @@
 .env
 node_modules/
 tmp/
+
+# import pipeline artifacts — per-run, not source of truth
+scripts/.cache/
+scripts/review/
+__pycache__/
+*.pyc

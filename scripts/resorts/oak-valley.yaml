@@ -1,0 +1,11 @@
+# Resort import config — oak-valley.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py oak-valley` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: oak-valley
+country: kr
+region: gangwon
+bbox: [37.3632, 127.7721, 37.4432, 127.8621]
+# dem: dems/kr-gangwon-5m.tif
+difficulty_overrides: {}
+name_overrides: {}

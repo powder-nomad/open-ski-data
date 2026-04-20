@@ -1,0 +1,11 @@
+# Resort import config — vivaldi-park.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py vivaldi-park` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: vivaldi-park
+country: kr
+region: gangwon
+bbox: [37.6051, 127.6370, 37.6851, 127.7270]
+# dem: dems/kr-gangwon-5m.tif
+difficulty_overrides: {}
+name_overrides: {}

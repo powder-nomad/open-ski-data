@@ -1,0 +1,11 @@
+# Resort import config — elysian-gangchon.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py elysian-gangchon` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: elysian-gangchon
+country: kr
+region: gangwon
+bbox: [37.7821, 127.5449, 37.8621, 127.6349]
+# dem: dems/kr-gangwon-5m.tif
+difficulty_overrides: {}
+name_overrides: {}

@@ -1,58 +1,176 @@
 {
-  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "alpensia",
   "lifts": [
     {
-      "id": 0,
-      "name": "Lift 1",
+      "id": "rainbow-gondola-l376364815",
+      "name": "Rainbow Gondola",
       "name_i18n": {
-        "ko": "리프트 1",
-        "en": "Lift 1",
-        "ja": "ライハウパウ 1"
+        "en": "Rainbow Gondola"
       },
-      "capacity_per_hour": 2400,
-      "length_m": 541,
-      "connected_slope_ids": [
-        0
-      ]
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 3618.0,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 1,
-      "name": "Lift 2",
-      "name_i18n": {
-        "ko": "리프트 2",
-        "en": "Lift 2",
-        "ja": "ライハウパウ 2"
-      },
-      "capacity_per_hour": 3085,
-      "length_m": 664,
-      "connected_slope_ids": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ]
+      "id": "unnamed-477491141-l477491141",
+      "name": "unnamed-477491141",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 580.0,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 2,
-      "name": "Lift 3",
-      "name_i18n": {
-        "ko": "리프트 3",
-        "en": "Lift 3",
-        "ja": "ライハウパウ 3"
-      },
-      "capacity_per_hour": 3085,
-      "length_m": 651,
+      "id": "unnamed-477491142-l477491142",
+      "name": "unnamed-477491142",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 652.2,
+      "vertical_m": null,
       "connected_slope_ids": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ]
+        "charlie"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "unnamed-477491143-l477491143",
+      "name": "unnamed-477491143",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 661.8,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "delta",
+        "eco"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "gold-l477491147",
+      "name": "Gold",
+      "name_i18n": {
+        "en": "Gold"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1625.7,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "mega-green-l477491151",
+      "name": "Mega Green",
+      "name_i18n": {
+        "en": "Mega Green"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 541.9,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "rainbow-l533413168",
+      "name": "Rainbow",
+      "name_i18n": {
+        "en": "Rainbow"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1411.3,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "red-l533419417",
+      "name": "Red",
+      "name_i18n": {
+        "en": "Red"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 887.3,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "new-gold-l533419419",
+      "name": "New Gold",
+      "name_i18n": {
+        "en": "New Gold"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 706.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "silver-l533426025",
+      "name": "Silver",
+      "name_i18n": {
+        "en": "Silver"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 705.6,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "green-l1457094309",
+      "name": "Green",
+      "name_i18n": {
+        "en": "Green"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 585.3,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "unnamed-l1457094310",
+      "name": "블루",
+      "name_i18n": {
+        "en": "블루"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 570.3,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "bridge-l1464511412",
+      "name": "Bridge",
+      "name_i18n": {
+        "ko": "브릿지",
+        "en": "Bridge"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 343.0,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     }
   ]
 }

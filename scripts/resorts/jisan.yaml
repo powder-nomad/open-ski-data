@@ -1,0 +1,11 @@
+# Resort import config — jisan.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py jisan` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: jisan
+country: kr
+region: gyeonggi
+bbox: [37.1768, 127.3002, 37.2568, 127.3902]
+# dem: dems/kr-gyeonggi-5m.tif
+difficulty_overrides: {}
+name_overrides: {}

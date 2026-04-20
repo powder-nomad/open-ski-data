@@ -1,68 +1,112 @@
 {
-  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gyeonggi",
   "place_slug": "jisan",
   "lifts": [
     {
-      "id": 0,
-      "name": "Lemon",
-      "name_i18n": {
-        "ko": "레몬",
-        "en": "Lemon",
-        "ja": "ラエマオン"
-      },
-      "capacity_per_hour": 1280,
-      "length_m": 300,
-      "vertical_m": 42
+      "id": "unnamed-535718867-l535718867",
+      "name": "unnamed-535718867",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 626.4,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-53571886300",
+        "unnamed-53571886600",
+        "unnamed-53571886609"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 1,
-      "name": "Orange",
-      "name_i18n": {
-        "ko": "오렌지",
-        "en": "Orange",
-        "ja": "ジャオラエンチャイ"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 300,
-      "vertical_m": 44
+      "id": "unnamed-535718868-l535718868",
+      "name": "unnamed-535718868",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 728.0,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-53571886400",
+        "unnamed-53571886600"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 2,
-      "name": "New Orange",
-      "name_i18n": {
-        "ko": "뉴오렌지",
-        "en": "New Orange",
-        "ja": "ナユジャオラエンチャイ"
-      },
-      "capacity_per_hour": 3200,
-      "length_m": 716,
-      "vertical_m": 145
+      "id": "unnamed-535718869-l535718869",
+      "name": "unnamed-535718869",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 708.0,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 3,
-      "name": "Blue",
-      "name_i18n": {
-        "ko": "블루",
-        "en": "Blue",
-        "ja": "バウルラウ"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 760,
-      "vertical_m": 145
+      "id": "unnamed-535718870-l535718870",
+      "name": "unnamed-535718870",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 510.1,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-53571885600"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 4,
-      "name": "Silver",
-      "name_i18n": {
-        "ko": "실버",
-        "en": "Silver",
-        "ja": "サイルバオ"
-      },
-      "capacity_per_hour": 3200,
-      "length_m": 652,
-      "vertical_m": 209
+      "id": "unnamed-535718871-l535718871",
+      "name": "unnamed-535718871",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 277.1,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-535726780"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "unnamed-535722637-l535722637",
+      "name": "unnamed-535722637",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 490.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "unnamed-535722642-l535722642",
+      "name": "unnamed-535722642",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 495.8,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-535722640"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "unnamed-535722643-l535722643",
+      "name": "unnamed-535722643",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 629.8,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-535722638",
+        "unnamed-53572264100",
+        "unnamed-53572264101"
+      ],
+      "connected_lift_ids": []
     }
   ]
 }

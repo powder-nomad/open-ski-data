@@ -1,0 +1,11 @@
+# Resort import config — phoenix-park.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py phoenix-park` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: phoenix-park
+country: kr
+region: gangwon
+bbox: [37.5436, 128.2798, 37.6236, 128.3698]
+# dem: dems/kr-gangwon-5m.tif
+difficulty_overrides: {}
+name_overrides: {}

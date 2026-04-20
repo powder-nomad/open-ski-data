@@ -1,162 +1,188 @@
 {
-  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "jeollabuk-do",
   "place_slug": "muju",
   "lifts": [
     {
-      "id": 0,
-      "name": "Boat",
-      "name_i18n": {
-        "ko": "보트",
-        "en": "Boat",
-        "ja": "バオパウ"
-      },
-      "capacity_per_hour": 900,
-      "length_m": 360
-    },
-    {
-      "id": 1,
-      "name": "Yacht",
-      "name_i18n": {
-        "ko": "요트",
-        "en": "Yacht",
-        "ja": "ジャヨパウ"
-      },
-      "capacity_per_hour": 1800,
-      "length_m": 685
-    },
-    {
-      "id": 2,
-      "name": "Cruiser",
-      "name_i18n": {
-        "ko": "크루저",
-        "en": "Cruiser",
-        "ja": "タウラウチャオ"
-      },
-      "capacity_per_hour": 1800,
-      "length_m": 1090
-    },
-    {
-      "id": 3,
-      "name": "Muju Express",
-      "name_i18n": {
-        "ko": "무주 익스프레스",
-        "en": "Muju Express",
-        "ja": "マウチャウ ジャイクサウハウラエサウ"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 1548
-    },
-    {
-      "id": 4,
-      "name": "Liner",
-      "name_i18n": {
-        "ko": "라이너",
-        "en": "Liner",
-        "ja": "ラアジャイナオ"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 995
-    },
-    {
-      "id": 5,
-      "name": "Canoe",
-      "name_i18n": {
-        "ko": "카누",
-        "en": "Canoe",
-        "ja": "タアナウ"
-      },
-      "capacity_per_hour": 1800,
-      "length_m": 595
-    },
-    {
-      "id": 6,
+      "id": "gondola-l27909068",
       "name": "Gondola",
       "name_i18n": {
-        "ko": "곤도라",
-        "en": "Gondola",
-        "ja": "ガオンダオラア"
+        "ko": "곤돌라",
+        "en": "Gondola"
       },
-      "capacity_per_hour": 2400,
-      "length_m": 2659
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 2537.4,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 7,
-      "name": "Chorus",
+      "id": "muju-express-l293598170",
+      "name": "Muju Express",
       "name_i18n": {
-        "ko": "코러스",
-        "en": "Chorus",
-        "ja": "タオラオサウ"
+        "en": "Muju Express"
       },
-      "capacity_per_hour": 2400,
-      "length_m": 1588
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1491.9,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 8,
-      "name": "Harmony",
+      "id": "cruiser-l293598171",
+      "name": "Cruiser",
       "name_i18n": {
-        "ko": "하모니",
-        "en": "Harmony",
-        "ja": "ハアマオナイ"
+        "en": "Cruiser"
       },
-      "capacity_per_hour": 2400,
-      "length_m": 1512
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1058.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 9,
+      "id": "melody-l293598172",
       "name": "Melody",
       "name_i18n": {
-        "ko": "멜로디",
-        "en": "Melody",
-        "ja": "マエルラオダイ"
+        "en": "Melody"
       },
-      "capacity_per_hour": 2400,
-      "length_m": 1086
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1014.3,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 10,
-      "name": "Jump",
+      "id": "chorus-l293598175",
+      "name": "Chorus",
       "name_i18n": {
-        "ko": "점프",
-        "en": "Jump",
-        "ja": "チャオムハウ"
+        "en": "Chorus"
       },
-      "capacity_per_hour": 900,
-      "length_m": 293
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1550.4,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 11,
-      "name": "Ssangssang",
-      "name_i18n": {
-        "ko": "쌍쌍",
-        "en": "Ssangssang",
-        "ja": "サアンサアン"
-      },
-      "capacity_per_hour": 3200,
-      "length_m": 750
-    },
-    {
-      "id": 12,
+      "id": "school-bus-l293598177",
       "name": "School Bus",
       "name_i18n": {
-        "ko": "스쿨버스",
-        "en": "School Bus",
-        "ja": "サウタウルバオサウ"
+        "en": "School Bus"
       },
-      "capacity_per_hour": 750,
-      "length_m": 286
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 251.5,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 13,
-      "name": "Echo",
+      "id": "boat-l293598179",
+      "name": "Boat",
       "name_i18n": {
-        "ko": "에코",
-        "en": "Echo",
-        "ja": "ジャエタオ"
+        "en": "Boat"
       },
-      "capacity_per_hour": 3200,
-      "length_m": 712
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 352.8,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "ssang-ssang-l293598181",
+      "name": "Ssang Ssang",
+      "name_i18n": {
+        "en": "Ssang Ssang"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 768.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "canoe-l293598182",
+      "name": "Canoe",
+      "name_i18n": {
+        "en": "Canoe"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 568.7,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-975335043"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "yacht-l293598183",
+      "name": "Yacht",
+      "name_i18n": {
+        "en": "Yacht"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 677.1,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed",
+        "unnamed-975335081"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "unnamed-293598184-l293598184",
+      "name": "unnamed-293598184",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 696.3,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "liner-l293598186",
+      "name": "Liner",
+      "name_i18n": {
+        "en": "Liner"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 978.2,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-975335043"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "harmony-l293598187",
+      "name": "Harmony",
+      "name_i18n": {
+        "en": "Harmony"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1392.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     }
   ]
 }

@@ -1,0 +1,11 @@
+# Resort import config — konjiam.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py konjiam` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: konjiam
+country: kr
+region: gyeonggi
+bbox: [37.2969, 127.2485, 37.3769, 127.3385]
+# dem: dems/kr-gyeonggi-5m.tif
+difficulty_overrides: {}
+name_overrides: {}

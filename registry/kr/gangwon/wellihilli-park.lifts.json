@@ -1,88 +1,140 @@
 {
-  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "wellihilli-park",
   "lifts": [
     {
-      "id": 0,
-      "name": "Alpha",
+      "id": "unnamed-l1036240367",
+      "name": "패밀리 리프트 (초중급)",
       "name_i18n": {
-        "ko": "알파",
-        "en": "Alpha",
-        "ja": "ジャアルハア"
+        "en": "패밀리 리프트 (초중급)"
       },
-      "length_m": 484
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 737.0,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "e",
+        "e1",
+        "s2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 1,
-      "name": "New Alpha",
+      "id": "unnamed-l1036240368",
+      "name": "델타 리프트 (초중급)",
       "name_i18n": {
-        "ko": "뉴알파",
-        "en": "New Alpha",
-        "ja": "ナユジャアルハア"
+        "en": "델타 리프트 (초중급)"
       },
-      "length_m": 464
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 575.3,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "d",
+        "d1"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 2,
-      "name": "Bravo",
+      "id": "unnamed-l1036240369",
+      "name": "브라보 리프트 (중급)",
       "name_i18n": {
-        "ko": "브라보",
-        "en": "Bravo",
-        "ja": "バウラアバオ"
+        "en": "브라보 리프트 (중급)"
       },
-      "length_m": 776
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 854.2,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "b1"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 3,
-      "name": "Delta",
+      "id": "unnamed-l1036250234",
+      "name": "챌린지 리프트 (상급)",
       "name_i18n": {
-        "ko": "델타",
-        "en": "Delta",
-        "ja": "ダエルパア"
+        "en": "챌린지 리프트 (상급)"
       },
-      "length_m": 580
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 718.5,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 4,
-      "name": "Echo",
+      "id": "unnamed-l1036250235",
+      "name": "에코 리프트 (상급)",
       "name_i18n": {
-        "ko": "에코",
-        "en": "Echo",
-        "ja": "ジャエタオ"
+        "en": "에코 리프트 (상급)"
       },
-      "length_m": 642
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 603.7,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "e2",
+        "s1"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 5,
-      "name": "Family",
+      "id": "unnamed-l1036250236",
+      "name": "곤돌라",
       "name_i18n": {
-        "ko": "패밀리",
-        "en": "Family",
-        "ja": "ハアマイルライ"
+        "en": "곤돌라"
       },
-      "length_m": 743
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 1252.9,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "e2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 6,
-      "name": "Challenge",
+      "id": "unnamed-l1036250237",
+      "name": "뉴알파 리프트 (초급)",
       "name_i18n": {
-        "ko": "첼린지",
-        "en": "Challenge",
-        "ja": "カエルラインチャイ"
+        "en": "뉴알파 리프트 (초급)"
       },
-      "length_m": 765
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 463.7,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "a2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 7,
-      "name": "Gondola",
+      "id": "unnamed-l1036250238",
+      "name": "알파 리프트 (초급)",
       "name_i18n": {
-        "ko": "곤돌라",
-        "en": "Gondola",
-        "ja": "ガオンダオルラア"
+        "en": "알파 리프트 (초급)"
       },
-      "length_m": 1302
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 481.0,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "a2"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "unnamed-1036272167-l1036272167",
+      "name": "unnamed-1036272167",
+      "name_i18n": {},
+      "type": "magic_carpet",
+      "capacity_per_hour": null,
+      "length_m": 102.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     }
   ]
 }

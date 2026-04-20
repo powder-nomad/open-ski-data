@@ -1,41 +1,46 @@
 {
-  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gyeongsangnam-do",
   "place_slug": "eden-valley",
   "lifts": [
     {
-      "id": 0,
-      "name": "Eden",
-      "name_i18n": {
-        "ko": "에덴",
-        "en": "Eden",
-        "ja": "ジャエダエン"
-      },
-      "capacity_per_hour": 3085,
-      "length_m": 552
+      "id": "unnamed-295407268-l295407268",
+      "name": "unnamed-295407268",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 514.3,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 1,
-      "name": "Valley",
-      "name_i18n": {
-        "ko": "밸리",
-        "en": "Valley",
-        "ja": "バアルライ"
-      },
-      "capacity_per_hour": 3085,
-      "length_m": 847
+      "id": "unnamed-295407272-l295407272",
+      "name": "unnamed-295407272",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 968.3,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 2,
-      "name": "Adam",
-      "name_i18n": {
-        "ko": "아담",
-        "en": "Adam",
-        "ja": "ジャアダアム"
-      },
-      "capacity_per_hour": 3085,
-      "length_m": 996
+      "id": "unnamed-295407274-l295407274",
+      "name": "unnamed-295407274",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 789.0,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     }
   ]
 }

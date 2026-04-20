@@ -1,0 +1,11 @@
+# Resort import config — eden-valley.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py eden-valley` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: eden-valley
+country: kr
+region: gyeongsangnam-do
+bbox: [35.3848, 128.9402, 35.4648, 129.0302]
+# dem: dems/kr-gyeongsangnam-do-5m.tif
+difficulty_overrides: {}
+name_overrides: {}

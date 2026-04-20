@@ -1,96 +1,113 @@
 {
-  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "vivaldi-park",
   "lifts": [
     {
-      "id": 0,
-      "name": "Ballad no.1",
-      "name_i18n": {
-        "ko": "발라드 1호기",
-        "en": "Ballad no.1",
-        "ja": "バアルラアダウ 1ハオガイ"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 468
+      "id": "unnamed-1427700383-l1427700383",
+      "name": "unnamed-1427700383",
+      "name_i18n": {},
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 1116.8,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "classic"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 1,
-      "name": "Ballad no.2",
-      "name_i18n": {
-        "ko": "발라드 2호기",
-        "en": "Ballad no.2",
-        "ja": "バアルラアダウ 2ハオガイ"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 492
+      "id": "unnamed-1427700386-l1427700386",
+      "name": "unnamed-1427700386",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 584.8,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-996685262"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 2,
-      "name": "Jazz",
-      "name_i18n": {
-        "ko": "재즈",
-        "en": "Jazz",
-        "ja": "チャアチャウ"
-      },
-      "capacity_per_hour": 3600,
-      "length_m": 855
+      "id": "unnamed-1427700387-l1427700387",
+      "name": "unnamed-1427700387",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 948.4,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 3,
-      "name": "Hip-hop no.1",
-      "name_i18n": {
-        "ko": "힙합 1호기",
-        "en": "Hip-hop no.1",
-        "ja": "ハイプハアプ 1ハオガイ"
-      },
-      "capacity_per_hour": 1800,
-      "length_m": 552
+      "id": "unnamed-1427700388-l1427700388",
+      "name": "unnamed-1427700388",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 581.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 4,
-      "name": "Hip-hop no.2",
-      "name_i18n": {
-        "ko": "힙합 2호기",
-        "en": "Hip-hop no.2",
-        "ja": "ハイプハアプ 2ハオガイ"
-      },
-      "capacity_per_hour": 1800,
-      "length_m": 582
+      "id": "unnamed-1427700389-l1427700389",
+      "name": "unnamed-1427700389",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 554.0,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 5,
-      "name": "Techno",
-      "name_i18n": {
-        "ko": "테크노",
-        "en": "Techno",
-        "ja": "パエタウナオ"
-      },
-      "capacity_per_hour": 4800,
-      "length_m": 1008
+      "id": "unnamed-1427700390-l1427700390",
+      "name": "unnamed-1427700390",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 477.1,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 6,
-      "name": "Gondola",
-      "name_i18n": {
-        "ko": "곤돌라",
-        "en": "Gondola",
-        "ja": "ガオンダオルラア"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 1115
+      "id": "unnamed-1427700391-l1427700391",
+      "name": "unnamed-1427700391",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 486.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 7,
-      "name": "Snowy Gondola",
-      "name_i18n": {
-        "ko": "스노위곤돌라",
-        "en": "Snowy Gondola",
-        "ja": "サウナオジャウィガオンダオルラア"
-      },
-      "capacity_per_hour": 1101,
-      "length_m": 942
+      "id": "unnamed-1427700392-l1427700392",
+      "name": "unnamed-1427700392",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 831.1,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "classic",
+        "unnamed-545967313"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "unnamed-1427700393-l1427700393",
+      "name": "unnamed-1427700393",
+      "name_i18n": {},
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 916.9,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     }
   ]
 }

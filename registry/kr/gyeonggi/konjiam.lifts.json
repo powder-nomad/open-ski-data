@@ -1,68 +1,82 @@
 {
-  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gyeonggi",
   "place_slug": "konjiam",
   "lifts": [
     {
-      "id": 0,
-      "name": "Whisen",
-      "name_i18n": {
-        "ko": "휘센",
-        "en": "Whisen",
-        "ja": "ハウィサエン"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 304,
-      "vertical_m": 304
+      "id": "unnamed-486063094-l486063094",
+      "name": "unnamed-486063094",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 306.1,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 1,
-      "name": "Ixio",
-      "name_i18n": {
-        "ko": "익시오",
-        "en": "Ixio",
-        "ja": "ジャイクサイジャオ"
-      },
-      "capacity_per_hour": 3600,
-      "length_m": 680,
-      "vertical_m": 680
+      "id": "unnamed-945151678-l945151678",
+      "name": "unnamed-945151678",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 651.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 2,
-      "name": "Gram",
-      "name_i18n": {
-        "ko": "그램",
-        "en": "Gram",
-        "ja": "ガウラアム"
-      },
-      "capacity_per_hour": 3600,
-      "length_m": 853,
-      "vertical_m": 853
+      "id": "unnamed-945151680-l945151680",
+      "name": "unnamed-945151680",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1270.3,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "daebang-eo"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 3,
-      "name": "ThinQ",
-      "name_i18n": {
-        "ko": "씽큐",
-        "en": "ThinQ",
-        "ja": "サインタユ"
-      },
-      "capacity_per_hour": 3600,
-      "length_m": 1325,
-      "vertical_m": 1325
+      "id": "unnamed-945151681-l945151681",
+      "name": "unnamed-945151681",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 808.5,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "imyeonsu"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 4,
-      "name": "CNP",
-      "name_i18n": {
-        "ko": "CNP",
-        "en": "CNP",
-        "ja": "CNP"
-      },
-      "capacity_per_hour": 3600,
-      "length_m": 1306,
-      "vertical_m": 1306
+      "id": "unnamed-94515168200-l94515168200",
+      "name": "unnamed-94515168200",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 897.0,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "daebang-eo",
+        "gwamegi"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "unnamed-94515168207-l94515168207",
+      "name": "unnamed-94515168207",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 353.4,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "gwamegi"
+      ],
+      "connected_lift_ids": []
     }
   ]
 }

@@ -1,0 +1,11 @@
+# Resort import config — alpensia.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py alpensia` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: alpensia
+country: kr
+region: gangwon
+bbox: [37.6164, 128.6284, 37.6964, 128.7184]
+# dem: dems/kr-gangwon-5m.tif
+difficulty_overrides: {}
+name_overrides: {}

@@ -1,0 +1,11 @@
+# Resort import config — wellihilli-park.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py wellihilli-park` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: wellihilli-park
+country: kr
+region: gangwon
+bbox: [37.4456, 128.2028, 37.5256, 128.2928]
+# dem: dems/kr-gangwon-5m.tif
+difficulty_overrides: {}
+name_overrides: {}

@@ -1,98 +1,109 @@
 {
-  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "phoenix-park",
   "lifts": [
     {
-      "id": 0,
-      "name": "Penguin",
+      "id": "unnamed-l535362938",
+      "name": "펭귄리프트",
       "name_i18n": {
-        "ko": "펭귄",
-        "en": "Penguin",
-        "ja": "ハエンガウィン"
+        "en": "펭귄리프트"
       },
-      "length_m": 640
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 611.9,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 1,
-      "name": "Sparrow",
-      "name_i18n": {
-        "ko": "스패로우",
-        "en": "Sparrow",
-        "ja": "サウハアラオジャウ"
-      },
-      "length_m": 935.2
+      "id": "unnamed-535362939-l535362939",
+      "name": "unnamed-535362939",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 933.2,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "valley"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 2,
-      "name": "Mountain",
-      "name_i18n": {
-        "ko": "도도",
-        "en": "Mountain",
-        "ja": "ダオダオ"
-      },
-      "length_m": 295.9
+      "id": "unnamed-535362940-l535362940",
+      "name": "unnamed-535362940",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 835.2,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "paradise"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 3,
-      "name": "Hawk",
-      "name_i18n": {
-        "ko": "호크",
-        "en": "Hawk",
-        "ja": "ハオタウ"
-      },
-      "length_m": 627.4
+      "id": "unnamed-535362941-l535362941",
+      "name": "unnamed-535362941",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 925.5,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 4,
-      "name": "Dove",
+      "id": "unnamed-l535362942",
+      "name": "휘닉스파크 곤돌라",
       "name_i18n": {
-        "ko": "도브",
-        "en": "Dove",
-        "ja": "ダオバウ"
+        "en": "휘닉스파크 곤돌라"
       },
-      "length_m": 529.5
+      "type": "station",
+      "capacity_per_hour": null,
+      "length_m": 140.1,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 5,
-      "name": "Falcon",
+      "id": "phoenix-pyeongchang-gondola-l535362943",
+      "name": "Phoenix Pyeongchang Gondola",
       "name_i18n": {
-        "ko": "팔콘",
-        "en": "Falcon",
-        "ja": "ハアルタオン"
+        "en": "Phoenix Pyeongchang Gondola"
       },
-      "length_m": 934
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 1625.7,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 6,
-      "name": "Eagle",
+      "id": "unnamed-l535363647",
+      "name": "팔콘리프트",
       "name_i18n": {
-        "ko": "이글",
-        "en": "Eagle",
-        "ja": "ジャイガウル"
+        "en": "팔콘리프트"
       },
-      "length_m": 1006.7
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 899.6,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 7,
-      "name": "Gondola",
-      "name_i18n": {
-        "ko": "곤돌라",
-        "en": "Gondola",
-        "ja": "ガオンダオルラア"
-      },
-      "length_m": 1683
-    },
-    {
-      "id": 8,
-      "name": "Condor",
-      "name_i18n": {
-        "ko": "콘돌",
-        "en": "Condor",
-        "ja": "タオンダオル"
-      },
-      "length_m": 889
+      "id": "unnamed-535363648-l535363648",
+      "name": "unnamed-535363648",
+      "name_i18n": {},
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 623.1,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "hawk-2"
+      ],
+      "connected_lift_ids": []
     }
   ]
 }

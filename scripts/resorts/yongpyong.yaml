@@ -1,0 +1,23 @@
+# Resort import config — Yongpyong (용평리조트).
+#
+# The import pipeline (scripts/import_resort.py) reads this YAML and
+# produces registry/kr/gangwon/yongpyong.slopes.json + .lifts.json.
+# Only `slug`, `country`, `region`, and `bbox` are required. Everything
+# else can be added after the first run once scripts/review/yongpyong.md
+# tells you what OSM missed.
+slug: yongpyong
+country: kr
+region: gangwon
+# min_lat, min_lng, max_lat, max_lng — a tight box around the skiable
+# footprint. Too wide pulls in neighbouring terrain; too narrow clips
+# the summit lift. 3-5 km buffer around the resort centroid is about right.
+bbox: [37.620, 128.660, 37.665, 128.705]
+# Path to a GeoTIFF DEM covering the bbox. Relative paths resolve from
+# the repo root. Omit to leave elevations null on first run.
+# dem: dems/kr-gangwon-5m.tif
+
+# After the first run, read scripts/review/yongpyong.md and add entries here
+# for anything OSM left blank or got wrong. Re-run the import — file changes
+# are idempotent.
+difficulty_overrides: {}
+name_overrides: {}

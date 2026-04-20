@@ -1,98 +1,170 @@
 {
-  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "high1",
   "lifts": [
     {
-      "id": 0,
-      "name": "Jupiter",
-      "name_i18n": {
-        "ko": "주피터",
-        "en": "Jupiter",
-        "ja": "チャウハイパオ"
-      },
-      "length_m": 950
-    },
-    {
-      "id": 1,
-      "name": "Zeus",
-      "name_i18n": {
-        "ko": "제우스",
-        "en": "Zeus",
-        "ja": "チャエジャウサウ"
-      },
-      "length_m": 1912
-    },
-    {
-      "id": 2,
-      "name": "Victoria",
-      "name_i18n": {
-        "ko": "빅토리아",
-        "en": "Victoria",
-        "ja": "バイクパオライジャア"
-      },
-      "length_m": 1323
-    },
-    {
-      "id": 3,
+      "id": "hera-l535760430",
       "name": "Hera",
       "name_i18n": {
-        "ko": "헤라",
-        "en": "Hera",
-        "ja": "ハエラア"
+        "en": "Hera"
       },
-      "length_m": 1221
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1174.3,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "athena1",
+        "hera2",
+        "unnamed-105836169500"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 4,
+      "id": "victoria-l535760431",
+      "name": "Victoria",
+      "name_i18n": {
+        "en": "Victoria"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1172.9,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "victoria1",
+        "victoria3",
+        "zeus1"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "apollo-l535760433",
       "name": "Apollo",
       "name_i18n": {
-        "ko": "아폴로",
-        "en": "Apollo",
-        "ja": "ジャアハオルラオ"
+        "en": "Apollo"
       },
-      "length_m": 1232
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1102.8,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 5,
+      "id": "zeus-l535760435",
+      "name": "Zeus",
+      "name_i18n": {
+        "en": "Zeus"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1898.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "jupiter-l535760436",
+      "name": "Jupiter",
+      "name_i18n": {
+        "en": "Jupiter"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 981.5,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "zeus3"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "mountain-gondola-l535760437",
+      "name": "Mountain Gondola",
+      "name_i18n": {
+        "en": "Mountain Gondola"
+      },
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 2846.5,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "athena1"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "athena-l535760438",
       "name": "Athena",
       "name_i18n": {
-        "ko": "아테나",
-        "en": "Athena",
-        "ja": "ジャアパエナア"
+        "en": "Athena"
       },
-      "length_m": 1547
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1534.5,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "apollo3"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 6,
-      "name": "Valley",
+      "id": "high1-gondola-l53576043900",
+      "name": "High1 Gondola",
       "name_i18n": {
-        "ko": "밸리",
-        "en": "Valley",
-        "ja": "バアルライ"
+        "en": "High1 Gondola"
       },
-      "length_m": 1243
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 1671.3,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "zeus2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 7,
-      "name": "Mountain",
+      "id": "high1-gondola-l53576043910",
+      "name": "High1 Gondola",
       "name_i18n": {
-        "ko": "마운틴",
-        "en": "Mountain",
-        "ja": "マアジャウンパイン"
+        "en": "High1 Gondola"
       },
-      "length_m": 2832
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 43.5,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "zeus2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 8,
-      "name": "Palace",
+      "id": "high1-gondola-l53576043911",
+      "name": "High1 Gondola",
       "name_i18n": {
-        "ko": "팰리스",
-        "en": "Palace",
-        "ja": "ハアルライサウ"
+        "en": "High1 Gondola"
       },
-      "length_m": 2523
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 737.7,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "athena1"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "valley-gondola-l632081931",
+      "name": "Valley Gondola",
+      "name_i18n": {
+        "en": "Valley Gondola"
+      },
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 1193.2,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     }
   ]
 }

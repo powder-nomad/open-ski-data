@@ -1,80 +1,127 @@
 {
-  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "elysian-gangchon",
   "lifts": [
     {
-      "id": 0,
-      "name": "A1",
+      "id": "e-lift-l1047299734",
+      "name": "E lift",
       "name_i18n": {
-        "ko": "A1",
-        "en": "A1",
-        "ja": "A1"
+        "en": "E lift"
       },
-      "capacity_per_hour": 1100,
-      "length_m": 210,
-      "vertical_m": 20
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 507.9,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "leopard"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 1,
-      "name": "A",
+      "id": "b-lift-l104729973500",
+      "name": "B lift",
       "name_i18n": {
-        "ko": "A",
-        "en": "A",
-        "ja": "A"
+        "en": "B lift"
       },
-      "capacity_per_hour": 2400,
-      "length_m": 360,
-      "vertical_m": 36
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 675.1,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "dragon"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 2,
-      "name": "B",
+      "id": "b-lift-l104729973508",
+      "name": "B lift",
       "name_i18n": {
-        "ko": "B",
-        "en": "B",
-        "ja": "B"
+        "en": "B lift"
       },
-      "capacity_per_hour": 2400,
-      "length_m": 747,
-      "vertical_m": 166
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 58.4,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "dragon"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 3,
-      "name": "C",
+      "id": "a-lift-l1047299736",
+      "name": "A lift",
       "name_i18n": {
-        "ko": "C",
-        "en": "C",
-        "ja": "C"
+        "en": "A lift"
       },
-      "capacity_per_hour": 3200,
-      "length_m": 807,
-      "vertical_m": 173
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 349.0,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "dragon"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 4,
-      "name": "D",
+      "id": "c-lift-l1047299737",
+      "name": "C lift",
       "name_i18n": {
-        "ko": "D",
-        "en": "D",
-        "ja": "D"
+        "en": "C lift"
       },
-      "capacity_per_hour": 2400,
-      "length_m": 795,
-      "vertical_m": 173
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 793.6,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "horse"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 5,
-      "name": "E",
+      "id": "d-lift-l104729973800",
+      "name": "D lift",
       "name_i18n": {
-        "ko": "E",
-        "en": "E",
-        "ja": "E"
+        "en": "D lift"
       },
-      "capacity_per_hour": 1800,
-      "length_m": 509,
-      "vertical_m": 125
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 528.7,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "deer",
+        "puma"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "d-lift-l104729973807",
+      "name": "D lift",
+      "name_i18n": {
+        "en": "D lift"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 255.1,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "a1-lift-l1466356818",
+      "name": "A1 lift",
+      "name_i18n": {
+        "en": "A1 lift"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 279.0,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "penda",
+        "zebra"
+      ],
+      "connected_lift_ids": []
     }
   ]
 }

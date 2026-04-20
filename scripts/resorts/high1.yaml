@@ -1,0 +1,11 @@
+# Resort import config — high1.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py high1` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: high1
+country: kr
+region: gangwon
+bbox: [37.1681, 128.7810, 37.2481, 128.8710]
+# dem: dems/kr-gangwon-5m.tif
+difficulty_overrides: {}
+name_overrides: {}

@@ -1,0 +1,11 @@
+# Resort import config — muju.
+# Auto-generated bbox around the place centroid; tighten or widen and
+# re-run `python scripts/import_resort.py muju` if OSM coverage bleeds
+# in from a neighbouring resort or clips a summit lift.
+slug: muju
+country: kr
+region: jeollabuk-do
+bbox: [35.8496, 127.6870, 35.9296, 127.7770]
+# dem: dems/kr-jeollabuk-do-5m.tif
+difficulty_overrides: {}
+name_overrides: {}
