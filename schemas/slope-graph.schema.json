@@ -47,8 +47,8 @@
           "description": "Altitude in meters, above sea level. Required — the algorithm uses this for uphill-vs-downhill disambiguation independent of `kind`."
         },
         "kind": {
-          "enum": ["summit", "base", "fork", "merge", "lift_top", "lift_bottom", "waypoint"],
-          "description": "Advisory label for human readers. Degree of the node is what actually drives fork/merge detection."
+          "enum": ["summit", "base", "fork", "merge", "lift_top", "lift_bottom", "lift_station", "waypoint"],
+          "description": "Advisory label for human readers. Degree of the node is what actually drives fork/merge detection. `lift_station` marks an intermediate stop on a multi-stage lift — skiers can board or exit here. Author the lift as a chain: `lift_bottom → lift_station → lift_top` = two separate lift edges, each with `kind: lift`."
         },
         "notes": {
           "type": "string",

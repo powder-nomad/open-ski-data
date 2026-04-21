@@ -328,7 +328,9 @@ async function validateLiveData(placeMap) {
 const ENDPOINT_TOLERANCE_M = 5.0;
 const VALID_EDGE_KINDS = new Set(["slope", "lift", "traverse"]);
 const VALID_NODE_KINDS = new Set([
-  "summit", "base", "fork", "merge", "lift_top", "lift_bottom", "waypoint",
+  "summit", "base", "fork", "merge",
+  "lift_top", "lift_bottom", "lift_station",
+  "waypoint",
 ]);
 
 function haversineM(lat1, lng1, lat2, lng2) {
