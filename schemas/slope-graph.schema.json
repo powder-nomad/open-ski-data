@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ski resort slope graph (for trail-snap map-matching)",
+  "description": "Explicit node-and-edge representation of a resort's slope + lift network. Purpose-built for GPS → run-segment snapping. One file per resort — see docs/TRAIL_SNAP_SCHEMA.md in the ski-platform repo for the why.",
+  "type": "object",
+  "required": ["place_slug", "version", "nodes", "edges"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "place_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Resort slug — must match the `place_slug` in the sibling catalog files."
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Schema version. Bump when the shape changes in a breaking way."
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/node" }
+    },
+    "edges": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/edge" }
+    },
+    "snap_config": { "$ref": "#/$defs/snapConfig" }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["id", "lat", "lng", "alt_m"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^n-[a-z0-9-]+$",
+          "description": "Human-readable ID, `n-` prefix. Examples: n-summit, n-rainbow-fork, n-base-main. Must be unique within `nodes[]`."
+        },
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 },
+        "alt_m": {
+          "type": "number",
+          "description": "Altitude in meters, above sea level. Required — the algorithm uses this for uphill-vs-downhill disambiguation independent of `kind`."
+        },
+        "kind": {
+          "enum": ["summit", "base", "fork", "merge", "lift_top", "lift_bottom", "waypoint"],
+          "description": "Advisory label for human readers. Degree of the node is what actually drives fork/merge detection."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional author commentary — never read by the algorithm."
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "required": ["id", "kind", "from", "to", "geometry"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^e-[a-z0-9-]+$",
+          "description": "Human-readable ID, `e-` prefix. Examples: e-rainbow-upper, e-gondola-1. Unique within `edges[]`."
+        },
+        "slope_id": {
+          "type": ["string", "null"],
+          "description": "The catalog slope ID this edge belongs to (matches an id in sibling `.slopes.json`). Null for lift + traverse edges."
+        },
+        "kind": {
+          "enum": ["slope", "lift", "traverse"],
+          "description": "slope = downhill terrain counting as a run; lift = uphill transport (cuts runs); traverse = access road / cat track, part of the graph but not a run."
+        },
+        "difficulty": {
+          "enum": ["beginner", "be_in", "intermediate", "in_ad", "advanced", "expert", "pro", "park"],
+          "description": "Optional — mirrors the catalog's slope.difficulty enum."
+        },
+        "from": {
+          "type": "string",
+          "pattern": "^n-[a-z0-9-]+$",
+          "description": "Upstream node id. Directed — the skier enters this edge at `from` and leaves at `to`."
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^n-[a-z0-9-]+$"
+        },
+        "length_m": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Along-polyline length. Authored or computed."
+        },
+        "geometry": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/vertex" },
+          "description": "Polyline from `from` to `to`. First + last vertex coords must match the `from` / `to` node coords."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional author commentary."
+        }
+      }
+    },
+    "vertex": {
+      "type": "object",
+      "required": ["lat", "lng", "alt_m"],
+      "additionalProperties": false,
+      "properties": {
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 },
+        "alt_m": {
+          "type": "number",
+          "description": "Altitude in meters. Required per-vertex — no sparse altitudes. Sample from DEM if you don't know."
+        }
+      }
+    },
+    "snapConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional per-resort algorithm tuning. Defaults live in code.",
+      "properties": {
+        "r_max_m": { "type": "number", "minimum": 0, "description": "Candidate-edge radius around each GPS sample." },
+        "sigma_z_m": { "type": "number", "minimum": 0, "description": "Emission Gaussian sigma." },
+        "gap_bridge_s": { "type": "number", "minimum": 0, "description": "Max GPS gap bridgeable without breaking a run." },
+        "conf_floor": { "type": "number", "minimum": 0, "maximum": 1, "description": "Runs below this confidence are emitted as unsnapped." }
+      }
+    }
+  }
+}
