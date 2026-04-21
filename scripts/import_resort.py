@@ -529,7 +529,213 @@ def build_slopes_and_lifts(cfg: ResortConfig, review: Review) -> tuple[dict[str,
         "place_slug": cfg.slug,
         "lifts": lift_records,
     }
-    return slopes_out, lifts_out
+    graph_out = build_slope_graph(cfg, slope_records, lift_records, sampler, review)
+    return slopes_out, lifts_out, graph_out
+
+
+# ── slope-graph generator ───────────────────────────────────────────
+#
+# Produces a first-pass <slug>.slope-graph.json by clustering slope +
+# lift endpoints into junction nodes and emitting one edge per slope
+# record (and per lift). Designed to be a starting point for hand
+# review, not a final authoring artifact: authors should rename nodes
+# to semantic ids, assign summit/base/fork kinds, and subdivide slopes
+# that actually branch. The Viterbi trail-snap loader will happily
+# consume the first-pass graph as-is though — edges + waypoint nodes
+# are the minimum it needs.
+
+def build_slope_graph(
+    cfg: ResortConfig,
+    slope_records: list[tuple[dict[str, Any], list[tuple[float, float]]]],
+    lift_records: list[dict[str, Any]],
+    sampler: "DemSampler",
+    review: Review,
+) -> Optional[dict[str, Any]]:
+    # Junction tolerance — must be ≤ the Altera loader's ENDPOINT_TOLERANCE_M
+    # (5 m) so edge.geometry[0] / [-1] land within range of their node.
+    # OSM usually shares junction vertices exactly, so 4 m is plenty.
+    JUNCTION_M = 4.0
+
+    # Collect candidate endpoints: first + last vertex of every slope
+    # record (only "run" types — connection ways aren't user-facing
+    # routes), and each lift's bottom + top.
+    endpoints: list[tuple[str, str, float, float, Optional[float]]] = []
+    # (role, source_id, lat, lng, alt_m)
+    for (s, _ends) in slope_records:
+        if s.get("type") != "run":
+            continue
+        coords = s.get("coordinates") or []
+        if len(coords) < 2:
+            continue
+        endpoints.append(("slope_start", s["id"], coords[0]["lat"], coords[0]["lon"], sampler.sample(coords[0]["lat"], coords[0]["lon"])))
+        endpoints.append(("slope_end", s["id"], coords[-1]["lat"], coords[-1]["lon"], sampler.sample(coords[-1]["lat"], coords[-1]["lon"])))
+    for l in lift_records:
+        coords = l.get("coordinates") or []
+        if len(coords) < 2:
+            continue
+        endpoints.append(("lift_bottom", l["id"], coords[0]["lat"], coords[0]["lon"], coords[0].get("alt_m")))
+        endpoints.append(("lift_top", l["id"], coords[-1]["lat"], coords[-1]["lon"], coords[-1].get("alt_m")))
+
+    if not endpoints:
+        review.info("no slope or lift geometry suitable for slope-graph; skipping")
+        return None
+
+    # Cluster endpoints by haversine distance — union-find on O(n²) is
+    # fine at resort scale (≤ ~200 endpoints).
+    n = len(endpoints)
+    parent = list(range(n))
+
+    def find(x: int) -> int:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(a: int, b: int) -> None:
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[ra] = rb
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            if haversine_m(endpoints[i][2], endpoints[i][3], endpoints[j][2], endpoints[j][3]) <= JUNCTION_M:
+                union(i, j)
+
+    # Roll up clusters → canonical node descriptor.
+    clusters: dict[int, list[int]] = {}
+    for idx in range(n):
+        clusters.setdefault(find(idx), []).append(idx)
+
+    nodes: list[dict[str, Any]] = []
+    # Cluster idx → node id for edge wiring
+    cluster_to_node_id: dict[int, str] = {}
+
+    for cluster_root, members in clusters.items():
+        # Representative position = first endpoint in the cluster. We use
+        # its exact lat/lng so the edge's first-vertex match is trivially
+        # within tolerance.
+        rep = endpoints[members[0]]
+        lat, lng, alt = rep[2], rep[3], rep[4]
+        # Prefer lift_top / lift_bottom if any cluster member is a lift
+        # endpoint — they're semantically meaningful anchors. Otherwise
+        # "waypoint" — authors can relabel to fork/merge/summit/base
+        # during review.
+        roles = {endpoints[m][0] for m in members}
+        kind: Optional[str] = None
+        if "lift_top" in roles:
+            kind = "lift_top"
+        elif "lift_bottom" in roles:
+            kind = "lift_bottom"
+        else:
+            kind = "waypoint"
+
+        # Stable id: "n-" + 4-decimal rounded lat/lng. 4 decimals = ~11 m
+        # buckets which is larger than JUNCTION_M, so clusters get unique
+        # ids in practice. Ties would be extremely rare at resort scale.
+        node_id = f"n-{int(round(lat * 10000))}-{int(round(lng * 10000))}"
+        # Guarantee uniqueness on tie.
+        base_id = node_id
+        dedup = 2
+        while any(nd["id"] == node_id for nd in nodes):
+            node_id = f"{base_id}-{dedup}"
+            dedup += 1
+
+        node: dict[str, Any] = {"id": node_id, "lat": lat, "lng": lng}
+        if alt is not None:
+            node["alt_m"] = round(alt, 1)
+        else:
+            # alt_m is required by the slope-graph schema. Fall back to
+            # 0.0 + flag; authors should fill in during review. Better
+            # than skipping the node entirely and breaking edge wiring.
+            node["alt_m"] = 0.0
+            review.warn(f"slope-graph node {node_id} has no elevation — set a DEM and re-run, or hand-edit the graph")
+        if kind:
+            node["kind"] = kind
+        nodes.append(node)
+        cluster_to_node_id[cluster_root] = node_id
+
+    # Map each endpoint index → its node id.
+    endpoint_to_node: dict[int, str] = {}
+    for cluster_root, members in clusters.items():
+        nid = cluster_to_node_id[cluster_root]
+        for m in members:
+            endpoint_to_node[m] = nid
+
+    # Index endpoints back to (role, source_id) so we can pair slope
+    # start+end and lift bottom+top.
+    endpoint_index: dict[tuple[str, str], int] = {}
+    for idx, (role, src_id, _lat, _lng, _alt) in enumerate(endpoints):
+        endpoint_index[(role, src_id)] = idx
+
+    edges: list[dict[str, Any]] = []
+
+    for (s, _ends) in slope_records:
+        if s.get("type") != "run":
+            continue
+        coords = s.get("coordinates") or []
+        if len(coords) < 2:
+            continue
+        start_idx = endpoint_index.get(("slope_start", s["id"]))
+        end_idx = endpoint_index.get(("slope_end", s["id"]))
+        if start_idx is None or end_idx is None:
+            continue
+        from_id = endpoint_to_node[start_idx]
+        to_id = endpoint_to_node[end_idx]
+        if from_id == to_id:
+            # Degenerate self-loop — a slope that ends where it started.
+            # The loader rejects these, so drop with a note.
+            review.warn(f"slope {s['id']} forms a self-loop in the graph; excluded")
+            continue
+        geometry = [
+            {"lat": c["lat"], "lng": c["lon"], "alt_m": round(sampler.sample(c["lat"], c["lon"]) or 0.0, 1)}
+            for c in coords
+        ]
+        edges.append({
+            "id": f"e-{s['id']}",
+            "slope_id": s["id"],
+            "kind": "slope",
+            "difficulty": s.get("difficulty"),
+            "from": from_id,
+            "to": to_id,
+            "length_m": s.get("length_m") or 0,
+            "geometry": geometry,
+        })
+
+    for l in lift_records:
+        coords = l.get("coordinates") or []
+        if len(coords) < 2:
+            continue
+        start_idx = endpoint_index.get(("lift_bottom", l["id"]))
+        end_idx = endpoint_index.get(("lift_top", l["id"]))
+        if start_idx is None or end_idx is None:
+            continue
+        from_id = endpoint_to_node[start_idx]
+        to_id = endpoint_to_node[end_idx]
+        if from_id == to_id:
+            continue
+        geometry = [
+            {"lat": c["lat"], "lng": c["lon"], "alt_m": round((c.get("alt_m") or 0.0), 1)}
+            for c in coords
+        ]
+        edges.append({
+            "id": f"e-{l['id']}",
+            "kind": "lift",
+            "from": from_id,
+            "to": to_id,
+            "length_m": l.get("length_m") or 0,
+            "geometry": geometry,
+        })
+
+    if not edges:
+        review.info("slope-graph would be empty; skipping")
+        return None
+
+    return {
+        "place_slug": cfg.slug,
+        "version": 1,
+        "nodes": nodes,
+        "edges": edges,
+    }
 
 
 def strip_internal(rec: dict[str, Any]) -> dict[str, Any]:
@@ -553,14 +759,28 @@ def _lift_osm_id(lift_id: str) -> Optional[int]:
 
 # ── writer ──────────────────────────────────────────────────────────
 
-def write_outputs(cfg: ResortConfig, slopes: dict[str, Any], lifts: dict[str, Any]) -> list[Path]:
+def write_outputs(cfg: ResortConfig, slopes: dict[str, Any], lifts: dict[str, Any], graph: Optional[dict[str, Any]] = None) -> list[Path]:
     target = REPO_ROOT / "registry" / cfg.country / cfg.region
     target.mkdir(parents=True, exist_ok=True)
     slope_path = target / f"{cfg.slug}.slopes.json"
     lift_path = target / f"{cfg.slug}.lifts.json"
     slope_path.write_text(json.dumps(slopes, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     lift_path.write_text(json.dumps(lifts, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    return [slope_path, lift_path]
+    written = [slope_path, lift_path]
+
+    graph_path = target / f"{cfg.slug}.slope-graph.json"
+    if graph is not None:
+        # Hand-authored graphs almost always deviate from what the
+        # importer would guess. Only write the first-pass file when
+        # there's nothing there yet — once an author touches it, their
+        # edits are safe across re-imports.
+        if graph_path.exists():
+            # Already curated; leave alone.
+            pass
+        else:
+            graph_path.write_text(json.dumps(graph, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            written.append(graph_path)
+    return written
 
 
 def write_review(cfg: ResortConfig, review: Review, written: list[Path]) -> Path:
@@ -598,12 +818,13 @@ def die(msg: str) -> None:
 def import_one(slug: str, dry_run: bool) -> None:
     cfg = ResortConfig.load(slug)
     review = Review()
-    slopes, lifts = build_slopes_and_lifts(cfg, review)
+    slopes, lifts, graph = build_slopes_and_lifts(cfg, review)
     written: list[Path] = []
     if not dry_run:
-        written = write_outputs(cfg, slopes, lifts)
+        written = write_outputs(cfg, slopes, lifts, graph)
     review_path = write_review(cfg, review, written)
-    print(f"✓ {slug}: {len(slopes['slopes'])} slope(s), {len(lifts['lifts'])} lift(s)")
+    graph_info = f", {len(graph['nodes'])} node(s)/{len(graph['edges'])} graph edge(s)" if graph else ""
+    print(f"✓ {slug}: {len(slopes['slopes'])} slope(s), {len(lifts['lifts'])} lift(s){graph_info}")
     print(f"  review: {review_path.relative_to(REPO_ROOT)}")
 
 
