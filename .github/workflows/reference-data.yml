@@ -6,6 +6,7 @@ on:
       - "registry/**"
       - "schemas/**"
       - "scripts/check-reference-data.mjs"
+      - "scripts/check-stable-ids.mjs"
       - ".github/workflows/reference-data.yml"
       - "package.json"
   push:
@@ -15,6 +16,7 @@ on:
       - "registry/**"
       - "schemas/**"
       - "scripts/check-reference-data.mjs"
+      - "scripts/check-stable-ids.mjs"
       - ".github/workflows/reference-data.yml"
       - "package.json"
 
@@ -27,3 +29,24 @@ jobs:
         with:
           node-version: "20"
       - run: npm run check:reference-data
+
+  # Guards stable ids (slope/lift/webcam/node/edge) against accidental
+  # rename or removal between the PR base and head. Downstream
+  # consumers like Altera key their catalog upserts on these ids; a
+  # silent rename would tombstone rows + break historical references.
+  # Add the `allow-id-change` label on deliberate renames.
+  stable-ids:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Need the merge-base with main so the script can diff against it.
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Check stable-id drift
+        env:
+          ALLOW_ID_CHANGE: ${{ contains(github.event.pull_request.labels.*.name, 'allow-id-change') && '1' || '0' }}
+        run: npm run check:stable-ids -- origin/${{ github.event.pull_request.base.ref }}
