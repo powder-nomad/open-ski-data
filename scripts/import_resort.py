@@ -381,6 +381,9 @@ def build_slopes_and_lifts(cfg: ResortConfig, review: Review) -> tuple[dict[str,
         coords = [(nodes[n].lat, nodes[n].lng) for n in w.node_ids if n in nodes]
         if len(coords) < 2:
             continue
+        # Densify so downstream viewers have enough vertices to drape
+        # the cable convincingly over terrain — default gap same as slopes.
+        coords = densify_polyline(coords, cfg.densify_max_gap_m)
         name, i18n = pick_names(w.tags, cfg.name_overrides, w.id)
         length = polyline_length_m(coords)
         top = coords[-1]
@@ -391,6 +394,14 @@ def build_slopes_and_lifts(cfg: ResortConfig, review: Review) -> tuple[dict[str,
         if top_alt is not None and bot_alt is not None:
             vertical = round(abs(top_alt - bot_alt), 1)
         lift_type = w.tags.get("aerialway", "")
+        # Per-vertex DEM sample so 3D viewers can draw the cable at
+        # station altitude. Falls back to null when the DEM has holes —
+        # consumers must tolerate nulls (the lift.schema marks alt_m
+        # as nullable). The review report already tallies these.
+        geometry = [
+            {"lat": round(lat, 6), "lon": round(lng, 6), "alt_m": sampler.sample(lat, lng)}
+            for lat, lng in coords
+        ]
         rec = {
             "id": slugify(name) + f"-l{w.id}",
             "name": name,
@@ -401,6 +412,7 @@ def build_slopes_and_lifts(cfg: ResortConfig, review: Review) -> tuple[dict[str,
             "vertical_m": vertical,
             "connected_slope_ids": [],  # filled after slopes are built
             "connected_lift_ids": [],
+            "coordinates": geometry,
         }
         lift_records.append(rec)
         lift_endpoints[w.id] = top

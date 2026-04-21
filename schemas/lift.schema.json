@@ -42,6 +42,20 @@
           "connected_lift_ids": {
             "type": "array",
             "items": { "type": ["string", "integer"] }
+          },
+          "coordinates": {
+            "type": "array",
+            "description": "Cable polyline from the lift's bottom station to its top, inclusive. Densified + DEM-sampled like slopes. Optional — older lifts.json files from before 2026-04 don't carry geometry; consumers should fall back to drawing nothing rather than erroring.",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "properties": {
+                "lat": { "type": "number" },
+                "lon": { "type": "number" },
+                "alt_m": { "type": ["number", "null"] }
+              },
+              "required": ["lat", "lon"]
+            }
           }
         },
         "required": ["id", "name"]
