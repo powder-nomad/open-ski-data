@@ -82,9 +82,14 @@ async function collectPlaceFiles() {
           file.isFile() &&
           file.name.endsWith(".json") &&
           file.name !== "index.json" &&
+          // Per-resource sidecar files are validated elsewhere — or not
+          // at all for the less-structured ones. Whatever is left here
+          // is the canonical place metadata file (e.g. `yongpyong.json`).
           !file.name.endsWith(".slopes.json") &&
           !file.name.endsWith(".webcams.json") &&
-          !file.name.endsWith(".lifts.json")
+          !file.name.endsWith(".lifts.json") &&
+          !file.name.endsWith(".slope-graph.json") &&
+          !file.name.endsWith(".live.json")
         ) {
           results.push(path.join(regionPath, file.name));
         }
@@ -313,6 +318,139 @@ async function validateLiveData(placeMap) {
   }
 }
 
+// ── slope-graph validation ───────────────────────────────────────
+// Same invariants the Java loader enforces, but running in CI so bad
+// authoring never reaches `main`. Keep these in sync with
+// ski-platform's SlopeGraphLoader — if a rule changes there, change it
+// here too. Broken slope-graph files should fail loud + name the
+// specific record that violates the rule.
+
+const ENDPOINT_TOLERANCE_M = 5.0;
+const VALID_EDGE_KINDS = new Set(["slope", "lift", "traverse"]);
+const VALID_NODE_KINDS = new Set([
+  "summit", "base", "fork", "merge", "lift_top", "lift_bottom", "waypoint",
+]);
+
+function haversineM(lat1, lng1, lat2, lng2) {
+  const r = 6371000;
+  const toRad = (d) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 2 * r * Math.asin(Math.sqrt(a));
+}
+
+function isFiniteNumber(v) {
+  return typeof v === "number" && Number.isFinite(v);
+}
+
+async function validateSlopeGraphs(placeMap) {
+  // Walk every region dir looking for *.slope-graph.json files. They're
+  // optional, so a place without one is fine.
+  const countryDirs = await fs.readdir(registryRoot, { withFileTypes: true });
+  for (const cDir of countryDirs) {
+    if (!cDir.isDirectory() || cDir.name === "live" || cDir.name === "ski-domains") continue;
+    const countryPath = path.join(registryRoot, cDir.name);
+    const regionDirs = await fs.readdir(countryPath, { withFileTypes: true });
+    for (const rDir of regionDirs) {
+      if (!rDir.isDirectory()) continue;
+      const regionPath = path.join(countryPath, rDir.name);
+      const files = await fs.readdir(regionPath, { withFileTypes: true });
+      for (const file of files) {
+        if (!file.isFile() || !file.name.endsWith(".slope-graph.json")) continue;
+        await validateSlopeGraph(path.join(regionPath, file.name), placeMap);
+      }
+    }
+  }
+}
+
+async function validateSlopeGraph(filePath, placeMap) {
+  const doc = await readJson(filePath);
+  if (!doc) return;
+  const where = (msg) => `${rel(filePath)}: ${msg}`;
+
+  expectString(doc.place_slug, where("missing place_slug"));
+  if (typeof doc.place_slug === "string" && !placeMap.has(doc.place_slug)) {
+    errors.push(where(`place_slug '${doc.place_slug}' doesn't match any place file`));
+  }
+  if (typeof doc.version !== "number") {
+    errors.push(where("missing or non-numeric `version`"));
+  }
+
+  const nodes = Array.isArray(doc.nodes) ? doc.nodes : [];
+  const edges = Array.isArray(doc.edges) ? doc.edges : [];
+  if (nodes.length < 2) errors.push(where("`nodes` must have at least 2 entries"));
+  if (edges.length < 1) errors.push(where("`edges` must have at least 1 entry"));
+
+  const byId = new Map();
+  for (const n of nodes) {
+    if (typeof n.id !== "string" || !n.id.startsWith("n-")) {
+      errors.push(where(`node id must be a string starting with 'n-': ${JSON.stringify(n.id)}`));
+      continue;
+    }
+    if (byId.has(n.id)) {
+      errors.push(where(`duplicate node id ${n.id}`));
+      continue;
+    }
+    if (!isFiniteNumber(n.lat) || !isFiniteNumber(n.lng) || !isFiniteNumber(n.alt_m)) {
+      errors.push(where(`node ${n.id} needs numeric lat/lng/alt_m`));
+      continue;
+    }
+    if (n.kind !== undefined && !VALID_NODE_KINDS.has(n.kind)) {
+      errors.push(where(`node ${n.id} has unknown kind '${n.kind}'`));
+    }
+    byId.set(n.id, n);
+  }
+
+  const seenEdge = new Set();
+  for (const e of edges) {
+    if (typeof e.id !== "string" || !e.id.startsWith("e-")) {
+      errors.push(where(`edge id must be a string starting with 'e-': ${JSON.stringify(e.id)}`));
+      continue;
+    }
+    if (seenEdge.has(e.id)) {
+      errors.push(where(`duplicate edge id ${e.id}`));
+      continue;
+    }
+    seenEdge.add(e.id);
+    if (!VALID_EDGE_KINDS.has(e.kind)) {
+      errors.push(where(`edge ${e.id} has unknown kind '${e.kind}' (slope|lift|traverse)`));
+    }
+    const from = byId.get(e.from);
+    const to = byId.get(e.to);
+    if (!from) errors.push(where(`edge ${e.id} references unknown 'from' node '${e.from}'`));
+    if (!to) errors.push(where(`edge ${e.id} references unknown 'to' node '${e.to}'`));
+    if (e.from && e.from === e.to) {
+      errors.push(where(`edge ${e.id} is a self-loop (from == to)`));
+    }
+    const geom = Array.isArray(e.geometry) ? e.geometry : [];
+    if (geom.length < 2) {
+      errors.push(where(`edge ${e.id} geometry must have at least 2 vertices`));
+      continue;
+    }
+    for (const v of geom) {
+      if (!isFiniteNumber(v.lat) || !isFiniteNumber(v.lng) || !isFiniteNumber(v.alt_m)) {
+        errors.push(where(`edge ${e.id}: every geometry vertex needs numeric lat/lng/alt_m`));
+        break;
+      }
+    }
+    if (from && to && geom.length >= 2) {
+      const first = geom[0];
+      const last = geom[geom.length - 1];
+      const dFirst = haversineM(first.lat, first.lng, from.lat, from.lng);
+      const dLast = haversineM(last.lat, last.lng, to.lat, to.lng);
+      if (dFirst > ENDPOINT_TOLERANCE_M) {
+        errors.push(where(`edge ${e.id} first vertex is ${dFirst.toFixed(1)}m from its 'from' node (>${ENDPOINT_TOLERANCE_M}m)`));
+      }
+      if (dLast > ENDPOINT_TOLERANCE_M) {
+        errors.push(where(`edge ${e.id} last vertex is ${dLast.toFixed(1)}m from its 'to' node (>${ENDPOINT_TOLERANCE_M}m)`));
+      }
+    }
+  }
+}
+
 async function main() {
   const placeFiles = await collectPlaceFiles();
   const seenSlugs = new Set();
@@ -331,6 +469,7 @@ async function main() {
   await validateSkiDomains(placeMap);
   await validateStructuredAssets(placeMap);
   await validateLiveData(placeMap);
+  await validateSlopeGraphs(placeMap);
 
   if (errors.length > 0) {
     console.error("Reference-data validation failed:");
