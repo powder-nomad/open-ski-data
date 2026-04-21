@@ -78,3 +78,36 @@ mid-run.
 Re-running is idempotent — stable IDs + diff-friendly ordering — so you
 can safely regenerate after upstream OSM edits or override tweaks and
 review the diff.
+
+## Debugging slope-graphs
+
+Two authoring aids for reviewing a `<slug>.slope-graph.json`:
+
+### CLI tree view
+
+```bash
+node scripts/view-slope-graph.mjs yongpyong              # coloured tree
+node scripts/view-slope-graph.mjs --no-color yongpyong   # plain for logs
+node scripts/view-slope-graph.mjs --json yongpyong       # derived chain dump
+```
+
+Prints a per-slope tree — consecutive segments listed top-to-bottom,
+forks shown as `├ branch 1 / └ branch 2` with their merge node noted.
+Slopes are sorted by top-node altitude descending, matching how a
+skier reads a trail map. Difficulty and length are annotated on each
+edge.
+
+### 3D web viewer
+
+```bash
+python3 -m http.server -d scripts/viewer 8090
+# open "http://127.0.0.1:8090/?slug=yongpyong&key=YOUR_MAPS_KEY"
+```
+
+Standalone HTML (Cesium JS + Google Photorealistic 3D Tiles). Loads
+any `<slug>.slope-graph.json` from the registry and draws nodes +
+edges over real 3D terrain. Slopes are coloured by difficulty, lifts
+yellow-dashed. Click an edge (or pick from the sidebar) for details.
+The Maps API key needs the **Map Tiles API** enabled and is cached
+in localStorage on your browser only. Set `?data_base=` to point at
+a non-GitHub mirror if needed.

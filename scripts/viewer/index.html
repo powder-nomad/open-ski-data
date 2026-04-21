@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>open-ski-data · slope-graph viewer</title>
+  <!--
+    Authoring aid. Loads a `<slug>.slope-graph.json` and renders its
+    nodes + edges over Google's Photorealistic 3D Tiles via Cesium JS.
+    Slope edges are coloured by difficulty; lifts are yellow; traverse
+    edges are grey. Click an edge to pop its details.
+
+    Usage (local): serve this dir over HTTP (the raw `file://` scheme
+    can't fetch JSON):
+        python3 -m http.server -d scripts/viewer 8090
+        open "http://127.0.0.1:8090/?slug=yongpyong&key=YOUR_MAPS_KEY"
+
+    Usage (GitHub Pages): deployed at
+        https://powder-nomad.github.io/open-ski-data/viewer/?slug=...
+
+    The `key` URL param carries a Google Maps API key with the
+    Map Tiles API enabled. Persisted to localStorage so you don't
+    re-paste on every load.
+  -->
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Cesium.js"></script>
+  <style>
+    :root { color-scheme: dark; }
+    html, body { margin: 0; height: 100%; background: #041329; color: #e6f1ff; font-family: system-ui, sans-serif; }
+    #cesiumContainer { position: absolute; inset: 0; }
+    .panel {
+      position: absolute; z-index: 2; padding: 12px 16px;
+      background: rgba(7, 21, 33, 0.9); backdrop-filter: blur(8px);
+      border: 1px solid rgba(156, 240, 255, 0.1); border-radius: 12px;
+      color: #e6f1ff; font-size: 12px; line-height: 1.5;
+    }
+    .panel h1 { font-size: 13px; margin: 0 0 4px; letter-spacing: 0.1em; text-transform: uppercase; color: #9cf0ff; }
+    .panel button, .panel select, .panel input {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: #e6f1ff; padding: 4px 8px; font-size: 12px; border-radius: 6px; cursor: pointer;
+    }
+    .panel button:hover { background: rgba(255,255,255,0.12); }
+    .topleft { top: 12px; left: 12px; max-width: 320px; }
+    .topright { top: 12px; right: 12px; max-width: 340px; }
+    .legend-row { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+    .swatch { width: 14px; height: 2px; border-radius: 2px; display: inline-block; }
+    .edge-list { margin-top: 8px; max-height: 50vh; overflow-y: auto; }
+    .edge-list li { list-style: none; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+    .edge-list li:hover { background: rgba(255,255,255,0.06); }
+    .edge-id { color: #9cf0ff; font-weight: 600; }
+    .muted { color: rgba(230, 241, 255, 0.5); }
+    #err { position: absolute; inset: 24px; display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; z-index: 5; }
+    #err h2 { color: #f87171; }
+    #err code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <div id="err"><h2>Couldn't load the viewer</h2><p id="err-msg"></p></div>
+
+  <aside class="panel topleft">
+    <h1>slope-graph viewer</h1>
+    <div id="meta" class="muted">loading…</div>
+    <form id="loadForm" style="margin-top: 6px;">
+      <label for="slugInput" class="muted" style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;">resort slug</label><br>
+      <input id="slugInput" placeholder="yongpyong" />
+      <button type="submit">load</button>
+    </form>
+    <div style="margin-top: 10px;">
+      <div class="legend-row"><span class="swatch" style="background:#4ade80"></span>beginner</div>
+      <div class="legend-row"><span class="swatch" style="background:#38bdf8"></span>intermediate</div>
+      <div class="legend-row"><span class="swatch" style="background:#e5e7eb"></span>advanced</div>
+      <div class="legend-row"><span class="swatch" style="background:#f87171"></span>expert</div>
+      <div class="legend-row"><span class="swatch" style="background:#fb923c"></span>park</div>
+      <div class="legend-row"><span class="swatch" style="background:#fde047; height: 3px;"></span>lift</div>
+      <div class="legend-row"><span class="swatch" style="background:#64748b"></span>traverse</div>
+    </div>
+    <p class="muted" style="margin-top: 10px;">
+      Click an edge to pop details. Paste a Maps Tiles API key if you
+      haven't already. The key is stored in localStorage on this browser only.
+    </p>
+  </aside>
+
+  <aside class="panel topright">
+    <h1>selected</h1>
+    <div id="selInfo" class="muted">click an edge or pick from the list below</div>
+    <ul id="edgeList" class="edge-list"></ul>
+  </aside>
+
+  <script>
+    // ── config ────────────────────────────────────────────────────
+    const STORAGE_KEY = "open-ski-data.viewer.mapsKey";
+    const DIFFICULTY_COLOURS = {
+      beginner:     Cesium.Color.fromCssColorString("#4ade80"),
+      be_in:        Cesium.Color.fromCssColorString("#4ade80"),
+      intermediate: Cesium.Color.fromCssColorString("#38bdf8"),
+      in_ad:        Cesium.Color.fromCssColorString("#38bdf8"),
+      advanced:     Cesium.Color.fromCssColorString("#e5e7eb"),
+      expert:       Cesium.Color.fromCssColorString("#f87171"),
+      pro:          Cesium.Color.fromCssColorString("#f87171"),
+      park:         Cesium.Color.fromCssColorString("#fb923c"),
+    };
+    const LIFT_COLOUR = Cesium.Color.fromCssColorString("#fde047");
+    const TRAVERSE_COLOUR = Cesium.Color.fromCssColorString("#64748b");
+    const UNK_COLOUR = Cesium.Color.fromCssColorString("#94a3b8");
+
+    // ── params ────────────────────────────────────────────────────
+    const params = new URLSearchParams(location.search);
+    let mapsKey = params.get("key") || localStorage.getItem(STORAGE_KEY) || "";
+    if (params.get("key")) localStorage.setItem(STORAGE_KEY, mapsKey);
+    const slug = params.get("slug") || "yongpyong";
+    document.getElementById("slugInput").value = slug;
+
+    // ── boot ──────────────────────────────────────────────────────
+    async function main() {
+      if (!mapsKey) {
+        promptForKey();
+        return;
+      }
+      const viewer = new Cesium.Viewer("cesiumContainer", {
+        timeline: false,
+        animation: false,
+        geocoder: false,
+        homeButton: false,
+        sceneModePicker: false,
+        navigationHelpButton: false,
+        infoBox: false,
+        selectionIndicator: false,
+        baseLayerPicker: false,
+      });
+      viewer.scene.globe.show = false;
+
+      // Google Photorealistic 3D Tiles. Free API with proper attribution
+      // (Cesium shows the credit automatically).
+      try {
+        const tileset = await Cesium.Cesium3DTileset.fromUrl(
+          `https://tile.googleapis.com/v1/3dtiles/root.json?key=${encodeURIComponent(mapsKey)}`,
+          { showCreditsOnScreen: true }
+        );
+        viewer.scene.primitives.add(tileset);
+      } catch (e) {
+        showError("Couldn't load Google 3D Tiles. Check that your API key has the <code>Map Tiles API</code> enabled and the referrer allowlist includes this origin.");
+        return;
+      }
+
+      await loadSlopeGraph(viewer, slug);
+    }
+
+    // ── graph loader ──────────────────────────────────────────────
+    async function loadSlopeGraph(viewer, slug) {
+      // Probe country/region folders until we find the file. The
+      // registry layout is country → region → place files; this
+      // viewer doesn't know the country ahead of time.
+      //
+      // We hit the GitHub raw endpoint directly when served from
+      // GitHub Pages or localhost. For arbitrary deploys point
+      // `DATA_BASE` at a mirror.
+      const DATA_BASE = params.get("data_base")
+        || "https://raw.githubusercontent.com/powder-nomad/open-ski-data/main/";
+      const indexUrl = DATA_BASE + "registry/index.json";
+      const indexResp = await fetch(indexUrl);
+      if (!indexResp.ok) {
+        showError("Couldn't fetch registry index: " + indexResp.status);
+        return;
+      }
+      const registry = await indexResp.json();
+      for (const country of registry.countries) {
+        const countryResp = await fetch(DATA_BASE + country.path);
+        if (!countryResp.ok) continue;
+        const countryDoc = await countryResp.json();
+        for (const region of countryDoc.regions) {
+          const url = DATA_BASE + "registry/" + country.country_code
+            + "/" + region.region_slug + "/" + slug + ".slope-graph.json";
+          const resp = await fetch(url);
+          if (!resp.ok) continue;
+          const graph = await resp.json();
+          await renderGraph(viewer, graph);
+          document.getElementById("meta").textContent =
+            graph.place_slug + " · " + country.country_code + "/" + region.region_slug
+            + " · " + graph.nodes.length + " nodes, " + graph.edges.length + " edges";
+          return;
+        }
+      }
+      showError("No slope-graph found for slug <code>" + slug + "</code>.");
+    }
+
+    // Look-up from entity id → raw edge/node object. Cesium wraps our
+    // `properties` hash in a PropertyBag, which is awkward to unwrap on
+    // click, so we keep the pristine object on the side.
+    const edgesById = new Map();
+
+    // ── render ────────────────────────────────────────────────────
+    async function renderGraph(viewer, graph) {
+      const list = document.getElementById("edgeList");
+      list.innerHTML = "";
+      edgesById.clear();
+
+      // Polylines — Cesium uses cartesian positions. `clampToGround: false`
+      // + `arcType: NONE` uses the per-vertex altitudes we baked in.
+      for (const edge of graph.edges) {
+        const positions = edge.geometry.map((v) =>
+          Cesium.Cartesian3.fromDegrees(v.lng, v.lat, v.alt_m + 4)
+        );
+        const colour = colourForEdge(edge);
+        const entity = viewer.entities.add({
+          id: edge.id,
+          polyline: {
+            positions,
+            width: edge.kind === "lift" ? 5 : 6,
+            material:
+              edge.kind === "lift"
+                ? new Cesium.PolylineDashMaterialProperty({ color: colour })
+                : colour,
+            clampToGround: false,
+            arcType: Cesium.ArcType.NONE,
+          },
+        });
+        edgesById.set(edge.id, edge);
+
+        // Sidebar list entry.
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="edge-id">${edge.id}</span>
+          <span class="muted">· ${edge.kind}${edge.slope_id ? " · " + edge.slope_id : ""}</span>`;
+        li.onclick = () => focusEdge(viewer, entity, edge, graph);
+        list.appendChild(li);
+      }
+
+      // Node markers — small billboards at each junction with the id.
+      for (const node of graph.nodes) {
+        viewer.entities.add({
+          id: node.id,
+          position: Cesium.Cartesian3.fromDegrees(node.lng, node.lat, node.alt_m + 6),
+          point: {
+            pixelSize: 8,
+            color: Cesium.Color.fromCssColorString("#9cf0ff"),
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 1,
+          },
+          label: {
+            text: node.id.replace(/^n-/, ""),
+            font: "11px sans-serif",
+            fillColor: Cesium.Color.WHITE,
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 2,
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            pixelOffset: new Cesium.Cartesian2(8, -8),
+            showBackground: true,
+            backgroundColor: Cesium.Color.fromCssColorString("rgba(7,21,33,0.7)"),
+            backgroundPadding: new Cesium.Cartesian2(4, 2),
+          },
+        });
+      }
+
+      // Frame the whole graph.
+      await viewer.flyTo(viewer.entities, { duration: 1.5 });
+
+      // Click → show details in the right panel.
+      viewer.screenSpaceEventHandler.setInputAction((e) => {
+        const picked = viewer.scene.pick(e.position);
+        const id = picked?.id?.id;
+        const edge = id ? edgesById.get(id) : null;
+        if (edge) showSelected(edge, graph);
+      }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    }
+
+    function colourForEdge(edge) {
+      if (edge.kind === "lift") return LIFT_COLOUR;
+      if (edge.kind === "traverse") return TRAVERSE_COLOUR;
+      return DIFFICULTY_COLOURS[edge.difficulty] || UNK_COLOUR;
+    }
+
+    function buildEntityDescription(edge, graph) {
+      const from = graph.nodes.find((n) => n.id === edge.from);
+      const to = graph.nodes.find((n) => n.id === edge.to);
+      const rows = [
+        ["kind", edge.kind],
+        ["slope", edge.slope_id || "—"],
+        ["difficulty", edge.difficulty || "—"],
+        ["length", edge.length_m ? edge.length_m.toFixed(0) + " m" : "—"],
+        ["from", from ? `${from.id} (${from.alt_m}m)` : edge.from],
+        ["to", to ? `${to.id} (${to.alt_m}m)` : edge.to],
+        ["vertices", edge.geometry.length],
+      ];
+      return rows.map(([k, v]) => `<b>${k}:</b> ${v}`).join("<br>");
+    }
+
+    function showSelected(edge, graph) {
+      document.getElementById("selInfo").innerHTML = buildEntityDescription(edge, graph);
+    }
+
+    function focusEdge(viewer, entity, edge, graph) {
+      viewer.flyTo(entity, { duration: 1.0 });
+      showSelected(edge, graph);
+    }
+
+    // ── prompts ───────────────────────────────────────────────────
+    function promptForKey() {
+      const key = prompt(
+        "Paste a Google Maps API key with Map Tiles API enabled " +
+        "(stored in this browser's localStorage only):"
+      );
+      if (!key) {
+        showError("Need a Google Maps API key with <code>Map Tiles API</code> enabled to load 3D terrain.");
+        return;
+      }
+      mapsKey = key;
+      localStorage.setItem(STORAGE_KEY, key);
+      main();
+    }
+
+    function showError(msg) {
+      const el = document.getElementById("err");
+      document.getElementById("err-msg").innerHTML = msg;
+      el.style.display = "flex";
+    }
+
+    // ── load form ────────────────────────────────────────────────
+    document.getElementById("loadForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const next = document.getElementById("slugInput").value.trim();
+      if (!next) return;
+      const url = new URL(location.href);
+      url.searchParams.set("slug", next);
+      location.href = url.toString();
+    });
+
+    main().catch((err) => {
+      console.error(err);
+      showError("Unexpected failure — check console.");
+    });
+  </script>
+</body>
+</html>
