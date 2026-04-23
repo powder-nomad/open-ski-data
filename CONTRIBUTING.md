@@ -13,11 +13,15 @@ This repository is meant for pull-request-based community updates to ski referen
 
 ## Path Rules
 
-- places live at `registry/<country>/<region>/<place>.json`
-- slopes live at `registry/<country>/<region>/<place>.slopes.json`
-- lifts live at `registry/<country>/<region>/<place>.lifts.json`
-- webcams live at `registry/<country>/<region>/<place>.webcams.json`
-- ski domains live at `registry/ski-domains/<slug>.json`
+Every resort is a subdirectory under its region: `registry/<country>/<region>/<place>/`. Inside that directory:
+
+- place record: `place.json`
+- slopes: `slopes.json`
+- lifts: `lifts.json`
+- webcams: `webcams.json`
+- slope graph (derived): `slope-graph.json`
+
+Ski domains live outside the country hierarchy at `registry/ski-domains/<slug>.json`.
 
 Keep the file path aligned with the record identifiers:
 

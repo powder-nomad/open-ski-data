@@ -13,6 +13,8 @@ This repository is intended to become a contributor-maintained public data sourc
 
 ## Repository Layout
 
+Every resort lives in its own subdirectory at `<country>/<region>/<slug>/`, with all of its files inside:
+
 ```text
 registry/
   index.json
@@ -20,15 +22,27 @@ registry/
     index.json
     gangwon/
       index.json
-      yongpyong.json
-      yongpyong.slopes.json
-      yongpyong.lifts.json
-      yongpyong.webcams.json
+      yongpyong/
+        place.json
+        slopes.json
+        lifts.json
+        webcams.json
+        slope-graph.json
+      alpensia/
+        place.json
+        slopes.json
+        lifts.json
+        webcams.json
+        slope-graph.json
   jp/
     index.json
     hokkaido/
       index.json
-      niseko-grand-hirafu.json
+      niseko-grand-hirafu/
+        place.json
+        slopes.json
+        lifts.json
+        webcams.json
   ski-domains/
     index.json
     niseko-united.json
@@ -38,6 +52,8 @@ scripts/
   check-reference-data.mjs
   import-skiwatch.mjs
 ```
+
+Rationale: a region can contain 10+ resorts, and with the previous flat layout (`alpensia.json`, `alpensia.slopes.json`, `alpensia.lifts.json`, `alpensia.webcams.json`, `alpensia.slope-graph.json`, then repeat for each other resort) the region folder became 50+ siblings and was hard to navigate. Nesting per resort keeps each resort's files grouped and makes contributor PRs easier to scope to one resort.
 
 ## Data Model
 
@@ -60,8 +76,8 @@ The repository uses hierarchical indexes as the primary source of truth.
 
 - `registry/index.json` lists countries
 - `registry/<country>/index.json` lists regions
-- `registry/<country>/<region>/index.json` lists places in that region
-- canonical place files live under their country and region path
+- `registry/<country>/<region>/index.json` lists places in that region — each entry's `path` points at `registry/<country>/<region>/<slug>/place.json`
+- the canonical place record is `registry/<country>/<region>/<slug>/place.json`; its siblings (`slopes.json`, `lifts.json`, `webcams.json`, `slope-graph.json`) carry the detailed datasets for that resort
 - `registry/ski-domains/index.json` lists ski domains
 
 This keeps browsing payloads small, makes pull requests more localized, and avoids one giant global routing file becoming a merge-conflict hotspot.
@@ -104,7 +120,11 @@ Example path patterns:
 ```text
 https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/index.json
 https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/kr/index.json
-https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/kr/gangwon/yongpyong.json
+https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/kr/gangwon/index.json
+https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/kr/gangwon/yongpyong/place.json
+https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/kr/gangwon/yongpyong/slopes.json
+https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/kr/gangwon/yongpyong/lifts.json
+https://raw.githubusercontent.com/<owner>/open-ski-data/<branch>/registry/kr/gangwon/yongpyong/webcams.json
 ```
 
 ## Seed Provenance
