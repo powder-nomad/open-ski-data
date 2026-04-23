@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "hokkaido",
+  "place_slug": "kamui-ski-links",
+  "name": "Kamui Ski Links",
+  "region": "Hokkaido",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 43.6711,
+    "longitude": 142.2976
+  },
+  "elevations": {
+    "base_m": 150,
+    "summit_m": 751
+  },
+  "tags": [
+    "hokkaido",
+    "resort",
+    "local-favorite",
+    "powder"
+  ]
+}

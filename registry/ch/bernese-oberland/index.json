@@ -13,7 +13,7 @@
     {
       "place_slug": "eiger-north-face",
       "name": "Eiger North Face",
-      "path": "registry/ch/bernese-oberland/eiger-north-face.json",
+      "path": "registry/ch/bernese-oberland/eiger-north-face/place.json",
       "kind": "mountain-face"
     }
   ]

@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "kr",
+  "region_slug": "gyeonggi",
+  "place_slug": "jisan",
+  "name": "Jisan",
+  "region": "Gyeonggi",
+  "country": "South Korea",
+  "coordinates": {
+    "latitude": 37.2167714356273,
+    "longitude": 127.345183861823
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "name_i18n": {
+    "ko": "지산",
+    "en": "Jisan",
+    "ja": "チサン"
+  },
+  "region_i18n": {
+    "ko": "경기",
+    "en": "Gyeonggi",
+    "ja": "京畿"
+  },
+  "country_i18n": {
+    "ko": "대한민국",
+    "en": "South Korea",
+    "ja": "韓国"
+  }
+}

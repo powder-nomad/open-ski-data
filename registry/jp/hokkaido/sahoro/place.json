@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "hokkaido",
+  "place_slug": "sahoro",
+  "name": "Sahoro Resort",
+  "region": "Hokkaido",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 43.1635,
+    "longitude": 142.8048
+  },
+  "elevations": {
+    "base_m": 420,
+    "summit_m": 1030
+  },
+  "tags": [
+    "hokkaido",
+    "resort",
+    "destination"
+  ]
+}

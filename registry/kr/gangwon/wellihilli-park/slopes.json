@@ -1,0 +1,260 @@
+{
+  "$schema": "../../../../schemas/slope.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "wellihilli-park",
+  "slopes": [
+    {
+      "id": 0,
+      "name": "A1",
+      "name_i18n": {
+        "ko": "A1",
+        "en": "A1",
+        "ja": "A1"
+      },
+      "type": "run",
+      "difficulty": "park",
+      "length_m": 450,
+      "min_angle_deg": 5.2,
+      "max_angle_deg": 15.1
+    },
+    {
+      "id": 1,
+      "name": "A2",
+      "name_i18n": {
+        "ko": "A2",
+        "en": "A2",
+        "ja": "A2"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 598,
+      "min_angle_deg": 5.7,
+      "max_angle_deg": 10.6
+    },
+    {
+      "id": 2,
+      "name": "A3",
+      "name_i18n": {
+        "ko": "A3",
+        "en": "A3",
+        "ja": "A3"
+      },
+      "type": "run",
+      "difficulty": "park",
+      "length_m": 539,
+      "min_angle_deg": 4.8,
+      "max_angle_deg": 10.3
+    },
+    {
+      "id": 3,
+      "name": "B1",
+      "name_i18n": {
+        "ko": "B1",
+        "en": "B1",
+        "ja": "B1"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1112,
+      "min_angle_deg": 4.9,
+      "max_angle_deg": 16.4
+    },
+    {
+      "id": 4,
+      "name": "B2",
+      "name_i18n": {
+        "ko": "B2",
+        "en": "B2",
+        "ja": "B2"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1038,
+      "min_angle_deg": 4.9,
+      "max_angle_deg": 18.5
+    },
+    {
+      "id": 5,
+      "name": "C1",
+      "name_i18n": {
+        "ko": "C1",
+        "en": "C1",
+        "ja": "C1"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 370,
+      "min_angle_deg": 9.4,
+      "max_angle_deg": 22.9
+    },
+    {
+      "id": 6,
+      "name": "C2",
+      "name_i18n": {
+        "ko": "C2",
+        "en": "C2",
+        "ja": "C2"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 275,
+      "min_angle_deg": 12.2,
+      "max_angle_deg": 28.7
+    },
+    {
+      "id": 7,
+      "name": "C3",
+      "name_i18n": {
+        "ko": "C3",
+        "en": "C3",
+        "ja": "C3"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 504,
+      "min_angle_deg": 5.8,
+      "max_angle_deg": 32.1
+    },
+    {
+      "id": 8,
+      "name": "C4",
+      "name_i18n": {
+        "ko": "C4",
+        "en": "C4",
+        "ja": "C4"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 827,
+      "min_angle_deg": 5,
+      "max_angle_deg": 26.6
+    },
+    {
+      "id": 9,
+      "name": "C5",
+      "name_i18n": {
+        "ko": "C5",
+        "en": "C5",
+        "ja": "C5"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 661,
+      "min_angle_deg": 6.4,
+      "max_angle_deg": 25.2
+    },
+    {
+      "id": 10,
+      "name": "D1",
+      "name_i18n": {
+        "ko": "D1",
+        "en": "D1",
+        "ja": "D1"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 620,
+      "min_angle_deg": 6,
+      "max_angle_deg": 14
+    },
+    {
+      "id": 11,
+      "name": "D2",
+      "name_i18n": {
+        "ko": "D2",
+        "en": "D2",
+        "ja": "D2"
+      },
+      "type": "run",
+      "difficulty": "park",
+      "length_m": 150,
+      "min_angle_deg": 4.9,
+      "max_angle_deg": 25.8
+    },
+    {
+      "id": 12,
+      "name": "D+",
+      "name_i18n": {
+        "ko": "D+",
+        "en": "D+",
+        "ja": "D+"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1000,
+      "min_angle_deg": 6.2,
+      "max_angle_deg": 14.1
+    },
+    {
+      "id": 13,
+      "name": "E1",
+      "name_i18n": {
+        "ko": "E1",
+        "en": "E1",
+        "ja": "E1"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 625,
+      "min_angle_deg": 8.3,
+      "max_angle_deg": 32
+    },
+    {
+      "id": 14,
+      "name": "E2",
+      "name_i18n": {
+        "ko": "E2",
+        "en": "E2",
+        "ja": "E2"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 650,
+      "min_angle_deg": 5.3,
+      "max_angle_deg": 25
+    },
+    {
+      "id": 15,
+      "name": "E3",
+      "name_i18n": {
+        "ko": "E3",
+        "en": "E3",
+        "ja": "E3"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 321,
+      "min_angle_deg": 8.2,
+      "max_angle_deg": 27.7
+    },
+    {
+      "id": 16,
+      "name": "S1",
+      "name_i18n": {
+        "ko": "S1",
+        "en": "S1",
+        "ja": "S1"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1786,
+      "min_angle_deg": 3.3,
+      "max_angle_deg": 9.9
+    },
+    {
+      "id": 17,
+      "name": "S2",
+      "name_i18n": {
+        "ko": "S2",
+        "en": "S2",
+        "ja": "S2"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 814,
+      "min_angle_deg": 3.5,
+      "max_angle_deg": 11.7
+    }
+  ]
+}

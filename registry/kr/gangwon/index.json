@@ -13,55 +13,55 @@
     {
       "place_slug": "alpensia",
       "name": "Alpensia",
-      "path": "registry/kr/gangwon/alpensia.json",
+      "path": "registry/kr/gangwon/alpensia/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "elysian-gangchon",
       "name": "Elysian Gangchon",
-      "path": "registry/kr/gangwon/elysian-gangchon.json",
+      "path": "registry/kr/gangwon/elysian-gangchon/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "high1",
       "name": "High1",
-      "path": "registry/kr/gangwon/high1.json",
+      "path": "registry/kr/gangwon/high1/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "o2",
       "name": "O2",
-      "path": "registry/kr/gangwon/o2.json",
+      "path": "registry/kr/gangwon/o2/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "oak-valley",
       "name": "Oak Valley",
-      "path": "registry/kr/gangwon/oak-valley.json",
+      "path": "registry/kr/gangwon/oak-valley/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "phoenix-park",
       "name": "Phoenix Park",
-      "path": "registry/kr/gangwon/phoenix-park.json",
+      "path": "registry/kr/gangwon/phoenix-park/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "vivaldi-park",
       "name": "Vivaldi Park",
-      "path": "registry/kr/gangwon/vivaldi-park.json",
+      "path": "registry/kr/gangwon/vivaldi-park/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "wellihilli-park",
       "name": "WelliHilli Park",
-      "path": "registry/kr/gangwon/wellihilli-park.json",
+      "path": "registry/kr/gangwon/wellihilli-park/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "yongpyong",
       "name": "Yongpyong",
-      "path": "registry/kr/gangwon/yongpyong.json",
+      "path": "registry/kr/gangwon/yongpyong/place.json",
       "kind": "resort"
     }
   ]

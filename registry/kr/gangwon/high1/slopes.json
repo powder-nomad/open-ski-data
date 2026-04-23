@@ -1,0 +1,998 @@
+{
+  "$schema": "../../../../schemas/slope.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "high1",
+  "slopes": [
+    {
+      "id": "unnamed-105836169500",
+      "name": "unnamed-105836169500",
+      "name_i18n": {},
+      "type": "run",
+      "difficulty": null,
+      "length_m": 818.3,
+      "connected_slope_ids": [
+        "hera1",
+        "unnamed-105836169529",
+        "unnamed-105836169549",
+        "unnamed-105836169600",
+        "unnamed-105836169644",
+        "zeus1",
+        "zeus2"
+      ],
+      "connected_lift_ids": [
+        "hera-l535760430"
+      ],
+      "coordinates": [
+        {
+          "lat": 37.182555,
+          "lon": 128.817573
+        },
+        {
+          "lat": 37.182713,
+          "lon": 128.817493
+        },
+        {
+          "lat": 37.182872,
+          "lon": 128.817413
+        },
+        {
+          "lat": 37.182854,
+          "lon": 128.817278
+        },
+        {
+          "lat": 37.182784,
+          "lon": 128.817284
+        },
+        {
+          "lat": 37.182695,
+          "lon": 128.817308
+        },
+        {
+          "lat": 37.182529,
+          "lon": 128.817276
+        },
+        {
+          "lat": 37.182378,
+          "lon": 128.817337
+        },
+        {
+          "lat": 37.182212,
+          "lon": 128.817436
+        },
+        {
+          "lat": 37.182047,
+          "lon": 128.817535
+        },
+        {
+          "lat": 37.181882,
+          "lon": 128.817634
+        },
+        {
+          "lat": 37.181747,
+          "lon": 128.817724
+        },
+        {
+          "lat": 37.181611,
+          "lon": 128.817814
+        },
+        {
+          "lat": 37.181553,
+          "lon": 128.817889
+        },
+        {
+          "lat": 37.181418,
+          "lon": 128.818006
+        },
+        {
+          "lat": 37.181286,
+          "lon": 128.818203
+        },
+        {
+          "lat": 37.181197,
+          "lon": 128.818275
+        },
+        {
+          "lat": 37.181027,
+          "lon": 128.818326
+        },
+        {
+          "lat": 37.180842,
+          "lon": 128.81837
+        },
+        {
+          "lat": 37.180657,
+          "lon": 128.818413
+        },
+        {
+          "lat": 37.18051,
+          "lon": 128.818522
+        },
+        {
+          "lat": 37.180437,
+          "lon": 128.818647
+        },
+        {
+          "lat": 37.180375,
+          "lon": 128.81893
+        },
+        {
+          "lat": 37.180355,
+          "lon": 128.819261
+        },
+        {
+          "lat": 37.180335,
+          "lon": 128.819592
+        },
+        {
+          "lat": 37.180318,
+          "lon": 128.819922
+        },
+        {
+          "lat": 37.180301,
+          "lon": 128.820252
+        },
+        {
+          "lat": 37.180228,
+          "lon": 128.820515
+        },
+        {
+          "lat": 37.180263,
+          "lon": 128.820801
+        },
+        {
+          "lat": 37.180285,
+          "lon": 128.82109
+        },
+        {
+          "lat": 37.180308,
+          "lon": 128.82138
+        },
+        {
+          "lat": 37.180318,
+          "lon": 128.821611
+        },
+        {
+          "lat": 37.180329,
+          "lon": 128.821841
+        },
+        {
+          "lat": 37.180372,
+          "lon": 128.822075
+        },
+        {
+          "lat": 37.180349,
+          "lon": 128.822245
+        },
+        {
+          "lat": 37.180106,
+          "lon": 128.822355
+        },
+        {
+          "lat": 37.179877,
+          "lon": 128.822507
+        },
+        {
+          "lat": 37.179648,
+          "lon": 128.822658
+        },
+        {
+          "lat": 37.17953,
+          "lon": 128.822757
+        },
+        {
+          "lat": 37.179411,
+          "lon": 128.822857
+        },
+        {
+          "lat": 37.179508,
+          "lon": 128.823072
+        }
+      ]
+    },
+    {
+      "id": "unnamed-105836169529",
+      "name": "unnamed-105836169529",
+      "name_i18n": {},
+      "type": "run",
+      "difficulty": null,
+      "length_m": 609,
+      "connected_slope_ids": [
+        "unnamed-105836169500",
+        "unnamed-105836169549",
+        "unnamed-105836169600",
+        "unnamed-105836169644",
+        "zeus1",
+        "zeus2"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 37.179508,
+          "lon": 128.823072
+        },
+        {
+          "lat": 37.179653,
+          "lon": 128.823133
+        },
+        {
+          "lat": 37.17972,
+          "lon": 128.822917
+        },
+        {
+          "lat": 37.179828,
+          "lon": 128.822741
+        },
+        {
+          "lat": 37.179905,
+          "lon": 128.822645
+        },
+        {
+          "lat": 37.180046,
+          "lon": 128.822556
+        },
+        {
+          "lat": 37.180201,
+          "lon": 128.822494
+        },
+        {
+          "lat": 37.180351,
+          "lon": 128.822397
+        },
+        {
+          "lat": 37.180501,
+          "lon": 128.8223
+        },
+        {
+          "lat": 37.180567,
+          "lon": 128.822207
+        },
+        {
+          "lat": 37.180559,
+          "lon": 128.822014
+        },
+        {
+          "lat": 37.180523,
+          "lon": 128.821703
+        },
+        {
+          "lat": 37.180486,
+          "lon": 128.821391
+        },
+        {
+          "lat": 37.18045,
+          "lon": 128.82108
+        },
+        {
+          "lat": 37.180414,
+          "lon": 128.820768
+        },
+        {
+          "lat": 37.180445,
+          "lon": 128.820457
+        },
+        {
+          "lat": 37.180482,
+          "lon": 128.820282
+        },
+        {
+          "lat": 37.180519,
+          "lon": 128.820106
+        },
+        {
+          "lat": 37.180564,
+          "lon": 128.819822
+        },
+        {
+          "lat": 37.180567,
+          "lon": 128.819597
+        },
+        {
+          "lat": 37.18057,
+          "lon": 128.819372
+        },
+        {
+          "lat": 37.180627,
+          "lon": 128.819075
+        },
+        {
+          "lat": 37.180684,
+          "lon": 128.818777
+        },
+        {
+          "lat": 37.180737,
+          "lon": 128.818679
+        },
+        {
+          "lat": 37.180793,
+          "lon": 128.818624
+        },
+        {
+          "lat": 37.181015,
+          "lon": 128.818507
+        },
+        {
+          "lat": 37.181237,
+          "lon": 128.818391
+        },
+        {
+          "lat": 37.18143,
+          "lon": 128.818243
+        },
+        {
+          "lat": 37.181622,
+          "lon": 128.818096
+        },
+        {
+          "lat": 37.181813,
+          "lon": 128.817945
+        }
+      ]
+    },
+    {
+      "id": "unnamed-105836169549",
+      "name": "unnamed-105836169549",
+      "name_i18n": {},
+      "type": "run",
+      "difficulty": null,
+      "length_m": 88.8,
+      "connected_slope_ids": [
+        "hera1",
+        "unnamed-105836169500",
+        "unnamed-105836169529",
+        "unnamed-105836169600",
+        "unnamed-105836169644",
+        "zeus2"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 37.181813,
+          "lon": 128.817945
+        },
+        {
+          "lat": 37.18206,
+          "lon": 128.817821
+        },
+        {
+          "lat": 37.182308,
+          "lon": 128.817697
+        },
+        {
+          "lat": 37.182555,
+          "lon": 128.817573
+        }
+      ]
+    },
+    {
+      "id": "unnamed-105836169600",
+      "name": "unnamed-105836169600",
+      "name_i18n": {},
+      "type": "run",
+      "difficulty": null,
+      "length_m": 1436.1,
+      "connected_slope_ids": [
+        "hera1",
+        "unnamed-105836169500",
+        "unnamed-105836169529",
+        "unnamed-105836169549",
+        "unnamed-105836169644",
+        "zeus2"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 37.182555,
+          "lon": 128.817573
+        },
+        {
+          "lat": 37.182432,
+          "lon": 128.817775
+        },
+        {
+          "lat": 37.182308,
+          "lon": 128.817977
+        },
+        {
+          "lat": 37.182185,
+          "lon": 128.818179
+        },
+        {
+          "lat": 37.182132,
+          "lon": 128.818294
+        },
+        {
+          "lat": 37.181961,
+          "lon": 128.818538
+        },
+        {
+          "lat": 37.18179,
+          "lon": 128.818782
+        },
+        {
+          "lat": 37.181686,
+          "lon": 128.818966
+        },
+        {
+          "lat": 37.181582,
+          "lon": 128.81915
+        },
+        {
+          "lat": 37.181548,
+          "lon": 128.819404
+        },
+        {
+          "lat": 37.181606,
+          "lon": 128.819686
+        },
+        {
+          "lat": 37.181712,
+          "lon": 128.819836
+        },
+        {
+          "lat": 37.181818,
+          "lon": 128.819987
+        },
+        {
+          "lat": 37.181913,
+          "lon": 128.820126
+        },
+        {
+          "lat": 37.181958,
+          "lon": 128.820365
+        },
+        {
+          "lat": 37.181989,
+          "lon": 128.82059
+        },
+        {
+          "lat": 37.181982,
+          "lon": 128.820896
+        },
+        {
+          "lat": 37.182055,
+          "lon": 128.821207
+        },
+        {
+          "lat": 37.182164,
+          "lon": 128.821353
+        },
+        {
+          "lat": 37.182273,
+          "lon": 128.821499
+        },
+        {
+          "lat": 37.182459,
+          "lon": 128.821671
+        },
+        {
+          "lat": 37.182645,
+          "lon": 128.821843
+        },
+        {
+          "lat": 37.182818,
+          "lon": 128.822095
+        },
+        {
+          "lat": 37.18289,
+          "lon": 128.822307
+        },
+        {
+          "lat": 37.182999,
+          "lon": 128.822465
+        },
+        {
+          "lat": 37.183051,
+          "lon": 128.822651
+        },
+        {
+          "lat": 37.183102,
+          "lon": 128.822838
+        },
+        {
+          "lat": 37.183111,
+          "lon": 128.823141
+        },
+        {
+          "lat": 37.183121,
+          "lon": 128.823444
+        },
+        {
+          "lat": 37.183194,
+          "lon": 128.823677
+        },
+        {
+          "lat": 37.18336,
+          "lon": 128.823935
+        },
+        {
+          "lat": 37.183433,
+          "lon": 128.824149
+        },
+        {
+          "lat": 37.183499,
+          "lon": 128.824227
+        },
+        {
+          "lat": 37.183422,
+          "lon": 128.824337
+        },
+        {
+          "lat": 37.183209,
+          "lon": 128.824447
+        },
+        {
+          "lat": 37.182954,
+          "lon": 128.82453
+        },
+        {
+          "lat": 37.18292,
+          "lon": 128.824343
+        },
+        {
+          "lat": 37.182887,
+          "lon": 128.824156
+        },
+        {
+          "lat": 37.182842,
+          "lon": 128.823859
+        },
+        {
+          "lat": 37.182797,
+          "lon": 128.823561
+        },
+        {
+          "lat": 37.182752,
+          "lon": 128.823263
+        },
+        {
+          "lat": 37.182731,
+          "lon": 128.823018
+        },
+        {
+          "lat": 37.18271,
+          "lon": 128.822772
+        },
+        {
+          "lat": 37.182585,
+          "lon": 128.822476
+        },
+        {
+          "lat": 37.182487,
+          "lon": 128.822354
+        },
+        {
+          "lat": 37.182388,
+          "lon": 128.822231
+        },
+        {
+          "lat": 37.182264,
+          "lon": 128.822067
+        },
+        {
+          "lat": 37.18214,
+          "lon": 128.821902
+        },
+        {
+          "lat": 37.181987,
+          "lon": 128.821733
+        },
+        {
+          "lat": 37.181835,
+          "lon": 128.821564
+        },
+        {
+          "lat": 37.181713,
+          "lon": 128.821387
+        },
+        {
+          "lat": 37.181682,
+          "lon": 128.821231
+        },
+        {
+          "lat": 37.181645,
+          "lon": 128.820916
+        },
+        {
+          "lat": 37.181608,
+          "lon": 128.820601
+        },
+        {
+          "lat": 37.18157,
+          "lon": 128.820286
+        },
+        {
+          "lat": 37.181501,
+          "lon": 128.820145
+        },
+        {
+          "lat": 37.181393,
+          "lon": 128.820021
+        },
+        {
+          "lat": 37.181286,
+          "lon": 128.819898
+        },
+        {
+          "lat": 37.181187,
+          "lon": 128.8197
+        },
+        {
+          "lat": 37.181178,
+          "lon": 128.819543
+        },
+        {
+          "lat": 37.181237,
+          "lon": 128.819215
+        },
+        {
+          "lat": 37.181296,
+          "lon": 128.818887
+        },
+        {
+          "lat": 37.181374,
+          "lon": 128.818706
+        },
+        {
+          "lat": 37.181452,
+          "lon": 128.818525
+        },
+        {
+          "lat": 37.18154,
+          "lon": 128.818371
+        },
+        {
+          "lat": 37.181627,
+          "lon": 128.818216
+        },
+        {
+          "lat": 37.18172,
+          "lon": 128.818081
+        },
+        {
+          "lat": 37.181813,
+          "lon": 128.817945
+        }
+      ]
+    },
+    {
+      "id": "unnamed-105836169644",
+      "name": "unnamed-105836169644",
+      "name_i18n": {},
+      "type": "run",
+      "difficulty": null,
+      "length_m": 88.8,
+      "connected_slope_ids": [
+        "hera1",
+        "unnamed-105836169500",
+        "unnamed-105836169529",
+        "unnamed-105836169549",
+        "unnamed-105836169600",
+        "zeus2"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 37.181813,
+          "lon": 128.817945
+        },
+        {
+          "lat": 37.18206,
+          "lon": 128.817821
+        },
+        {
+          "lat": 37.182308,
+          "lon": 128.817697
+        },
+        {
+          "lat": 37.182555,
+          "lon": 128.817573
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "name": "Zeus 1",
+      "name_i18n": {
+        "ko": "제우스 1",
+        "en": "Zeus 1",
+        "ja": "ゼウス 1"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 2328,
+      "width_m": 41.3,
+      "elevation_m": 370,
+      "avg_angle_deg": 9.48,
+      "max_angle_deg": 13.6
+    },
+    {
+      "id": 1,
+      "name": "Zeus 2",
+      "name_i18n": {
+        "ko": "제우스 2",
+        "en": "Zeus 2",
+        "ja": "ゼウス 2"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 2198,
+      "width_m": 19.9,
+      "elevation_m": 95.61,
+      "avg_angle_deg": 7.49,
+      "max_angle_deg": 13.5
+    },
+    {
+      "id": 2,
+      "name": "Zeus 3",
+      "name_i18n": {
+        "ko": "제우스 3",
+        "en": "Zeus 3",
+        "ja": "ゼウス 3"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 1835,
+      "width_m": 71.2,
+      "elevation_m": 273,
+      "avg_angle_deg": 8.73,
+      "max_angle_deg": 13.8
+    },
+    {
+      "id": 3,
+      "name": "Zeus 3-1",
+      "name_i18n": {
+        "ko": "제우스 3-1",
+        "en": "Zeus 3-1",
+        "ja": "ゼウス 3-1"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 1023,
+      "width_m": 71.2,
+      "elevation_m": 121,
+      "avg_angle_deg": 6.8,
+      "max_angle_deg": 10.8
+    },
+    {
+      "id": 4,
+      "name": "Victoria 1",
+      "name_i18n": {
+        "ko": "빅토리아 1",
+        "en": "Victoria 1",
+        "ja": "ビクトリア 1"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1439,
+      "width_m": 49.1,
+      "elevation_m": 379,
+      "avg_angle_deg": 15.58,
+      "max_angle_deg": 27.7
+    },
+    {
+      "id": 5,
+      "name": "Victoria 2",
+      "name_i18n": {
+        "ko": "빅토리아 2",
+        "en": "Victoria 2",
+        "ja": "ビクトリア 2"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1382,
+      "width_m": 36.1,
+      "elevation_m": 269,
+      "avg_angle_deg": 18.72,
+      "max_angle_deg": 25.8
+    },
+    {
+      "id": 6,
+      "name": "Victoria 3",
+      "name_i18n": {
+        "ko": "빅토리아 3",
+        "en": "Victoria 3",
+        "ja": "ビクトリア 3"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 1311,
+      "width_m": 34.1,
+      "elevation_m": 376,
+      "avg_angle_deg": 17.01,
+      "max_angle_deg": 35.4
+    },
+    {
+      "id": 7,
+      "name": "Hera 1",
+      "name_i18n": {
+        "ko": "헤라 1",
+        "en": "Hera 1",
+        "ja": "ヘラ 1"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1508,
+      "width_m": 39.4,
+      "elevation_m": 197.03,
+      "avg_angle_deg": 14.86,
+      "max_angle_deg": 21.8
+    },
+    {
+      "id": 8,
+      "name": "Hera 2",
+      "name_i18n": {
+        "ko": "헤라 2",
+        "en": "Hera 2",
+        "ja": "ヘラ 2"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 1301,
+      "width_m": 38.8,
+      "elevation_m": 294.73,
+      "avg_angle_deg": 17.4,
+      "max_angle_deg": 24.2
+    },
+    {
+      "id": 9,
+      "name": "Hera 3",
+      "name_i18n": {
+        "ko": "헤라 3",
+        "en": "Hera 3",
+        "ja": "ヘラ 3"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1278,
+      "width_m": 36.6,
+      "elevation_m": 262.12,
+      "avg_angle_deg": 19.75,
+      "max_angle_deg": 25.8
+    },
+    {
+      "id": 10,
+      "name": "Apollo 1",
+      "name_i18n": {
+        "ko": "아폴로 1",
+        "en": "Apollo 1",
+        "ja": "アポロ 1"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1506,
+      "width_m": 35,
+      "elevation_m": 349.48,
+      "avg_angle_deg": 11.35,
+      "max_angle_deg": 25.4
+    },
+    {
+      "id": 11,
+      "name": "Apollo 2",
+      "name_i18n": {
+        "ko": "아폴로 2",
+        "en": "Apollo 2",
+        "ja": "アポロ 2"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 863,
+      "width_m": 33.1,
+      "elevation_m": 161,
+      "avg_angle_deg": 20.32,
+      "max_angle_deg": 24.2
+    },
+    {
+      "id": 12,
+      "name": "Apollo 3",
+      "name_i18n": {
+        "ko": "아폴로 3",
+        "en": "Apollo 3",
+        "ja": "アポロ 3"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 754,
+      "width_m": 33.7,
+      "elevation_m": 121.39,
+      "avg_angle_deg": 15.85,
+      "max_angle_deg": 26.3
+    },
+    {
+      "id": 13,
+      "name": "Apollo 4",
+      "name_i18n": {
+        "ko": "아폴로 4",
+        "en": "Apollo 4",
+        "ja": "アポロ 4"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1569,
+      "width_m": 54.7,
+      "elevation_m": 409.63,
+      "avg_angle_deg": 15.45,
+      "max_angle_deg": 24.2
+    },
+    {
+      "id": 14,
+      "name": "Apollo 5",
+      "name_i18n": {
+        "ko": "아폴로 5",
+        "en": "Apollo 5",
+        "ja": "アポロ 5"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 1239,
+      "width_m": 40.8,
+      "elevation_m": 266.33,
+      "avg_angle_deg": 22.13,
+      "max_angle_deg": 33
+    },
+    {
+      "id": 15,
+      "name": "Apollo 6",
+      "name_i18n": {
+        "ko": "아폴로 6",
+        "en": "Apollo 6",
+        "ja": "アポロ 6"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1543,
+      "width_m": 44.3,
+      "elevation_m": 193.37,
+      "avg_angle_deg": 18.03,
+      "max_angle_deg": 24.3
+    },
+    {
+      "id": 16,
+      "name": "Athena 2",
+      "name_i18n": {
+        "ko": "아테나 2",
+        "en": "Athena 2",
+        "ja": "アテナ 2"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1666,
+      "width_m": 42,
+      "elevation_m": 312,
+      "avg_angle_deg": 10.7,
+      "max_angle_deg": 15.2
+    },
+    {
+      "id": 17,
+      "name": "Athena 3",
+      "name_i18n": {
+        "ko": "아테나 3",
+        "en": "Athena 3",
+        "ja": "アテナ 3"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 1862,
+      "width_m": 19.2,
+      "elevation_m": 228.3,
+      "avg_angle_deg": 7.28,
+      "max_angle_deg": 11.3
+    },
+    {
+      "id": 18,
+      "name": "Athena 3-1",
+      "name_i18n": {
+        "ko": "아테나 3-1",
+        "en": "Athena 3-1",
+        "ja": "アテナ 3-1"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 1162,
+      "width_m": 19.2,
+      "elevation_m": 138.3,
+      "avg_angle_deg": 6.8,
+      "max_angle_deg": 10
+    }
+  ]
+}

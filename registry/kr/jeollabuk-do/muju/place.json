@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "kr",
+  "region_slug": "jeollabuk-do",
+  "place_slug": "muju",
+  "name": "Muju",
+  "region": "Jeollabuk-do",
+  "country": "South Korea",
+  "coordinates": {
+    "latitude": 35.88956946780578,
+    "longitude": 127.73198583536177
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "name_i18n": {
+    "ko": "무주",
+    "en": "Muju",
+    "ja": "ムジュ"
+  },
+  "region_i18n": {
+    "ko": "전라북도",
+    "en": "Jeollabuk-do",
+    "ja": "全羅北道"
+  },
+  "country_i18n": {
+    "ko": "대한민국",
+    "en": "South Korea",
+    "ja": "韓国"
+  }
+}

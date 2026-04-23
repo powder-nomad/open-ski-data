@@ -1,0 +1,168 @@
+{
+  "$schema": "../../../../schemas/slope.schema.json",
+  "country_code": "kr",
+  "region_slug": "gyeonggi",
+  "place_slug": "konjiam",
+  "slopes": [
+    {
+      "id": 0,
+      "name": "Whisen",
+      "name_i18n": {
+        "ko": "휘센",
+        "en": "Whisen",
+        "ja": "ウィセン"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 497,
+      "width_m": 74,
+      "area_m2": 29743,
+      "elevation_m": 60,
+      "avg_angle_deg": 7
+    },
+    {
+      "id": 1,
+      "name": "Ixio",
+      "name_i18n": {
+        "ko": "익시오",
+        "en": "Ixio",
+        "ja": "イクシオ"
+      },
+      "type": "run",
+      "difficulty": "be_in",
+      "length_m": 757,
+      "width_m": 76,
+      "area_m2": 72539,
+      "elevation_m": 119,
+      "avg_angle_deg": 10.4
+    },
+    {
+      "id": 2,
+      "name": "Gram 1",
+      "name_i18n": {
+        "ko": "그램1",
+        "en": "Gram 1",
+        "ja": "グラム1"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 548,
+      "width_m": 61,
+      "area_m2": 33712,
+      "elevation_m": 171,
+      "avg_angle_deg": 17.3
+    },
+    {
+      "id": 3,
+      "name": "Gram 2",
+      "name_i18n": {
+        "ko": "그램2",
+        "en": "Gram 2",
+        "ja": "グラム2"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 828,
+      "width_m": 54,
+      "area_m2": 45190,
+      "elevation_m": 200,
+      "avg_angle_deg": 13.6
+    },
+    {
+      "id": 4,
+      "name": "ThinQ 1",
+      "name_i18n": {
+        "ko": "씽큐1",
+        "en": "ThinQ 1",
+        "ja": "シンキュー1"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 380,
+      "width_m": 55,
+      "area_m2": 21646,
+      "elevation_m": 104,
+      "avg_angle_deg": 14.2
+    },
+    {
+      "id": 5,
+      "name": "ThinQ 2",
+      "name_i18n": {
+        "ko": "씽큐2",
+        "en": "ThinQ 2",
+        "ja": "シンキュー2"
+      },
+      "type": "run",
+      "difficulty": "be_in",
+      "length_m": 1049,
+      "width_m": 55,
+      "area_m2": 54859,
+      "elevation_m": 215,
+      "avg_angle_deg": 12.9
+    },
+    {
+      "id": 6,
+      "name": "ThinQ 3",
+      "name_i18n": {
+        "ko": "씽큐3",
+        "en": "ThinQ 3",
+        "ja": "シンキュー3"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 462,
+      "width_m": 68,
+      "area_m2": 25894,
+      "elevation_m": 117,
+      "avg_angle_deg": 14.2
+    },
+    {
+      "id": 7,
+      "name": "ThinQ Br",
+      "name_i18n": {
+        "ko": "씽큐Br",
+        "en": "ThinQ Br",
+        "ja": "シンキューBr"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 204,
+      "width_m": 31,
+      "area_m2": 6454,
+      "elevation_m": 23,
+      "avg_angle_deg": 10.9
+    },
+    {
+      "id": 8,
+      "name": "CNP1",
+      "name_i18n": {
+        "ko": "CNP1",
+        "en": "CNP1",
+        "ja": "CNP1"
+      },
+      "type": "run",
+      "difficulty": "be_in",
+      "length_m": 549,
+      "width_m": 31,
+      "area_m2": 15330,
+      "elevation_m": 98,
+      "avg_angle_deg": 10.9
+    },
+    {
+      "id": 9,
+      "name": "CNP2",
+      "name_i18n": {
+        "ko": "CNP2",
+        "en": "CNP2",
+        "ja": "CNP2"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 1087,
+      "width_m": 66,
+      "area_m2": 52870,
+      "elevation_m": 239,
+      "avg_angle_deg": 14
+    }
+  ]
+}

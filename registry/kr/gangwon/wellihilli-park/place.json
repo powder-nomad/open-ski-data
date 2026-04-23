@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "wellihilli-park",
+  "name": "WelliHilli Park",
+  "region": "Gangwon",
+  "country": "South Korea",
+  "coordinates": {
+    "latitude": 37.4855522986022,
+    "longitude": 128.247790847244
+  },
+  "elevations": {
+    "base_m": 0,
+    "summit_m": 0
+  },
+  "tags": [
+    "resort",
+    "korea"
+  ],
+  "name_i18n": {
+    "ko": "웰리힐리파크",
+    "en": "WelliHilli Park",
+    "ja": "ウェリーヒリパーク"
+  },
+  "region_i18n": {
+    "ko": "강원",
+    "en": "Gangwon",
+    "ja": "江原"
+  },
+  "country_i18n": {
+    "ko": "대한민국",
+    "en": "South Korea",
+    "ja": "韓国"
+  }
+}

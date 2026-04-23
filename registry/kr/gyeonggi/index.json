@@ -13,13 +13,13 @@
     {
       "place_slug": "jisan",
       "name": "Jisan",
-      "path": "registry/kr/gyeonggi/jisan.json",
+      "path": "registry/kr/gyeonggi/jisan/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "konjiam",
       "name": "Konjiam",
-      "path": "registry/kr/gyeonggi/konjiam.json",
+      "path": "registry/kr/gyeonggi/konjiam/place.json",
       "kind": "resort"
     }
   ]

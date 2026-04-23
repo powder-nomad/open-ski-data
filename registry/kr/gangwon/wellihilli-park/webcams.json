@@ -1,0 +1,68 @@
+{
+  "$schema": "../../../../schemas/webcam.schema.json",
+  "country_code": "kr",
+  "region_slug": "gangwon",
+  "place_slug": "wellihilli-park",
+  "webcams": [
+    {
+      "label": "Alpha",
+      "url": "https://live.wellihillipark.com/wellihillipark/_definst_/cam02.stream/playlist.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "알파",
+        "en": "Alpha",
+        "ja": "アルファ"
+      }
+    },
+    {
+      "label": "Base",
+      "url": "https://live.wellihillipark.com/wellihillipark/_definst_/cam03.stream/playlist.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "베이스",
+        "en": "Base",
+        "ja": "ベース"
+      }
+    },
+    {
+      "label": "Resort Overview",
+      "url": "https://live.wellihillipark.com/wellihillipark/_definst_/cam04.stream/playlist.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "리조트 전경",
+        "en": "Resort Overview",
+        "ja": "Resort 全景"
+      }
+    },
+    {
+      "label": "Summit Plaza",
+      "url": "https://live.wellihillipark.com/wellihillipark/_definst_/cam05.stream/playlist.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "정상광장",
+        "en": "Summit Plaza",
+        "ja": "山頂広場"
+      }
+    },
+    {
+      "label": "Family",
+      "url": "https://live.wellihillipark.com/wellihillipark/_definst_/cam06.stream/playlist.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "패밀리",
+        "en": "Family",
+        "ja": "ファミリー"
+      }
+    },
+    {
+      "label": "Water Planet",
+      "url": "https://live.wellihillipark.com/wellihillipark/_definst_/cam07.stream/playlist.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "워터플래닛",
+        "en": "Water Planet",
+        "ja": "Water Planet"
+      }
+    }
+  ]
+}

@@ -13,67 +13,67 @@
     {
       "place_slug": "niseko-annupuri",
       "name": "Niseko Annupuri",
-      "path": "registry/jp/hokkaido/niseko-annupuri.json",
+      "path": "registry/jp/hokkaido/niseko-annupuri/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "niseko-village",
       "name": "Niseko Village",
-      "path": "registry/jp/hokkaido/niseko-village.json",
+      "path": "registry/jp/hokkaido/niseko-village/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "niseko-grand-hirafu",
       "name": "Niseko Grand Hirafu",
-      "path": "registry/jp/hokkaido/niseko-grand-hirafu.json",
+      "path": "registry/jp/hokkaido/niseko-grand-hirafu/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "niseko-hanazono",
       "name": "Niseko Hanazono",
-      "path": "registry/jp/hokkaido/niseko-hanazono.json",
+      "path": "registry/jp/hokkaido/niseko-hanazono/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "rusutsu",
       "name": "Rusutsu Resort",
-      "path": "registry/jp/hokkaido/rusutsu.json",
+      "path": "registry/jp/hokkaido/rusutsu/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "kiroro",
       "name": "Kiroro Snow World",
-      "path": "registry/jp/hokkaido/kiroro.json",
+      "path": "registry/jp/hokkaido/kiroro/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "furano",
       "name": "Furano Ski Resort",
-      "path": "registry/jp/hokkaido/furano.json",
+      "path": "registry/jp/hokkaido/furano/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "tomamu",
       "name": "Hoshino Resorts TOMAMU",
-      "path": "registry/jp/hokkaido/tomamu.json",
+      "path": "registry/jp/hokkaido/tomamu/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "sapporo-teine",
       "name": "Sapporo Teine",
-      "path": "registry/jp/hokkaido/sapporo-teine.json",
+      "path": "registry/jp/hokkaido/sapporo-teine/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "sahoro",
       "name": "Sahoro Resort",
-      "path": "registry/jp/hokkaido/sahoro.json",
+      "path": "registry/jp/hokkaido/sahoro/place.json",
       "kind": "resort"
     },
     {
       "place_slug": "kamui-ski-links",
       "name": "Kamui Ski Links",
-      "path": "registry/jp/hokkaido/kamui-ski-links.json",
+      "path": "registry/jp/hokkaido/kamui-ski-links/place.json",
       "kind": "resort"
     }
   ],

@@ -1,0 +1,288 @@
+{
+  "$schema": "../../../../schemas/slope-graph.schema.json",
+  "place_slug": "yongpyong",
+  "version": 1,
+  "nodes": [
+    {
+      "id": "n-summit-rainbow",
+      "lat": 37.6405,
+      "lng": 128.6752,
+      "alt_m": 1450,
+      "kind": "summit",
+      "notes": "Rainbow gondola top station — primary summit."
+    },
+    {
+      "id": "n-rainbow-fork",
+      "lat": 37.6449,
+      "lng": 128.6801,
+      "alt_m": 1280,
+      "kind": "fork",
+      "notes": "Rainbow 1 splits into left/right variants here."
+    },
+    {
+      "id": "n-rainbow-merge",
+      "lat": 37.6471,
+      "lng": 128.6843,
+      "alt_m": 1150,
+      "kind": "merge",
+      "notes": "Left + right variants re-converge."
+    },
+    {
+      "id": "n-base-main",
+      "lat": 37.6511,
+      "lng": 128.6881,
+      "alt_m": 700,
+      "kind": "base",
+      "notes": "Main base area — bottom of Rainbow gondola + Silver chair."
+    },
+    {
+      "id": "n-summit-silver",
+      "lat": 37.6468,
+      "lng": 128.6902,
+      "alt_m": 1180,
+      "kind": "lift_top",
+      "notes": "Silver chair top — dumps you onto Silver run."
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-rainbow-upper",
+      "slope_id": "rainbow-1",
+      "kind": "slope",
+      "difficulty": "intermediate",
+      "from": "n-summit-rainbow",
+      "to": "n-rainbow-fork",
+      "length_m": 680,
+      "geometry": [
+        {
+          "lat": 37.6405,
+          "lng": 128.6752,
+          "alt_m": 1450
+        },
+        {
+          "lat": 37.6418,
+          "lng": 128.6767,
+          "alt_m": 1410
+        },
+        {
+          "lat": 37.643,
+          "lng": 128.678,
+          "alt_m": 1365
+        },
+        {
+          "lat": 37.6441,
+          "lng": 128.6793,
+          "alt_m": 1320
+        },
+        {
+          "lat": 37.6449,
+          "lng": 128.6801,
+          "alt_m": 1280
+        }
+      ]
+    },
+    {
+      "id": "e-rainbow-left",
+      "slope_id": "rainbow-1",
+      "kind": "slope",
+      "difficulty": "intermediate",
+      "from": "n-rainbow-fork",
+      "to": "n-rainbow-merge",
+      "length_m": 540,
+      "geometry": [
+        {
+          "lat": 37.6449,
+          "lng": 128.6801,
+          "alt_m": 1280
+        },
+        {
+          "lat": 37.6456,
+          "lng": 128.6815,
+          "alt_m": 1240
+        },
+        {
+          "lat": 37.6462,
+          "lng": 128.6828,
+          "alt_m": 1200
+        },
+        {
+          "lat": 37.6471,
+          "lng": 128.6843,
+          "alt_m": 1150
+        }
+      ],
+      "notes": "Skier's-left variant — mellower, shorter."
+    },
+    {
+      "id": "e-rainbow-right",
+      "slope_id": "rainbow-1",
+      "kind": "slope",
+      "difficulty": "advanced",
+      "from": "n-rainbow-fork",
+      "to": "n-rainbow-merge",
+      "length_m": 620,
+      "geometry": [
+        {
+          "lat": 37.6449,
+          "lng": 128.6801,
+          "alt_m": 1280
+        },
+        {
+          "lat": 37.6453,
+          "lng": 128.6819,
+          "alt_m": 1235
+        },
+        {
+          "lat": 37.646,
+          "lng": 128.6832,
+          "alt_m": 1195
+        },
+        {
+          "lat": 37.6467,
+          "lng": 128.6839,
+          "alt_m": 1170
+        },
+        {
+          "lat": 37.6471,
+          "lng": 128.6843,
+          "alt_m": 1150
+        }
+      ],
+      "notes": "Skier's-right variant — steeper wall section."
+    },
+    {
+      "id": "e-rainbow-lower",
+      "slope_id": "rainbow-1",
+      "kind": "slope",
+      "difficulty": "intermediate",
+      "from": "n-rainbow-merge",
+      "to": "n-base-main",
+      "length_m": 820,
+      "geometry": [
+        {
+          "lat": 37.6471,
+          "lng": 128.6843,
+          "alt_m": 1150
+        },
+        {
+          "lat": 37.6483,
+          "lng": 128.6855,
+          "alt_m": 1050
+        },
+        {
+          "lat": 37.6495,
+          "lng": 128.6868,
+          "alt_m": 920
+        },
+        {
+          "lat": 37.6505,
+          "lng": 128.6875,
+          "alt_m": 810
+        },
+        {
+          "lat": 37.6511,
+          "lng": 128.6881,
+          "alt_m": 700
+        }
+      ]
+    },
+    {
+      "id": "e-silver",
+      "slope_id": "silver",
+      "kind": "slope",
+      "difficulty": "advanced",
+      "from": "n-summit-silver",
+      "to": "n-base-main",
+      "length_m": 900,
+      "geometry": [
+        {
+          "lat": 37.6468,
+          "lng": 128.6902,
+          "alt_m": 1180
+        },
+        {
+          "lat": 37.6479,
+          "lng": 128.69,
+          "alt_m": 1080
+        },
+        {
+          "lat": 37.6488,
+          "lng": 128.6895,
+          "alt_m": 970
+        },
+        {
+          "lat": 37.6498,
+          "lng": 128.6889,
+          "alt_m": 860
+        },
+        {
+          "lat": 37.6505,
+          "lng": 128.6885,
+          "alt_m": 780
+        },
+        {
+          "lat": 37.6511,
+          "lng": 128.6881,
+          "alt_m": 700
+        }
+      ]
+    },
+    {
+      "id": "e-rainbow-gondola",
+      "slope_id": null,
+      "kind": "lift",
+      "from": "n-base-main",
+      "to": "n-summit-rainbow",
+      "length_m": 2100,
+      "geometry": [
+        {
+          "lat": 37.6511,
+          "lng": 128.6881,
+          "alt_m": 700
+        },
+        {
+          "lat": 37.6458,
+          "lng": 128.6816,
+          "alt_m": 1075
+        },
+        {
+          "lat": 37.6405,
+          "lng": 128.6752,
+          "alt_m": 1450
+        }
+      ],
+      "notes": "Rainbow gondola — primary uphill. 3-point polyline is a stand-in for the true cable path; good enough for trail-snap which just needs the endpoints to bracket the lift ride."
+    },
+    {
+      "id": "e-silver-chair",
+      "slope_id": null,
+      "kind": "lift",
+      "from": "n-base-main",
+      "to": "n-summit-silver",
+      "length_m": 1400,
+      "geometry": [
+        {
+          "lat": 37.6511,
+          "lng": 128.6881,
+          "alt_m": 700
+        },
+        {
+          "lat": 37.6489,
+          "lng": 128.6892,
+          "alt_m": 940
+        },
+        {
+          "lat": 37.6468,
+          "lng": 128.6902,
+          "alt_m": 1180
+        }
+      ]
+    }
+  ],
+  "snap_config": {
+    "r_max_m": 60,
+    "sigma_z_m": 12,
+    "gap_bridge_s": 20,
+    "conf_floor": 0.4
+  }
+}

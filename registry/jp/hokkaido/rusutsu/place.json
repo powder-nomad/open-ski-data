@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "hokkaido",
+  "place_slug": "rusutsu",
+  "name": "Rusutsu Resort",
+  "region": "Hokkaido",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 42.7399,
+    "longitude": 140.9008
+  },
+  "elevations": {
+    "base_m": 400,
+    "summit_m": 994
+  },
+  "tags": [
+    "hokkaido",
+    "resort",
+    "powder",
+    "destination"
+  ]
+}

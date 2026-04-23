@@ -1,0 +1,120 @@
+{
+  "$schema": "../../../../schemas/slope.schema.json",
+  "country_code": "kr",
+  "region_slug": "gyeonggi",
+  "place_slug": "jisan-forest",
+  "slopes": [
+    {
+      "id": 0,
+      "name": "1-1",
+      "name_i18n": {
+        "ko": "1-1",
+        "en": "1-1",
+        "ja": "1-1"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 300,
+      "elevation_m": 42,
+      "avg_angle_deg": 5,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": 1,
+      "name": "1",
+      "name_i18n": {
+        "ko": "1",
+        "en": "1",
+        "ja": "1"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 300,
+      "elevation_m": 44,
+      "avg_angle_deg": 7,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": 2,
+      "name": "2",
+      "name_i18n": {
+        "ko": "2",
+        "en": "2",
+        "ja": "2"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 700,
+      "elevation_m": 145,
+      "avg_angle_deg": 9,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": 3,
+      "name": "3",
+      "name_i18n": {
+        "ko": "3",
+        "en": "3",
+        "ja": "3"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 720,
+      "elevation_m": 145,
+      "avg_angle_deg": 9,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": 4,
+      "name": "5",
+      "name_i18n": {
+        "ko": "5",
+        "en": "5",
+        "ja": "5"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 870,
+      "elevation_m": 209,
+      "avg_angle_deg": 21,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": 5,
+      "name": "6",
+      "name_i18n": {
+        "ko": "6",
+        "en": "6",
+        "ja": "6"
+      },
+      "type": "run",
+      "difficulty": "expert",
+      "length_m": 900,
+      "elevation_m": 209,
+      "avg_angle_deg": 24,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": 6,
+      "name": "7",
+      "name_i18n": {
+        "ko": "7",
+        "en": "7",
+        "ja": "7"
+      },
+      "type": "run",
+      "difficulty": "in_ad",
+      "length_m": 1200,
+      "elevation_m": 177,
+      "avg_angle_deg": 13,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
+    }
+  ]
+}
