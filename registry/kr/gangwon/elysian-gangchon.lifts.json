@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "elysian-gangchon",
@@ -327,7 +328,7 @@
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 349.0,
+      "length_m": 349,
       "vertical_m": null,
       "connected_slope_ids": [
         "dragon"
@@ -804,7 +805,7 @@
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 279.0,
+      "length_m": 279,
       "vertical_m": null,
       "connected_slope_ids": [
         "penda",
@@ -868,6 +869,90 @@
           "alt_m": null
         }
       ]
+    },
+    {
+      "id": 0,
+      "name": "A1",
+      "name_i18n": {
+        "ko": "A1",
+        "en": "A1",
+        "ja": "A1"
+      },
+      "capacity_per_hour": 1100,
+      "length_m": 210,
+      "vertical_m": 20,
+      "seats": 4,
+      "speed_mps": 1.2
+    },
+    {
+      "id": 1,
+      "name": "A",
+      "name_i18n": {
+        "ko": "A",
+        "en": "A",
+        "ja": "A"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 360,
+      "vertical_m": 36,
+      "seats": 4,
+      "speed_mps": 4
+    },
+    {
+      "id": 2,
+      "name": "B",
+      "name_i18n": {
+        "ko": "B",
+        "en": "B",
+        "ja": "B"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 747,
+      "vertical_m": 166,
+      "seats": 4,
+      "speed_mps": 4
+    },
+    {
+      "id": 3,
+      "name": "C",
+      "name_i18n": {
+        "ko": "C",
+        "en": "C",
+        "ja": "C"
+      },
+      "capacity_per_hour": 3200,
+      "length_m": 807,
+      "vertical_m": 173,
+      "seats": 6,
+      "speed_mps": 4
+    },
+    {
+      "id": 4,
+      "name": "D",
+      "name_i18n": {
+        "ko": "D",
+        "en": "D",
+        "ja": "D"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 795,
+      "vertical_m": 173,
+      "seats": 4,
+      "speed_mps": 4
+    },
+    {
+      "id": 5,
+      "name": "E",
+      "name_i18n": {
+        "ko": "E",
+        "en": "E",
+        "ja": "E"
+      },
+      "capacity_per_hour": 1800,
+      "length_m": 509,
+      "vertical_m": 125,
+      "seats": 4,
+      "speed_mps": 4
     }
   ]
 }

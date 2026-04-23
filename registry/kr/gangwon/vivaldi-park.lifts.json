@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "vivaldi-park",
@@ -650,7 +651,7 @@
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 554.0,
+      "length_m": 554,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -1291,6 +1292,110 @@
           "alt_m": null
         }
       ]
+    },
+    {
+      "id": 0,
+      "name": "Ballad no.1",
+      "name_i18n": {
+        "ko": "발라드 1호기",
+        "en": "Ballad no.1",
+        "ja": "バラード 1ホ紀"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 468,
+      "seats": 4,
+      "cabin_count": 38
+    },
+    {
+      "id": 1,
+      "name": "Ballad no.2",
+      "name_i18n": {
+        "ko": "발라드 2호기",
+        "en": "Ballad no.2",
+        "ja": "バラード 2ホ紀"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 492,
+      "seats": 4,
+      "cabin_count": 41
+    },
+    {
+      "id": 2,
+      "name": "Jazz",
+      "name_i18n": {
+        "ko": "재즈",
+        "en": "Jazz",
+        "ja": "ジャズ"
+      },
+      "capacity_per_hour": 3600,
+      "length_m": 855,
+      "seats": 6,
+      "cabin_count": 53
+    },
+    {
+      "id": 3,
+      "name": "Hip-hop no.1",
+      "name_i18n": {
+        "ko": "힙합 1호기",
+        "en": "Hip-hop no.1",
+        "ja": "ヒップホップ 1ホ紀"
+      },
+      "capacity_per_hour": 1800,
+      "length_m": 552,
+      "seats": 4,
+      "cabin_count": 74
+    },
+    {
+      "id": 4,
+      "name": "Hip-hop no.2",
+      "name_i18n": {
+        "ko": "힙합 2호기",
+        "en": "Hip-hop no.2",
+        "ja": "ヒップホップ 2ホ紀"
+      },
+      "capacity_per_hour": 1800,
+      "length_m": 582,
+      "seats": 4,
+      "cabin_count": 76
+    },
+    {
+      "id": 5,
+      "name": "Techno",
+      "name_i18n": {
+        "ko": "테크노",
+        "en": "Techno",
+        "ja": "テクノ"
+      },
+      "capacity_per_hour": 4800,
+      "length_m": 1008,
+      "seats": 8,
+      "cabin_count": 51
+    },
+    {
+      "id": 6,
+      "name": "Gondola",
+      "name_i18n": {
+        "ko": "곤돌라",
+        "en": "Gondola",
+        "ja": "ゴンドラ"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 1115,
+      "seats": 8,
+      "cabin_count": 38
+    },
+    {
+      "id": 7,
+      "name": "Snowy Gondola",
+      "name_i18n": {
+        "ko": "스노위곤돌라",
+        "en": "Snowy Gondola",
+        "ja": "스ノ위ゴンドラ"
+      },
+      "capacity_per_hour": 1101,
+      "length_m": 942,
+      "seats": 8,
+      "cabin_count": 28
     }
   ]
 }

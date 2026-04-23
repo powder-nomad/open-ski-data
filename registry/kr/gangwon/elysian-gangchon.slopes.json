@@ -1,151 +1,20 @@
 {
+  "$schema": "../../../schemas/slope.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "elysian-gangchon",
   "slopes": [
     {
-      "id": "dragon",
-      "name": "Dragon",
-      "name_i18n": {
-        "en": "Dragon"
-      },
-      "type": "run",
-      "difficulty": "intermediate",
-      "length_m": 675.5,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [
-        "a-lift-l1047299736",
-        "b-lift-l104729973500",
-        "b-lift-l104729973508"
-      ],
-      "coordinates": [
-        {
-          "lat": 37.814747,
-          "lon": 127.582873
-        },
-        {
-          "lat": 37.814563,
-          "lon": 127.583094
-        },
-        {
-          "lat": 37.814378,
-          "lon": 127.583315
-        },
-        {
-          "lat": 37.814194,
-          "lon": 127.583536
-        },
-        {
-          "lat": 37.814357,
-          "lon": 127.583778
-        },
-        {
-          "lat": 37.814546,
-          "lon": 127.58377
-        },
-        {
-          "lat": 37.814734,
-          "lon": 127.583762
-        },
-        {
-          "lat": 37.814923,
-          "lon": 127.583754
-        },
-        {
-          "lat": 37.814923,
-          "lon": 127.583754
-        },
-        {
-          "lat": 37.814942,
-          "lon": 127.583976
-        },
-        {
-          "lat": 37.814751,
-          "lon": 127.584123
-        },
-        {
-          "lat": 37.814561,
-          "lon": 127.584271
-        },
-        {
-          "lat": 37.81437,
-          "lon": 127.584418
-        },
-        {
-          "lat": 37.814359,
-          "lon": 127.584705
-        },
-        {
-          "lat": 37.814348,
-          "lon": 127.584991
-        },
-        {
-          "lat": 37.814585,
-          "lon": 127.584956
-        },
-        {
-          "lat": 37.814823,
-          "lon": 127.58492
-        },
-        {
-          "lat": 37.814989,
-          "lon": 127.585123
-        },
-        {
-          "lat": 37.815156,
-          "lon": 127.585326
-        },
-        {
-          "lat": 37.814975,
-          "lon": 127.585517
-        },
-        {
-          "lat": 37.814793,
-          "lon": 127.585707
-        },
-        {
-          "lat": 37.814612,
-          "lon": 127.585898
-        },
-        {
-          "lat": 37.814569,
-          "lon": 127.586178
-        },
-        {
-          "lat": 37.814525,
-          "lon": 127.586459
-        },
-        {
-          "lat": 37.814482,
-          "lon": 127.586739
-        },
-        {
-          "lat": 37.814438,
-          "lon": 127.58702
-        },
-        {
-          "lat": 37.814395,
-          "lon": 127.5873
-        },
-        {
-          "lat": 37.814443,
-          "lon": 127.587558
-        },
-        {
-          "lat": 37.81449,
-          "lon": 127.587817
-        }
-      ]
-    },
-    {
       "id": "rabbit",
       "name": "Rabbit",
       "name_i18n": {
-        "en": "Rabbit"
+        "ko": "래빗",
+        "en": "Rabbit",
+        "ja": "ラアバイス"
       },
       "type": "run",
       "difficulty": "beginner",
-      "length_m": 382.9,
+      "length_m": 436,
       "connected_slope_ids": [
         "penda"
       ],
@@ -215,17 +84,21 @@
           "lat": 37.815821,
           "lon": 127.591527
         }
-      ]
+      ],
+      "elevation_m": 34,
+      "max_angle_deg": 7.40691212849523
     },
     {
       "id": "deer",
       "name": "Deer",
       "name_i18n": {
-        "en": "Deer"
+        "ko": "디어",
+        "en": "Deer",
+        "ja": "ダイジャオ"
       },
       "type": "run",
       "difficulty": "intermediate",
-      "length_m": 871.9,
+      "length_m": 945,
       "connected_slope_ids": [
         "horse"
       ],
@@ -365,331 +238,21 @@
           "lat": 37.820767,
           "lon": 127.58958
         }
-      ]
-    },
-    {
-      "id": "horse",
-      "name": "Horse",
-      "name_i18n": {
-        "en": "Horse"
-      },
-      "type": "run",
-      "difficulty": "intermediate",
-      "length_m": 510.0,
-      "connected_slope_ids": [
-        "deer",
-        "pegasus",
-        "zebra"
       ],
-      "connected_lift_ids": [
-        "c-lift-l1047299737"
-      ],
-      "coordinates": [
-        {
-          "lat": 37.815256,
-          "lon": 127.5829
-        },
-        {
-          "lat": 37.815367,
-          "lon": 127.583208
-        },
-        {
-          "lat": 37.815478,
-          "lon": 127.583516
-        },
-        {
-          "lat": 37.815589,
-          "lon": 127.583824
-        },
-        {
-          "lat": 37.8157,
-          "lon": 127.584132
-        },
-        {
-          "lat": 37.815811,
-          "lon": 127.584441
-        },
-        {
-          "lat": 37.815922,
-          "lon": 127.584749
-        },
-        {
-          "lat": 37.816033,
-          "lon": 127.585057
-        },
-        {
-          "lat": 37.816144,
-          "lon": 127.585365
-        },
-        {
-          "lat": 37.816255,
-          "lon": 127.585673
-        },
-        {
-          "lat": 37.816366,
-          "lon": 127.585981
-        },
-        {
-          "lat": 37.81647,
-          "lon": 127.586275
-        },
-        {
-          "lat": 37.816574,
-          "lon": 127.586569
-        },
-        {
-          "lat": 37.816678,
-          "lon": 127.586862
-        },
-        {
-          "lat": 37.816782,
-          "lon": 127.587156
-        },
-        {
-          "lat": 37.816886,
-          "lon": 127.58745
-        },
-        {
-          "lat": 37.816989,
-          "lon": 127.587743
-        },
-        {
-          "lat": 37.817121,
-          "lon": 127.587922
-        },
-        {
-          "lat": 37.817252,
-          "lon": 127.588101
-        }
-      ]
-    },
-    {
-      "id": "pegasus",
-      "name": "Pegasus",
-      "name_i18n": {
-        "en": "Pegasus"
-      },
-      "type": "run",
-      "difficulty": "intermediate",
-      "length_m": 375.0,
-      "connected_slope_ids": [
-        "horse",
-        "zebra"
-      ],
-      "connected_lift_ids": [],
-      "coordinates": [
-        {
-          "lat": 37.817321,
-          "lon": 127.588138
-        },
-        {
-          "lat": 37.817574,
-          "lon": 127.588202
-        },
-        {
-          "lat": 37.817827,
-          "lon": 127.588266
-        },
-        {
-          "lat": 37.81808,
-          "lon": 127.58833
-        },
-        {
-          "lat": 37.818333,
-          "lon": 127.588394
-        },
-        {
-          "lat": 37.818586,
-          "lon": 127.588458
-        },
-        {
-          "lat": 37.818832,
-          "lon": 127.588591
-        },
-        {
-          "lat": 37.819078,
-          "lon": 127.588723
-        },
-        {
-          "lat": 37.819324,
-          "lon": 127.588856
-        },
-        {
-          "lat": 37.819569,
-          "lon": 127.588988
-        },
-        {
-          "lat": 37.819776,
-          "lon": 127.589173
-        },
-        {
-          "lat": 37.819983,
-          "lon": 127.589358
-        },
-        {
-          "lat": 37.82019,
-          "lon": 127.589543
-        },
-        {
-          "lat": 37.820397,
-          "lon": 127.589728
-        }
-      ]
-    },
-    {
-      "id": "zebra",
-      "name": "Zebra",
-      "name_i18n": {
-        "en": "Zebra"
-      },
-      "type": "run",
-      "difficulty": "intermediate",
-      "length_m": 387.3,
-      "connected_slope_ids": [
-        "horse",
-        "pegasus"
-      ],
-      "connected_lift_ids": [
-        "a1-lift-l1466356818"
-      ],
-      "coordinates": [
-        {
-          "lat": 37.817321,
-          "lon": 127.588138
-        },
-        {
-          "lat": 37.817308,
-          "lon": 127.588401
-        },
-        {
-          "lat": 37.817295,
-          "lon": 127.588664
-        },
-        {
-          "lat": 37.817282,
-          "lon": 127.588926
-        },
-        {
-          "lat": 37.817457,
-          "lon": 127.589136
-        },
-        {
-          "lat": 37.817632,
-          "lon": 127.589346
-        },
-        {
-          "lat": 37.817877,
-          "lon": 127.589485
-        },
-        {
-          "lat": 37.818122,
-          "lon": 127.589625
-        },
-        {
-          "lat": 37.818367,
-          "lon": 127.589765
-        },
-        {
-          "lat": 37.818628,
-          "lon": 127.589732
-        },
-        {
-          "lat": 37.818888,
-          "lon": 127.589699
-        },
-        {
-          "lat": 37.819148,
-          "lon": 127.589666
-        },
-        {
-          "lat": 37.819409,
-          "lon": 127.589633
-        },
-        {
-          "lat": 37.819669,
-          "lon": 127.5896
-        },
-        {
-          "lat": 37.81993,
-          "lon": 127.589567
-        }
-      ]
-    },
-    {
-      "id": "penda",
-      "name": "Penda",
-      "name_i18n": {
-        "en": "Penda"
-      },
-      "type": "run",
-      "difficulty": "beginner",
-      "length_m": 300.2,
-      "connected_slope_ids": [
-        "rabbit"
-      ],
-      "connected_lift_ids": [
-        "a1-lift-l1466356818"
-      ],
-      "coordinates": [
-        {
-          "lat": 37.818245,
-          "lon": 127.589789
-        },
-        {
-          "lat": 37.818033,
-          "lon": 127.589945
-        },
-        {
-          "lat": 37.817821,
-          "lon": 127.590101
-        },
-        {
-          "lat": 37.817608,
-          "lon": 127.590256
-        },
-        {
-          "lat": 37.817396,
-          "lon": 127.590412
-        },
-        {
-          "lat": 37.817183,
-          "lon": 127.590568
-        },
-        {
-          "lat": 37.816971,
-          "lon": 127.590724
-        },
-        {
-          "lat": 37.816758,
-          "lon": 127.590879
-        },
-        {
-          "lat": 37.816546,
-          "lon": 127.591035
-        },
-        {
-          "lat": 37.816334,
-          "lon": 127.591191
-        },
-        {
-          "lat": 37.816121,
-          "lon": 127.591347
-        },
-        {
-          "lat": 37.815909,
-          "lon": 127.591502
-        }
-      ]
+      "elevation_m": 172,
+      "max_angle_deg": 18.26288994219413
     },
     {
       "id": "puma",
       "name": "Puma",
       "name_i18n": {
-        "en": "Puma"
+        "ko": "퓨마",
+        "en": "Puma",
+        "ja": "ハユマア"
       },
       "type": "run",
       "difficulty": "intermediate",
-      "length_m": 491.5,
+      "length_m": 1175,
       "connected_slope_ids": [
         "leopard"
       ],
@@ -789,17 +352,21 @@
           "lat": 37.817206,
           "lon": 127.584807
         }
-      ]
+      ],
+      "elevation_m": 120,
+      "max_angle_deg": 9.090276920822323
     },
     {
       "id": "leopard",
       "name": "Leopard",
       "name_i18n": {
-        "en": "Leopard"
+        "ko": "레퍼드",
+        "en": "Leopard",
+        "ja": "ラエハオダウ"
       },
       "type": "run",
-      "difficulty": "expert",
-      "length_m": 442.1,
+      "difficulty": "advanced",
+      "length_m": 518,
       "connected_slope_ids": [
         "puma"
       ],
@@ -879,89 +446,78 @@
           "lat": 37.820062,
           "lon": 127.588505
         }
-      ]
+      ],
+      "elevation_m": 124,
+      "max_angle_deg": 27.47443162627713
     },
     {
-      "id": "jeguar",
-      "name": "Jeguar",
+      "id": 0,
+      "name": "Panda",
       "name_i18n": {
-        "en": "Jeguar"
+        "ko": "팬더",
+        "en": "Panda",
+        "ja": "パンダ"
       },
       "type": "run",
-      "difficulty": "expert",
-      "length_m": 442.6,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
-      "coordinates": [
-        {
-          "lat": 37.819109,
-          "lon": 127.585673
-        },
-        {
-          "lat": 37.81937,
-          "lon": 127.585695
-        },
-        {
-          "lat": 37.819631,
-          "lon": 127.585716
-        },
-        {
-          "lat": 37.819893,
-          "lon": 127.585738
-        },
-        {
-          "lat": 37.820076,
-          "lon": 127.585876
-        },
-        {
-          "lat": 37.820259,
-          "lon": 127.586015
-        },
-        {
-          "lat": 37.820442,
-          "lon": 127.586153
-        },
-        {
-          "lat": 37.820625,
-          "lon": 127.586291
-        },
-        {
-          "lat": 37.820822,
-          "lon": 127.586502
-        },
-        {
-          "lat": 37.821019,
-          "lon": 127.586714
-        },
-        {
-          "lat": 37.821216,
-          "lon": 127.586925
-        },
-        {
-          "lat": 37.821207,
-          "lon": 127.58725
-        },
-        {
-          "lat": 37.821199,
-          "lon": 127.587576
-        },
-        {
-          "lat": 37.82119,
-          "lon": 127.587901
-        },
-        {
-          "lat": 37.82119,
-          "lon": 127.588237
-        },
-        {
-          "lat": 37.82119,
-          "lon": 127.588573
-        },
-        {
-          "lat": 37.82119,
-          "lon": 127.588909
-        }
-      ]
+      "difficulty": "beginner",
+      "length_m": 306,
+      "elevation_m": 21,
+      "avg_angle_deg": 5.142764557884242
+    },
+    {
+      "id": 1,
+      "name": "Dragon/Rabbit",
+      "name_i18n": {
+        "ko": "드래곤/래빗",
+        "en": "Dragon/Rabbit",
+        "ja": "ドラゴン/래빗"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1500,
+      "elevation_m": 165,
+      "max_angle_deg": 12.952764513375518
+    },
+    {
+      "id": 2,
+      "name": "Horse/Zebra",
+      "name_i18n": {
+        "ko": "호스/제브라",
+        "en": "Horse/Zebra",
+        "ja": "ハオサウ/チャエバウラア"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1032,
+      "elevation_m": 165,
+      "max_angle_deg": 19.29004621918873
+    },
+    {
+      "id": 3,
+      "name": "Horse/Pegasus",
+      "name_i18n": {
+        "ko": "호스/페가수스",
+        "en": "Horse/Pegasus",
+        "ja": "ハオサウ/ハエガアサウサウ"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1045,
+      "elevation_m": 172,
+      "max_angle_deg": 17.223436191131462
+    },
+    {
+      "id": 4,
+      "name": "Jaguar",
+      "name_i18n": {
+        "ko": "재규어",
+        "en": "Jaguar",
+        "ja": "チャアガユジャオ"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 524,
+      "max_angle_deg": 28.36904629327858
     }
   ]
 }

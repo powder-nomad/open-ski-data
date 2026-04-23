@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "high1",
@@ -7,11 +8,13 @@
       "id": "hera-l535760430",
       "name": "Hera",
       "name_i18n": {
-        "en": "Hera"
+        "ko": "헤라",
+        "en": "Hera",
+        "ja": "ヘラ"
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 1174.3,
+      "length_m": 1221,
       "vertical_m": null,
       "connected_slope_ids": [
         "athena1",
@@ -250,17 +253,22 @@
           "lon": 128.817441,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 6,
+      "speed_mps": 5,
+      "ride_time_s": 300
     },
     {
       "id": "victoria-l535760431",
       "name": "Victoria",
       "name_i18n": {
-        "en": "Victoria"
+        "ko": "빅토리아",
+        "en": "Victoria",
+        "ja": "ビクトリア"
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 1172.9,
+      "length_m": 1323,
       "vertical_m": null,
       "connected_slope_ids": [
         "victoria1",
@@ -494,17 +502,22 @@
           "lon": 128.830034,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4,
+      "speed_mps": 5,
+      "ride_time_s": 300
     },
     {
       "id": "apollo-l535760433",
       "name": "Apollo",
       "name_i18n": {
-        "en": "Apollo"
+        "ko": "아폴로",
+        "en": "Apollo",
+        "ja": "アポロ"
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 1102.8,
+      "length_m": 1232,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -724,17 +737,22 @@
           "lon": 128.820241,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4,
+      "speed_mps": 5,
+      "ride_time_s": 360
     },
     {
       "id": "zeus-l535760435",
       "name": "Zeus",
       "name_i18n": {
-        "en": "Zeus"
+        "ko": "제우스",
+        "en": "Zeus",
+        "ja": "ゼウス"
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 1898.2,
+      "length_m": 1912,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -1109,17 +1127,22 @@
           "lon": 128.827148,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 6,
+      "speed_mps": 5,
+      "ride_time_s": 420
     },
     {
       "id": "jupiter-l535760436",
       "name": "Jupiter",
       "name_i18n": {
-        "en": "Jupiter"
+        "ko": "주피터",
+        "en": "Jupiter",
+        "ja": "チャウハイパオ"
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 981.5,
+      "length_m": 950,
       "vertical_m": null,
       "connected_slope_ids": [
         "zeus3"
@@ -1311,7 +1334,10 @@
           "lon": 128.832679,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 6,
+      "speed_mps": 5,
+      "ride_time_s": 240
     },
     {
       "id": "mountain-gondola-l535760437",
@@ -1859,11 +1885,13 @@
       "id": "athena-l535760438",
       "name": "Athena",
       "name_i18n": {
-        "en": "Athena"
+        "ko": "아테나",
+        "en": "Athena",
+        "ja": "アテナ"
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 1534.5,
+      "length_m": 1547,
       "vertical_m": null,
       "connected_slope_ids": [
         "apollo3"
@@ -2160,7 +2188,10 @@
           "lon": 128.820475,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 6,
+      "speed_mps": 5,
+      "ride_time_s": 360
     },
     {
       "id": "high1-gondola-l53576043900",
@@ -2912,6 +2943,45 @@
           "alt_m": null
         }
       ]
+    },
+    {
+      "id": 0,
+      "name": "Valley",
+      "name_i18n": {
+        "ko": "밸리",
+        "en": "Valley",
+        "ja": "バレー"
+      },
+      "length_m": 1243,
+      "seats": 8,
+      "speed_mps": 5,
+      "ride_time_s": 360
+    },
+    {
+      "id": 1,
+      "name": "Mountain",
+      "name_i18n": {
+        "ko": "마운틴",
+        "en": "Mountain",
+        "ja": "マウンテン"
+      },
+      "length_m": 2832,
+      "seats": 8,
+      "speed_mps": 5,
+      "ride_time_s": 720
+    },
+    {
+      "id": 2,
+      "name": "Palace",
+      "name_i18n": {
+        "ko": "팰리스",
+        "en": "Palace",
+        "ja": "ハアルライサウ"
+      },
+      "length_m": 2523,
+      "seats": 8,
+      "speed_mps": 5,
+      "ride_time_s": 600
     }
   ]
 }

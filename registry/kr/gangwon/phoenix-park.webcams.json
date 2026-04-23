@@ -8,18 +8,16 @@
       "label": "Hawk/Sparrow",
       "url": "https://streaming.phoenixhnr.co.kr/hls/yh_02_3.m3u8",
       "type": "stream",
-      "refresh_interval_ms": 60000,
       "label_i18n": {
         "ko": "호크/스패로우",
         "en": "Hawk/Sparrow",
-        "ja": "Hawk／Sparrow"
+        "ja": "ホ크/スパロー"
       }
     },
     {
       "label": "Bulsae Maru",
       "url": "https://streaming.phoenixhnr.co.kr/hls/ht_01_01.m3u8",
       "type": "stream",
-      "refresh_interval_ms": 60000,
       "label_i18n": {
         "ko": "불새마루",
         "en": "Bulsae Maru",
@@ -30,18 +28,16 @@
       "label": "Penguin",
       "url": "https://streaming.phoenixhnr.co.kr/hls/bc_01.m3u8",
       "type": "stream",
-      "refresh_interval_ms": 60000,
       "label_i18n": {
         "ko": "펭귄",
         "en": "Penguin",
-        "ja": "Penguin"
+        "ja": "ペンギン"
       }
     },
     {
       "label": "Snow Village",
       "url": "https://streaming.phoenixhnr.co.kr/hls/yh_01_2.m3u8",
       "type": "stream",
-      "refresh_interval_ms": 60000,
       "label_i18n": {
         "ko": "스노우 빌리지",
         "en": "Snow Village",
@@ -52,18 +48,16 @@
       "label": "Dodo",
       "url": "https://streaming.phoenixhnr.co.kr/hls/sp_01.m3u8",
       "type": "stream",
-      "refresh_interval_ms": 60000,
       "label_i18n": {
         "ko": "도도",
         "en": "Dodo",
-        "ja": "Dodo"
+        "ja": "ドードー"
       }
     },
     {
       "label": "Montblanc Plaza",
       "url": "https://streaming.phoenixhnr.co.kr/hls/mb_03.m3u8",
       "type": "stream",
-      "refresh_interval_ms": 60000,
       "label_i18n": {
         "ko": "몽블랑 광장",
         "en": "Montblanc Plaza",
@@ -74,7 +68,6 @@
       "label": "Base",
       "url": "https://streaming.phoenixhnr.co.kr/hls/bc_02_1.m3u8",
       "type": "stream",
-      "refresh_interval_ms": 60000,
       "label_i18n": {
         "ko": "베이스",
         "en": "Base",

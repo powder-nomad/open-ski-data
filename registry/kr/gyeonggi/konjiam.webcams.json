@@ -7,8 +7,7 @@
     {
       "label": "Summit Rest Area",
       "url": "http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam01.stream/playlist.m3u8",
-      "type": "stream",
-      "refresh_interval_ms": 60000,
+      "type": "link",
       "label_i18n": {
         "ko": "정상 휴게소",
         "en": "Summit Rest Area",
@@ -18,45 +17,41 @@
     {
       "label": "Summit Slope",
       "url": "http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam02.stream/playlist.m3u8",
-      "type": "stream",
-      "refresh_interval_ms": 60000,
+      "type": "link",
       "label_i18n": {
         "ko": "정상부 슬로프",
         "en": "Summit Slope",
-        "ja": "山頂 コース"
+        "ja": "山頂부 スロープ"
       }
     },
     {
       "label": "Middle Slope",
       "url": "http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam05.stream/playlist.m3u8",
-      "type": "stream",
-      "refresh_interval_ms": 60000,
+      "type": "link",
       "label_i18n": {
         "ko": "중간 슬로프",
         "en": "Middle Slope",
-        "ja": "中腹 コース"
+        "ja": "중간 スロープ"
       }
     },
     {
       "label": "Beginners Base",
       "url": "http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam03.stream/playlist.m3u8",
-      "type": "stream",
-      "refresh_interval_ms": 60000,
+      "type": "link",
       "label_i18n": {
         "ko": "초중급 베이스",
         "en": "Beginners Base",
-        "ja": "初級 ベース"
+        "ja": "초中級 ベース"
       }
     },
     {
       "label": "Intermediate-Advanced Base",
       "url": "http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam04.stream/playlist.m3u8",
-      "type": "stream",
-      "refresh_interval_ms": 60000,
+      "type": "link",
       "label_i18n": {
         "ko": "중상급 베이스",
         "en": "Intermediate-Advanced Base",
-        "ja": "中上級 ベース"
+        "ja": "중上級 ベース"
       }
     }
   ]

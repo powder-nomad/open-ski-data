@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "jeollabuk-do",
   "place_slug": "muju",
@@ -7,12 +8,13 @@
       "id": "gondola-l27909068",
       "name": "Gondola",
       "name_i18n": {
-        "ko": "곤돌라",
-        "en": "Gondola"
+        "ko": "곤도라",
+        "en": "Gondola",
+        "ja": "ガオンダオラア"
       },
       "type": "gondola",
-      "capacity_per_hour": null,
-      "length_m": 2537.4,
+      "capacity_per_hour": 2400,
+      "length_m": 2659,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -487,17 +489,22 @@
           "lon": 127.743412,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 8,
+      "cabin_count": 103,
+      "speed_mps": 5
     },
     {
       "id": "muju-express-l293598170",
       "name": "Muju Express",
       "name_i18n": {
-        "en": "Muju Express"
+        "ko": "무주 익스프레스",
+        "en": "Muju Express",
+        "ja": "茂朱 エクスプレス"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 1491.9,
+      "capacity_per_hour": 2400,
+      "length_m": 1548,
       "vertical_m": null,
       "connected_slope_ids": [
         "unnamed"
@@ -794,17 +801,22 @@
           "lon": 127.735277,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4,
+      "cabin_count": 108,
+      "speed_mps": 5
     },
     {
       "id": "cruiser-l293598171",
       "name": "Cruiser",
       "name_i18n": {
-        "en": "Cruiser"
+        "ko": "크루저",
+        "en": "Cruiser",
+        "ja": "タウラウチャオ"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 1058.2,
+      "capacity_per_hour": 1800,
+      "length_m": 1090,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -1024,17 +1036,22 @@
           "lon": 127.735853,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4,
+      "cabin_count": 136,
+      "speed_mps": 2
     },
     {
       "id": "melody-l293598172",
       "name": "Melody",
       "name_i18n": {
-        "en": "Melody"
+        "ko": "멜로디",
+        "en": "Melody",
+        "ja": "マエルラオダイ"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 1014.3,
+      "capacity_per_hour": 2400,
+      "length_m": 1086,
       "vertical_m": null,
       "connected_slope_ids": [
         "unnamed"
@@ -1251,17 +1268,22 @@
           "lon": 127.744604,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4,
+      "cabin_count": 76,
+      "speed_mps": 5
     },
     {
       "id": "chorus-l293598175",
       "name": "Chorus",
       "name_i18n": {
-        "en": "Chorus"
+        "ko": "코러스",
+        "en": "Chorus",
+        "ja": "タオラオサウ"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 1550.4,
+      "capacity_per_hour": 2400,
+      "length_m": 1588,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -1561,17 +1583,22 @@
           "lon": 127.75291,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4,
+      "cabin_count": 110,
+      "speed_mps": 5
     },
     {
       "id": "school-bus-l293598177",
       "name": "School Bus",
       "name_i18n": {
-        "en": "School Bus"
+        "ko": "스쿨버스",
+        "en": "School Bus",
+        "ja": "サウタウルバオサウ"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 251.5,
+      "capacity_per_hour": 750,
+      "length_m": 286,
       "vertical_m": null,
       "connected_slope_ids": [
         "unnamed"
@@ -1638,17 +1665,22 @@
           "lon": 127.742261,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 2,
+      "cabin_count": 41,
+      "speed_mps": 1.5
     },
     {
       "id": "boat-l293598179",
       "name": "Boat",
       "name_i18n": {
-        "en": "Boat"
+        "ko": "보트",
+        "en": "Boat",
+        "ja": "バオパウ"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 352.8,
+      "capacity_per_hour": 900,
+      "length_m": 360,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -1733,7 +1765,10 @@
           "lon": 127.738535,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 2,
+      "cabin_count": 51,
+      "speed_mps": 1.8
     },
     {
       "id": "ssang-ssang-l293598181",
@@ -1904,11 +1939,13 @@
       "id": "canoe-l293598182",
       "name": "Canoe",
       "name_i18n": {
-        "en": "Canoe"
+        "ko": "카누",
+        "en": "Canoe",
+        "ja": "タアナウ"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 568.7,
+      "capacity_per_hour": 1800,
+      "length_m": 595,
       "vertical_m": null,
       "connected_slope_ids": [
         "unnamed-975335043"
@@ -2030,17 +2067,22 @@
           "lon": 127.730637,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4,
+      "cabin_count": 75,
+      "speed_mps": 1.8
     },
     {
       "id": "yacht-l293598183",
       "name": "Yacht",
       "name_i18n": {
-        "en": "Yacht"
+        "ko": "요트",
+        "en": "Yacht",
+        "ja": "ジャヨパウ"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 677.1,
+      "capacity_per_hour": 1800,
+      "length_m": 685,
       "vertical_m": null,
       "connected_slope_ids": [
         "unnamed",
@@ -2178,7 +2220,10 @@
           "lon": 127.736445,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4,
+      "cabin_count": 85,
+      "speed_mps": 2
     },
     {
       "id": "unnamed-293598184-l293598184",
@@ -2337,11 +2382,13 @@
       "id": "liner-l293598186",
       "name": "Liner",
       "name_i18n": {
-        "en": "Liner"
+        "ko": "라이너",
+        "en": "Liner",
+        "ja": "ラアジャイナオ"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 978.2,
+      "capacity_per_hour": 2400,
+      "length_m": 995,
       "vertical_m": null,
       "connected_slope_ids": [
         "unnamed-975335043"
@@ -2548,17 +2595,22 @@
           "lon": 127.731005,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4,
+      "cabin_count": 70,
+      "speed_mps": 5
     },
     {
       "id": "harmony-l293598187",
       "name": "Harmony",
       "name_i18n": {
-        "en": "Harmony"
+        "ko": "하모니",
+        "en": "Harmony",
+        "ja": "ハアマオナイ"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 1392.2,
+      "capacity_per_hour": 2400,
+      "length_m": 1512,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -2823,7 +2875,52 @@
           "lon": 127.744015,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 6,
+      "cabin_count": 83,
+      "speed_mps": 4.2
+    },
+    {
+      "id": 0,
+      "name": "Jump",
+      "name_i18n": {
+        "ko": "점프",
+        "en": "Jump",
+        "ja": "チャオムハウ"
+      },
+      "capacity_per_hour": 900,
+      "length_m": 293,
+      "seats": 2,
+      "cabin_count": 37,
+      "speed_mps": 2
+    },
+    {
+      "id": 1,
+      "name": "Ssangssang",
+      "name_i18n": {
+        "ko": "쌍쌍",
+        "en": "Ssangssang",
+        "ja": "サアンサアン"
+      },
+      "capacity_per_hour": 3200,
+      "length_m": 750,
+      "seats": 6,
+      "cabin_count": 51,
+      "speed_mps": 5
+    },
+    {
+      "id": 2,
+      "name": "Echo",
+      "name_i18n": {
+        "ko": "에코",
+        "en": "Echo",
+        "ja": "エコー"
+      },
+      "capacity_per_hour": 3200,
+      "length_m": 712,
+      "seats": 6,
+      "cabin_count": 45,
+      "speed_mps": 5
     }
   ]
 }

@@ -7,8 +7,7 @@
     {
       "label": "Basic",
       "url": "https://rtsp.me/embed/2kTsKt35/",
-      "type": "image",
-      "refresh_interval_ms": 60000,
+      "type": "link",
       "label_i18n": {
         "ko": "베이직",
         "en": "Basic",
@@ -18,12 +17,11 @@
     {
       "label": "Slope Plaza",
       "url": "https://rtsp.me/embed/ry9aTdQh",
-      "type": "image",
-      "refresh_interval_ms": 60000,
+      "type": "unavailable",
       "label_i18n": {
         "ko": "슬로프 광장",
         "en": "Slope Plaza",
-        "ja": "コース 広場"
+        "ja": "スロープ 広場"
       }
     }
   ]

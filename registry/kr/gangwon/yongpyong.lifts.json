@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "yongpyong",
@@ -11,7 +12,7 @@
       },
       "type": "gondola",
       "capacity_per_hour": null,
-      "length_m": 3618.0,
+      "length_m": 3618,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -699,7 +700,7 @@
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 580.0,
+      "length_m": 580,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -1101,11 +1102,13 @@
       "id": "gold-l477491147",
       "name": "Gold",
       "name_i18n": {
-        "en": "Gold"
+        "ko": "골드",
+        "en": "Gold",
+        "ja": "ゴールド"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 1625.7,
+      "capacity_per_hour": 3200,
+      "length_m": 1689,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -1425,17 +1428,20 @@
           "lon": 128.687089,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 6
     },
     {
       "id": "mega-green-l477491151",
       "name": "Mega Green",
       "name_i18n": {
-        "en": "Mega Green"
+        "ko": "메가그린",
+        "en": "Mega Green",
+        "ja": "メガグリーン"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 541.9,
+      "capacity_per_hour": 3200,
+      "length_m": 568,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -1560,17 +1566,20 @@
           "lon": 128.677613,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 6
     },
     {
       "id": "rainbow-l533413168",
       "name": "Rainbow",
       "name_i18n": {
-        "en": "Rainbow"
+        "ko": "레인보우",
+        "en": "Rainbow",
+        "ja": "レインボー"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 1411.3,
+      "capacity_per_hour": 2400,
+      "length_m": 1421,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -1855,17 +1864,20 @@
           "lon": 128.663156,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4
     },
     {
       "id": "red-l533419417",
       "name": "Red",
       "name_i18n": {
-        "en": "Red"
+        "ko": "레드",
+        "en": "Red",
+        "ja": "レッド"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 887.3,
+      "capacity_per_hour": 2400,
+      "length_m": 905,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -2060,17 +2072,20 @@
           "lon": 128.681998,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4
     },
     {
       "id": "new-gold-l533419419",
       "name": "New Gold",
       "name_i18n": {
-        "en": "New Gold"
+        "ko": "뉴골드",
+        "en": "New Gold",
+        "ja": "ニューゴールド"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 706.2,
+      "capacity_per_hour": 720,
+      "length_m": 720,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -2215,17 +2230,20 @@
           "lon": 128.686668,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4
     },
     {
       "id": "silver-l533426025",
       "name": "Silver",
       "name_i18n": {
-        "en": "Silver"
+        "ko": "실버",
+        "en": "Silver",
+        "ja": "シルバー"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 705.6,
+      "capacity_per_hour": 1800,
+      "length_m": 700,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -2370,17 +2388,20 @@
           "lon": 128.678063,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4
     },
     {
       "id": "green-l1457094309",
       "name": "Green",
       "name_i18n": {
-        "en": "Green"
+        "ko": "그린",
+        "en": "Green",
+        "ja": "グリーン"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 585.3,
+      "capacity_per_hour": 2400,
+      "length_m": 598,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -2490,7 +2511,8 @@
           "lon": 128.677367,
           "alt_m": null
         }
-      ]
+      ],
+      "seats": 4
     },
     {
       "id": "unnamed-l1457094310",
@@ -2617,11 +2639,12 @@
       "name": "Bridge",
       "name_i18n": {
         "ko": "브릿지",
-        "en": "Bridge"
+        "en": "Bridge",
+        "ja": "バウライスチャイ"
       },
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 343.0,
+      "capacity_per_hour": 900,
+      "length_m": 366,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -2691,6 +2714,110 @@
           "lon": 128.683196,
           "alt_m": null
         }
+      ],
+      "seats": 2
+    },
+    {
+      "id": 0,
+      "name": "New Red",
+      "name_i18n": {
+        "ko": "뉴레드",
+        "en": "New Red",
+        "ja": "ニューレッド"
+      },
+      "capacity_per_hour": 1350,
+      "length_m": 550,
+      "seats": 3,
+      "connected_slope_ids": [
+        4,
+        10,
+        11,
+        13
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Blue",
+      "name_i18n": {
+        "ko": "블루",
+        "en": "Blue",
+        "ja": "ブルー"
+      },
+      "capacity_per_hour": 900,
+      "length_m": 600,
+      "seats": 2,
+      "connected_slope_ids": [
+        4,
+        10,
+        11,
+        13
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Pink",
+      "name_i18n": {
+        "ko": "핑크",
+        "en": "Pink",
+        "ja": "ピンク"
+      },
+      "capacity_per_hour": 1350,
+      "length_m": 630,
+      "seats": 3,
+      "connected_slope_ids": [
+        2
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Yellow",
+      "name_i18n": {
+        "ko": "옐로우",
+        "en": "Yellow",
+        "ja": "イエロー"
+      },
+      "capacity_per_hour": 1800,
+      "length_m": 496,
+      "seats": 4,
+      "connected_slope_ids": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": 4,
+      "name": "New Yellow",
+      "name_i18n": {
+        "ko": "뉴옐로우",
+        "en": "New Yellow",
+        "ja": "ニューイエロー"
+      },
+      "capacity_per_hour": 1800,
+      "length_m": 348,
+      "seats": 4,
+      "connected_slope_ids": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Gondola",
+      "name_i18n": {
+        "ko": "발왕산 관광케이블카",
+        "en": "Gondola",
+        "ja": "発旺山 観光ケーブルカー"
+      },
+      "capacity_per_hour": 1800,
+      "length_m": 3742,
+      "seats": 8,
+      "connected_slope_ids": [
+        7,
+        12,
+        16,
+        17,
+        18
       ]
     }
   ]

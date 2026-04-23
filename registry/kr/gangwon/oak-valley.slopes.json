@@ -1,6 +1,178 @@
 {
+  "$schema": "../../../schemas/slope.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "oak-valley",
-  "slopes": []
+  "slopes": [
+    {
+      "id": 0,
+      "name": "A",
+      "name_i18n": {
+        "ko": "A",
+        "en": "A",
+        "ja": "A"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 1610,
+      "width_m": 52,
+      "area_m2": 73314,
+      "elevation_m": 262,
+      "avg_angle_deg": 9.090276920822323,
+      "max_angle_deg": 16.69924423399362
+    },
+    {
+      "id": 1,
+      "name": "B",
+      "name_i18n": {
+        "ko": "B",
+        "en": "B",
+        "ja": "B"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 885,
+      "width_m": 49,
+      "area_m2": 36317,
+      "elevation_m": 205,
+      "avg_angle_deg": 12.952764513375518,
+      "max_angle_deg": 21.801409486351815
+    },
+    {
+      "id": 2,
+      "name": "C",
+      "name_i18n": {
+        "ko": "C",
+        "en": "C",
+        "ja": "C"
+      },
+      "type": "run",
+      "difficulty": "advanced",
+      "length_m": 375,
+      "width_m": 46,
+      "area_m2": 15691,
+      "elevation_m": 197,
+      "avg_angle_deg": 17.744671625056935,
+      "max_angle_deg": 24.702430227771316
+    },
+    {
+      "id": 3,
+      "name": "D",
+      "name_i18n": {
+        "ko": "D",
+        "en": "D",
+        "ja": "D"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 885,
+      "width_m": 55,
+      "area_m2": 46052,
+      "elevation_m": 230,
+      "avg_angle_deg": 16.17215901578255,
+      "max_angle_deg": 20.806791012711226
+    },
+    {
+      "id": 4,
+      "name": "D-1",
+      "name_i18n": {
+        "ko": "D-1",
+        "en": "D-1",
+        "ja": "D-1"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 240,
+      "width_m": 45,
+      "area_m2": 8727,
+      "elevation_m": 94,
+      "avg_angle_deg": 15.109575122340466,
+      "max_angle_deg": 19.79887635452493
+    },
+    {
+      "id": 5,
+      "name": "E",
+      "name_i18n": {
+        "ko": "E",
+        "en": "E",
+        "ja": "E"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 485,
+      "width_m": 50,
+      "area_m2": 5731,
+      "elevation_m": 120,
+      "avg_angle_deg": 11.309932474020215,
+      "max_angle_deg": 17.223436191131462
+    },
+    {
+      "id": 6,
+      "name": "F",
+      "name_i18n": {
+        "ko": "F",
+        "en": "F",
+        "ja": "F"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 604,
+      "width_m": 49,
+      "area_m2": 17134,
+      "elevation_m": 143,
+      "avg_angle_deg": 14.036243467926479,
+      "max_angle_deg": 22.782405730481685
+    },
+    {
+      "id": 7,
+      "name": "G",
+      "name_i18n": {
+        "ko": "G",
+        "en": "G",
+        "ja": "G"
+      },
+      "type": "run",
+      "difficulty": "intermediate",
+      "length_m": 724,
+      "width_m": 51,
+      "area_m2": 28793,
+      "elevation_m": 171,
+      "avg_angle_deg": 10.757967088390005,
+      "max_angle_deg": 16.17215901578255
+    },
+    {
+      "id": 8,
+      "name": "H",
+      "name_i18n": {
+        "ko": "H",
+        "en": "H",
+        "ja": "H"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 625,
+      "width_m": 45,
+      "area_m2": 30592,
+      "elevation_m": 99,
+      "avg_angle_deg": 6.2772984895975545,
+      "max_angle_deg": 14.036243467926479
+    },
+    {
+      "id": 9,
+      "name": "I",
+      "name_i18n": {
+        "ko": "I",
+        "en": "I",
+        "ja": "I"
+      },
+      "type": "run",
+      "difficulty": "beginner",
+      "length_m": 550,
+      "width_m": 46,
+      "area_m2": 21585,
+      "elevation_m": 49,
+      "avg_angle_deg": 5.142764557884242,
+      "max_angle_deg": 9.090276920822323
+    }
+  ]
 }

@@ -7,68 +7,112 @@
     {
       "label": "Seolcheon Peak",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=07",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "설천봉 정상",
+        "en": "Seolcheon Peak",
+        "ja": "Seolcheon 山頂"
+      }
     },
     {
       "label": "Seolcheon Top Slope",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=06",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "설천상단슬로프",
+        "en": "Seolcheon Top Slope",
+        "ja": "Seolcheon 山頂 コース"
+      }
     },
     {
       "label": "Mozart, Minuet",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=08",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "모차르트, 미뉴에트",
+        "en": "Mozart, Minuet",
+        "ja": "Mozart, Minuet"
+      }
     },
     {
       "label": "Polka",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=09",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "폴카",
+        "en": "Polka",
+        "ja": "Polka"
+      }
     },
     {
       "label": "Silk Road, Minuet Bottom",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=10",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "실크로드, 미뉴에트 하단",
+        "en": "Silk Road, Minuet Bottom",
+        "ja": "Silk ロード, Minuet 下部"
+      }
     },
     {
       "label": "Manseon Peak",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=02",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "만선봉 정상",
+        "en": "Manseon Peak",
+        "ja": "Manseon 山頂"
+      }
     },
     {
       "label": "Heidi House",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=03",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "하이디하우스",
+        "en": "Heidi House",
+        "ja": "Heidi ハウス"
+      }
     },
     {
       "label": "Seoyeok Journey, Sundown",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=04",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "서역기행, 썬다운",
+        "en": "Seoyeok Journey, Sundown",
+        "ja": "西域紀行, 썬ダウン"
+      }
     },
     {
       "label": "Connection",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=11",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "커넥션",
+        "en": "Connection",
+        "ja": "Connection"
+      }
     },
     {
       "label": "Seolcheon House",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=05",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "설천하우스",
+        "en": "Seolcheon House",
+        "ja": "Seolcheon ハウス"
+      }
     },
     {
       "label": "Manseon House",
       "url": "http://www.mdysresort.com/guide/webcam_popup_jh.asp?cam_num=01",
-      "type": "stream",
-      "refresh_interval_ms": 60000
+      "type": "link",
+      "label_i18n": {
+        "ko": "만선하우스",
+        "en": "Manseon House",
+        "ja": "Manseon ハウス"
+      }
     }
   ]
 }

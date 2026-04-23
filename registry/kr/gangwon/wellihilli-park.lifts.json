@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "wellihilli-park",
@@ -11,7 +12,7 @@
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 737.0,
+      "length_m": 737,
       "vertical_m": null,
       "connected_slope_ids": [
         "e",
@@ -1132,7 +1133,7 @@
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 481.0,
+      "length_m": 481,
       "vertical_m": null,
       "connected_slope_ids": [
         "a2"
@@ -1273,6 +1274,102 @@
           "alt_m": null
         }
       ]
+    },
+    {
+      "id": 0,
+      "name": "Alpha",
+      "name_i18n": {
+        "ko": "알파",
+        "en": "Alpha",
+        "ja": "アルファ"
+      },
+      "length_m": 484,
+      "seats": 4,
+      "ride_time_s": 130
+    },
+    {
+      "id": 1,
+      "name": "New Alpha",
+      "name_i18n": {
+        "ko": "뉴알파",
+        "en": "New Alpha",
+        "ja": "ニューアルファ"
+      },
+      "length_m": 464,
+      "seats": 4,
+      "ride_time_s": 125
+    },
+    {
+      "id": 2,
+      "name": "Bravo",
+      "name_i18n": {
+        "ko": "브라보",
+        "en": "Bravo",
+        "ja": "ブラボー"
+      },
+      "length_m": 776,
+      "seats": 4,
+      "ride_time_s": 209
+    },
+    {
+      "id": 3,
+      "name": "Delta",
+      "name_i18n": {
+        "ko": "델타",
+        "en": "Delta",
+        "ja": "デルタ"
+      },
+      "length_m": 580,
+      "seats": 4,
+      "ride_time_s": 154
+    },
+    {
+      "id": 4,
+      "name": "Echo",
+      "name_i18n": {
+        "ko": "에코",
+        "en": "Echo",
+        "ja": "エコー"
+      },
+      "length_m": 642,
+      "seats": 4,
+      "ride_time_s": 170
+    },
+    {
+      "id": 5,
+      "name": "Family",
+      "name_i18n": {
+        "ko": "패밀리",
+        "en": "Family",
+        "ja": "ファミリー"
+      },
+      "length_m": 743,
+      "seats": 4,
+      "ride_time_s": 195
+    },
+    {
+      "id": 6,
+      "name": "Challenge",
+      "name_i18n": {
+        "ko": "첼린지",
+        "en": "Challenge",
+        "ja": "カエルラインチャイ"
+      },
+      "length_m": 765,
+      "seats": 4,
+      "ride_time_s": 200
+    },
+    {
+      "id": 7,
+      "name": "Gondola",
+      "name_i18n": {
+        "ko": "곤돌라",
+        "en": "Gondola",
+        "ja": "ゴンドラ"
+      },
+      "length_m": 1302,
+      "seats": 8,
+      "ride_time_s": 285
     }
   ]
 }

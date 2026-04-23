@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "alpensia",
@@ -11,7 +12,7 @@
       },
       "type": "gondola",
       "capacity_per_hour": null,
-      "length_m": 3618.0,
+      "length_m": 3618,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -699,7 +700,7 @@
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 580.0,
+      "length_m": 580,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -2621,7 +2622,7 @@
       },
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 343.0,
+      "length_m": 343,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -2691,6 +2692,65 @@
           "lon": 128.683196,
           "alt_m": null
         }
+      ]
+    },
+    {
+      "id": 0,
+      "name": "Lift 1",
+      "name_i18n": {
+        "ko": "리프트 1",
+        "en": "Lift 1",
+        "ja": "リフト 1"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 541,
+      "seats": 4,
+      "cabin_count": 45,
+      "speed_mps": 5,
+      "connected_slope_ids": [
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Lift 2",
+      "name_i18n": {
+        "ko": "리프트 2",
+        "en": "Lift 2",
+        "ja": "リフト 2"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 664,
+      "seats": 6,
+      "cabin_count": 43,
+      "speed_mps": 5,
+      "connected_slope_ids": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Lift 3",
+      "name_i18n": {
+        "ko": "리프트 3",
+        "en": "Lift 3",
+        "ja": "リフト 3"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 651,
+      "seats": 6,
+      "cabin_count": 44,
+      "speed_mps": 5,
+      "connected_slope_ids": [
+        1,
+        2,
+        3,
+        4,
+        5
       ]
     }
   ]

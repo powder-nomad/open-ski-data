@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../schemas/lift.schema.json",
   "country_code": "kr",
   "region_slug": "gangwon",
   "place_slug": "o2",
@@ -322,7 +323,7 @@
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 2029.0,
+      "length_m": 2029,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -916,6 +917,71 @@
           "alt_m": null
         }
       ]
+    },
+    {
+      "id": 0,
+      "name": "Apple",
+      "name_i18n": {
+        "ko": "애플",
+        "en": "Apple",
+        "ja": "ジャアハウル"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 615,
+      "seats": 4,
+      "ride_time_s": 220
+    },
+    {
+      "id": 1,
+      "name": "Cherry",
+      "name_i18n": {
+        "ko": "체리",
+        "en": "Cherry",
+        "ja": "カエライ"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 1030,
+      "seats": 6,
+      "ride_time_s": 360
+    },
+    {
+      "id": 2,
+      "name": "Orange",
+      "name_i18n": {
+        "ko": "오렌지",
+        "en": "Orange",
+        "ja": "オレンジ"
+      },
+      "capacity_per_hour": 3600,
+      "length_m": 526,
+      "seats": 8,
+      "ride_time_s": 180
+    },
+    {
+      "id": 3,
+      "name": "Tomato",
+      "name_i18n": {
+        "ko": "토마토",
+        "en": "Tomato",
+        "ja": "パオマアパオ"
+      },
+      "capacity_per_hour": 3085,
+      "length_m": 865,
+      "seats": 6,
+      "ride_time_s": 300
+    },
+    {
+      "id": 4,
+      "name": "Sweet Shuttle",
+      "name_i18n": {
+        "ko": "스위트셔틀",
+        "en": "Sweet Shuttle",
+        "ja": "サウジャウィパウサヨパウル"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 2161,
+      "seats": 8,
+      "ride_time_s": 630
     }
   ]
 }
