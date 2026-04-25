@@ -55,18 +55,24 @@ function expectedPlacePath(place) {
     registryRoot,
     place.country_code,
     place.region_slug,
-    `${place.place_slug}.json`,
+    place.place_slug,
+    "place.json",
   );
 }
 
 async function collectPlaceFiles() {
+  // Layout (post-reorg dffa1ad): each resort lives in its own
+  // subdirectory under its region, with `place.json` as the canonical
+  // metadata file plus optional sidecars (slopes/lifts/webcams/
+  // slope-graph). Walk the registry to depth 3 and pick up
+  // `<region>/<slug>/place.json`.
   const countryDirs = await fs.readdir(registryRoot, { withFileTypes: true });
   const results = [];
   for (const countryDir of countryDirs) {
     if (!countryDir.isDirectory()) {
       continue;
     }
-    if (["live", "ski-domains", "slopes", "webcams"].includes(countryDir.name)) {
+    if (["live", "ski-domains"].includes(countryDir.name)) {
       continue;
     }
     const countryPath = path.join(registryRoot, countryDir.name);
@@ -76,22 +82,14 @@ async function collectPlaceFiles() {
         continue;
       }
       const regionPath = path.join(countryPath, regionDir.name);
-      const files = await fs.readdir(regionPath, { withFileTypes: true });
-      for (const file of files) {
-        if (
-          file.isFile() &&
-          file.name.endsWith(".json") &&
-          file.name !== "index.json" &&
-          // Per-resource sidecar files are validated elsewhere — or not
-          // at all for the less-structured ones. Whatever is left here
-          // is the canonical place metadata file (e.g. `yongpyong.json`).
-          !file.name.endsWith(".slopes.json") &&
-          !file.name.endsWith(".webcams.json") &&
-          !file.name.endsWith(".lifts.json") &&
-          !file.name.endsWith(".slope-graph.json") &&
-          !file.name.endsWith(".live.json")
-        ) {
-          results.push(path.join(regionPath, file.name));
+      const resortEntries = await fs.readdir(regionPath, { withFileTypes: true });
+      for (const entry of resortEntries) {
+        if (!entry.isDirectory()) {
+          continue;
+        }
+        const placeFile = path.join(regionPath, entry.name, "place.json");
+        if (await exists(placeFile)) {
+          results.push(placeFile);
         }
       }
     }
@@ -223,7 +221,7 @@ async function validateRegionIndexes(placeMap) {
           `${rel(filePath)}: ${placeRef.place_slug} has mismatched region_slug`,
         );
         expect(
-          placeRef.path === `registry/${place.country_code}/${place.region_slug}/${place.place_slug}.json`,
+          placeRef.path === `registry/${place.country_code}/${place.region_slug}/${place.place_slug}/place.json`,
           `${rel(filePath)}: ${placeRef.place_slug} path does not match canonical place location`,
         );
       }
@@ -267,9 +265,9 @@ async function validateSkiDomains(placeMap) {
 
 async function validateStructuredAssets(placeMap) {
   for (const place of placeMap.values()) {
-    const baseDir = path.join(registryRoot, place.country_code, place.region_slug);
+    const baseDir = path.join(registryRoot, place.country_code, place.region_slug, place.place_slug);
     for (const suffix of ["slopes", "webcams", "lifts"]) {
-      const filePath = path.join(baseDir, `${place.place_slug}.${suffix}.json`);
+      const filePath = path.join(baseDir, `${suffix}.json`);
       if (!(await exists(filePath))) {
         continue;
       }
@@ -349,8 +347,9 @@ function isFiniteNumber(v) {
 }
 
 async function validateSlopeGraphs(placeMap) {
-  // Walk every region dir looking for *.slope-graph.json files. They're
-  // optional, so a place without one is fine.
+  // Walk each resort subdir looking for `slope-graph.json`. They're
+  // optional, so a place without one is fine. Layout:
+  // registry/<country>/<region>/<slug>/slope-graph.json
   const countryDirs = await fs.readdir(registryRoot, { withFileTypes: true });
   for (const cDir of countryDirs) {
     if (!cDir.isDirectory() || cDir.name === "live" || cDir.name === "ski-domains") continue;
@@ -359,10 +358,13 @@ async function validateSlopeGraphs(placeMap) {
     for (const rDir of regionDirs) {
       if (!rDir.isDirectory()) continue;
       const regionPath = path.join(countryPath, rDir.name);
-      const files = await fs.readdir(regionPath, { withFileTypes: true });
-      for (const file of files) {
-        if (!file.isFile() || !file.name.endsWith(".slope-graph.json")) continue;
-        await validateSlopeGraph(path.join(regionPath, file.name), placeMap);
+      const resortEntries = await fs.readdir(regionPath, { withFileTypes: true });
+      for (const entry of resortEntries) {
+        if (!entry.isDirectory()) continue;
+        const sgPath = path.join(regionPath, entry.name, "slope-graph.json");
+        if (await exists(sgPath)) {
+          await validateSlopeGraph(sgPath, placeMap);
+        }
       }
     }
   }
