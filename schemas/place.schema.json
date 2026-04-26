@@ -66,6 +66,11 @@
     "tags": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri",
+      "description": "Optional public homepage of the resort. When present, consumers render a 'Visit homepage' link in the resort header."
     }
   },
   "required": ["country_code", "region_slug", "place_slug", "name", "coordinates"]
