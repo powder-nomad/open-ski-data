@@ -12,6 +12,11 @@ on:
   push:
     branches:
       - main
+      # Save attempts from the Altera slope-author editor land on
+      # `altera-bot/<slug>-<ts>` branches. Running validate on push
+      # lets the editor's CI poller surface a status without forcing
+      # the user to open a PR first.
+      - "altera-bot/**"
     paths:
       - "registry/**"
       - "schemas/**"
