@@ -5391,7 +5391,7 @@
         "ja": "ハアハウハアジャイハウ"
       },
       "type": "run",
-      "difficulty": "park",
+      "difficulty": "terrain_park",
       "length_m": 345,
       "width_m": 24,
       "elevation_m": 82,

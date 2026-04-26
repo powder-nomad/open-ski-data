@@ -30,16 +30,18 @@
           },
           "type": { "enum": ["run", "lift", "access_route"] },
           "difficulty": {
-            "description": "Covers SkiWatch's finer-grained levels (be_in / in_ad) and `park` so nothing is lost on import.",
-            "enum": [
-              "beginner",
-              "be_in",
-              "intermediate",
-              "in_ad",
-              "advanced",
-              "expert",
-              "pro",
-              "park"
+            "description": "Unified international difficulty band. Korean resorts label these as 초급/중급/상급/최상급 (signed as one black / two black for advanced/expert); North American resorts use green/blue/black/double-black. The data uses the international name; consumers map to local labelling at render time.",
+            "oneOf": [
+              { "const": "super_beginner", "description": "Bunny hill — beginner area at the base, often a magic carpet. KR: 초보." },
+              { "const": "beginner", "description": "Easiest groomed run. NA: green circle. KR: 초급." },
+              { "const": "beginner_intermediate", "description": "Stepping-stone band between beginner and intermediate. KR: 초중급." },
+              { "const": "intermediate", "description": "Standard cruising run. NA: blue square. KR: 중급." },
+              { "const": "intermediate_advanced", "description": "Stepping-stone band between intermediate and advanced. KR: 중상급." },
+              { "const": "advanced", "description": "Demanding groomed or moguled run. NA: single black diamond. KR: 상급, signed as one black." },
+              { "const": "expert", "description": "Steep / technical / off-piste-adjacent. NA: double black diamond. KR: 최상급, signed as two black." },
+              { "const": "pro", "description": "Competition / extreme — beyond expert public-skier scope." },
+              { "const": "terrain_park", "description": "Features (rails, jumps, halfpipe). Difficulty varies independently of the slope band." },
+              { "const": "backcountry", "description": "Off-piste / non-patrolled / requires gear and judgement." }
             ]
           },
           "length_m": { "type": ["number", "null"] },

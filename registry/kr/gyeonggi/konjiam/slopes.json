@@ -29,7 +29,7 @@
         "ja": "イクシオ"
       },
       "type": "run",
-      "difficulty": "be_in",
+      "difficulty": "beginner_intermediate",
       "length_m": 757,
       "width_m": 76,
       "area_m2": 72539,
@@ -77,7 +77,7 @@
         "ja": "シンキュー1"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 380,
       "width_m": 55,
       "area_m2": 21646,
@@ -93,7 +93,7 @@
         "ja": "シンキュー2"
       },
       "type": "run",
-      "difficulty": "be_in",
+      "difficulty": "beginner_intermediate",
       "length_m": 1049,
       "width_m": 55,
       "area_m2": 54859,
@@ -109,7 +109,7 @@
         "ja": "シンキュー3"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 462,
       "width_m": 68,
       "area_m2": 25894,
@@ -141,7 +141,7 @@
         "ja": "CNP1"
       },
       "type": "run",
-      "difficulty": "be_in",
+      "difficulty": "beginner_intermediate",
       "length_m": 549,
       "width_m": 31,
       "area_m2": 15330,

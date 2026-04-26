@@ -730,7 +730,7 @@
         "ja": "クラシック"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 450,
       "connected_slope_ids": [
         "jazz",
@@ -879,7 +879,7 @@
         "ja": "レゲエ"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 570,
       "connected_slope_ids": [
         "ballards",
@@ -1132,7 +1132,7 @@
         "ja": "ファンキー"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 575,
       "connected_slope_ids": [
         "ballards",
@@ -1281,7 +1281,7 @@
         "ja": "テクノ 1"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 480,
       "width_m": 50,
       "avg_angle_deg": 11
@@ -1309,7 +1309,7 @@
         "ja": "ヒップホップ 1"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 240,
       "width_m": 40,
       "avg_angle_deg": 11
@@ -1323,7 +1323,7 @@
         "ja": "ヒップホップ 2"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 620,
       "width_m": 85,
       "avg_angle_deg": 15

@@ -393,7 +393,7 @@
         "ja": "ゴールド ファンタスティック"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 1850,
       "connected_slope_ids": [
         "gold-valley",
@@ -2431,7 +2431,7 @@
         "ja": "ピンク"
       },
       "type": "run",
-      "difficulty": "be_in",
+      "difficulty": "beginner_intermediate",
       "length_m": 600,
       "connected_slope_ids": [
         "new-red",
@@ -3951,7 +3951,7 @@
         "ja": "メガグリーン"
       },
       "type": "run",
-      "difficulty": "be_in",
+      "difficulty": "beginner_intermediate",
       "length_m": 1000,
       "connected_slope_ids": [
         "green"
@@ -5368,7 +5368,7 @@
         "ja": "ドラゴンパーク"
       },
       "type": "run",
-      "difficulty": "park",
+      "difficulty": "terrain_park",
       "length_m": 1046,
       "elevation_m": 500,
       "min_angle_deg": 8.5,

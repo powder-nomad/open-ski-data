@@ -986,7 +986,7 @@
         "ja": "バレー"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 1110,
       "connected_slope_ids": [
         "fantasy",
@@ -1210,7 +1210,7 @@
         "ja": "ダユタウ(ジャイサアンハオ)"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 818,
       "connected_slope_ids": [
         "dodo",
@@ -1632,7 +1632,7 @@
         "ja": "スロープ스タ일(SS/SBS)"
       },
       "type": "run",
-      "difficulty": "in_ad",
+      "difficulty": "intermediate_advanced",
       "length_m": 602,
       "elevation_m": 160.6,
       "avg_angle_deg": 14.93
@@ -1674,7 +1674,7 @@
         "ja": "エクストリームパーク(상단)"
       },
       "type": "run",
-      "difficulty": "park",
+      "difficulty": "terrain_park",
       "length_m": 765,
       "elevation_m": 126,
       "avg_angle_deg": 9.35
@@ -1688,7 +1688,7 @@
         "ja": "エクストリームパーク(ハ단)"
       },
       "type": "run",
-      "difficulty": "park",
+      "difficulty": "terrain_park",
       "length_m": 765,
       "elevation_m": 126,
       "avg_angle_deg": 9.35
@@ -1702,7 +1702,7 @@
         "ja": "ハアハウハアジャイハウ"
       },
       "type": "run",
-      "difficulty": "park",
+      "difficulty": "terrain_park",
       "length_m": 168,
       "elevation_m": 50.56,
       "avg_angle_deg": 16.73

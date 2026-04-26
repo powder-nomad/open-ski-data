@@ -13,7 +13,7 @@
         "ja": "A1"
       },
       "type": "run",
-      "difficulty": "park",
+      "difficulty": "terrain_park",
       "length_m": 450,
       "min_angle_deg": 5.2,
       "max_angle_deg": 15.1
@@ -41,7 +41,7 @@
         "ja": "A3"
       },
       "type": "run",
-      "difficulty": "park",
+      "difficulty": "terrain_park",
       "length_m": 539,
       "min_angle_deg": 4.8,
       "max_angle_deg": 10.3
@@ -167,7 +167,7 @@
         "ja": "D2"
       },
       "type": "run",
-      "difficulty": "park",
+      "difficulty": "terrain_park",
       "length_m": 150,
       "min_angle_deg": 4.9,
       "max_angle_deg": 25.8
