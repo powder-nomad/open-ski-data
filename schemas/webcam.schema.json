@@ -36,7 +36,17 @@
               "vivaldi"
             ]
           },
-          "refresh_interval_ms": { "type": "integer" }
+          "refresh_interval_ms": { "type": "integer" },
+          "coordinates": {
+            "type": "object",
+            "description": "Optional pin location for map display. When present, the webcam renders as a marker on the resort map; consumers can pair the stream with adjacent station weather. Authored via the Altera slope-author editor.",
+            "properties": {
+              "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+              "lon": { "type": "number", "minimum": -180, "maximum": 180 }
+            },
+            "required": ["lat", "lon"],
+            "additionalProperties": false
+          }
         },
         "required": ["label", "url", "type"]
       }
