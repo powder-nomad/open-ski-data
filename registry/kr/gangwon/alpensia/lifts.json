@@ -5,15 +5,22 @@
   "place_slug": "alpensia",
   "lifts": [
     {
-      "id": "unnamed-477491141-l477491141",
-      "name": "unnamed-477491141",
-      "name_i18n": {},
+      "id": "0",
+      "name": "Lift 1",
+      "name_i18n": {
+        "ko": "리프트 1",
+        "en": "Lift 1",
+        "ja": "リフト 1"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 541,
+      "seats": 4,
+      "cabin_count": 45,
+      "speed_mps": 5,
+      "connected_slope_ids": [
+        0
+      ],
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 580,
-      "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.656414,
@@ -128,24 +135,7 @@
       ]
     },
     {
-      "id": 0,
-      "name": "Lift 1",
-      "name_i18n": {
-        "ko": "리프트 1",
-        "en": "Lift 1",
-        "ja": "リフト 1"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 541,
-      "seats": 4,
-      "cabin_count": 45,
-      "speed_mps": 5,
-      "connected_slope_ids": [
-        0
-      ]
-    },
-    {
-      "id": 1,
+      "id": "1",
       "name": "Lift 2",
       "name_i18n": {
         "ko": "리프트 2",
@@ -294,7 +284,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Lift 3",
       "name_i18n": {
         "ko": "리프트 3",
