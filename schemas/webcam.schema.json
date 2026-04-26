@@ -38,14 +38,21 @@
           },
           "refresh_interval_ms": { "type": "integer" },
           "coordinates": {
-            "type": "object",
-            "description": "Optional pin location for map display. When present, the webcam renders as a marker on the resort map; consumers can pair the stream with adjacent station weather. Authored via the Altera slope-author editor.",
-            "properties": {
-              "lat": { "type": "number", "minimum": -90, "maximum": 90 },
-              "lon": { "type": "number", "minimum": -180, "maximum": 180 }
-            },
-            "required": ["lat", "lon"],
-            "additionalProperties": false
+            "type": "array",
+            "description": "Optional pin location(s) for map display. Single-camera webcams have one point; composite/multi-feed webcams may have several (e.g. one stream that covers multiple slopes). Each pin carries an optional `label` so the UI can render 'Yellow / Pink' for a slope-name-based composite.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+                "lon": { "type": "number", "minimum": -180, "maximum": 180 },
+                "label": {
+                  "type": "string",
+                  "description": "Optional per-pin label for composites. Falls back to the parent webcam's label when absent."
+                }
+              },
+              "required": ["lat", "lon"],
+              "additionalProperties": false
+            }
           }
         },
         "required": ["label", "url", "type"]
