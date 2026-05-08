@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Theme tokens. Mirrors the dark theme used by the original
+ * slope-author-2 editor so the ported component renders correctly
+ * without restyling. If you swap the brand later, edit only the
+ * values below — utility classes like `bg-[var(--accent)]` resolve
+ * through these.
+ */
+:root {
+  color-scheme: dark;
+
+  --bg-surface: #0b0f17;
+  --bg-elev: #131a26;
+  --bg-elev-strong: #1c2536;
+
+  --fg: #e7ecf3;
+  --fg-muted: #93a0b3;
+  --fg-dim: #6b778a;
+
+  --accent: #38bdf8;
+  --accent-soft: #7dd3fc;
+  --accent-ink: #042331;
+
+  --border: #1f2a3a;
+  --border-strong: #2c3b52;
+}
+
+html,
+body {
+  background: var(--bg-surface);
+  color: var(--fg);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Noto Sans KR",
+    "Noto Sans JP", sans-serif;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}

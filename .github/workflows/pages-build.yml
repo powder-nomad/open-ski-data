@@ -1,0 +1,63 @@
+# CI for the open-ski-data editor (pages orphan branch).
+#
+# `main` has its own reference-data.yml that validates the JSON
+# registry. This workflow lives only on `pages` and validates the
+# Next.js build. The two branches share no history, so they don't
+# step on each other — `actions/checkout@v4` is pinned to the ref
+# that triggered the run.
+#
+# Goal: catch typecheck and CF Pages build breakage before deploy.
+# Cloudflare Pages handles the actual production deploy from this
+# same branch — this workflow is a pre-deploy gate, not a deploy.
+
+name: pages-build
+
+on:
+  push:
+    branches: ["pages"]
+  pull_request:
+    branches: ["pages"]
+  workflow_dispatch:
+
+# One run per ref; cancel in-flight runs when a new commit lands.
+concurrency:
+  group: pages-build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pages branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # `npm run pages:build` invokes @cloudflare/next-on-pages, which
+      # internally runs `next build` and then transforms the output
+      # into the .vercel/output/static shape Cloudflare Pages expects.
+      # Build env vars below are placeholders — Pages itself injects
+      # the real values at deploy time.
+      - name: Build for Cloudflare Pages
+        env:
+          NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: dummy-build-only
+          NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID: ""
+          GITHUB_CLIENT_ID: dummy-build-only
+          GITHUB_CLIENT_SECRET: dummy-build-only
+          SESSION_SECRET: dummy-build-only-must-be-32-chars
+          GOOGLE_ELEVATION_API_KEY: dummy-build-only
+        run: npm run pages:build
