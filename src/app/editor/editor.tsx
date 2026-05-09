@@ -92,6 +92,14 @@ export function SlopeAuthor2() {
   const googleMap = useRef<google.maps.Map | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
+  // Mobile drawer state — desktop ignores this (aside is a fixed
+  // right column at md+). Three snap states cycled by the handle:
+  //   peek (~3.5rem), half (50dvh, default), full (80dvh).
+  // Declared here (not near the return) so the map-resize useEffect
+  // below can reference it without a TDZ.
+  const [drawerState, setDrawerState] = useState<"peek" | "half" | "full">(
+    "half",
+  );
 
   const [mode, setMode] = useState<EditorMode>("select");
   const modeRef = useRef<EditorMode>(mode);
@@ -234,6 +242,23 @@ export function SlopeAuthor2() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Re-tile the map whenever the drawer changes height (or when the
+  // map first becomes ready). Google Maps caches container dimensions
+  // at init time and after layout reflows; without an explicit
+  // `resize` event the tiles stay sized to the old viewport, leaving
+  // big empty bands when the drawer transitions on mobile.
+  // 250ms matches the drawer's `transition-[max-height] duration-200`
+  // so we measure post-transition.
+  useEffect(() => {
+    if (!mapReady) return;
+    const map = googleMap.current;
+    if (!map) return;
+    const t = setTimeout(() => {
+      google.maps.event.trigger(map, "resize");
+    }, 250);
+    return () => clearTimeout(t);
+  }, [drawerState, mapReady]);
 
   // ── Map click handler — dispatches by current mode ────────────
 
@@ -814,8 +839,21 @@ export function SlopeAuthor2() {
     ? effectiveLifts.find((l) => l.id === selectedLiftId) ?? null
     : null;
 
+  // `drawerState` is declared near the top of the component (with
+  // the other useStates) so the map-resize useEffect can read it.
+  const cycleDrawer = () =>
+    setDrawerState((s) =>
+      s === "peek" ? "half" : s === "half" ? "full" : "peek",
+    );
+  const drawerMaxH =
+    drawerState === "peek"
+      ? "max-h-[3.5rem]"
+      : drawerState === "half"
+        ? "max-h-[50dvh]"
+        : "max-h-[80dvh]";
+
   return (
-    <section className="relative flex min-h-[100dvh] w-full flex-col bg-[#071521] text-[var(--fg)] md:h-[100dvh] md:min-h-0">
+    <section className="relative flex h-[100dvh] w-full flex-col overflow-hidden bg-[#071521] text-[var(--fg)]">
       <header className="flex-none border-b border-[var(--border)] bg-[var(--bg-surface)] px-3 py-2 md:px-4">
         <div className="flex flex-wrap items-center justify-between gap-2 md:gap-3">
           <div>
@@ -843,7 +881,7 @@ export function SlopeAuthor2() {
           hasLift={selectedLiftId !== null}
         />
 
-        <div className="relative h-[45dvh] flex-none md:h-full md:flex-1">
+        <div className="relative flex-1 min-h-0 md:h-full md:flex-1">
           {mapError ? (
             <div className="flex h-full items-center justify-center p-6 text-center text-sm text-[var(--fg-muted)]">
               {t("mapFailed")}: {mapError}
@@ -856,20 +894,36 @@ export function SlopeAuthor2() {
               {t("loadingMap")}
             </div>
           )}
-          {/* Floating mode hint — persists in the bottom-left so it
-              never overlaps the left toolbar (which lives just
-              outside the map area but renders above the map shadow
-              on narrow widths). Bottom-left also keeps the top-left
-              free for Google's own controls. */}
-          {mapReady && (
-            <div className="pointer-events-none absolute bottom-12 left-3 max-w-[calc(100%-2rem)] rounded-md bg-[var(--bg-surface)]/90 px-3 py-1.5 text-[11px] font-semibold text-[var(--fg)] shadow-lg ring-1 ring-[var(--border)]">
-              {desc.icon} {descLabel}: {descHint}
-            </div>
-          )}
+          {/* Mode hint lives in the desktop header (line ~833) and in
+              the mobile drawer handle (below). Floating overlay
+              removed — the transparent badge over the map was hard
+              to read and competed with Google's controls. */}
         </div>
 
-        <aside className="flex w-full flex-none flex-col border-t border-[var(--border)] bg-[var(--bg-page)] md:w-[24rem] md:overflow-hidden md:border-l md:border-t-0">
-          <div className="no-scrollbar p-3 space-y-4 md:h-full md:overflow-y-auto">
+        <aside
+          className={`flex w-full flex-none flex-col overflow-hidden bg-[var(--bg-page)] shadow-2xl transition-[max-height] duration-200 ease-out fixed bottom-0 left-0 right-0 z-30 rounded-t-3xl ${drawerMaxH} md:relative md:bottom-auto md:left-auto md:right-auto md:z-auto md:max-h-none md:w-[24rem] md:border-l md:border-[var(--border)] md:rounded-none md:shadow-none md:transition-none`}
+        >
+          {/* Mobile drawer handle — click to cycle peek → half → full
+              → peek. Surfaces the mode hint inline, replacing the
+              floating overlay. Hidden on desktop (md+) where the
+              header carries the hint. */}
+          <button
+            type="button"
+            onClick={cycleDrawer}
+            aria-label={`${descLabel}: ${descHint} — toggle drawer`}
+            aria-expanded={drawerState !== "peek"}
+            className="flex w-full flex-none flex-col items-center gap-1 border-b border-[var(--border)] bg-[var(--bg-elev)]/60 px-3 py-2 transition hover:bg-[var(--bg-elev)] md:hidden"
+          >
+            <span aria-hidden className="block h-1 w-10 rounded-full bg-[var(--fg-dim)]" />
+            <span className="line-clamp-1 text-[11px] text-[var(--fg-muted)]">
+              <span aria-hidden className="mr-1">{desc.icon}</span>
+              <span className="font-semibold text-[var(--fg)]">{descLabel}</span>
+              <span className="mx-1">·</span>
+              {descHint}
+            </span>
+          </button>
+
+          <div className="no-scrollbar p-3 space-y-4 overflow-y-auto md:h-full md:overflow-y-auto">
             <ResortLoader onLoad={setLoadedResort} />
 
             <NewPlaceForm />
@@ -2090,14 +2144,13 @@ function NewPlaceForm() {
         prTitle: `Add ${ccTrimmed}/${rsTrimmed}/${psTrimmed}`,
       });
       // `actionsUrl` is repurposed to mean "review URL" — for the
-      // public-contributor flow that's the PR, since there's no
-      // CI auto-merge anymore. The result state shape stays
-      // compatible with the post-save UI below.
+      // public-contributor flow that's the PR; for a maintainer
+      // direct-commit (no PR) we fall back to the commit URL.
       setResult({
         kind: "ok",
         branchName: contribution.branchName,
         branchUrl: contribution.forkBranchUrl,
-        actionsUrl: contribution.prUrl,
+        actionsUrl: contribution.prUrl ?? contribution.forkBranchUrl,
       });
     } catch (err) {
       setResult({

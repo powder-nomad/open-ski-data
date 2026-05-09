@@ -58,5 +58,3 @@ export async function GET(request: Request) {
   );
   return res;
 }
-
-export const STATE_COOKIE_NAME = STATE_COOKIE;

@@ -9,8 +9,9 @@
  */
 
 export const webRuntimeConfig = {
-  googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
-  googleMapsMapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID ?? "",
+  /** Public Google Maps JS SDK key. Referrer-restricted via Google
+   *  Cloud Console to the Pages domain (and *.pages.dev for previews). */
+  mapApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
 } as const;
 
 export type WebRuntimeConfig = typeof webRuntimeConfig;

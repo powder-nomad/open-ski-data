@@ -251,26 +251,37 @@ export function PatchSaver({
 
       {save.kind === "saved" && (
         <div className="space-y-1">
-          <div className="rounded bg-[#22c55e]/15 px-2 py-2 text-[11px] text-[#86efac]">
-            ✓ PR opened —{" "}
-            <a
-              href={save.result.prUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              #{save.result.prNumber}
-            </a>
-          </div>
+          {save.result.directCommit ? (
+            <div className="rounded bg-[#22c55e]/15 px-2 py-2 text-[11px] text-[#86efac]">
+              ✓ Committed to <code>{UPSTREAM_OWNER}/{UPSTREAM_REPO}</code>:
+              <code> {save.result.branchName}</code>
+            </div>
+          ) : (
+            <div className="rounded bg-[#22c55e]/15 px-2 py-2 text-[11px] text-[#86efac]">
+              ✓ PR opened —{" "}
+              {save.result.prUrl && save.result.prNumber !== null && (
+                <a
+                  href={save.result.prUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  #{save.result.prNumber}
+                </a>
+              )}
+            </div>
+          )}
           <p className="text-[11px] text-[var(--fg-muted)]">
-            Branch{" "}
+            {save.result.directCommit ? "Commit " : "Branch "}
             <a
               href={save.result.forkBranchUrl}
               target="_blank"
               rel="noreferrer"
               className="text-[var(--accent-soft)] underline"
             >
-              {save.result.forkOwner}:{save.result.branchName}
+              {save.result.directCommit
+                ? save.result.commitSha.slice(0, 7)
+                : `${save.result.forkOwner}:${save.result.branchName}`}
             </a>
           </p>
           <p className="text-[10px] text-[var(--fg-muted)] tabular-nums">

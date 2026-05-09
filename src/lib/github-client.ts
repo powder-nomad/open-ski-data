@@ -37,9 +37,38 @@ export type ContributionResult = {
   commitSha: string;
   forkOwner: string;
   forkBranchUrl: string;
-  prNumber: number;
-  prUrl: string;
+  /** True when the user had push access to upstream and we committed
+   *  directly to `main` instead of opening a PR. `prNumber`/`prUrl`
+   *  will be null in that case. */
+  directCommit: boolean;
+  prNumber: number | null;
+  prUrl: string | null;
 };
+
+/**
+ * Probe whether the authenticated user has push access to upstream.
+ * Octokit returns the repo with a `permissions` object on
+ * authenticated reads. Owners + collaborators with write access
+ * have `permissions.push === true`. We use this to skip the
+ * fork-and-PR dance for repo maintainers — they commit directly
+ * to `main`.
+ *
+ * Cached implicitly by the React `useSession` hook (one octokit per
+ * session); call sites typically run this once per save.
+ */
+export async function detectCanWriteUpstream(
+  octokit: Octokit,
+): Promise<boolean> {
+  try {
+    const { data } = await octokit.rest.repos.get({
+      owner: UPSTREAM_OWNER,
+      repo: UPSTREAM_REPO,
+    });
+    return data.permissions?.push === true;
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Build a deterministic, sortable, collision-resistant branch name.
@@ -223,10 +252,99 @@ export async function openPullRequest(args: {
 }
 
 /**
+ * Fast-forward commit straight to upstream `main`. Used for repo
+ * maintainers (people with `permissions.push === true` on upstream)
+ * to skip the fork-and-PR dance.
+ *
+ * Safety: `force: false` on the ref update means this is a strict
+ * fast-forward — if `main` moved between the parent-SHA read and the
+ * ref update (race with another contributor or CI-driven commit), the
+ * API returns 422 and we retry once from a fresh parent SHA. After
+ * one retry we surface the conflict to the caller.
+ */
+async function commitDirectToMain(args: {
+  octokit: Octokit;
+  files: CommitFile[];
+  message: string;
+  attempt?: number;
+}): Promise<{ commitSha: string }> {
+  const { octokit, files, message } = args;
+  const attempt = args.attempt ?? 0;
+  const owner = UPSTREAM_OWNER;
+  const repo = UPSTREAM_REPO;
+
+  const parentSha = await getUpstreamMainSha(octokit);
+
+  const blobs = await Promise.all(
+    files.map(async (f) => {
+      const { data } = await octokit.rest.git.createBlob({
+        owner,
+        repo,
+        content: f.content,
+        encoding: "utf-8",
+      });
+      return { path: f.path, sha: data.sha };
+    }),
+  );
+
+  const { data: parentCommit } = await octokit.rest.git.getCommit({
+    owner,
+    repo,
+    commit_sha: parentSha,
+  });
+
+  const { data: tree } = await octokit.rest.git.createTree({
+    owner,
+    repo,
+    base_tree: parentCommit.tree.sha,
+    tree: blobs.map((b) => ({
+      path: b.path,
+      mode: "100644",
+      type: "blob",
+      sha: b.sha,
+    })),
+  });
+
+  const { data: commit } = await octokit.rest.git.createCommit({
+    owner,
+    repo,
+    message,
+    tree: tree.sha,
+    parents: [parentSha],
+  });
+
+  try {
+    await octokit.rest.git.updateRef({
+      owner,
+      repo,
+      ref: `heads/${UPSTREAM_BRANCH}`,
+      sha: commit.sha,
+      force: false,
+    });
+  } catch (err) {
+    if (attempt < 1) {
+      // main moved underneath us; retry once from a fresh parent.
+      return commitDirectToMain({ ...args, attempt: attempt + 1 });
+    }
+    throw err;
+  }
+
+  return { commitSha: commit.sha };
+}
+
+/**
  * High-level convenience: takes an authenticated octokit + the
  * authenticated user's login + a contribution payload (slug + files),
- * runs the full ensureFork → commit → PR sequence, and returns the
- * resulting URLs the editor should display to the user.
+ * detects whether the user has push access to upstream, and:
+ *
+ *   - Maintainer (push access): commits directly to `main` —
+ *     `directCommit=true`, `prNumber`/`prUrl` null.
+ *   - Public contributor: ensureFork → commit on user's fork → open
+ *     PR back to upstream. `directCommit=false`, `prNumber`/`prUrl`
+ *     populated.
+ *
+ * Same call surface for both paths so the editor doesn't have to
+ * branch on user identity.
  */
 export async function contribute(args: {
   octokit: Octokit;
@@ -248,6 +366,27 @@ export async function contribute(args: {
     }),
   );
 
+  const canWrite = await detectCanWriteUpstream(octokit);
+
+  if (canWrite) {
+    // Maintainer fast path — commit straight to upstream main.
+    const { commitSha } = await commitDirectToMain({
+      octokit,
+      files: commitPayload,
+      message: args.commitMessage ?? `Edit ${slug} via open-ski-data editor`,
+    });
+    return {
+      branchName: UPSTREAM_BRANCH,
+      commitSha,
+      forkOwner: UPSTREAM_OWNER,
+      forkBranchUrl: `https://github.com/${UPSTREAM_OWNER}/${UPSTREAM_REPO}/commit/${commitSha}`,
+      directCommit: true,
+      prNumber: null,
+      prUrl: null,
+    };
+  }
+
+  // Public contributor path — fork + PR.
   await ensureFork(octokit, user.login);
   const parentSha = await getUpstreamMainSha(octokit);
   const branchName = makeBranchName(slug);
@@ -278,6 +417,7 @@ export async function contribute(args: {
     commitSha,
     forkOwner: user.login,
     forkBranchUrl: `https://github.com/${user.login}/${UPSTREAM_REPO}/tree/${branchName}`,
+    directCommit: false,
     prNumber,
     prUrl,
   };

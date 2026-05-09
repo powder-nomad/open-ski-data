@@ -105,7 +105,7 @@ export async function GET(request: Request) {
     login: user.login,
   });
 
-  const res = NextResponse.redirect(new URL("/editor", origin).toString(), 302);
+  const res = NextResponse.redirect(new URL("/", origin).toString(), 302);
   res.headers.append(
     "Set-Cookie",
     buildSetCookieHeader({

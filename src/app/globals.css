@@ -15,6 +15,11 @@
   --bg-surface: #0b0f17;
   --bg-elev: #131a26;
   --bg-elev-strong: #1c2536;
+  /* Used by the editor's right-rail / mobile-drawer aside and form
+   * inputs (ported from ski-platform/.../slope-author-2). Was
+   * undefined → transparent backgrounds — drawer made the map show
+   * through. Solid surface tone matches the header chrome. */
+  --bg-page: #0b0f17;
 
   --fg: #e7ecf3;
   --fg-muted: #93a0b3;
