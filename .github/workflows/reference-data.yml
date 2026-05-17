@@ -7,6 +7,7 @@ on:
       - "schemas/**"
       - "scripts/check-reference-data.mjs"
       - "scripts/check-stable-ids.mjs"
+      - "scripts/check-aliases.mjs"
       - ".github/workflows/reference-data.yml"
       - "package.json"
   push:
@@ -22,6 +23,7 @@ on:
       - "schemas/**"
       - "scripts/check-reference-data.mjs"
       - "scripts/check-stable-ids.mjs"
+      - "scripts/check-aliases.mjs"
       - ".github/workflows/reference-data.yml"
       - "package.json"
 
@@ -34,6 +36,8 @@ jobs:
         with:
           node-version: "20"
       - run: npm run check:reference-data
+      - name: Validate registry/aliases.json
+        run: npm run check:aliases
 
   # Guards stable ids (slope/lift/webcam/node/edge) against accidental
   # rename or removal between the PR base and head. Downstream
