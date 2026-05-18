@@ -71,6 +71,11 @@
       "type": "string",
       "format": "uri",
       "description": "Optional public homepage of the resort. When present, consumers render a 'Visit homepage' link in the resort header."
+    },
+    "air_korea_station": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional. AirKorea (한국환경공단) station name to use when fetching real-time air quality. Korean station names like '평창', '홍천', '춘천'. Consumed by the Ridgecast registry-sync job to populate places.air_korea_station; when present, /v1/places/{slug}/air-quality returns live data from that station."
     }
   },
   "required": ["country_code", "region_slug", "place_slug", "name", "coordinates"]

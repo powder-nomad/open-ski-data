@@ -126,6 +126,17 @@ async function validatePlaceFile(filePath, seenSlugs) {
     `${rel(filePath)}: file path does not match country_code/region_slug/place_slug`,
   );
 
+  if (place.air_korea_station !== undefined) {
+    expect(
+      typeof place.air_korea_station === "string" && place.air_korea_station.trim().length > 0,
+      `${rel(filePath)}: air_korea_station must be a non-empty string`,
+    );
+    expect(
+      place.country_code === "kr",
+      `${rel(filePath)}: air_korea_station is only meaningful for country_code 'kr'`,
+    );
+  }
+
   return place;
 }
 
