@@ -4,6 +4,7 @@
   "scripts": {
     "check:reference-data": "node scripts/check-reference-data.mjs",
     "check:stable-ids": "node scripts/check-stable-ids.mjs",
-    "check:aliases": "node scripts/check-aliases.mjs"
+    "check:aliases": "node scripts/check-aliases.mjs",
+    "check:provenance": "node scripts/check-provenance.mjs"
   }
 }

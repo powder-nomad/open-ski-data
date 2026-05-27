@@ -56,6 +56,21 @@
               },
               "required": ["lat", "lon"]
             }
+          },
+          "provenance": {
+            "type": "object",
+            "description": "Optional. Per-lift origin. See NOTICE + CONTRIBUTING.md. Currently optional — `scripts/check-provenance.mjs` reports coverage in warn-mode.",
+            "properties": {
+              "source": { "enum": ["osm", "operator", "user-edit", "import"] },
+              "osm_way_id": { "type": "integer" },
+              "osm_node_ids": { "type": "array", "items": { "type": "integer" } },
+              "osm_version": { "type": "integer" },
+              "contributor": { "type": "string" },
+              "source_url": { "type": "string", "format": "uri" },
+              "last_verified": { "type": "string", "format": "date" }
+            },
+            "required": ["source"],
+            "additionalProperties": false
           }
         },
         "required": ["id", "name"]
