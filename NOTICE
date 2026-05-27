@@ -1,0 +1,53 @@
+NOTICE
+
+This database (the contents of `registry/` and the schemas under
+`schemas/`) contains data derived from OpenStreetMap.
+
+  © OpenStreetMap contributors
+  Available under the Open Database License (ODbL) v1.0
+  https://opendatacommons.org/licenses/odbl/1-0/
+  https://www.openstreetmap.org/copyright
+
+Required attribution
+====================
+
+Any public use, redistribution, or display of this database — or of any
+substantial extract derived from it — must include the following
+attribution prominently, visible to end users:
+
+  "Contains data from OpenStreetMap, © OpenStreetMap contributors,
+   available under the Open Database License (ODbL)."
+
+For applications that surface this data through a user interface, this
+attribution may appear in an "About" screen, a credits page, a map
+attribution control, or a footer — anywhere a typical user would find
+license / source information.
+
+Per-record provenance
+=====================
+
+Individual records in `registry/` may carry an optional `provenance`
+object identifying their original source (OpenStreetMap, official
+resort operator, individual contributor edit, or other). When
+redistributing individual records, prefer to preserve this field so
+downstream consumers can honor source-specific licensing requirements.
+
+Produced works
+==============
+
+Applications, services, APIs, and other software that *use* this
+database to produce derived outputs (forecasts, rendered maps, search
+results, etc.) are "Produced Works" under ODbL §2 and may be released
+under any license, including proprietary or commercial licenses,
+provided that the attribution above is preserved at the point of public
+use.
+
+Other notes
+===========
+
+Code in this repository (scripts, validators, import pipeline) is
+licensed separately under the MIT License — see LICENSE-CODE.
+
+The OpenStreetMap data referenced above remains the property of its
+original contributors. This repository does not claim ownership over
+that underlying data.
