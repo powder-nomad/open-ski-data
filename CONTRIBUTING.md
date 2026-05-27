@@ -10,6 +10,50 @@ This repository is meant for pull-request-based community updates to ski referen
 - include source links in the pull request description for factual changes
 - avoid mixing unrelated countries or regions in one pull request
 - do not commit secrets, private endpoints, or copyrighted map data without permission
+- by submitting a PR, you license your contribution under ODbL-1.0 (data) and MIT (code) — the same licenses the repository uses; see [LICENSE](./LICENSE)
+
+## Provenance
+
+Every factual change should be traceable to a source. Records carry
+an optional `provenance` field that captures this — when adding or
+editing data, set or update it so downstream consumers and future
+reviewers can audit the trail.
+
+The field shape (see `schemas/place.schema.json` for the full
+definition):
+
+```jsonc
+{
+  "provenance": {
+    "source": "osm",           // or "operator", "user-edit", "import"
+    "osm_way_id": 1234567,     // when source = "osm"
+    "osm_version": 12,         //   ^
+    "contributor": "...",      // OSM mapper handle or GitHub username
+    "source_url": "...",       // official page, news article, etc.
+    "last_verified": "2026-05-27"
+  }
+}
+```
+
+Rules of thumb:
+
+- when *importing* from OpenStreetMap: set `source: "osm"` plus the
+  `osm_way_id` / `osm_version` (the import pipeline does this
+  automatically)
+- when *adding* a fact from an official source (resort homepage,
+  press release, tourism board): set `source: "operator"` and fill
+  `source_url`
+- when *confirming* an existing fact is still accurate (e.g., you
+  visited the resort and verified the lift count): update
+  `last_verified` and add yourself as `contributor`
+- when *correcting* an OSM-derived fact based on local knowledge:
+  change `source` from `"osm"` to `"user-edit"`, add yourself as
+  `contributor`, and document the correction reason in the PR
+  description
+
+The `provenance` field is currently **optional** to keep the bar low
+for early contributions, but new records added through the
+forthcoming web editor will populate it automatically.
 
 ## Path Rules
 
