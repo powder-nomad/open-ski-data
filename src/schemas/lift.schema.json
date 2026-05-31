@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altera Lifts Registry",
+  "description": "Per-place lift catalog. Imported from SkiWatch (paulkim-xr/SkiWatch) where each lift carries a LocalizedText name plus connectivity to slopes and other lifts.",
+  "type": "object",
+  "properties": {
+    "country_code": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$"
+    },
+    "region_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "place_slug": { "type": "string" },
+    "lifts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": ["string", "integer"] },
+          "name": {
+            "type": "string",
+            "description": "Canonical English name; fallback when name_i18n lacks the caller's locale."
+          },
+          "name_i18n": {
+            "type": "object",
+            "patternProperties": { "^[a-z]{2}$": { "type": "string" } },
+            "additionalProperties": false
+          },
+          "type": {
+            "description": "Lift category — open-ended; SkiWatch doesn't categorize so imports may omit this.",
+            "type": "string"
+          },
+          "capacity_per_hour": { "type": ["integer", "null"] },
+          "length_m": { "type": ["number", "null"] },
+          "vertical_m": { "type": ["number", "null"] },
+          "connected_slope_ids": {
+            "type": "array",
+            "items": { "type": ["string", "integer"] }
+          },
+          "connected_lift_ids": {
+            "type": "array",
+            "items": { "type": ["string", "integer"] }
+          },
+          "coordinates": {
+            "type": "array",
+            "description": "Cable polyline from the lift's bottom station to its top, inclusive. Densified + DEM-sampled like slopes. Optional — older lifts.json files from before 2026-04 don't carry geometry; consumers should fall back to drawing nothing rather than erroring.",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "properties": {
+                "lat": { "type": "number" },
+                "lon": { "type": "number" },
+                "alt_m": { "type": ["number", "null"] }
+              },
+              "required": ["lat", "lon"]
+            }
+          },
+          "provenance": {
+            "type": "object",
+            "description": "Optional. Per-lift origin. See NOTICE + CONTRIBUTING.md. Currently optional — `scripts/check-provenance.mjs` reports coverage in warn-mode.",
+            "properties": {
+              "source": { "enum": ["osm", "operator", "user-edit", "import"] },
+              "osm_way_id": { "type": "integer" },
+              "osm_node_ids": { "type": "array", "items": { "type": "integer" } },
+              "osm_version": { "type": "integer" },
+              "contributor": { "type": "string" },
+              "source_url": { "type": "string", "format": "uri" },
+              "last_verified": { "type": "string", "format": "date" }
+            },
+            "required": ["source"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["id", "name"]
+      }
+    }
+  },
+  "required": ["country_code", "region_slug", "place_slug", "lifts"]
+}

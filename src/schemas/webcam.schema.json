@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altera Webcam Registry",
+  "type": "object",
+  "properties": {
+    "country_code": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$"
+    },
+    "region_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "place_slug": { "type": "string" },
+    "webcams": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "label_i18n": {
+            "type": "object",
+            "description": "Locale-keyed labels — SkiWatch's streams.ts carries { ko, en, ja } on every entry.",
+            "patternProperties": { "^[a-z]{2}$": { "type": "string" } },
+            "additionalProperties": false
+          },
+          "url": { "type": "string", "format": "uri" },
+          "type": {
+            "enum": [
+              "image",
+              "stream",
+              "hls",
+              "iframe",
+              "external",
+              "unavailable",
+              "vivaldi"
+            ]
+          },
+          "refresh_interval_ms": { "type": "integer" },
+          "coordinates": {
+            "type": "array",
+            "description": "Optional pin location(s) for map display. Single-camera webcams have one point; composite/multi-feed webcams may have several (e.g. one stream that covers multiple slopes). Each pin carries an optional `label` so the UI can render 'Yellow / Pink' for a slope-name-based composite.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+                "lon": { "type": "number", "minimum": -180, "maximum": 180 },
+                "label": {
+                  "type": "string",
+                  "description": "Optional per-pin label for composites. Falls back to the parent webcam's label when absent."
+                }
+              },
+              "required": ["lat", "lon"],
+              "additionalProperties": false
+            }
+          },
+          "provenance": {
+            "type": "object",
+            "description": "Optional. Per-webcam origin. See NOTICE + CONTRIBUTING.md. Currently optional — `scripts/check-provenance.mjs` reports coverage in warn-mode.",
+            "properties": {
+              "source": { "enum": ["osm", "operator", "user-edit", "import"] },
+              "osm_way_id": { "type": "integer" },
+              "osm_node_ids": { "type": "array", "items": { "type": "integer" } },
+              "osm_version": { "type": "integer" },
+              "contributor": { "type": "string" },
+              "source_url": { "type": "string", "format": "uri" },
+              "last_verified": { "type": "string", "format": "date" }
+            },
+            "required": ["source"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["label", "url", "type"]
+      }
+    }
+  },
+  "required": ["country_code", "region_slug", "place_slug", "webcams"]
+}

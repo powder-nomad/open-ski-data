@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altera Place",
+  "description": "A canonical skiable location in the Altera platform",
+  "type": "object",
+  "properties": {
+    "country_code": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$"
+    },
+    "region_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "place_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Canonical English name. The root of the fallback chain when no name_i18n match exists."
+    },
+    "name_i18n": {
+      "type": "object",
+      "description": "Locale-keyed display names. Keys are ISO 639-1 language codes (e.g. ko, en, ja). Matches the LocalizedText shape in paulkim-xr/SkiWatch.",
+      "patternProperties": {
+        "^[a-z]{2}$": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "region": {
+      "type": "string"
+    },
+    "region_i18n": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2}$": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "country": {
+      "type": "string"
+    },
+    "country_i18n": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2}$": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "coordinates": {
+      "type": "object",
+      "properties": {
+        "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+        "longitude": { "type": "number", "minimum": -180, "maximum": 180 }
+      },
+      "required": ["latitude", "longitude"]
+    },
+    "elevations": {
+      "type": "object",
+      "properties": {
+        "base_m": { "type": "integer" },
+        "summit_m": { "type": "integer" }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri",
+      "description": "Optional public homepage of the resort. When present, consumers render a 'Visit homepage' link in the resort header."
+    },
+    "air_korea_station": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional. AirKorea (한국환경공단) station name to use when fetching real-time air quality. Korean station names like '평창', '홍천', '춘천'. Consumed by the Ridgecast registry-sync job to populate places.air_korea_station; when present, /v1/places/{slug}/air-quality returns live data from that station."
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Optional. Where this record's data originated. See NOTICE for the attribution policy and CONTRIBUTING.md for guidance on each source class. Currently optional — `scripts/check-provenance.mjs` reports coverage but does not fail when missing.",
+      "properties": {
+        "source": {
+          "enum": ["osm", "operator", "user-edit", "import"],
+          "description": "osm = derived from OpenStreetMap (must preserve ODbL attribution); operator = official resort / lift co / tourism board; user-edit = correction submitted via PR or editor; import = seed data migrated from another project."
+        },
+        "osm_way_id": {
+          "type": "integer",
+          "description": "OSM way id when source = 'osm'. Lets re-syncs detect upstream geometry changes."
+        },
+        "osm_node_ids": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "description": "Optional OSM node ids used for this record (e.g., the node ids underlying a lift terminal or slope polyline)."
+        },
+        "osm_version": {
+          "type": "integer",
+          "description": "OSM way/node version at the time of import. Used by the importer to skip records that have not changed upstream."
+        },
+        "contributor": {
+          "type": "string",
+          "description": "OSM mapper handle (for source='osm'), GitHub username (for source='user-edit'), or import job id (for source='import')."
+        },
+        "source_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Official source URL when source='operator' — resort homepage, press release, tourism board page."
+        },
+        "last_verified": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO date (YYYY-MM-DD) when a human last confirmed this fact is still accurate."
+        }
+      },
+      "required": ["source"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["country_code", "region_slug", "place_slug", "name", "coordinates"]
+}

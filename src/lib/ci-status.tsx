@@ -8,6 +8,10 @@ import {
   UPSTREAM_OWNER,
   UPSTREAM_REPO,
 } from "@/lib/github-client";
+import {
+  validatePatchBundle,
+  formatValidationErrors,
+} from "@/lib/schema-validator";
 
 /**
  * `PatchSaver` — public-contributor variant of the v1 component
@@ -127,6 +131,22 @@ export function PatchSaver({
 
   async function handleSave() {
     if (!bundle || !user || !octokit) return;
+
+    // Defence-in-depth schema check: catch malformed payloads
+    // (missing required fields, bad enum values, additionalProperties
+    // violations) before they reach the fork/PR flow. CI on `main`
+    // still validates after the PR lands.
+    const schemaErrors = validatePatchBundle(bundle);
+    if (schemaErrors.length > 0) {
+      setSave({
+        kind: "error",
+        message: `Schema validation failed (${schemaErrors.length} issue${
+          schemaErrors.length === 1 ? "" : "s"
+        }):\n${formatValidationErrors(schemaErrors)}`,
+      });
+      return;
+    }
+
     const tally = summary ? formatEditTally(summary) : "your pending edits";
     if (
       !confirm(
@@ -237,16 +257,18 @@ export function PatchSaver({
       )}
 
       {save.kind === "error" && (
-        <p className="rounded bg-red-500/10 px-2 py-1 text-[11px] text-red-300">
-          Save failed: {save.message}
+        <div className="space-y-1 rounded bg-red-500/10 px-2 py-1 text-[11px] text-red-300">
+          <div className="whitespace-pre-line">
+            <span className="font-semibold">Save failed:</span> {save.message}
+          </div>
           <button
             type="button"
             onClick={() => setSave({ kind: "idle" })}
-            className="ml-2 underline"
+            className="underline"
           >
             retry
           </button>
-        </p>
+        </div>
       )}
 
       {save.kind === "saved" && (
