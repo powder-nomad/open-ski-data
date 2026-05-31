@@ -21,6 +21,7 @@ import slopeSchema from "@/schemas/slope.schema.json";
 import liftSchema from "@/schemas/lift.schema.json";
 import placeSchema from "@/schemas/place.schema.json";
 import webcamSchema from "@/schemas/webcam.schema.json";
+import slopeGraphSchema from "@/schemas/slope-graph.schema.json";
 
 import type { PatchBundle } from "./ci-status";
 
@@ -36,6 +37,7 @@ const validators: Record<string, ValidateFunction> = {
   "lifts.json": ajv.compile(liftSchema),
   "place.json": ajv.compile(placeSchema),
   "webcams.json": ajv.compile(webcamSchema),
+  "slope-graph.json": ajv.compile(slopeGraphSchema),
 };
 
 export type SchemaValidationError = {

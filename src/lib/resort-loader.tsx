@@ -152,6 +152,8 @@ export type SlopeGraphRecord = {
   version: number;
   nodes: GraphNode[];
   edges: GraphEdge[];
+  /** Optional snap configuration — preserved on round-trip but not modelled here. */
+  snap_config?: unknown;
 };
 
 export type LoadedResort = {

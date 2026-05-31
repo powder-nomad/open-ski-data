@@ -11,6 +11,8 @@ import {
   type LiftRecord,
   type PlaceRecord,
   type Provenance,
+  type GraphNode,
+  type SlopeGraphRecord,
 } from "@/lib/resort-loader";
 import { PatchSaver, type PatchBundle } from "@/lib/ci-status";
 import { useSession } from "@/lib/use-session";
@@ -165,6 +167,14 @@ export function SlopeAuthor2() {
   const [addedSlopes, setAddedSlopes] = useState<SlopeRecord[]>([]);
   const [addedLifts, setAddedLifts] = useState<LiftRecord[]>([]);
 
+  // Newly-dropped graph nodes (add-node mode). Each carries a fresh
+  // schema-valid id (n-u-<base36>) and starts at alt_m=0 — the
+  // elevation lookup fills it in async via /api/elevation. Wiped on
+  // resort change. The patch bundle merges these onto the existing
+  // graph's nodes[] (the editor will not emit slope-graph.json unless
+  // an existing graph is present, since the schema requires edges).
+  const [addedGraphNodes, setAddedGraphNodes] = useState<GraphNode[]>([]);
+
   // OSM Overpass re-import status. Same flow as v1: pull
   // piste:type=downhill ways within 5km of the resort centre, drop
   // the ones whose endpoints match an existing slope (≤10m), append
@@ -189,6 +199,12 @@ export function SlopeAuthor2() {
   const drawSlopeMarkersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
   const drawLiftLineRef = useRef<google.maps.Polyline | null>(null);
   const drawLiftMarkersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
+  // Markers for the resort's graph nodes (existing + this-session
+  // additions). Re-rendered by the effect below whenever the
+  // underlying lists change. Existing nodes use a dim slate color so
+  // they read as "snap targets" without competing with slope colors;
+  // added nodes pop in emerald to make new authoring visible.
+  const graphNodeMarkersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
   // Pending finalize forms.
   const [pendingDrawSlope, setPendingDrawSlope] = useState<
     { points: { lat: number; lng: number }[] } | null
@@ -212,6 +228,7 @@ export function SlopeAuthor2() {
     setPlaceOverride({});
     setAddedSlopes([]);
     setAddedLifts([]);
+    setAddedGraphNodes([]);
     setDrawSlopePoints([]);
     setDrawLiftPoints([]);
     setPendingDrawSlope(null);
@@ -376,6 +393,63 @@ export function SlopeAuthor2() {
           }
         }
         return [...prev, snapVertex(latLng, candidates)];
+      });
+    }
+    if (m === "add-node") {
+      // add-node requires an existing graph file — the schema needs
+      // `nodes[] minItems: 2` AND `edges[] minItems: 1`, so a brand-
+      // new graph can't be authored from this mode alone. When the
+      // resort has no graph, the click is silently ignored; a banner
+      // in the right rail tells the user why.
+      const resort = loadedResortRef.current;
+      if (!resort?.graph) return;
+      setAddedGraphNodes((prevAdded) => {
+        // Dedup: clicks within SNAP_RADIUS_M of an existing graph
+        // node (or one this session already dropped) are a no-op.
+        // The user can fat-finger the same point without leaving
+        // ghost duplicates behind.
+        const all: LatLng[] = [
+          ...resort.graph!.nodes.map((n) => ({ lat: n.lat, lng: n.lng })),
+          ...prevAdded.map((n) => ({ lat: n.lat, lng: n.lng })),
+        ];
+        if (snapToNearest(latLng, all, SNAP_RADIUS_M)) return prevAdded;
+
+        // ID matches the schema pattern `^n-[a-z0-9-]+$`. The
+        // `n-u-` prefix flags it as user-authored (vs. `n-summit`,
+        // `n-base-X` from the canonical graph). base36 timestamp +
+        // 4-char random keeps the id unique within a single session.
+        const id = `n-u-${Date.now().toString(36)}-${Math.random()
+          .toString(36)
+          .slice(2, 6)}`;
+        const node: GraphNode = {
+          id,
+          lat: latLng.lat,
+          lng: latLng.lng,
+          alt_m: 0,
+          kind: "waypoint",
+        };
+        // Async elevation fill — same /api/elevation pattern as
+        // pick mode. alt_m stays 0 if the lookup fails; user can
+        // fix it later via a per-node form (not yet built).
+        void (async () => {
+          try {
+            const res = await fetch(
+              `/api/elevation?lat=${latLng.lat}&lng=${latLng.lng}`,
+              { cache: "no-store" },
+            );
+            if (!res.ok) return;
+            const body = (await res.json()) as { elevation_m?: number };
+            if (typeof body.elevation_m !== "number") return;
+            setAddedGraphNodes((prev) =>
+              prev.map((n) =>
+                n.id === id ? { ...n, alt_m: body.elevation_m! } : n,
+              ),
+            );
+          } catch {
+            // Silent — alt_m stays 0. Not fatal for authoring.
+          }
+        })();
+        return [...prevAdded, node];
       });
     }
     // edit-*-geom modes are driven by the editable polyline's own
@@ -809,6 +883,61 @@ export function SlopeAuthor2() {
     });
   }, [mode, drawLiftPoints]);
 
+  // ── Graph nodes overlay (existing + this-session additions) ────
+  //
+  // Only rendered in graph-edit modes so the default slope/lift view
+  // stays uncluttered. Existing nodes are dim slate (snap-target
+  // hints); newly-added nodes pop in emerald to make this session's
+  // authoring visible.
+  useEffect(() => {
+    const map = googleMap.current;
+    if (!map) return;
+
+    // Tear down before re-rendering.
+    graphNodeMarkersRef.current.forEach((m) => (m.map = null));
+    graphNodeMarkersRef.current = [];
+
+    const graphMode = mode === "add-node" || mode === "connect-nodes" || mode === "edit-edge";
+    if (!graphMode) return;
+    if (!loadedResort) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const AME = (google.maps.marker as any).AdvancedMarkerElement;
+    const existing = loadedResort.graph?.nodes ?? [];
+
+    for (const n of existing) {
+      const el = document.createElement("div");
+      el.className = "rounded-full ring-1 ring-white/70";
+      el.style.width = "8px";
+      el.style.height = "8px";
+      el.style.background = "#64748b"; // slate-500
+      el.title = `node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m`;
+      const marker = new AME({
+        position: { lat: n.lat, lng: n.lng },
+        map,
+        title: `graph-node-${n.id}`,
+        content: el,
+      });
+      graphNodeMarkersRef.current.push(marker);
+    }
+
+    for (const n of addedGraphNodes) {
+      const el = document.createElement("div");
+      el.className = "rounded-full ring-2 ring-white";
+      el.style.width = "12px";
+      el.style.height = "12px";
+      el.style.background = "#22c55e"; // emerald-500
+      el.title = `new node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m`;
+      const marker = new AME({
+        position: { lat: n.lat, lng: n.lng },
+        map,
+        title: `graph-node-${n.id}`,
+        content: el,
+      });
+      graphNodeMarkersRef.current.push(marker);
+    }
+  }, [mode, mapReady, loadedResort, addedGraphNodes]);
+
   // Build patch bundle for the saver. PatchBundle shape is
   // `{slug, countryCode, regionSlug, files}` — a flat map of
   // relative-to-resort path → JSON string. PatchSaver ships the
@@ -824,7 +953,8 @@ export function SlopeAuthor2() {
     const liftEdits = Object.keys(liftOverrides).length;
     const liftAdded = addedLifts.length;
     const placeEdits = Object.keys(placeOverride).length;
-    if (slopeEdits + slopeAdded + liftEdits + liftAdded + placeEdits === 0)
+    const graphNodesAdded = addedGraphNodes.length;
+    if (slopeEdits + slopeAdded + liftEdits + liftAdded + placeEdits + graphNodesAdded === 0)
       return null;
 
     // Provenance stamp for every record the user touches. Preserves
@@ -888,12 +1018,35 @@ export function SlopeAuthor2() {
       files["place.json"] = JSON.stringify(stamp(effectivePlace), null, 2) + "\n";
     }
 
+    // Graph emission: only when an existing graph is loaded (the
+    // schema requires `nodes` min 2 + `edges` min 1, so we can't
+    // bootstrap a brand-new graph from added nodes alone). Merged
+    // graph = existing.nodes ++ addedGraphNodes, existing edges
+    // unchanged. snap_config pass-through preserved.
+    if (graphNodesAdded > 0 && loadedResort.graph) {
+      const merged: SlopeGraphRecord = {
+        ...loadedResort.graph,
+        nodes: [...loadedResort.graph.nodes, ...addedGraphNodes],
+      };
+      files["slope-graph.json"] =
+        JSON.stringify(
+          {
+            $schema: "../../../schemas/slope-graph.schema.json",
+            ...merged,
+          },
+          null,
+          2,
+        ) + "\n";
+    }
+
     const parts: string[] = [];
     if (slopeEdits > 0) parts.push(`edit ${slopeEdits} slope${slopeEdits === 1 ? "" : "s"}`);
     if (slopeAdded > 0) parts.push(`add ${slopeAdded} slope${slopeAdded === 1 ? "" : "s"}`);
     if (liftEdits > 0) parts.push(`edit ${liftEdits} lift${liftEdits === 1 ? "" : "s"}`);
     if (liftAdded > 0) parts.push(`add ${liftAdded} lift${liftAdded === 1 ? "" : "s"}`);
     if (placeEdits > 0) parts.push("edit place metadata");
+    if (graphNodesAdded > 0)
+      parts.push(`add ${graphNodesAdded} graph node${graphNodesAdded === 1 ? "" : "s"}`);
 
     return {
       slug: loadedResort.ref.slug,
@@ -902,7 +1055,7 @@ export function SlopeAuthor2() {
       files,
       message: `slope-author-2: ${parts.join(" + ")}`,
     };
-  }, [loadedResort, slopeOverrides, addedSlopes, liftOverrides, addedLifts, placeOverride, effectivePlace, sessionUser?.login]);
+  }, [loadedResort, slopeOverrides, addedSlopes, liftOverrides, addedLifts, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes]);
 
   const desc = modeDescriptor(mode);
   const descI18n = MODE_I18N[desc.mode];

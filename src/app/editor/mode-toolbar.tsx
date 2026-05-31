@@ -72,7 +72,7 @@ export const MODE_DESCRIPTORS: ModeDescriptor[] = [
   { mode: "draw-slope", icon: "✚", enabled: true },
   { mode: "edit-lift-geom", icon: "🚡", enabled: true, requiresSelection: "lift" },
   { mode: "draw-lift", icon: "🚠", enabled: true },
-  { mode: "add-node", icon: "●", enabled: false },
+  { mode: "add-node", icon: "●", enabled: true },
   { mode: "connect-nodes", icon: "─", enabled: false },
   { mode: "edit-edge", icon: "↔", enabled: false, requiresSelection: "edge" },
 ];
