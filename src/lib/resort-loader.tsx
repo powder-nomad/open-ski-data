@@ -26,6 +26,23 @@ export type ResortRef = {
   label: string;
 };
 
+/**
+ * Per-record provenance. Mirrors the optional `provenance` block in
+ * each entity schema (place / lift / slope / webcam). `source` is the
+ * primary classifier; osm_* fields are auxiliary history pointers
+ * that survive a user-edit transition.
+ */
+export type Provenance = {
+  source: "osm" | "operator" | "user-edit" | "import";
+  osm_way_id?: number;
+  osm_node_ids?: number[];
+  osm_version?: number;
+  contributor?: string;
+  source_url?: string;
+  /** YYYY-MM-DD */
+  last_verified?: string;
+};
+
 export type SlopeRecord = {
   id: string;
   name: string;
@@ -43,6 +60,7 @@ export type SlopeRecord = {
    * Authored via the slope-author "Build path through graph" tool.
    */
   edge_ids?: string[];
+  provenance?: Provenance;
 };
 
 export type LiftRecord = {
@@ -54,6 +72,7 @@ export type LiftRecord = {
   length_m?: number | null;
   vertical_m?: number | null;
   coordinates: { lat: number; lon: number; alt_m?: number | null }[];
+  provenance?: Provenance;
 };
 
 export type WebcamRecord = {
@@ -73,6 +92,7 @@ export type WebcamRecord = {
    * back-compat read needed.
    */
   coordinates?: { lat: number; lon: number; label?: string }[];
+  provenance?: Provenance;
 };
 
 export type PlaceRecord = {
@@ -85,6 +105,7 @@ export type PlaceRecord = {
   coordinates: { latitude: number; longitude: number };
   elevations?: { base_m?: number; summit_m?: number };
   tags?: string[];
+  provenance?: Provenance;
   // Pass-through for fields we don't model yet so the patch round-trips.
   [key: string]: unknown;
 };

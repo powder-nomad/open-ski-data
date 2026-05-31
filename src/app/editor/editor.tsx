@@ -10,6 +10,7 @@ import {
   type SlopeRecord,
   type LiftRecord,
   type PlaceRecord,
+  type Provenance,
 } from "@/lib/resort-loader";
 import { PatchSaver, type PatchBundle } from "@/lib/ci-status";
 import { useSession } from "@/lib/use-session";
@@ -88,6 +89,11 @@ type LiftOverride = Partial<LiftRecord>;
 export function SlopeAuthor2() {
   const t = useTranslations("slopeAuthor");
   const locale = useLocale();
+  // Session at the top so patchBundle can stamp `provenance.contributor`
+  // with the signed-in GitHub login. NewPlaceForm calls useSession()
+  // independently lower down — both calls run their own fetch on
+  // mount; the cost is negligible and avoids prop-threading.
+  const { user: sessionUser } = useSession();
   const mapRef = useRef<HTMLDivElement>(null);
   const googleMap = useRef<google.maps.Map | null>(null);
   const [mapReady, setMapReady] = useState(false);
@@ -772,12 +778,32 @@ export function SlopeAuthor2() {
     if (slopeEdits + slopeAdded + liftEdits + liftAdded + placeEdits === 0)
       return null;
 
+    // Provenance stamp for every record the user touches. Preserves
+    // any pre-existing provenance (e.g. osm_way_id from OSM import)
+    // and overrides source/contributor/last_verified to mark the
+    // record as user-edited. `contributor` is omitted when the
+    // session hasn't resolved yet — PatchSaver gates submit on auth,
+    // so by the time the bundle ships, the login is known and the
+    // memo will have re-run with it in the deps array.
+    const today = new Date().toISOString().slice(0, 10);
+    const contributor = sessionUser?.login;
+    const stamp = <T extends { provenance?: Provenance }>(record: T): T => ({
+      ...record,
+      provenance: {
+        ...(record.provenance ?? {}),
+        source: "user-edit",
+        ...(contributor ? { contributor } : {}),
+        last_verified: today,
+      },
+    });
+
     const files: Record<string, string> = {};
 
     if (slopeEdits > 0 || slopeAdded > 0) {
       const editedSlopes = loadedResort.slopes.map((s) =>
-        slopeOverrides[s.id] ? { ...s, ...slopeOverrides[s.id] } : s,
+        slopeOverrides[s.id] ? stamp({ ...s, ...slopeOverrides[s.id] }) : s,
       );
+      const newSlopes = addedSlopes.map(stamp);
       files["slopes.json"] =
         JSON.stringify(
           {
@@ -785,7 +811,7 @@ export function SlopeAuthor2() {
             country_code: loadedResort.ref.countryCode,
             region_slug: loadedResort.ref.regionSlug,
             place_slug: loadedResort.ref.slug,
-            slopes: [...editedSlopes, ...addedSlopes],
+            slopes: [...editedSlopes, ...newSlopes],
           },
           null,
           2,
@@ -793,8 +819,9 @@ export function SlopeAuthor2() {
     }
     if (liftEdits > 0 || liftAdded > 0) {
       const editedLifts = loadedResort.lifts.map((l) =>
-        liftOverrides[l.id] ? { ...l, ...liftOverrides[l.id] } : l,
+        liftOverrides[l.id] ? stamp({ ...l, ...liftOverrides[l.id] }) : l,
       );
+      const newLifts = addedLifts.map(stamp);
       files["lifts.json"] =
         JSON.stringify(
           {
@@ -802,14 +829,14 @@ export function SlopeAuthor2() {
             country_code: loadedResort.ref.countryCode,
             region_slug: loadedResort.ref.regionSlug,
             place_slug: loadedResort.ref.slug,
-            lifts: [...editedLifts, ...addedLifts],
+            lifts: [...editedLifts, ...newLifts],
           },
           null,
           2,
         ) + "\n";
     }
     if (placeEdits > 0 && effectivePlace) {
-      files["place.json"] = JSON.stringify(effectivePlace, null, 2) + "\n";
+      files["place.json"] = JSON.stringify(stamp(effectivePlace), null, 2) + "\n";
     }
 
     const parts: string[] = [];
@@ -826,7 +853,7 @@ export function SlopeAuthor2() {
       files,
       message: `slope-author-2: ${parts.join(" + ")}`,
     };
-  }, [loadedResort, slopeOverrides, addedSlopes, liftOverrides, addedLifts, placeOverride, effectivePlace]);
+  }, [loadedResort, slopeOverrides, addedSlopes, liftOverrides, addedLifts, placeOverride, effectivePlace, sessionUser?.login]);
 
   const desc = modeDescriptor(mode);
   const descI18n = MODE_I18N[desc.mode];
