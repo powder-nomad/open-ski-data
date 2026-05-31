@@ -15,6 +15,12 @@ import {
 import { PatchSaver, type PatchBundle } from "@/lib/ci-status";
 import { useSession } from "@/lib/use-session";
 import { contribute } from "@/lib/github-client";
+import {
+  distanceM,
+  fromOsmCoord,
+  snapToNearest,
+  type LatLng,
+} from "@/lib/geo";
 import { type EditorMode, ModeToolbar, modeDescriptor, MODE_I18N } from "./mode-toolbar";
 
 /**
@@ -53,6 +59,11 @@ const SLOPE_EDIT_COLOR = "#22d3ee"; // cyan-400 — actively editable
 const LIFT_BASELINE_COLOR = "#fb7185"; // rose-400 — distinguishable from slopes
 const LIFT_SELECTED_COLOR = "#f59e0b"; // amber-500 — same selected hue as slopes
 const LIFT_EDIT_COLOR = "#22d3ee";
+
+// Radius for "snap to existing node" decisions. Matches the OSM
+// import dedup tolerance so a vertex authored in the editor near an
+// imported endpoint resolves to the same point both ways.
+const SNAP_RADIUS_M = 10;
 
 // Curated set of lift type values seen across open-ski-data. Free
 // text still passes the schema; the dropdown helps land on a
@@ -120,6 +131,13 @@ export function SlopeAuthor2() {
   const pickMarkersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
 
   const [loadedResort, setLoadedResort] = useState<LoadedResort | null>(null);
+  // Mirror of loadedResort that the (stable-identity) map click
+  // callback can read without being re-created on every resort load.
+  // Same pattern as modeRef above.
+  const loadedResortRef = useRef<LoadedResort | null>(null);
+  useEffect(() => {
+    loadedResortRef.current = loadedResort;
+  }, [loadedResort]);
 
   // Slope state. `selectedSlopeId` drives both the right-rail editor
   // form and which polyline takes the "editable" treatment when the
@@ -319,11 +337,46 @@ export function SlopeAuthor2() {
       setSelectedSlopeId(null);
       setSelectedLiftId(null);
     }
+    // Snap-on-create: a freshly-dropped vertex within SNAP_RADIUS_M
+    // of an existing graph node, an existing slope/lift vertex, or
+    // an already-placed vertex in the same draw session resolves to
+    // the existing point instead of creating a near-duplicate. The
+    // same data ends up in `edge_ids`-friendly form when the graph
+    // editor lands, and users authoring against an OSM-imported
+    // baseline don't fight pixel-level precision.
+    const snapVertex = (p: LatLng, candidates: LatLng[]): LatLng => {
+      const snap = snapToNearest(p, candidates, SNAP_RADIUS_M);
+      return snap ? { lat: snap.target.lat, lng: snap.target.lng } : p;
+    };
     if (m === "draw-slope") {
-      setDrawSlopePoints((prev) => [...prev, latLng]);
+      setDrawSlopePoints((prev) => {
+        const candidates: LatLng[] = [...prev];
+        const resort = loadedResortRef.current;
+        if (resort?.graph) {
+          for (const n of resort.graph.nodes) candidates.push({ lat: n.lat, lng: n.lng });
+        }
+        if (resort) {
+          for (const s of resort.slopes) {
+            for (const c of s.coordinates ?? []) candidates.push(fromOsmCoord(c));
+          }
+        }
+        return [...prev, snapVertex(latLng, candidates)];
+      });
     }
     if (m === "draw-lift") {
-      setDrawLiftPoints((prev) => [...prev, latLng]);
+      setDrawLiftPoints((prev) => {
+        const candidates: LatLng[] = [...prev];
+        const resort = loadedResortRef.current;
+        if (resort?.graph) {
+          for (const n of resort.graph.nodes) candidates.push({ lat: n.lat, lng: n.lng });
+        }
+        if (resort) {
+          for (const l of resort.lifts) {
+            for (const c of l.coordinates ?? []) candidates.push(fromOsmCoord(c));
+          }
+        }
+        return [...prev, snapVertex(latLng, candidates)];
+      });
     }
     // edit-*-geom modes are driven by the editable polyline's own
     // events; map clicks outside the polyline don't change geometry.
@@ -614,11 +667,7 @@ export function SlopeAuthor2() {
       const closeTo = (
         a: { lat: number; lon: number },
         b: { lat: number; lon: number },
-      ) => {
-        const dlat = (a.lat - b.lat) * 111_000;
-        const dlon = (a.lon - b.lon) * 111_000 * Math.cos((a.lat * Math.PI) / 180);
-        return Math.sqrt(dlat * dlat + dlon * dlon) < 10;
-      };
+      ) => distanceM(fromOsmCoord(a), fromOsmCoord(b)) < SNAP_RADIUS_M;
 
       const newRows: SlopeRecord[] = [];
       for (const w of ways) {
