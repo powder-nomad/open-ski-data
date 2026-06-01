@@ -130,7 +130,7 @@ export function SlopeAuthor2() {
   // a fuller v2 brings a list panel like v1's, but the marker-on-map
   // proves the pattern.
   const [picks, setPicks] = useState<PickedPoint[]>([]);
-  const pickMarkersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
+  const pickMarkersRef = useRef<google.maps.Marker[]>([]);
 
   const [loadedResort, setLoadedResort] = useState<LoadedResort | null>(null);
   // Mirror of loadedResort that the (stable-identity) map click
@@ -167,6 +167,15 @@ export function SlopeAuthor2() {
   const [addedSlopes, setAddedSlopes] = useState<SlopeRecord[]>([]);
   const [addedLifts, setAddedLifts] = useState<LiftRecord[]>([]);
 
+  // Deleted baseline ids — entities the user wants dropped from the
+  // patch bundle. Editor filters them out of the map + list so they
+  // vanish visually; patchBundle omits them from slopes.json /
+  // lifts.json so the PR diff shows the removal. Added-this-session
+  // entities are not tracked here — they're removed directly from
+  // addedSlopes / addedLifts.
+  const [deletedSlopeIds, setDeletedSlopeIds] = useState<string[]>([]);
+  const [deletedLiftIds, setDeletedLiftIds] = useState<string[]>([]);
+
   // Newly-dropped graph nodes (add-node mode). Each carries a fresh
   // schema-valid id (n-u-<base36>) and starts at alt_m=0 — the
   // elevation lookup fills it in async via /api/elevation. Wiped on
@@ -196,15 +205,15 @@ export function SlopeAuthor2() {
     { lat: number; lng: number }[]
   >([]);
   const drawSlopeLineRef = useRef<google.maps.Polyline | null>(null);
-  const drawSlopeMarkersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
+  const drawSlopeMarkersRef = useRef<google.maps.Marker[]>([]);
   const drawLiftLineRef = useRef<google.maps.Polyline | null>(null);
-  const drawLiftMarkersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
+  const drawLiftMarkersRef = useRef<google.maps.Marker[]>([]);
   // Markers for the resort's graph nodes (existing + this-session
   // additions). Re-rendered by the effect below whenever the
   // underlying lists change. Existing nodes use a dim slate color so
   // they read as "snap targets" without competing with slope colors;
   // added nodes pop in emerald to make new authoring visible.
-  const graphNodeMarkersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
+  const graphNodeMarkersRef = useRef<google.maps.Marker[]>([]);
   // Pending finalize forms.
   const [pendingDrawSlope, setPendingDrawSlope] = useState<
     { points: { lat: number; lng: number }[] } | null
@@ -229,6 +238,8 @@ export function SlopeAuthor2() {
     setAddedSlopes([]);
     setAddedLifts([]);
     setAddedGraphNodes([]);
+    setDeletedSlopeIds([]);
+    setDeletedLiftIds([]);
     setDrawSlopePoints([]);
     setDrawLiftPoints([]);
     setPendingDrawSlope(null);
@@ -245,6 +256,41 @@ export function SlopeAuthor2() {
   function selectLift(id: string | null) {
     setSelectedLiftId(id);
     if (id) setSelectedSlopeId(null);
+  }
+
+  // Delete a slope. If it's an added-this-session record, drop it
+  // straight from addedSlopes (no need to tombstone). Otherwise mark
+  // the baseline id as deleted so patchBundle omits it from the
+  // emitted slopes.json. Either way, any pending override on that
+  // record is also dropped — keeping it around would inflate the
+  // edit counter for an entity that won't ship.
+  function deleteSlope(id: string) {
+    if (addedSlopes.some((s) => s.id === id)) {
+      setAddedSlopes((prev) => prev.filter((s) => s.id !== id));
+    } else {
+      setDeletedSlopeIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    }
+    setSlopeOverrides((prev) => {
+      if (!(id in prev)) return prev;
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+    if (selectedSlopeId === id) setSelectedSlopeId(null);
+  }
+  function deleteLift(id: string) {
+    if (addedLifts.some((l) => l.id === id)) {
+      setAddedLifts((prev) => prev.filter((l) => l.id !== id));
+    } else {
+      setDeletedLiftIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    }
+    setLiftOverrides((prev) => {
+      if (!(id in prev)) return prev;
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+    if (selectedLiftId === id) setSelectedLiftId(null);
   }
 
   // ── Map bootstrap ──────────────────────────────────────────────
@@ -495,29 +541,31 @@ export function SlopeAuthor2() {
   useEffect(() => {
     if (!googleMap.current) return;
     // Add markers for any pick that doesn't have one yet.
-    const existingIds = new Set(pickMarkersRef.current.map((m) => m.title));
+    const existingIds = new Set(
+      pickMarkersRef.current.map((m) => m.getTitle()),
+    );
     for (const p of picks) {
       if (existingIds.has(p.id)) continue;
-      const el = document.createElement("div");
-      el.className =
-        "rounded-full bg-orange-400 ring-2 ring-white";
-      el.style.width = "10px";
-      el.style.height = "10px";
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const AME = (google.maps.marker as any).AdvancedMarkerElement;
-      const marker = new AME({
+      const marker = new google.maps.Marker({
         position: { lat: p.lat, lng: p.lng },
         map: googleMap.current,
         title: p.id,
-        content: el,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 6,
+          fillColor: "#fb923c", // orange-400
+          fillOpacity: 1,
+          strokeColor: "#ffffff",
+          strokeWeight: 2,
+        },
       });
       pickMarkersRef.current.push(marker);
     }
     // Clean up markers whose pick was removed.
     const aliveIds = new Set(picks.map((p) => p.id));
     pickMarkersRef.current = pickMarkersRef.current.filter((m) => {
-      if (aliveIds.has(m.title ?? "")) return true;
-      m.map = null;
+      if (aliveIds.has(m.getTitle() ?? "")) return true;
+      m.setMap(null);
       return false;
     });
   }, [picks]);
@@ -530,23 +578,29 @@ export function SlopeAuthor2() {
   // not in the baseline yet.
   const effectiveSlopes = useMemo(() => {
     if (!loadedResort) return [] as SlopeRecord[];
-    const fromBaseline = loadedResort.slopes.map((s) => {
-      const override = slopeOverrides[s.id];
-      if (!override) return s;
-      return { ...s, ...override };
-    });
+    const deleted = new Set(deletedSlopeIds);
+    const fromBaseline = loadedResort.slopes
+      .filter((s) => !deleted.has(s.id))
+      .map((s) => {
+        const override = slopeOverrides[s.id];
+        if (!override) return s;
+        return { ...s, ...override };
+      });
     return [...fromBaseline, ...addedSlopes];
-  }, [loadedResort, slopeOverrides, addedSlopes]);
+  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds]);
 
   const effectiveLifts = useMemo(() => {
     if (!loadedResort) return [] as LiftRecord[];
-    const fromBaseline = loadedResort.lifts.map((l) => {
-      const override = liftOverrides[l.id];
-      if (!override) return l;
-      return { ...l, ...override };
-    });
+    const deleted = new Set(deletedLiftIds);
+    const fromBaseline = loadedResort.lifts
+      .filter((l) => !deleted.has(l.id))
+      .map((l) => {
+        const override = liftOverrides[l.id];
+        if (!override) return l;
+        return { ...l, ...override };
+      });
     return [...fromBaseline, ...addedLifts];
-  }, [loadedResort, liftOverrides, addedLifts]);
+  }, [loadedResort, liftOverrides, addedLifts, deletedLiftIds]);
 
   const effectivePlace = useMemo<PlaceRecord | null>(() => {
     if (!loadedResort) return null;
@@ -805,7 +859,7 @@ export function SlopeAuthor2() {
       drawSlopeLineRef.current.setMap(null);
       drawSlopeLineRef.current = null;
     }
-    drawSlopeMarkersRef.current.forEach((m) => (m.map = null));
+    drawSlopeMarkersRef.current.forEach((m) => m.setMap(null));
     drawSlopeMarkersRef.current = [];
 
     if (mode !== "draw-slope" || drawSlopePoints.length === 0) return;
@@ -821,20 +875,23 @@ export function SlopeAuthor2() {
       drawSlopeLineRef.current = polyline;
     }
     // Vertex markers help the user count + see what's been clicked.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const AME = (google.maps.marker as any).AdvancedMarkerElement;
+    // Right-click a vertex to remove it (also works as long-press on touch).
     drawSlopePoints.forEach((p, i) => {
-      const el = document.createElement("div");
-      el.className = "rounded-full ring-2 ring-white";
-      el.style.width = "10px";
-      el.style.height = "10px";
-      el.style.background = SLOPE_EDIT_COLOR;
-      el.title = `vertex ${i + 1}`;
-      const marker = new AME({
+      const marker = new google.maps.Marker({
         position: p,
         map,
-        title: `draw-${i}`,
-        content: el,
+        title: `vertex ${i + 1} — right-click to remove`,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 6,
+          fillColor: SLOPE_EDIT_COLOR,
+          fillOpacity: 1,
+          strokeColor: "#ffffff",
+          strokeWeight: 2,
+        },
+      });
+      marker.addListener("rightclick", () => {
+        setDrawSlopePoints((prev) => prev.filter((_, idx) => idx !== i));
       });
       drawSlopeMarkersRef.current.push(marker);
     });
@@ -849,7 +906,7 @@ export function SlopeAuthor2() {
       drawLiftLineRef.current.setMap(null);
       drawLiftLineRef.current = null;
     }
-    drawLiftMarkersRef.current.forEach((m) => (m.map = null));
+    drawLiftMarkersRef.current.forEach((m) => m.setMap(null));
     drawLiftMarkersRef.current = [];
 
     if (mode !== "draw-lift" || drawLiftPoints.length === 0) return;
@@ -864,20 +921,22 @@ export function SlopeAuthor2() {
       });
       drawLiftLineRef.current = polyline;
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const AME = (google.maps.marker as any).AdvancedMarkerElement;
     drawLiftPoints.forEach((p, i) => {
-      const el = document.createElement("div");
-      el.className = "rounded-full ring-2 ring-white";
-      el.style.width = "10px";
-      el.style.height = "10px";
-      el.style.background = LIFT_EDIT_COLOR;
-      el.title = `vertex ${i + 1}`;
-      const marker = new AME({
+      const marker = new google.maps.Marker({
         position: p,
         map,
-        title: `draw-lift-${i}`,
-        content: el,
+        title: `vertex ${i + 1} — right-click to remove`,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 6,
+          fillColor: LIFT_EDIT_COLOR,
+          fillOpacity: 1,
+          strokeColor: "#ffffff",
+          strokeWeight: 2,
+        },
+      });
+      marker.addListener("rightclick", () => {
+        setDrawLiftPoints((prev) => prev.filter((_, idx) => idx !== i));
       });
       drawLiftMarkersRef.current.push(marker);
     });
@@ -894,45 +953,49 @@ export function SlopeAuthor2() {
     if (!map) return;
 
     // Tear down before re-rendering.
-    graphNodeMarkersRef.current.forEach((m) => (m.map = null));
+    graphNodeMarkersRef.current.forEach((m) => m.setMap(null));
     graphNodeMarkersRef.current = [];
 
     const graphMode = mode === "add-node" || mode === "connect-nodes" || mode === "edit-edge";
     if (!graphMode) return;
     if (!loadedResort) return;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const AME = (google.maps.marker as any).AdvancedMarkerElement;
     const existing = loadedResort.graph?.nodes ?? [];
 
     for (const n of existing) {
-      const el = document.createElement("div");
-      el.className = "rounded-full ring-1 ring-white/70";
-      el.style.width = "8px";
-      el.style.height = "8px";
-      el.style.background = "#64748b"; // slate-500
-      el.title = `node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m`;
-      const marker = new AME({
+      const marker = new google.maps.Marker({
         position: { lat: n.lat, lng: n.lng },
         map,
-        title: `graph-node-${n.id}`,
-        content: el,
+        title: `node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m`,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 4,
+          fillColor: "#64748b", // slate-500 — dim snap target
+          fillOpacity: 0.85,
+          strokeColor: "#ffffff",
+          strokeWeight: 1,
+        },
       });
       graphNodeMarkersRef.current.push(marker);
     }
 
     for (const n of addedGraphNodes) {
-      const el = document.createElement("div");
-      el.className = "rounded-full ring-2 ring-white";
-      el.style.width = "12px";
-      el.style.height = "12px";
-      el.style.background = "#22c55e"; // emerald-500
-      el.title = `new node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m`;
-      const marker = new AME({
+      const marker = new google.maps.Marker({
         position: { lat: n.lat, lng: n.lng },
         map,
-        title: `graph-node-${n.id}`,
-        content: el,
+        title: `new node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m — right-click to remove`,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 7,
+          fillColor: "#22c55e", // emerald-500 — this-session addition
+          fillOpacity: 1,
+          strokeColor: "#ffffff",
+          strokeWeight: 2,
+        },
+      });
+      // Right-click an added node to remove it (works as long-press on touch).
+      marker.addListener("rightclick", () => {
+        setAddedGraphNodes((prev) => prev.filter((x) => x.id !== n.id));
       });
       graphNodeMarkersRef.current.push(marker);
     }
@@ -950,11 +1013,17 @@ export function SlopeAuthor2() {
     if (!loadedResort) return null;
     const slopeEdits = Object.keys(slopeOverrides).length;
     const slopeAdded = addedSlopes.length;
+    const slopeDeleted = deletedSlopeIds.length;
     const liftEdits = Object.keys(liftOverrides).length;
     const liftAdded = addedLifts.length;
+    const liftDeleted = deletedLiftIds.length;
     const placeEdits = Object.keys(placeOverride).length;
     const graphNodesAdded = addedGraphNodes.length;
-    if (slopeEdits + slopeAdded + liftEdits + liftAdded + placeEdits + graphNodesAdded === 0)
+    if (
+      slopeEdits + slopeAdded + slopeDeleted +
+      liftEdits + liftAdded + liftDeleted +
+      placeEdits + graphNodesAdded === 0
+    )
       return null;
 
     // Provenance stamp for every record the user touches. Preserves
@@ -978,10 +1047,13 @@ export function SlopeAuthor2() {
 
     const files: Record<string, string> = {};
 
-    if (slopeEdits > 0 || slopeAdded > 0) {
-      const editedSlopes = loadedResort.slopes.map((s) =>
-        slopeOverrides[s.id] ? stamp({ ...s, ...slopeOverrides[s.id] }) : s,
-      );
+    if (slopeEdits > 0 || slopeAdded > 0 || slopeDeleted > 0) {
+      const deleted = new Set(deletedSlopeIds);
+      const editedSlopes = loadedResort.slopes
+        .filter((s) => !deleted.has(s.id))
+        .map((s) =>
+          slopeOverrides[s.id] ? stamp({ ...s, ...slopeOverrides[s.id] }) : s,
+        );
       const newSlopes = addedSlopes.map(stamp);
       files["slopes.json"] =
         JSON.stringify(
@@ -996,10 +1068,13 @@ export function SlopeAuthor2() {
           2,
         ) + "\n";
     }
-    if (liftEdits > 0 || liftAdded > 0) {
-      const editedLifts = loadedResort.lifts.map((l) =>
-        liftOverrides[l.id] ? stamp({ ...l, ...liftOverrides[l.id] }) : l,
-      );
+    if (liftEdits > 0 || liftAdded > 0 || liftDeleted > 0) {
+      const deleted = new Set(deletedLiftIds);
+      const editedLifts = loadedResort.lifts
+        .filter((l) => !deleted.has(l.id))
+        .map((l) =>
+          liftOverrides[l.id] ? stamp({ ...l, ...liftOverrides[l.id] }) : l,
+        );
       const newLifts = addedLifts.map(stamp);
       files["lifts.json"] =
         JSON.stringify(
@@ -1042,8 +1117,12 @@ export function SlopeAuthor2() {
     const parts: string[] = [];
     if (slopeEdits > 0) parts.push(`edit ${slopeEdits} slope${slopeEdits === 1 ? "" : "s"}`);
     if (slopeAdded > 0) parts.push(`add ${slopeAdded} slope${slopeAdded === 1 ? "" : "s"}`);
+    if (slopeDeleted > 0)
+      parts.push(`delete ${slopeDeleted} slope${slopeDeleted === 1 ? "" : "s"}`);
     if (liftEdits > 0) parts.push(`edit ${liftEdits} lift${liftEdits === 1 ? "" : "s"}`);
     if (liftAdded > 0) parts.push(`add ${liftAdded} lift${liftAdded === 1 ? "" : "s"}`);
+    if (liftDeleted > 0)
+      parts.push(`delete ${liftDeleted} lift${liftDeleted === 1 ? "" : "s"}`);
     if (placeEdits > 0) parts.push("edit place metadata");
     if (graphNodesAdded > 0)
       parts.push(`add ${graphNodesAdded} graph node${graphNodesAdded === 1 ? "" : "s"}`);
@@ -1055,7 +1134,7 @@ export function SlopeAuthor2() {
       files,
       message: `slope-author-2: ${parts.join(" + ")}`,
     };
-  }, [loadedResort, slopeOverrides, addedSlopes, liftOverrides, addedLifts, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes]);
+  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes]);
 
   const desc = modeDescriptor(mode);
   const descI18n = MODE_I18N[desc.mode];
@@ -1256,6 +1335,8 @@ export function SlopeAuthor2() {
                 selectedId={selectedSlopeId}
                 onSelect={selectSlope}
                 overrides={slopeOverrides}
+                deletedCount={deletedSlopeIds.length}
+                onRestoreAll={() => setDeletedSlopeIds([])}
                 hint={
                   mode === "edit-slope-geom"
                     ? "Drag a vertex to move. Double-click a segment to insert a vertex. Right-click a vertex to remove. Edits save when you commit the patch below."
@@ -1295,6 +1376,7 @@ export function SlopeAuthor2() {
                 hasOverrideGeom={
                   Boolean(slopeOverrides[selectedSlope.id]?.coordinates)
                 }
+                onDelete={() => deleteSlope(selectedSlope.id)}
               />
             )}
 
@@ -1304,6 +1386,8 @@ export function SlopeAuthor2() {
                 selectedId={selectedLiftId}
                 onSelect={selectLift}
                 overrides={liftOverrides}
+                deletedCount={deletedLiftIds.length}
+                onRestoreAll={() => setDeletedLiftIds([])}
                 hint={
                   mode === "edit-lift-geom"
                     ? "Drag a vertex to move. Double-click a segment to insert. Right-click to remove."
@@ -1341,6 +1425,7 @@ export function SlopeAuthor2() {
                 hasOverrideGeom={
                   Boolean(liftOverrides[selectedLift.id]?.coordinates)
                 }
+                onDelete={() => deleteLift(selectedLift.id)}
               />
             )}
 
@@ -1365,6 +1450,8 @@ function SlopeListPanel({
   onSelect,
   overrides,
   hint,
+  deletedCount,
+  onRestoreAll,
 }: {
   resort: LoadedResort;
   effectiveSlopes: SlopeRecord[];
@@ -1372,15 +1459,27 @@ function SlopeListPanel({
   onSelect: (id: string) => void;
   overrides: Record<string, SlopeOverride>;
   hint: string;
+  deletedCount: number;
+  onRestoreAll: () => void;
 }) {
   return (
     <section>
-      <header className="mb-2 flex items-center justify-between">
+      <header className="mb-2 flex items-center justify-between gap-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
           Slopes ({effectiveSlopes.length})
         </p>
-        <span className="text-[10px] text-[var(--fg-dim)]">
-          {Object.keys(overrides).length} edited
+        <span className="flex items-center gap-2 text-[10px] text-[var(--fg-dim)]">
+          {deletedCount > 0 && (
+            <button
+              type="button"
+              onClick={onRestoreAll}
+              className="rounded-full bg-[#ef4444]/20 px-1.5 py-0.5 text-[9px] font-semibold text-[#fca5a5] hover:bg-[#ef4444]/30"
+              title="Undo all deletions in this session"
+            >
+              {deletedCount} deleted · restore
+            </button>
+          )}
+          <span>{Object.keys(overrides).length} edited</span>
         </span>
       </header>
       <p className="mb-2 text-[10px] text-[var(--fg-dim)]">{hint}</p>
@@ -1432,6 +1531,7 @@ function SlopeMetaPanel({
   onEditGeom,
   onResetGeom,
   hasOverrideGeom,
+  onDelete,
 }: {
   slope: SlopeRecord;
   override: SlopeOverride | undefined;
@@ -1440,6 +1540,7 @@ function SlopeMetaPanel({
   onEditGeom: () => void;
   onResetGeom: () => void;
   hasOverrideGeom: boolean;
+  onDelete: () => void;
 }) {
   const locale = useLocale();
   // Inputs read from baseline ⊕ override so they reflect any
@@ -1511,6 +1612,17 @@ function SlopeMetaPanel({
             Reset geometry
           </button>
         )}
+        <button
+          type="button"
+          onClick={() => {
+            if (confirm(`Delete slope "${slope.name || slope.id}"? The patch bundle will drop this record from slopes.json. You can restore it from the list header until you save.`)) {
+              onDelete();
+            }
+          }}
+          className="ml-auto rounded-md border border-[#ef4444]/40 px-3 py-1.5 font-semibold text-[#fca5a5] hover:bg-[#ef4444]/10 hover:text-[#fecaca]"
+        >
+          Delete
+        </button>
       </div>
     </section>
   );
@@ -1522,21 +1634,35 @@ function LiftListPanel({
   onSelect,
   overrides,
   hint,
+  deletedCount,
+  onRestoreAll,
 }: {
   effectiveLifts: LiftRecord[];
   selectedId: string | null;
   onSelect: (id: string) => void;
   overrides: Record<string, LiftOverride>;
   hint: string;
+  deletedCount: number;
+  onRestoreAll: () => void;
 }) {
   return (
     <section>
-      <header className="mb-2 flex items-center justify-between">
+      <header className="mb-2 flex items-center justify-between gap-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
           Lifts ({effectiveLifts.length})
         </p>
-        <span className="text-[10px] text-[var(--fg-dim)]">
-          {Object.keys(overrides).length} edited
+        <span className="flex items-center gap-2 text-[10px] text-[var(--fg-dim)]">
+          {deletedCount > 0 && (
+            <button
+              type="button"
+              onClick={onRestoreAll}
+              className="rounded-full bg-[#ef4444]/20 px-1.5 py-0.5 text-[9px] font-semibold text-[#fca5a5] hover:bg-[#ef4444]/30"
+              title="Undo all deletions in this session"
+            >
+              {deletedCount} deleted · restore
+            </button>
+          )}
+          <span>{Object.keys(overrides).length} edited</span>
         </span>
       </header>
       <p className="mb-2 text-[10px] text-[var(--fg-dim)]">{hint}</p>
@@ -1583,6 +1709,7 @@ function LiftMetaPanel({
   onEditGeom,
   onResetGeom,
   hasOverrideGeom,
+  onDelete,
 }: {
   lift: LiftRecord;
   override: LiftOverride | undefined;
@@ -1591,6 +1718,7 @@ function LiftMetaPanel({
   onEditGeom: () => void;
   onResetGeom: () => void;
   hasOverrideGeom: boolean;
+  onDelete: () => void;
 }) {
   const locale = useLocale();
   const name = override?.name ?? lift.name ?? "";
@@ -1686,6 +1814,17 @@ function LiftMetaPanel({
             Reset geometry
           </button>
         )}
+        <button
+          type="button"
+          onClick={() => {
+            if (confirm(`Delete lift "${lift.name || lift.id}"? The patch bundle will drop this record from lifts.json. You can restore it from the list header until you save.`)) {
+              onDelete();
+            }
+          }}
+          className="ml-auto rounded-md border border-[#ef4444]/40 px-3 py-1.5 font-semibold text-[#fca5a5] hover:bg-[#ef4444]/10 hover:text-[#fecaca]"
+        >
+          Delete
+        </button>
       </div>
     </section>
   );
