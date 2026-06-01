@@ -1339,8 +1339,8 @@ export function SlopeAuthor2() {
                 onRestoreAll={() => setDeletedSlopeIds([])}
                 hint={
                   mode === "edit-slope-geom"
-                    ? "Drag a vertex to move. Double-click a segment to insert a vertex. Right-click a vertex to remove. Edits save when you commit the patch below."
-                    : "Click a slope on the map or here to select. Switch to ✎ Slope geom in the toolbar to edit its polyline."
+                    ? t("slopeListHintEditing")
+                    : t("slopeListHintSelect")
                 }
               />
             )}
@@ -1390,8 +1390,8 @@ export function SlopeAuthor2() {
                 onRestoreAll={() => setDeletedLiftIds([])}
                 hint={
                   mode === "edit-lift-geom"
-                    ? "Drag a vertex to move. Double-click a segment to insert. Right-click to remove."
-                    : "Click a lift on the map or here. Switch to 🚡 Lift geom in the toolbar to edit its polyline."
+                    ? t("liftListHintEditing")
+                    : t("liftListHintSelect")
                 }
               />
             )}
@@ -1462,11 +1462,12 @@ function SlopeListPanel({
   deletedCount: number;
   onRestoreAll: () => void;
 }) {
+  const t = useTranslations("slopeAuthor");
   return (
     <section>
       <header className="mb-2 flex items-center justify-between gap-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
-          Slopes ({effectiveSlopes.length})
+          {t("slopeCountHeader", { count: effectiveSlopes.length })}
         </p>
         <span className="flex items-center gap-2 text-[10px] text-[var(--fg-dim)]">
           {deletedCount > 0 && (
@@ -1474,12 +1475,12 @@ function SlopeListPanel({
               type="button"
               onClick={onRestoreAll}
               className="rounded-full bg-[#ef4444]/20 px-1.5 py-0.5 text-[9px] font-semibold text-[#fca5a5] hover:bg-[#ef4444]/30"
-              title="Undo all deletions in this session"
+              title={t("restoreAllTitle")}
             >
-              {deletedCount} deleted · restore
+              {t("deletedRestoreChip", { count: deletedCount })}
             </button>
           )}
-          <span>{Object.keys(overrides).length} edited</span>
+          <span>{t("editedCount", { count: Object.keys(overrides).length })}</span>
         </span>
       </header>
       <p className="mb-2 text-[10px] text-[var(--fg-dim)]">{hint}</p>
@@ -1543,6 +1544,7 @@ function SlopeMetaPanel({
   onDelete: () => void;
 }) {
   const locale = useLocale();
+  const t = useTranslations("slopeAuthor");
   // Inputs read from baseline ⊕ override so they reflect any
   // pending edits without requiring a re-fetch.
   const name = override?.name ?? slope.name ?? "";
@@ -1552,23 +1554,26 @@ function SlopeMetaPanel({
     <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-surface)]/60 p-3">
       <header className="mb-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
-          Selected slope
+          {t("selectedSlope")}
         </p>
         <h3 className="mt-0.5 truncate text-sm font-semibold text-[var(--fg)]">
           {slope.name || slope.id}
         </h3>
         <p className="text-[10px] text-[var(--fg-dim)]">
-          id: {slope.id} · {slope.coordinates?.length ?? 0} vertices
+          {t("idVerticesHint", {
+            id: slope.id,
+            count: slope.coordinates?.length ?? 0,
+          })}
         </p>
       </header>
       <div className="grid gap-2 text-xs">
         <LabeledInput
-          label="Name (canonical)"
+          label={t("nameCanonical")}
           value={name}
           onChange={(v) => onPatch({ name: v })}
         />
         <LocalizedNameEditor
-          label="Name · localized"
+          label={t("nameLocalized")}
           value={
             (override?.name_i18n ?? slope.name_i18n) as
               | Record<string, string>
@@ -1578,13 +1583,13 @@ function SlopeMetaPanel({
           currentLocale={locale}
         />
         <LabeledInput
-          label="Difficulty"
+          label={t("difficulty")}
           value={difficulty}
           onChange={(v) => onPatch({ difficulty: v || null })}
           placeholder="beginner / intermediate / advanced / expert / …"
         />
         <LabeledNumber
-          label="Length (m)"
+          label={t("lengthM")}
           value={lengthM ?? null}
           onChange={(v) => onPatch({ length_m: v })}
         />
@@ -1596,11 +1601,11 @@ function SlopeMetaPanel({
             onClick={onEditGeom}
             className="rounded-md bg-[var(--accent)] px-3 py-1.5 font-semibold text-[var(--accent-ink)]"
           >
-            ✎ Edit geometry
+            {t("editGeometry")}
           </button>
         ) : (
           <span className="rounded-md bg-[#22d3ee]/15 px-3 py-1.5 font-semibold text-[#22d3ee]">
-            Editing — drag / dbl-click / right-click
+            {t("editingGeomNote")}
           </span>
         )}
         {hasOverrideGeom && (
@@ -1609,19 +1614,19 @@ function SlopeMetaPanel({
             onClick={onResetGeom}
             className="rounded-md border border-[var(--border)] px-3 py-1.5 text-[var(--fg-muted)] hover:text-[var(--fg)]"
           >
-            Reset geometry
+            {t("resetGeometry")}
           </button>
         )}
         <button
           type="button"
           onClick={() => {
-            if (confirm(`Delete slope "${slope.name || slope.id}"? The patch bundle will drop this record from slopes.json. You can restore it from the list header until you save.`)) {
+            if (confirm(t("deleteSlopeConfirm", { name: slope.name || slope.id }))) {
               onDelete();
             }
           }}
           className="ml-auto rounded-md border border-[#ef4444]/40 px-3 py-1.5 font-semibold text-[#fca5a5] hover:bg-[#ef4444]/10 hover:text-[#fecaca]"
         >
-          Delete
+          {t("deleteAction")}
         </button>
       </div>
     </section>
@@ -1645,11 +1650,12 @@ function LiftListPanel({
   deletedCount: number;
   onRestoreAll: () => void;
 }) {
+  const t = useTranslations("slopeAuthor");
   return (
     <section>
       <header className="mb-2 flex items-center justify-between gap-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
-          Lifts ({effectiveLifts.length})
+          {t("liftCountHeader", { count: effectiveLifts.length })}
         </p>
         <span className="flex items-center gap-2 text-[10px] text-[var(--fg-dim)]">
           {deletedCount > 0 && (
@@ -1657,12 +1663,12 @@ function LiftListPanel({
               type="button"
               onClick={onRestoreAll}
               className="rounded-full bg-[#ef4444]/20 px-1.5 py-0.5 text-[9px] font-semibold text-[#fca5a5] hover:bg-[#ef4444]/30"
-              title="Undo all deletions in this session"
+              title={t("restoreAllTitle")}
             >
-              {deletedCount} deleted · restore
+              {t("deletedRestoreChip", { count: deletedCount })}
             </button>
           )}
-          <span>{Object.keys(overrides).length} edited</span>
+          <span>{t("editedCount", { count: Object.keys(overrides).length })}</span>
         </span>
       </header>
       <p className="mb-2 text-[10px] text-[var(--fg-dim)]">{hint}</p>
@@ -1721,6 +1727,7 @@ function LiftMetaPanel({
   onDelete: () => void;
 }) {
   const locale = useLocale();
+  const t = useTranslations("slopeAuthor");
   const name = override?.name ?? lift.name ?? "";
   const type = override?.type ?? lift.type ?? "";
   const capacity = override?.capacity_per_hour ?? lift.capacity_per_hour ?? null;
@@ -1730,23 +1737,26 @@ function LiftMetaPanel({
     <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-surface)]/60 p-3">
       <header className="mb-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
-          Selected lift
+          {t("selectedLift")}
         </p>
         <h3 className="mt-0.5 truncate text-sm font-semibold text-[var(--fg)]">
           {lift.name || lift.id}
         </h3>
         <p className="text-[10px] text-[var(--fg-dim)]">
-          id: {lift.id} · {lift.coordinates?.length ?? 0} vertices
+          {t("idVerticesHint", {
+            id: lift.id,
+            count: lift.coordinates?.length ?? 0,
+          })}
         </p>
       </header>
       <div className="grid gap-2 text-xs">
         <LabeledInput
-          label="Name (canonical)"
+          label={t("nameCanonical")}
           value={name}
           onChange={(v) => onPatch({ name: v })}
         />
         <LocalizedNameEditor
-          label="Name · localized"
+          label={t("nameLocalized")}
           value={
             (override?.name_i18n ?? lift.name_i18n) as
               | Record<string, string>
@@ -1757,7 +1767,7 @@ function LiftMetaPanel({
         />
         <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
           <span className="font-semibold uppercase tracking-widest text-[var(--fg-dim)]">
-            Type
+            {t("typeLabel")}
           </span>
           <select
             value={type}
@@ -1776,17 +1786,17 @@ function LiftMetaPanel({
           </select>
         </label>
         <LabeledNumber
-          label="Capacity / hour"
+          label={t("capacityPerHour")}
           value={capacity ?? null}
           onChange={(v) => onPatch({ capacity_per_hour: v })}
         />
         <LabeledNumber
-          label="Length (m)"
+          label={t("lengthM")}
           value={lengthM ?? null}
           onChange={(v) => onPatch({ length_m: v })}
         />
         <LabeledNumber
-          label="Vertical (m)"
+          label={t("verticalM")}
           value={verticalM ?? null}
           onChange={(v) => onPatch({ vertical_m: v })}
         />
@@ -1798,11 +1808,11 @@ function LiftMetaPanel({
             onClick={onEditGeom}
             className="rounded-md bg-[var(--accent)] px-3 py-1.5 font-semibold text-[var(--accent-ink)]"
           >
-            ✎ Edit geometry
+            {t("editGeometry")}
           </button>
         ) : (
           <span className="rounded-md bg-[#22d3ee]/15 px-3 py-1.5 font-semibold text-[#22d3ee]">
-            Editing — drag / dbl-click / right-click
+            {t("editingGeomNote")}
           </span>
         )}
         {hasOverrideGeom && (
@@ -1811,19 +1821,19 @@ function LiftMetaPanel({
             onClick={onResetGeom}
             className="rounded-md border border-[var(--border)] px-3 py-1.5 text-[var(--fg-muted)] hover:text-[var(--fg)]"
           >
-            Reset geometry
+            {t("resetGeometry")}
           </button>
         )}
         <button
           type="button"
           onClick={() => {
-            if (confirm(`Delete lift "${lift.name || lift.id}"? The patch bundle will drop this record from lifts.json. You can restore it from the list header until you save.`)) {
+            if (confirm(t("deleteLiftConfirm", { name: lift.name || lift.id }))) {
               onDelete();
             }
           }}
           className="ml-auto rounded-md border border-[#ef4444]/40 px-3 py-1.5 font-semibold text-[#fca5a5] hover:bg-[#ef4444]/10 hover:text-[#fecaca]"
         >
-          Delete
+          {t("deleteAction")}
         </button>
       </div>
     </section>
