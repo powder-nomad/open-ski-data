@@ -151,7 +151,7 @@ export function SlopeAuthor2() {
   // callback can read the latest values without being re-created.
   const addedGraphNodesRef = useRef<GraphNode[]>([]);
   const addedGraphEdgesRef = useRef<GraphEdge[]>([]);
-  const pendingFromNodeIdRef = useRef<string | null>(null);
+  const anchorNodeIdRef = useRef<string | null>(null);
   const pickConnectNodeRef = useRef<(nodeId: string) => void>(() => {});
   useEffect(() => {
     addedGraphNodesRef.current = addedGraphNodes;
@@ -160,33 +160,38 @@ export function SlopeAuthor2() {
     addedGraphEdgesRef.current = addedGraphEdges;
   });
   useEffect(() => {
-    pendingFromNodeIdRef.current = pendingFromNodeId;
+    anchorNodeIdRef.current = anchorNodeId;
   });
 
+  // Chain mode: after the first node picks the anchor, every subsequent
+  // click creates an edge anchor→clicked AND advances the anchor to the
+  // clicked node so the next click continues the chain (1 click per edge
+  // after the first). Click the same anchor again to detach; Esc also
+  // detaches. Disconnected edges = Esc + new chain.
   const pickConnectNode = useCallback((nodeId: string) => {
-    const prevPending = pendingFromNodeIdRef.current;
-    if (!prevPending) {
-      setPendingFromNodeId(nodeId);
+    const prevAnchor = anchorNodeIdRef.current;
+    if (!prevAnchor) {
+      setAnchorNodeId(nodeId);
       return;
     }
-    if (prevPending === nodeId) {
-      // Clicking the same node twice cancels.
-      setPendingFromNodeId(null);
+    if (prevAnchor === nodeId) {
+      // Clicking the anchor again detaches.
+      setAnchorNodeId(null);
       return;
     }
     const resort = loadedResortRef.current;
     if (!resort?.graph) {
-      setPendingFromNodeId(null);
+      setAnchorNodeId(null);
       return;
     }
     const allNodes = [
       ...resort.graph.nodes,
       ...addedGraphNodesRef.current,
     ];
-    const fromN = allNodes.find((n) => n.id === prevPending);
+    const fromN = allNodes.find((n) => n.id === prevAnchor);
     const toN = allNodes.find((n) => n.id === nodeId);
     if (!fromN || !toN) {
-      setPendingFromNodeId(null);
+      setAnchorNodeId(null);
       return;
     }
     // Dedup undirected: skip if any edge already connects this pair.
@@ -218,7 +223,11 @@ export function SlopeAuthor2() {
         },
       ]);
     }
-    setPendingFromNodeId(null);
+    // Chain: advance the anchor to the just-clicked node. The dup-check
+    // above still ran with the previous anchor, so even when the edge
+    // wasn't created (dedup hit), advancing the anchor is the right
+    // move — user wanted to continue from there.
+    setAnchorNodeId(nodeId);
   }, []);
   useEffect(() => {
     pickConnectNodeRef.current = pickConnectNode;
@@ -270,10 +279,11 @@ export function SlopeAuthor2() {
   // existing or session-added nodes by id with a straight 2-point
   // geometry. Emitted into slope-graph.json alongside addedGraphNodes.
   const [addedGraphEdges, setAddedGraphEdges] = useState<GraphEdge[]>([]);
-  // Pending "first node" id while in connect-nodes mode. null = waiting
-  // for first pick; non-null = waiting for second pick. Cleared on Esc,
-  // resort change, mode change away from connect-nodes, and on completion.
-  const [pendingFromNodeId, setPendingFromNodeId] = useState<string | null>(null);
+  // Chain anchor for connect-nodes mode. null = no chain in progress;
+  // non-null = next click will create an edge anchor→clicked and the
+  // anchor advances to the clicked node. Cleared on Esc, resort change,
+  // mode change away from connect-nodes, and on anchor self-click.
+  const [anchorNodeId, setAnchorNodeId] = useState<string | null>(null);
 
   // OSM Overpass re-import status. Same flow as v1: pull
   // piste:type=downhill ways within 5km of the resort centre, drop
@@ -330,7 +340,7 @@ export function SlopeAuthor2() {
     setAddedLifts([]);
     setAddedGraphNodes([]);
     setAddedGraphEdges([]);
-    setPendingFromNodeId(null);
+    setAnchorNodeId(null);
     setDeletedSlopeIds([]);
     setDeletedLiftIds([]);
     setDrawSlopePoints([]);
@@ -1079,7 +1089,7 @@ export function SlopeAuthor2() {
     const existing = loadedResort.graph?.nodes ?? [];
 
     for (const n of existing) {
-      const isPending = pendingFromNodeId === n.id;
+      const isPending = anchorNodeId === n.id;
       const marker = new google.maps.Marker({
         position: { lat: n.lat, lng: n.lng },
         map,
@@ -1102,7 +1112,7 @@ export function SlopeAuthor2() {
     }
 
     for (const n of addedGraphNodes) {
-      const isPending = pendingFromNodeId === n.id;
+      const isPending = anchorNodeId === n.id;
       const marker = new google.maps.Marker({
         position: { lat: n.lat, lng: n.lng },
         map,
@@ -1128,7 +1138,7 @@ export function SlopeAuthor2() {
       }
       graphNodeMarkersRef.current.push(marker);
     }
-  }, [mode, mapReady, loadedResort, addedGraphNodes, pendingFromNodeId]);
+  }, [mode, mapReady, loadedResort, addedGraphNodes, anchorNodeId]);
 
   // ── Graph edges overlay (connect-nodes + edit-edge only) ──────
   //
@@ -1179,7 +1189,7 @@ export function SlopeAuthor2() {
       if (modeRef.current !== "connect-nodes") return;
       if (e.key === "Escape") {
         e.preventDefault();
-        setPendingFromNodeId(null);
+        setAnchorNodeId(null);
       }
     }
     window.addEventListener("keydown", onKey);
@@ -1190,10 +1200,10 @@ export function SlopeAuthor2() {
   // a stale "first node selected" indicator follows them into other
   // modes, which is confusing.
   useEffect(() => {
-    if (mode !== "connect-nodes" && pendingFromNodeId !== null) {
-      setPendingFromNodeId(null);
+    if (mode !== "connect-nodes" && anchorNodeId !== null) {
+      setAnchorNodeId(null);
     }
-  }, [mode, pendingFromNodeId]);
+  }, [mode, anchorNodeId]);
 
   // Build patch bundle for the saver. PatchBundle shape is
   // `{slug, countryCode, regionSlug, files}` — a flat map of
@@ -1474,9 +1484,9 @@ export function SlopeAuthor2() {
             {mode === "connect-nodes" && (
               <ConnectNodesStatusPanel
                 hasGraph={!!loadedResort?.graph}
-                pendingFromNodeId={pendingFromNodeId}
+                anchorNodeId={anchorNodeId}
                 addedEdgesCount={addedGraphEdges.length}
-                onCancelPending={() => setPendingFromNodeId(null)}
+                onCancelPending={() => setAnchorNodeId(null)}
                 onUndoLastEdge={() =>
                   setAddedGraphEdges((prev) => prev.slice(0, -1))
                 }
@@ -2287,13 +2297,13 @@ function LabeledNumber({
  */
 function ConnectNodesStatusPanel({
   hasGraph,
-  pendingFromNodeId,
+  anchorNodeId,
   addedEdgesCount,
   onCancelPending,
   onUndoLastEdge,
 }: {
   hasGraph: boolean;
-  pendingFromNodeId: string | null;
+  anchorNodeId: string | null;
   addedEdgesCount: number;
   onCancelPending: () => void;
   onUndoLastEdge: () => void;
@@ -2316,13 +2326,13 @@ function ConnectNodesStatusPanel({
       <header className="mb-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[#22d3ee]">
           {t("connectNodesMode")} ·{" "}
-          {pendingFromNodeId
+          {anchorNodeId
             ? t("connectNodesPickSecond")
             : t("connectNodesPickFirst")}
         </p>
-        {pendingFromNodeId && (
+        {anchorNodeId && (
           <p className="mt-1 break-all text-[10px] text-[var(--fg-muted)]">
-            {t("connectNodesFromLabel")}: <code>{pendingFromNodeId}</code>
+            {t("connectNodesFromLabel")}: <code>{anchorNodeId}</code>
           </p>
         )}
         <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
@@ -2333,7 +2343,7 @@ function ConnectNodesStatusPanel({
         <button
           type="button"
           onClick={onCancelPending}
-          disabled={!pendingFromNodeId}
+          disabled={!anchorNodeId}
           className="rounded-md border border-[var(--border)] px-3 py-1.5 text-red-300 hover:text-red-200 disabled:opacity-40"
         >
           {t("connectNodesCancelPending")}
