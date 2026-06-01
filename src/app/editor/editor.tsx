@@ -12,6 +12,7 @@ import {
   type PlaceRecord,
   type Provenance,
   type GraphNode,
+  type GraphEdge,
   type SlopeGraphRecord,
 } from "@/lib/resort-loader";
 import { PatchSaver, type PatchBundle } from "@/lib/ci-status";
@@ -66,6 +67,11 @@ const LIFT_EDIT_COLOR = "#22d3ee";
 // import dedup tolerance so a vertex authored in the editor near an
 // imported endpoint resolves to the same point both ways.
 const SNAP_RADIUS_M = 10;
+// connect-nodes click radius. Larger than SNAP_RADIUS_M because here
+// the user is deliberately picking a target — they want forgiving
+// hit-testing, not strict dedup-radius. 25m is roughly a marker's
+// scale-7 footprint at typical resort zoom (16–17).
+const CONNECT_PICK_RADIUS_M = 25;
 
 // Curated set of lift type values seen across open-ski-data. Free
 // text still passes the schema; the dropdown helps land on a
@@ -141,6 +147,83 @@ export function SlopeAuthor2() {
     loadedResortRef.current = loadedResort;
   }, [loadedResort]);
 
+  // Stable refs for connect-nodes state so the (deps:[]) map-click
+  // callback can read the latest values without being re-created.
+  const addedGraphNodesRef = useRef<GraphNode[]>([]);
+  const addedGraphEdgesRef = useRef<GraphEdge[]>([]);
+  const pendingFromNodeIdRef = useRef<string | null>(null);
+  const pickConnectNodeRef = useRef<(nodeId: string) => void>(() => {});
+  useEffect(() => {
+    addedGraphNodesRef.current = addedGraphNodes;
+  });
+  useEffect(() => {
+    addedGraphEdgesRef.current = addedGraphEdges;
+  });
+  useEffect(() => {
+    pendingFromNodeIdRef.current = pendingFromNodeId;
+  });
+
+  const pickConnectNode = useCallback((nodeId: string) => {
+    const prevPending = pendingFromNodeIdRef.current;
+    if (!prevPending) {
+      setPendingFromNodeId(nodeId);
+      return;
+    }
+    if (prevPending === nodeId) {
+      // Clicking the same node twice cancels.
+      setPendingFromNodeId(null);
+      return;
+    }
+    const resort = loadedResortRef.current;
+    if (!resort?.graph) {
+      setPendingFromNodeId(null);
+      return;
+    }
+    const allNodes = [
+      ...resort.graph.nodes,
+      ...addedGraphNodesRef.current,
+    ];
+    const fromN = allNodes.find((n) => n.id === prevPending);
+    const toN = allNodes.find((n) => n.id === nodeId);
+    if (!fromN || !toN) {
+      setPendingFromNodeId(null);
+      return;
+    }
+    // Dedup undirected: skip if any edge already connects this pair.
+    // Catches both "click A→B again" and "click B→A after A→B".
+    const existingEdges = [
+      ...(resort.graph.edges ?? []),
+      ...addedGraphEdgesRef.current,
+    ];
+    const dup = existingEdges.some(
+      (e) =>
+        (e.from === fromN.id && e.to === toN.id) ||
+        (e.from === toN.id && e.to === fromN.id),
+    );
+    if (!dup) {
+      const id = `e-u-${Date.now().toString(36)}-${Math.random()
+        .toString(36)
+        .slice(2, 6)}`;
+      setAddedGraphEdges((prev) => [
+        ...prev,
+        {
+          id,
+          from: fromN.id,
+          to: toN.id,
+          kind: "traverse",
+          geometry: [
+            { lat: fromN.lat, lng: fromN.lng, alt_m: fromN.alt_m },
+            { lat: toN.lat, lng: toN.lng, alt_m: toN.alt_m },
+          ],
+        },
+      ]);
+    }
+    setPendingFromNodeId(null);
+  }, []);
+  useEffect(() => {
+    pickConnectNodeRef.current = pickConnectNode;
+  }, [pickConnectNode]);
+
   // Slope state. `selectedSlopeId` drives both the right-rail editor
   // form and which polyline takes the "editable" treatment when the
   // mode flips to `edit-slope-geom`.
@@ -183,6 +266,14 @@ export function SlopeAuthor2() {
   // graph's nodes[] (the editor will not emit slope-graph.json unless
   // an existing graph is present, since the schema requires edges).
   const [addedGraphNodes, setAddedGraphNodes] = useState<GraphNode[]>([]);
+  // Session-added edges (connect-nodes mode). Each edge connects two
+  // existing or session-added nodes by id with a straight 2-point
+  // geometry. Emitted into slope-graph.json alongside addedGraphNodes.
+  const [addedGraphEdges, setAddedGraphEdges] = useState<GraphEdge[]>([]);
+  // Pending "first node" id while in connect-nodes mode. null = waiting
+  // for first pick; non-null = waiting for second pick. Cleared on Esc,
+  // resort change, mode change away from connect-nodes, and on completion.
+  const [pendingFromNodeId, setPendingFromNodeId] = useState<string | null>(null);
 
   // OSM Overpass re-import status. Same flow as v1: pull
   // piste:type=downhill ways within 5km of the resort centre, drop
@@ -238,6 +329,8 @@ export function SlopeAuthor2() {
     setAddedSlopes([]);
     setAddedLifts([]);
     setAddedGraphNodes([]);
+    setAddedGraphEdges([]);
+    setPendingFromNodeId(null);
     setDeletedSlopeIds([]);
     setDeletedLiftIds([]);
     setDrawSlopePoints([]);
@@ -440,6 +533,28 @@ export function SlopeAuthor2() {
         }
         return [...prev, snapVertex(latLng, candidates)];
       });
+    }
+    if (m === "connect-nodes") {
+      // Pick the nearest node (existing or session-added) within
+      // CONNECT_PICK_RADIUS_M of the click. If the click misses, no-op
+      // — user will see the cursor badge telling them what to do.
+      const resort = loadedResortRef.current;
+      if (!resort?.graph) return;
+      const all: { id: string; lat: number; lng: number }[] = [
+        ...resort.graph.nodes,
+        ...addedGraphNodesRef.current,
+      ];
+      let nearest: { id: string; lat: number; lng: number } | null = null;
+      let nearestD = Infinity;
+      for (const n of all) {
+        const d = distanceM(latLng, { lat: n.lat, lng: n.lng });
+        if (d < nearestD && d <= CONNECT_PICK_RADIUS_M) {
+          nearestD = d;
+          nearest = n;
+        }
+      }
+      if (!nearest) return;
+      pickConnectNodeRef.current(nearest.id);
     }
     if (m === "add-node") {
       // add-node requires an existing graph file — the schema needs
@@ -960,46 +1075,125 @@ export function SlopeAuthor2() {
     if (!graphMode) return;
     if (!loadedResort) return;
 
+    const isConnect = mode === "connect-nodes";
     const existing = loadedResort.graph?.nodes ?? [];
 
     for (const n of existing) {
+      const isPending = pendingFromNodeId === n.id;
       const marker = new google.maps.Marker({
         position: { lat: n.lat, lng: n.lng },
         map,
         title: `node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m`,
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
-          scale: 4,
-          fillColor: "#64748b", // slate-500 — dim snap target
-          fillOpacity: 0.85,
+          // Bump scale in connect-nodes mode so existing nodes are
+          // easier to hit. Pending-from gets the largest treatment.
+          scale: isPending ? 9 : isConnect ? 6 : 4,
+          fillColor: isPending ? "#facc15" : "#64748b", // yellow-400 vs slate-500
+          fillOpacity: isPending ? 1 : 0.85,
           strokeColor: "#ffffff",
-          strokeWeight: 1,
+          strokeWeight: isPending ? 2 : 1,
         },
       });
+      if (isConnect) {
+        marker.addListener("click", () => pickConnectNodeRef.current(n.id));
+      }
       graphNodeMarkersRef.current.push(marker);
     }
 
     for (const n of addedGraphNodes) {
+      const isPending = pendingFromNodeId === n.id;
       const marker = new google.maps.Marker({
         position: { lat: n.lat, lng: n.lng },
         map,
-        title: `new node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m — right-click to remove`,
+        title: isConnect
+          ? `new node ${n.id} — click to ${isPending ? "cancel" : "connect"}`
+          : `new node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m — right-click to remove`,
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
-          scale: 7,
-          fillColor: "#22c55e", // emerald-500 — this-session addition
+          scale: isPending ? 9 : 7,
+          fillColor: isPending ? "#facc15" : "#22c55e", // yellow-400 vs emerald-500
           fillOpacity: 1,
           strokeColor: "#ffffff",
           strokeWeight: 2,
         },
       });
-      // Right-click an added node to remove it (works as long-press on touch).
-      marker.addListener("rightclick", () => {
-        setAddedGraphNodes((prev) => prev.filter((x) => x.id !== n.id));
-      });
+      if (isConnect) {
+        marker.addListener("click", () => pickConnectNodeRef.current(n.id));
+      } else {
+        // add-node mode keeps the right-click-to-remove gesture.
+        marker.addListener("rightclick", () => {
+          setAddedGraphNodes((prev) => prev.filter((x) => x.id !== n.id));
+        });
+      }
       graphNodeMarkersRef.current.push(marker);
     }
-  }, [mode, mapReady, loadedResort, addedGraphNodes]);
+  }, [mode, mapReady, loadedResort, addedGraphNodes, pendingFromNodeId]);
+
+  // ── Graph edges overlay (connect-nodes + edit-edge only) ──────
+  //
+  // Renders existing edges in dim slate so the user can see what's
+  // already connected, and this-session-added edges in emerald to
+  // surface what the current edits look like. Always straight-line
+  // 2-point polylines (matching the geometry pickConnectNode
+  // produces); when edit-edge ships, it'll render the curved
+  // versions instead.
+  const graphEdgeLinesRef = useRef<google.maps.Polyline[]>([]);
+  useEffect(() => {
+    const map = googleMap.current;
+    if (!map) return;
+    graphEdgeLinesRef.current.forEach((p) => p.setMap(null));
+    graphEdgeLinesRef.current = [];
+
+    const showEdges = mode === "connect-nodes" || mode === "edit-edge";
+    if (!showEdges || !loadedResort) return;
+
+    const existing = loadedResort.graph?.edges ?? [];
+    for (const e of existing) {
+      const line = new google.maps.Polyline({
+        map,
+        path: e.geometry.map((p) => ({ lat: p.lat, lng: p.lng })),
+        strokeColor: "#64748b",
+        strokeOpacity: 0.55,
+        strokeWeight: 2,
+      });
+      graphEdgeLinesRef.current.push(line);
+    }
+    for (const e of addedGraphEdges) {
+      const line = new google.maps.Polyline({
+        map,
+        path: e.geometry.map((p) => ({ lat: p.lat, lng: p.lng })),
+        strokeColor: "#22c55e",
+        strokeOpacity: 0.95,
+        strokeWeight: 3,
+      });
+      graphEdgeLinesRef.current.push(line);
+    }
+  }, [mode, mapReady, loadedResort, addedGraphEdges]);
+
+  // Esc cancels the pending "from" node in connect-nodes mode.
+  // Also cleared automatically when the user leaves connect-nodes
+  // (handled in the mode-change effect below).
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (modeRef.current !== "connect-nodes") return;
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setPendingFromNodeId(null);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Clear pending whenever the user leaves connect-nodes — otherwise
+  // a stale "first node selected" indicator follows them into other
+  // modes, which is confusing.
+  useEffect(() => {
+    if (mode !== "connect-nodes" && pendingFromNodeId !== null) {
+      setPendingFromNodeId(null);
+    }
+  }, [mode, pendingFromNodeId]);
 
   // Build patch bundle for the saver. PatchBundle shape is
   // `{slug, countryCode, regionSlug, files}` — a flat map of
@@ -1019,10 +1213,11 @@ export function SlopeAuthor2() {
     const liftDeleted = deletedLiftIds.length;
     const placeEdits = Object.keys(placeOverride).length;
     const graphNodesAdded = addedGraphNodes.length;
+    const graphEdgesAdded = addedGraphEdges.length;
     if (
       slopeEdits + slopeAdded + slopeDeleted +
       liftEdits + liftAdded + liftDeleted +
-      placeEdits + graphNodesAdded === 0
+      placeEdits + graphNodesAdded + graphEdgesAdded === 0
     )
       return null;
 
@@ -1098,10 +1293,11 @@ export function SlopeAuthor2() {
     // bootstrap a brand-new graph from added nodes alone). Merged
     // graph = existing.nodes ++ addedGraphNodes, existing edges
     // unchanged. snap_config pass-through preserved.
-    if (graphNodesAdded > 0 && loadedResort.graph) {
+    if ((graphNodesAdded > 0 || graphEdgesAdded > 0) && loadedResort.graph) {
       const merged: SlopeGraphRecord = {
         ...loadedResort.graph,
         nodes: [...loadedResort.graph.nodes, ...addedGraphNodes],
+        edges: [...loadedResort.graph.edges, ...addedGraphEdges],
       };
       files["slope-graph.json"] =
         JSON.stringify(
@@ -1126,6 +1322,8 @@ export function SlopeAuthor2() {
     if (placeEdits > 0) parts.push("edit place metadata");
     if (graphNodesAdded > 0)
       parts.push(`add ${graphNodesAdded} graph node${graphNodesAdded === 1 ? "" : "s"}`);
+    if (graphEdgesAdded > 0)
+      parts.push(`add ${graphEdgesAdded} graph edge${graphEdgesAdded === 1 ? "" : "s"}`);
 
     return {
       slug: loadedResort.ref.slug,
@@ -1134,7 +1332,7 @@ export function SlopeAuthor2() {
       files,
       message: `slope-author-2: ${parts.join(" + ")}`,
     };
-  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes]);
+  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes, addedGraphEdges]);
 
   const desc = modeDescriptor(mode);
   const descI18n = MODE_I18N[desc.mode];
@@ -1270,6 +1468,18 @@ export function SlopeAuthor2() {
                 onCancel={() => {
                   setPendingDrawSlope(null);
                 }}
+              />
+            )}
+
+            {mode === "connect-nodes" && (
+              <ConnectNodesStatusPanel
+                hasGraph={!!loadedResort?.graph}
+                pendingFromNodeId={pendingFromNodeId}
+                addedEdgesCount={addedGraphEdges.length}
+                onCancelPending={() => setPendingFromNodeId(null)}
+                onUndoLastEdge={() =>
+                  setAddedGraphEdges((prev) => prev.slice(0, -1))
+                }
               />
             )}
 
@@ -2075,6 +2285,72 @@ function LabeledNumber({
  * fallback buttons (Finish / Undo last vertex / Cancel) for users
  * who'd rather click than press Enter.
  */
+function ConnectNodesStatusPanel({
+  hasGraph,
+  pendingFromNodeId,
+  addedEdgesCount,
+  onCancelPending,
+  onUndoLastEdge,
+}: {
+  hasGraph: boolean;
+  pendingFromNodeId: string | null;
+  addedEdgesCount: number;
+  onCancelPending: () => void;
+  onUndoLastEdge: () => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  if (!hasGraph) {
+    return (
+      <section className="rounded-lg border border-amber-400/40 bg-amber-400/10 p-3">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-300">
+          {t("connectNodesMode")}
+        </p>
+        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          {t("connectNodesNeedGraph")}
+        </p>
+      </section>
+    );
+  }
+  return (
+    <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-[#22d3ee]">
+          {t("connectNodesMode")} ·{" "}
+          {pendingFromNodeId
+            ? t("connectNodesPickSecond")
+            : t("connectNodesPickFirst")}
+        </p>
+        {pendingFromNodeId && (
+          <p className="mt-1 break-all text-[10px] text-[var(--fg-muted)]">
+            {t("connectNodesFromLabel")}: <code>{pendingFromNodeId}</code>
+          </p>
+        )}
+        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          {t("connectNodesAddedCount", { count: addedEdgesCount })}
+        </p>
+      </header>
+      <div className="flex flex-wrap gap-2 text-xs">
+        <button
+          type="button"
+          onClick={onCancelPending}
+          disabled={!pendingFromNodeId}
+          className="rounded-md border border-[var(--border)] px-3 py-1.5 text-red-300 hover:text-red-200 disabled:opacity-40"
+        >
+          {t("connectNodesCancelPending")}
+        </button>
+        <button
+          type="button"
+          onClick={onUndoLastEdge}
+          disabled={addedEdgesCount === 0}
+          className="rounded-md border border-[var(--border)] px-3 py-1.5 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+        >
+          {t("connectNodesUndoLast")}
+        </button>
+      </div>
+    </section>
+  );
+}
+
 function DrawSlopeStatusPanel({
   points,
   pending,
