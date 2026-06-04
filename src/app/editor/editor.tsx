@@ -72,6 +72,11 @@ const SNAP_RADIUS_M = 10;
 // hit-testing, not strict dedup-radius. 25m is roughly a marker's
 // scale-7 footprint at typical resort zoom (16–17).
 const CONNECT_PICK_RADIUS_M = 25;
+// merge-close-nodes (step 6b) threshold. Tighter than SNAP_RADIUS_M
+// because merging is destructive and must be the user's explicit
+// intent — 2m is closer than any typical authoring drift, so a
+// surfaced pair is almost certainly a real duplicate.
+const MERGE_THRESHOLD_M = 2;
 
 // Curated set of lift type values seen across open-ski-data. Free
 // text still passes the schema; the dropdown helps land on a
@@ -305,6 +310,25 @@ export function SlopeAuthor2() {
     Record<string, EdgeOverride>
   >({});
 
+  // merge-close-nodes (step 6b): baseline-node deletions, baseline-
+  // edge deletions (self-loops after rewire), and the pending merge
+  // confirm UI. Added-this-session nodes/edges removed by merge get
+  // dropped from their respective added* lists directly — no
+  // tombstone needed.
+  const [deletedGraphNodeIds, setDeletedGraphNodeIds] = useState<string[]>([]);
+  const [deletedGraphEdgeIds, setDeletedGraphEdgeIds] = useState<string[]>([]);
+  // Last-merge summary surfaced under the scan button so the user
+  // sees "rewired N edges" feedback after each merge. null = nothing
+  // merged yet this session.
+  const [lastMergeRewired, setLastMergeRewired] = useState<number | null>(null);
+  // null when there's no pair to confirm. Both ids are surfaced in
+  // the prompt; `keepId` is canonicalised by the scanner (lower id
+  // wins). distM is rounded to 1 decimal for display.
+  const [mergePrompt, setMergePrompt] = useState<
+    | { keepId: string; removeId: string; distM: number }
+    | null
+  >(null);
+
   // OSM Overpass re-import status. Same flow as v1: pull
   // piste:type=downhill ways within 5km of the resort centre, drop
   // the ones whose endpoints match an existing slope (≤10m), append
@@ -363,6 +387,10 @@ export function SlopeAuthor2() {
     setAnchorNodeId(null);
     setSelectedEdgeId(null);
     setEdgeOverrides({});
+    setDeletedGraphNodeIds([]);
+    setDeletedGraphEdgeIds([]);
+    setLastMergeRewired(null);
+    setMergePrompt(null);
     setDeletedSlopeIds([]);
     setDeletedLiftIds([]);
     setDrawSlopePoints([]);
@@ -391,6 +419,153 @@ export function SlopeAuthor2() {
       setSelectedSlopeId(null);
       setSelectedLiftId(null);
     }
+  }
+
+  // merge-close-nodes (step 6b). Scan all live nodes (baseline minus
+  // deletedGraphNodeIds, plus addedGraphNodes) for the first pair
+  // within MERGE_THRESHOLD_M of each other. Canonicalise so the
+  // lower-id node is "kept" and the higher-id node is "removed".
+  function findCloseNodePair(): {
+    keepId: string;
+    removeId: string;
+    distM: number;
+  } | null {
+    const resort = loadedResort;
+    if (!resort?.graph) return null;
+    const deletedNodes = new Set(deletedGraphNodeIds);
+    const liveNodes = [
+      ...resort.graph.nodes.filter((n) => !deletedNodes.has(n.id)),
+      ...addedGraphNodes,
+    ];
+    for (let i = 0; i < liveNodes.length; i++) {
+      const a = liveNodes[i];
+      for (let j = i + 1; j < liveNodes.length; j++) {
+        const b = liveNodes[j];
+        const d = distanceM(
+          { lat: a.lat, lng: a.lng },
+          { lat: b.lat, lng: b.lng },
+        );
+        if (d <= MERGE_THRESHOLD_M) {
+          const keepId = a.id < b.id ? a.id : b.id;
+          const removeId = a.id < b.id ? b.id : a.id;
+          return { keepId, removeId, distM: d };
+        }
+      }
+    }
+    return null;
+  }
+
+  // Execute the merge: collapse `removeId` into `keepId`. For every
+  // edge (baseline + added) that references removeId, rewire from/to
+  // to keepId and snap the corresponding geometry endpoint to keep's
+  // coords (so the rendered polyline actually meets the kept node).
+  // Edges that become self-loops (from===to after rewire) are
+  // dropped — added edges removed from the list, baseline edges
+  // tombstoned in deletedGraphEdgeIds. Returns the rewire count so
+  // the UI can surface "Rewired N edges" feedback.
+  function mergeNodes(
+    keepId: string,
+    removeId: string,
+  ): { rewired: number } {
+    const resort = loadedResort;
+    if (!resort?.graph) return { rewired: 0 };
+    const allNodes = [...resort.graph.nodes, ...addedGraphNodes];
+    const keepNode = allNodes.find((n) => n.id === keepId);
+    const removeNode = allNodes.find((n) => n.id === removeId);
+    if (!keepNode || !removeNode) return { rewired: 0 };
+
+    // Geometry convention from the schema: when edge.from === X, the
+    // edge's first geometry vertex sits at X; when edge.to === X, the
+    // last vertex sits at X. Rewire by swapping the corresponding
+    // endpoint to keep's coords.
+    const swapEndpoint = (e: GraphEdge): GraphEdge => {
+      let newFrom = e.from;
+      let newTo = e.to;
+      let newGeom = e.geometry.slice();
+      const keepPos = {
+        lat: keepNode.lat,
+        lng: keepNode.lng,
+        alt_m: keepNode.alt_m,
+      };
+      if (e.from === removeId) {
+        newFrom = keepId;
+        newGeom = [keepPos, ...newGeom.slice(1)];
+      }
+      if (e.to === removeId) {
+        newTo = keepId;
+        newGeom = [...newGeom.slice(0, -1), keepPos];
+      }
+      return { ...e, from: newFrom, to: newTo, geometry: newGeom };
+    };
+
+    let rewired = 0;
+    const newBaselineDeletedEdgeIds: string[] = [];
+    const newBaselineEdgeOverrides: Record<string, EdgeOverride> = {};
+    for (const e of resort.graph.edges) {
+      if (e.from !== removeId && e.to !== removeId) continue;
+      const effective = edgeOverrides[e.id]
+        ? { ...e, ...edgeOverrides[e.id] }
+        : e;
+      const swapped = swapEndpoint(effective);
+      if (swapped.from === swapped.to) {
+        newBaselineDeletedEdgeIds.push(e.id);
+      } else {
+        newBaselineEdgeOverrides[e.id] = {
+          from: swapped.from,
+          to: swapped.to,
+          geometry: swapped.geometry,
+        };
+        rewired += 1;
+      }
+    }
+
+    const newAddedEdges: GraphEdge[] = [];
+    for (const e of addedGraphEdges) {
+      if (e.from !== removeId && e.to !== removeId) {
+        newAddedEdges.push(e);
+        continue;
+      }
+      const swapped = swapEndpoint(e);
+      if (swapped.from === swapped.to) continue;
+      newAddedEdges.push(swapped);
+      rewired += 1;
+    }
+
+    if (Object.keys(newBaselineEdgeOverrides).length > 0) {
+      setEdgeOverrides((prev) => ({ ...prev, ...newBaselineEdgeOverrides }));
+    }
+    if (newBaselineDeletedEdgeIds.length > 0) {
+      setDeletedGraphEdgeIds((prev) =>
+        Array.from(new Set([...prev, ...newBaselineDeletedEdgeIds])),
+      );
+    }
+    if (newAddedEdges.length !== addedGraphEdges.length) {
+      setAddedGraphEdges(newAddedEdges);
+    } else if (
+      newAddedEdges.some((e, i) => e !== addedGraphEdges[i])
+    ) {
+      setAddedGraphEdges(newAddedEdges);
+    }
+
+    // Drop the removed node. Baseline → tombstone; added → splice out.
+    const isBaselineNode = resort.graph.nodes.some((n) => n.id === removeId);
+    if (isBaselineNode) {
+      setDeletedGraphNodeIds((prev) =>
+        prev.includes(removeId) ? prev : [...prev, removeId],
+      );
+    } else {
+      setAddedGraphNodes((prev) => prev.filter((n) => n.id !== removeId));
+    }
+    // If the selected edge got tombstoned, drop the selection so the
+    // edit-edge panel doesn't dangle.
+    if (
+      selectedEdgeId !== null &&
+      newBaselineDeletedEdgeIds.includes(selectedEdgeId)
+    ) {
+      setSelectedEdgeId(null);
+    }
+
+    return { rewired };
   }
 
   // Delete a slope. If it's an added-this-session record, drop it
@@ -1118,7 +1293,10 @@ export function SlopeAuthor2() {
     if (!loadedResort) return;
 
     const isConnect = mode === "connect-nodes";
-    const existing = loadedResort.graph?.nodes ?? [];
+    const deletedSet = new Set(deletedGraphNodeIds);
+    const existing = (loadedResort.graph?.nodes ?? []).filter(
+      (n) => !deletedSet.has(n.id),
+    );
 
     for (const n of existing) {
       const isPending = anchorNodeId === n.id;
@@ -1170,7 +1348,7 @@ export function SlopeAuthor2() {
       }
       graphNodeMarkersRef.current.push(marker);
     }
-  }, [mode, mapReady, loadedResort, addedGraphNodes, anchorNodeId]);
+  }, [mode, mapReady, loadedResort, addedGraphNodes, anchorNodeId, deletedGraphNodeIds]);
 
   // ── Graph edges overlay (select + connect-nodes + edit-edge) ──
   //
@@ -1198,10 +1376,16 @@ export function SlopeAuthor2() {
     // Baseline edges with per-edge overrides applied. The override's
     // `geometry` (when present) is the source of truth for the
     // polyline path; anything else (from/to/kind) flows through too.
-    const baselineEdges = (loadedResort.graph?.edges ?? []).map((e) => {
-      const ov = edgeOverrides[e.id];
-      return ov ? { ...e, ...ov } : e;
-    });
+    // Tombstoned edges (deletedGraphEdgeIds — self-loops post-merge)
+    // are filtered out so the rendered map matches what patchBundle
+    // will emit.
+    const tombstonedEdgeSet = new Set(deletedGraphEdgeIds);
+    const baselineEdges = (loadedResort.graph?.edges ?? [])
+      .filter((e) => !tombstonedEdgeSet.has(e.id))
+      .map((e) => {
+        const ov = edgeOverrides[e.id];
+        return ov ? { ...e, ...ov } : e;
+      });
 
     const renderEdge = (e: GraphEdge, isAdded: boolean) => {
       const isSelected = e.id === selectedEdgeId;
@@ -1314,6 +1498,7 @@ export function SlopeAuthor2() {
     addedGraphEdges,
     edgeOverrides,
     selectedEdgeId,
+    deletedGraphEdgeIds,
   ]);
 
   // Esc cancels the pending "from" node in connect-nodes mode, OR
@@ -1368,10 +1553,13 @@ export function SlopeAuthor2() {
     const graphNodesAdded = addedGraphNodes.length;
     const graphEdgesAdded = addedGraphEdges.length;
     const graphEdgesEdited = Object.keys(edgeOverrides).length;
+    const graphNodesDeleted = deletedGraphNodeIds.length;
+    const graphEdgesDeleted = deletedGraphEdgeIds.length;
     if (
       slopeEdits + slopeAdded + slopeDeleted +
       liftEdits + liftAdded + liftDeleted +
-      placeEdits + graphNodesAdded + graphEdgesAdded + graphEdgesEdited === 0
+      placeEdits + graphNodesAdded + graphEdgesAdded + graphEdgesEdited +
+      graphNodesDeleted + graphEdgesDeleted === 0
     )
       return null;
 
@@ -1445,20 +1633,31 @@ export function SlopeAuthor2() {
     // Graph emission: only when an existing graph is loaded (the
     // schema requires `nodes` min 2 + `edges` min 1, so we can't
     // bootstrap a brand-new graph from added nodes alone). Merged
-    // graph = existing.nodes ++ addedGraphNodes, edges =
-    // baseline-with-overrides ++ addedGraphEdges. snap_config
-    // pass-through preserved.
+    // graph = (existing.nodes − deletedGraphNodeIds) ++ addedGraphNodes,
+    // edges = (baseline-with-overrides − deletedGraphEdgeIds) ++
+    // addedGraphEdges. snap_config pass-through preserved.
     if (
-      (graphNodesAdded > 0 || graphEdgesAdded > 0 || graphEdgesEdited > 0) &&
+      (graphNodesAdded > 0 ||
+        graphEdgesAdded > 0 ||
+        graphEdgesEdited > 0 ||
+        graphNodesDeleted > 0 ||
+        graphEdgesDeleted > 0) &&
       loadedResort.graph
     ) {
-      const editedBaselineEdges = loadedResort.graph.edges.map((e) => {
-        const ov = edgeOverrides[e.id];
-        return ov ? { ...e, ...ov } : e;
-      });
+      const deletedNodeSet = new Set(deletedGraphNodeIds);
+      const deletedEdgeSet = new Set(deletedGraphEdgeIds);
+      const keptBaselineNodes = loadedResort.graph.nodes.filter(
+        (n) => !deletedNodeSet.has(n.id),
+      );
+      const editedBaselineEdges = loadedResort.graph.edges
+        .filter((e) => !deletedEdgeSet.has(e.id))
+        .map((e) => {
+          const ov = edgeOverrides[e.id];
+          return ov ? { ...e, ...ov } : e;
+        });
       const merged: SlopeGraphRecord = {
         ...loadedResort.graph,
-        nodes: [...loadedResort.graph.nodes, ...addedGraphNodes],
+        nodes: [...keptBaselineNodes, ...addedGraphNodes],
         edges: [...editedBaselineEdges, ...addedGraphEdges],
       };
       files["slope-graph.json"] =
@@ -1488,6 +1687,10 @@ export function SlopeAuthor2() {
       parts.push(`add ${graphEdgesAdded} graph edge${graphEdgesAdded === 1 ? "" : "s"}`);
     if (graphEdgesEdited > 0)
       parts.push(`edit ${graphEdgesEdited} graph edge${graphEdgesEdited === 1 ? "" : "s"}`);
+    if (graphNodesDeleted > 0)
+      parts.push(`merge ${graphNodesDeleted} graph node${graphNodesDeleted === 1 ? "" : "s"}`);
+    if (graphEdgesDeleted > 0)
+      parts.push(`drop ${graphEdgesDeleted} self-loop edge${graphEdgesDeleted === 1 ? "" : "s"}`);
 
     return {
       slug: loadedResort.ref.slug,
@@ -1496,7 +1699,7 @@ export function SlopeAuthor2() {
       files,
       message: `slope-author-2: ${parts.join(" + ")}`,
     };
-  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes, addedGraphEdges, edgeOverrides]);
+  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes, addedGraphEdges, edgeOverrides, deletedGraphNodeIds, deletedGraphEdgeIds]);
 
   const desc = modeDescriptor(mode);
   const descI18n = MODE_I18N[desc.mode];
@@ -1671,13 +1874,49 @@ export function SlopeAuthor2() {
                 mode === "connect-nodes" ||
                 mode === "select") && (
                 <EdgesListPanel
-                  baselineEdges={loadedResort.graph.edges}
+                  baselineEdges={loadedResort.graph.edges.filter(
+                    (e) => !deletedGraphEdgeIds.includes(e.id),
+                  )}
                   addedEdges={addedGraphEdges}
                   overrides={edgeOverrides}
                   selectedId={selectedEdgeId}
                   onSelect={(id) => selectEdge(id)}
                 />
               )}
+
+            {loadedResort?.graph && (
+              <MergeCloseNodesPanel
+                lastRewired={lastMergeRewired}
+                deletedNodeCount={deletedGraphNodeIds.length}
+                deletedEdgeCount={deletedGraphEdgeIds.length}
+                onScan={() => {
+                  const pair = findCloseNodePair();
+                  if (!pair) {
+                    setMergePrompt(null);
+                    setLastMergeRewired(0);
+                    return;
+                  }
+                  setMergePrompt(pair);
+                }}
+              />
+            )}
+
+            {mergePrompt && (
+              <MergeNodePromptPanel
+                keepId={mergePrompt.keepId}
+                removeId={mergePrompt.removeId}
+                distM={mergePrompt.distM}
+                onConfirm={() => {
+                  const { rewired } = mergeNodes(
+                    mergePrompt.keepId,
+                    mergePrompt.removeId,
+                  );
+                  setLastMergeRewired(rewired);
+                  setMergePrompt(null);
+                }}
+                onCancel={() => setMergePrompt(null)}
+              />
+            )}
 
             {mode === "draw-lift" && (
               <DrawLiftStatusPanel
@@ -2719,6 +2958,125 @@ function EdgesListPanel({
           );
         })}
       </ul>
+    </section>
+  );
+}
+
+function MergeCloseNodesPanel({
+  lastRewired,
+  deletedNodeCount,
+  deletedEdgeCount,
+  onScan,
+}: {
+  lastRewired: number | null;
+  deletedNodeCount: number;
+  deletedEdgeCount: number;
+  onScan: () => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  const noneFound = lastRewired === 0 && deletedNodeCount === 0;
+  return (
+    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+          {t("mergeCloseNodesPanelTitle")}
+        </p>
+        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          {t("mergeCloseNodesHint")}
+        </p>
+      </header>
+      <div className="flex flex-wrap gap-2 text-xs">
+        <button
+          type="button"
+          onClick={onScan}
+          className="rounded-md border border-[var(--border)] px-3 py-1.5 text-[var(--fg-muted)] hover:text-[var(--fg)]"
+        >
+          {t("mergeCloseNodesScanButton")}
+        </button>
+      </div>
+      {(lastRewired !== null ||
+        deletedNodeCount > 0 ||
+        deletedEdgeCount > 0) && (
+        <div className="mt-2 space-y-0.5 text-[10px] text-[var(--fg-muted)]">
+          {noneFound && lastRewired === 0 && (
+            <p>{t("mergeCloseNodesNoneFound")}</p>
+          )}
+          {lastRewired !== null && lastRewired > 0 && (
+            <p className="text-emerald-300">
+              · {t("mergeNodesRewired", { count: lastRewired })}
+            </p>
+          )}
+          {deletedNodeCount > 0 && (
+            <p>
+              · {t("deletedGraphChipNodes", { count: deletedNodeCount })}
+            </p>
+          )}
+          {deletedEdgeCount > 0 && (
+            <p>
+              · {t("deletedGraphChipEdges", { count: deletedEdgeCount })}
+            </p>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function MergeNodePromptPanel({
+  keepId,
+  removeId,
+  distM,
+  onConfirm,
+  onCancel,
+}: {
+  keepId: string;
+  removeId: string;
+  distM: number;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  const distLabel = distM < 0.1 ? "<0.1" : distM.toFixed(1);
+  return (
+    <section className="rounded-lg border border-amber-400/40 bg-amber-400/10 p-3">
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-300">
+          {t("mergeNodesPromptTitle")}
+        </p>
+        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          {t("mergeNodesPromptBody", { distM: distLabel })}
+        </p>
+      </header>
+      <div className="mb-2 grid grid-cols-1 gap-1 text-[10px] text-[var(--fg-muted)]">
+        <p>
+          <span className="font-semibold text-emerald-300">
+            {t("mergeNodesKeepLabel")}:
+          </span>{" "}
+          <code className="break-all">{keepId}</code>
+        </p>
+        <p>
+          <span className="font-semibold text-red-300">
+            {t("mergeNodesRemoveLabel")}:
+          </span>{" "}
+          <code className="break-all">{removeId}</code>
+        </p>
+      </div>
+      <div className="flex flex-wrap gap-2 text-xs">
+        <button
+          type="button"
+          onClick={onConfirm}
+          className="rounded-md bg-emerald-500/30 px-3 py-1.5 text-emerald-100 hover:bg-emerald-500/40"
+        >
+          {t("mergeNodesConfirm")}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="rounded-md border border-[var(--border)] px-3 py-1.5 text-[var(--fg-muted)] hover:text-[var(--fg)]"
+        >
+          {t("mergeNodesCancel")}
+        </button>
+      </div>
     </section>
   );
 }
