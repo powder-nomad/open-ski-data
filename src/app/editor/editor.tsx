@@ -78,6 +78,11 @@ const CONNECT_PICK_RADIUS_M = 25;
 // intent — 2m is closer than any typical authoring drift, so a
 // surfaced pair is almost certainly a real duplicate.
 const MERGE_THRESHOLD_M = 2;
+// Lint: a slope/lift counts as "detached" when neither endpoint is
+// within this distance of any live graph node. Slightly wider than
+// SNAP_RADIUS_M so a hand-snapped endpoint isn't flagged on the next
+// session due to coordinate-rounding drift.
+const LINT_DETACH_RADIUS_M = 20;
 
 // Curated set of lift type values seen across open-ski-data. Free
 // text still passes the schema; the dropdown helps land on a
@@ -119,6 +124,19 @@ type EdgeOverride = Partial<GraphEdge>;
 const EDGE_BASELINE_COLOR = "#64748b"; // slate-500
 const EDGE_ADDED_COLOR = "#22c55e"; // emerald-500
 const EDGE_EDIT_COLOR = "#22d3ee"; // cyan-400
+
+// Lint issue discriminated union. Each issue points at one entity
+// id so the LintPanel can click-to-jump straight into the right
+// editor mode. The kinds map 1:1 to user-actionable fixes:
+//   node-no-kind     → edit-node + set kind via dropdown
+//   node-orphan      → edit-node + decide: assign kind / connect / delete
+//   slope-detached   → select slope, drag an endpoint near a node
+//   lift-detached    → select lift, drag an endpoint near a node
+type LintIssue =
+  | { kind: "node-no-kind"; nodeId: string }
+  | { kind: "node-orphan"; nodeId: string }
+  | { kind: "slope-detached"; slopeId: string }
+  | { kind: "lift-detached"; liftId: string };
 
 export function SlopeAuthor2() {
   const t = useTranslations("slopeAuthor");
@@ -1065,6 +1083,101 @@ export function SlopeAuthor2() {
     if (Object.keys(placeOverride).length === 0) return loadedResort.place;
     return { ...loadedResort.place, ...placeOverride };
   }, [loadedResort, placeOverride]);
+
+  // Live lint pass (step 8a). Re-runs on every state change that
+  // could resolve or introduce an issue. The four checks are cheap
+  // (O(N) over nodes/edges + O(slopes × nodes) bounded distance
+  // probes); alpensia exercises ~70 slopes × 100 nodes so this stays
+  // well under a millisecond.
+  const lintIssues = useMemo<LintIssue[]>(() => {
+    if (!loadedResort?.graph) return [];
+    const tombstonedNodes = new Set(deletedGraphNodeIds);
+    const tombstonedEdges = new Set(deletedGraphEdgeIds);
+    const baselineNodes = loadedResort.graph.nodes
+      .filter((n) => !tombstonedNodes.has(n.id))
+      .map((n) => {
+        const ov = nodeOverrides[n.id];
+        return ov ? { ...n, ...ov } : n;
+      });
+    const liveNodes = [...baselineNodes, ...addedGraphNodes];
+    const baselineEdges = loadedResort.graph.edges
+      .filter((e) => !tombstonedEdges.has(e.id))
+      .map((e) => {
+        const ov = edgeOverrides[e.id];
+        return ov ? { ...e, ...ov } : e;
+      });
+    const liveEdges = [...baselineEdges, ...addedGraphEdges];
+
+    const issues: LintIssue[] = [];
+
+    for (const n of liveNodes) {
+      if (!n.kind) issues.push({ kind: "node-no-kind", nodeId: n.id });
+    }
+
+    const referencedNodes = new Set<string>();
+    for (const e of liveEdges) {
+      referencedNodes.add(e.from);
+      referencedNodes.add(e.to);
+    }
+    for (const n of liveNodes) {
+      if (!referencedNodes.has(n.id)) {
+        issues.push({ kind: "node-orphan", nodeId: n.id });
+      }
+    }
+
+    const isDetached = (
+      coords: { lat: number; lon: number }[] | undefined,
+    ): boolean => {
+      if (!coords || coords.length < 2) return false;
+      const head = { lat: coords[0].lat, lng: coords[0].lon };
+      const tail = {
+        lat: coords[coords.length - 1].lat,
+        lng: coords[coords.length - 1].lon,
+      };
+      for (const n of liveNodes) {
+        const target = { lat: n.lat, lng: n.lng };
+        if (distanceM(head, target) <= LINT_DETACH_RADIUS_M) return false;
+        if (distanceM(tail, target) <= LINT_DETACH_RADIUS_M) return false;
+      }
+      return true;
+    };
+
+    for (const s of effectiveSlopes) {
+      if (isDetached(s.coordinates)) {
+        issues.push({ kind: "slope-detached", slopeId: s.id });
+      }
+    }
+    for (const l of effectiveLifts) {
+      if (isDetached(l.coordinates)) {
+        issues.push({ kind: "lift-detached", liftId: l.id });
+      }
+    }
+
+    return issues;
+  }, [
+    loadedResort,
+    deletedGraphNodeIds,
+    deletedGraphEdgeIds,
+    nodeOverrides,
+    edgeOverrides,
+    addedGraphNodes,
+    addedGraphEdges,
+    effectiveSlopes,
+    effectiveLifts,
+  ]);
+
+  function jumpToLintIssue(issue: LintIssue) {
+    if (issue.kind === "node-no-kind" || issue.kind === "node-orphan") {
+      selectNode(issue.nodeId);
+      setMode("edit-node");
+    } else if (issue.kind === "slope-detached") {
+      selectSlope(issue.slopeId);
+      setMode("select");
+    } else if (issue.kind === "lift-detached") {
+      selectLift(issue.liftId);
+      setMode("select");
+    }
+  }
 
   useEffect(() => {
     const map = googleMap.current;
@@ -2168,6 +2281,13 @@ export function SlopeAuthor2() {
                   onSelect={(id) => selectNode(id)}
                 />
               )}
+
+            {loadedResort?.graph && (
+              <LintPanel
+                issues={lintIssues}
+                onJump={(issue) => jumpToLintIssue(issue)}
+              />
+            )}
 
             {loadedResort?.graph && (
               <MergeCloseNodesPanel
@@ -3475,6 +3595,105 @@ function NodesListPanel({
             </li>
           );
         })}
+      </ul>
+    </section>
+  );
+}
+
+function LintPanel({
+  issues,
+  onJump,
+}: {
+  issues: LintIssue[];
+  onJump: (issue: LintIssue) => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  // Tally by kind for the header row — gives an at-a-glance health
+  // score even before the user scrolls.
+  const counts = {
+    "node-no-kind": 0,
+    "node-orphan": 0,
+    "slope-detached": 0,
+    "lift-detached": 0,
+  } as Record<LintIssue["kind"], number>;
+  for (const i of issues) counts[i.kind] += 1;
+  const total = issues.length;
+  if (total === 0) {
+    return (
+      <section className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3">
+        <header>
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-emerald-300">
+            {t("lintPanelTitle", { count: 0 })}
+          </p>
+          <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+            {t("lintPanelEmpty")}
+          </p>
+        </header>
+      </section>
+    );
+  }
+  const labelFor = (i: LintIssue) => {
+    if (i.kind === "node-no-kind") return t("lintNodeNoKind", { id: i.nodeId });
+    if (i.kind === "node-orphan") return t("lintNodeOrphan", { id: i.nodeId });
+    if (i.kind === "slope-detached")
+      return t("lintSlopeDetached", { id: i.slopeId });
+    return t("lintLiftDetached", { id: i.liftId });
+  };
+  const accentFor = (k: LintIssue["kind"]) => {
+    if (k === "node-no-kind") return "text-amber-300";
+    if (k === "node-orphan") return "text-yellow-300";
+    if (k === "slope-detached") return "text-rose-300";
+    return "text-rose-300";
+  };
+  return (
+    <section className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-3">
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-300">
+          {t("lintPanelTitle", { count: total })}
+        </p>
+        <p className="mt-1 flex flex-wrap gap-2 text-[10px] text-[var(--fg-muted)]">
+          {counts["node-no-kind"] > 0 && (
+            <span className="text-amber-300">
+              {t("lintTallyNoKind", { count: counts["node-no-kind"] })}
+            </span>
+          )}
+          {counts["node-orphan"] > 0 && (
+            <span className="text-yellow-300">
+              {t("lintTallyOrphan", { count: counts["node-orphan"] })}
+            </span>
+          )}
+          {counts["slope-detached"] > 0 && (
+            <span className="text-rose-300">
+              {t("lintTallySlopeDetached", { count: counts["slope-detached"] })}
+            </span>
+          )}
+          {counts["lift-detached"] > 0 && (
+            <span className="text-rose-300">
+              {t("lintTallyLiftDetached", { count: counts["lift-detached"] })}
+            </span>
+          )}
+        </p>
+        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          {t("lintPanelHint")}
+        </p>
+      </header>
+      <ul className="max-h-48 space-y-1 overflow-y-auto text-[11px]">
+        {issues.map((issue, i) => (
+          <li key={`${issue.kind}-${i}`}>
+            <button
+              type="button"
+              onClick={() => onJump(issue)}
+              className="flex w-full items-center justify-between gap-2 rounded-md border border-[var(--border)] bg-transparent px-2 py-1.5 text-left text-[var(--fg-muted)] transition hover:bg-[var(--bg-elev)] hover:text-[var(--fg)]"
+            >
+              <span className={`break-all text-[10px] ${accentFor(issue.kind)}`}>
+                {labelFor(issue)}
+              </span>
+              <span aria-hidden className="text-[9px] text-[var(--fg-dim)]">
+                →
+              </span>
+            </button>
+          </li>
+        ))}
       </ul>
     </section>
   );
