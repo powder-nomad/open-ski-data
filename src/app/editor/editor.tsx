@@ -138,6 +138,32 @@ type LintIssue =
   | { kind: "slope-detached"; slopeId: string }
   | { kind: "lift-detached"; liftId: string };
 
+// Hard cap on the undo stack — anything older falls off the back.
+// 20 covers any realistic editing session; if a user actually wants
+// to roll back further, the rest-of-history is recoverable from the
+// git commit produced by the prior PR.
+const UNDO_DEPTH = 20;
+
+// Frozen view of every override / added / deleted state at one point
+// in time. Selection, mode, picks, and other UI-only state stay
+// outside on purpose — undoing the user's last edit shouldn't also
+// teleport the cursor or change which slope is highlighted.
+type UndoSnapshot = {
+  slopeOverrides: Record<string, SlopeOverride>;
+  addedSlopes: SlopeRecord[];
+  deletedSlopeIds: string[];
+  liftOverrides: Record<string, LiftOverride>;
+  addedLifts: LiftRecord[];
+  deletedLiftIds: string[];
+  placeOverride: Partial<PlaceRecord>;
+  nodeOverrides: Record<string, Partial<GraphNode>>;
+  addedGraphNodes: GraphNode[];
+  deletedGraphNodeIds: string[];
+  edgeOverrides: Record<string, EdgeOverride>;
+  addedGraphEdges: GraphEdge[];
+  deletedGraphEdgeIds: string[];
+};
+
 export function SlopeAuthor2() {
   const t = useTranslations("slopeAuthor");
   const locale = useLocale();
@@ -2019,6 +2045,110 @@ export function SlopeAuthor2() {
     };
   }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes, addedGraphEdges, edgeOverrides, deletedGraphNodeIds, deletedGraphEdgeIds, nodeOverrides]);
 
+  // ── Undo stack ────────────────────────────────────────────────
+  //
+  // Snapshot-based undo. The 13 mutation states form an
+  // `UndoSnapshot`; whenever any of them changes (detected via
+  // useMemo + useEffect over their refs), the PRIOR snapshot is
+  // pushed onto the stack. `undo()` pops the top and replays it
+  // through every setter. Selection / mode / picks are deliberately
+  // outside the snapshot — they're UI state, not edits.
+  //
+  // No-recapture trick: before calling the 13 setters, we pre-set
+  // `lastSnapshotRef` to the snapshot we're restoring. After the
+  // setters resolve, useMemo recomputes currentSnapshot with refs
+  // matching `lastSnapshotRef` and the equality short-circuit fires,
+  // so the restore itself doesn't generate a fresh undo entry.
+  const currentSnapshot = useMemo(
+    () => ({
+      slopeOverrides,
+      addedSlopes,
+      deletedSlopeIds,
+      liftOverrides,
+      addedLifts,
+      deletedLiftIds,
+      placeOverride,
+      nodeOverrides,
+      addedGraphNodes,
+      deletedGraphNodeIds,
+      edgeOverrides,
+      addedGraphEdges,
+      deletedGraphEdgeIds,
+    }),
+    [
+      slopeOverrides,
+      addedSlopes,
+      deletedSlopeIds,
+      liftOverrides,
+      addedLifts,
+      deletedLiftIds,
+      placeOverride,
+      nodeOverrides,
+      addedGraphNodes,
+      deletedGraphNodeIds,
+      edgeOverrides,
+      addedGraphEdges,
+      deletedGraphEdgeIds,
+    ],
+  );
+  const [undoStack, setUndoStack] = useState<UndoSnapshot[]>([]);
+  const lastSnapshotRef = useRef<UndoSnapshot | null>(null);
+  useEffect(() => {
+    if (lastSnapshotRef.current === null) {
+      lastSnapshotRef.current = currentSnapshot;
+      return;
+    }
+    const prior = lastSnapshotRef.current;
+    if (
+      prior.slopeOverrides === currentSnapshot.slopeOverrides &&
+      prior.addedSlopes === currentSnapshot.addedSlopes &&
+      prior.deletedSlopeIds === currentSnapshot.deletedSlopeIds &&
+      prior.liftOverrides === currentSnapshot.liftOverrides &&
+      prior.addedLifts === currentSnapshot.addedLifts &&
+      prior.deletedLiftIds === currentSnapshot.deletedLiftIds &&
+      prior.placeOverride === currentSnapshot.placeOverride &&
+      prior.nodeOverrides === currentSnapshot.nodeOverrides &&
+      prior.addedGraphNodes === currentSnapshot.addedGraphNodes &&
+      prior.deletedGraphNodeIds === currentSnapshot.deletedGraphNodeIds &&
+      prior.edgeOverrides === currentSnapshot.edgeOverrides &&
+      prior.addedGraphEdges === currentSnapshot.addedGraphEdges &&
+      prior.deletedGraphEdgeIds === currentSnapshot.deletedGraphEdgeIds
+    ) {
+      return;
+    }
+    setUndoStack((stack) => [...stack.slice(-(UNDO_DEPTH - 1)), prior]);
+    lastSnapshotRef.current = currentSnapshot;
+  }, [currentSnapshot]);
+
+  // Whenever the loaded resort changes (initial load or switch), drop
+  // the undo stack — those snapshots reference the prior resort's ids
+  // and would be nonsensical to replay against new graph state.
+  useEffect(() => {
+    setUndoStack([]);
+  }, [loadedResort?.ref.slug]);
+
+  const undo = useCallback(() => {
+    setUndoStack((stack) => {
+      if (stack.length === 0) return stack;
+      const prior = stack[stack.length - 1];
+      lastSnapshotRef.current = prior;
+      setSlopeOverrides(prior.slopeOverrides);
+      setAddedSlopes(prior.addedSlopes);
+      setDeletedSlopeIds(prior.deletedSlopeIds);
+      setLiftOverrides(prior.liftOverrides);
+      setAddedLifts(prior.addedLifts);
+      setDeletedLiftIds(prior.deletedLiftIds);
+      setPlaceOverride(prior.placeOverride);
+      setNodeOverrides(prior.nodeOverrides);
+      setAddedGraphNodes(prior.addedGraphNodes);
+      setDeletedGraphNodeIds(prior.deletedGraphNodeIds);
+      setEdgeOverrides(prior.edgeOverrides);
+      setAddedGraphEdges(prior.addedGraphEdges);
+      setDeletedGraphEdgeIds(prior.deletedGraphEdgeIds);
+      return stack.slice(0, -1);
+    });
+  }, []);
+
   const desc = modeDescriptor(mode);
   const descI18n = MODE_I18N[desc.mode];
   const descLabel = t(descI18n.labelKey);
@@ -2118,6 +2248,8 @@ export function SlopeAuthor2() {
 
           <div className="no-scrollbar p-3 space-y-4 overflow-y-auto md:h-full md:overflow-y-auto">
             <ResortLoader onLoad={setLoadedResort} />
+
+            <UndoBar depth={undoStack.length} onUndo={undo} />
 
             <NewPlaceForm />
 
@@ -3697,6 +3829,35 @@ function LintPanel({
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+function UndoBar({
+  depth,
+  onUndo,
+}: {
+  depth: number;
+  onUndo: () => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  if (depth === 0) return null;
+  return (
+    <section
+      data-testid="undo-bar"
+      className="flex items-center justify-between gap-2 rounded-lg border border-violet-500/40 bg-violet-500/5 px-3 py-2"
+    >
+      <span className="text-[10px] font-semibold uppercase tracking-widest text-violet-300">
+        {t("undoBarLabel", { count: depth })}
+      </span>
+      <button
+        type="button"
+        data-testid="undo-button"
+        onClick={onUndo}
+        className="rounded-md border border-violet-500/40 bg-violet-500/10 px-2 py-1 text-[11px] font-semibold text-violet-100 transition hover:bg-violet-500/20"
+      >
+        {t("undoBarButton")}
+      </button>
     </section>
   );
 }
