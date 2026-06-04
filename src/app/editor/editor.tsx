@@ -2483,6 +2483,8 @@ export function SlopeAuthor2() {
               <PickListPanel picks={picks} onClear={() => setPicks([])} />
             )}
 
+            {patchBundle && <PatchPreviewPanel bundle={patchBundle} />}
+
             {patchBundle && <PatchSaver bundle={patchBundle} />}
           </div>
         </aside>
@@ -3695,6 +3697,74 @@ function LintPanel({
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+function formatBytes(n: number): string {
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+  return `${(n / (1024 * 1024)).toFixed(2)} MB`;
+}
+
+function PatchPreviewPanel({ bundle }: { bundle: PatchBundle }) {
+  const t = useTranslations("slopeAuthor");
+  const parts = (bundle.message ?? "")
+    .replace(/^slope-author-2:\s*/, "")
+    .split(" + ")
+    .filter((p) => p.length > 0);
+  const files = Object.entries(bundle.files);
+  const totalBytes = files.reduce((sum, [, content]) => sum + content.length, 0);
+  return (
+    <section
+      data-testid="patch-preview-panel"
+      className="rounded-lg border border-sky-500/40 bg-sky-500/5 p-3"
+    >
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-sky-300">
+          {t("patchPreviewTitle", { count: parts.length })}
+        </p>
+        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          {t("patchPreviewHint")}
+        </p>
+      </header>
+      <ul
+        data-testid="patch-preview-parts"
+        className="space-y-1 text-[11px]"
+      >
+        {parts.map((p) => (
+          <li
+            key={p}
+            className="rounded-md border border-[var(--border)] bg-transparent px-2 py-1 text-[10px] text-[var(--fg)]"
+          >
+            {p}
+          </li>
+        ))}
+      </ul>
+      <div className="mt-2 border-t border-[var(--border)] pt-2">
+        <p className="text-[9px] uppercase tracking-wider text-[var(--fg-dim)]">
+          {t("patchPreviewFilesLabel", { count: files.length })}
+        </p>
+        <ul
+          data-testid="patch-preview-files"
+          className="mt-1 space-y-0.5 text-[10px] text-[var(--fg-muted)]"
+        >
+          {files.map(([path, content]) => (
+            <li
+              key={path}
+              className="flex items-center justify-between gap-2"
+            >
+              <span className="font-mono break-all">{path}</span>
+              <span className="text-[var(--fg-dim)] tabular-nums">
+                {formatBytes(content.length)}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-1 text-[9px] text-[var(--fg-dim)] tabular-nums">
+          {t("patchPreviewTotalSize", { size: formatBytes(totalBytes) })}
+        </p>
+      </div>
     </section>
   );
 }
