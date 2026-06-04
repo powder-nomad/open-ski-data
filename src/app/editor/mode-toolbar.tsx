@@ -31,7 +31,8 @@ export type EditorMode =
   | "draw-lift"
   | "add-node"
   | "connect-nodes"
-  | "edit-edge";
+  | "edit-edge"
+  | "edit-node";
 
 /**
  * Translation keys for each mode. Descriptors no longer carry display
@@ -49,6 +50,7 @@ export const MODE_I18N: Record<EditorMode, { labelKey: string; hintKey: string }
   "add-node": { labelKey: "addNodeMode", hintKey: "addNodeHint" },
   "connect-nodes": { labelKey: "connectNodesMode", hintKey: "connectNodesHint" },
   "edit-edge": { labelKey: "editEdgeMode", hintKey: "editEdgeHint" },
+  "edit-node": { labelKey: "editNodeMode", hintKey: "editNodeHint" },
 };
 
 export type ModeDescriptor = {
@@ -75,6 +77,7 @@ export const MODE_DESCRIPTORS: ModeDescriptor[] = [
   { mode: "add-node", icon: "●", enabled: true },
   { mode: "connect-nodes", icon: "─", enabled: true },
   { mode: "edit-edge", icon: "↔", enabled: true, requiresSelection: "edge" },
+  { mode: "edit-node", icon: "◉", enabled: true, requiresSelection: "node" },
 ];
 
 export function ModeToolbar({
@@ -83,12 +86,14 @@ export function ModeToolbar({
   hasSlope,
   hasLift,
   hasEdge,
+  hasNode,
 }: {
   mode: EditorMode;
   onModeChange: (mode: EditorMode) => void;
   hasSlope: boolean;
   hasLift: boolean;
   hasEdge: boolean;
+  hasNode: boolean;
 }) {
   const t = useTranslations("slopeAuthor");
   return (
@@ -100,7 +105,8 @@ export function ModeToolbar({
         const blockedBySelection =
           (d.requiresSelection === "slope" && !hasSlope) ||
           (d.requiresSelection === "lift" && !hasLift) ||
-          (d.requiresSelection === "edge" && !hasEdge);
+          (d.requiresSelection === "edge" && !hasEdge) ||
+          (d.requiresSelection === "node" && !hasNode);
         const disabled = !d.enabled || blockedBySelection;
         const active = mode === d.mode;
         const i18n = MODE_I18N[d.mode];

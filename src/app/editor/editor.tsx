@@ -12,6 +12,7 @@ import {
   type PlaceRecord,
   type Provenance,
   type GraphNode,
+  type GraphNodeKind,
   type GraphEdge,
   type SlopeGraphRecord,
 } from "@/lib/resort-loader";
@@ -329,6 +330,15 @@ export function SlopeAuthor2() {
     | null
   >(null);
 
+  // edit-node mode (step 7a): which node is being edited and per-
+  // baseline-node overrides (kind, alt_m, position). Added-this-
+  // session nodes mutate addedGraphNodes in place — no override map
+  // since there's no baseline to override.
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [nodeOverrides, setNodeOverrides] = useState<
+    Record<string, Partial<GraphNode>>
+  >({});
+
   // OSM Overpass re-import status. Same flow as v1: pull
   // piste:type=downhill ways within 5km of the resort centre, drop
   // the ones whose endpoints match an existing slope (≤10m), append
@@ -391,6 +401,8 @@ export function SlopeAuthor2() {
     setDeletedGraphEdgeIds([]);
     setLastMergeRewired(null);
     setMergePrompt(null);
+    setSelectedNodeId(null);
+    setNodeOverrides({});
     setDeletedSlopeIds([]);
     setDeletedLiftIds([]);
     setDrawSlopePoints([]);
@@ -418,7 +430,121 @@ export function SlopeAuthor2() {
     if (id) {
       setSelectedSlopeId(null);
       setSelectedLiftId(null);
+      setSelectedNodeId(null);
     }
+  }
+  // Selecting a node clears slope/lift/edge — same one-entity-at-a-
+  // time rule. Gates the edit-node toolbar button (requiresSelection:
+  // "node"). Used by the on-map click handler and NodesListPanel.
+  function selectNode(id: string | null) {
+    setSelectedNodeId(id);
+    if (id) {
+      setSelectedSlopeId(null);
+      setSelectedLiftId(null);
+      setSelectedEdgeId(null);
+    }
+  }
+
+  // When a node moves (drag or alt_m edit that changes coords),
+  // every edge whose `from`/`to` references it needs its endpoint
+  // geometry snapped to the new position. Preserves existing
+  // edgeOverrides — merges the geometry patch into whatever's there.
+  // Touches both baseline edges (via edgeOverrides) and added edges
+  // (mutates addedGraphEdges).
+  function applyNodeMove(
+    nodeId: string,
+    newLat: number,
+    newLng: number,
+    newAlt: number,
+  ) {
+    const resort = loadedResort;
+    if (!resort?.graph) return;
+    const endPos = { lat: newLat, lng: newLng, alt_m: newAlt };
+
+    const deletedEdgeSet = new Set(deletedGraphEdgeIds);
+    const baselinePatches: Record<string, EdgeOverride> = {};
+    for (const e of resort.graph.edges) {
+      if (deletedEdgeSet.has(e.id)) continue;
+      const effective = edgeOverrides[e.id]
+        ? { ...e, ...edgeOverrides[e.id] }
+        : e;
+      if (effective.from !== nodeId && effective.to !== nodeId) continue;
+      let g = effective.geometry.slice();
+      if (effective.from === nodeId) g = [endPos, ...g.slice(1)];
+      if (effective.to === nodeId) g = [...g.slice(0, -1), endPos];
+      baselinePatches[e.id] = { ...edgeOverrides[e.id], geometry: g };
+    }
+    if (Object.keys(baselinePatches).length > 0) {
+      setEdgeOverrides((prev) => ({ ...prev, ...baselinePatches }));
+    }
+
+    let addedChanged = false;
+    const newAdded = addedGraphEdges.map((e) => {
+      if (e.from !== nodeId && e.to !== nodeId) return e;
+      let g = e.geometry.slice();
+      if (e.from === nodeId) g = [endPos, ...g.slice(1)];
+      if (e.to === nodeId) g = [...g.slice(0, -1), endPos];
+      addedChanged = true;
+      return { ...e, geometry: g };
+    });
+    if (addedChanged) setAddedGraphEdges(newAdded);
+  }
+
+  // Standalone delete (step 7b). Removes a node and tombstones every
+  // edge referencing it — there's no rewire here, since merge has
+  // already covered the "join two nodes" use case. Baseline node →
+  // deletedGraphNodeIds; added node → splice from addedGraphNodes.
+  // Edges that referenced the node: baseline → deletedGraphEdgeIds;
+  // added → splice from addedGraphEdges.
+  function deleteNode(nodeId: string) {
+    const resort = loadedResort;
+    if (!resort?.graph) return;
+    const isBaseline = resort.graph.nodes.some((n) => n.id === nodeId);
+    const danglingBaselineEdgeIds = resort.graph.edges
+      .filter((e) => e.from === nodeId || e.to === nodeId)
+      .map((e) => e.id);
+    if (danglingBaselineEdgeIds.length > 0) {
+      setDeletedGraphEdgeIds((prev) =>
+        Array.from(new Set([...prev, ...danglingBaselineEdgeIds])),
+      );
+    }
+    setAddedGraphEdges((prev) =>
+      prev.filter((e) => e.from !== nodeId && e.to !== nodeId),
+    );
+    if (isBaseline) {
+      setDeletedGraphNodeIds((prev) =>
+        prev.includes(nodeId) ? prev : [...prev, nodeId],
+      );
+    } else {
+      setAddedGraphNodes((prev) => prev.filter((n) => n.id !== nodeId));
+    }
+    if (selectedNodeId === nodeId) setSelectedNodeId(null);
+    if (
+      selectedEdgeId !== null &&
+      danglingBaselineEdgeIds.includes(selectedEdgeId)
+    ) {
+      setSelectedEdgeId(null);
+    }
+    // If we leave edit-node mode with no node, return to select so
+    // the toolbar isn't sitting on a disabled mode.
+    if (modeRef.current === "edit-node") setMode("select");
+  }
+
+  // Standalone edge delete (step 7b). Baseline → tombstone; added →
+  // splice. Drops the selection if it pointed at this edge.
+  function deleteEdge(edgeId: string) {
+    const resort = loadedResort;
+    if (!resort?.graph) return;
+    const isBaseline = resort.graph.edges.some((e) => e.id === edgeId);
+    if (isBaseline) {
+      setDeletedGraphEdgeIds((prev) =>
+        prev.includes(edgeId) ? prev : [...prev, edgeId],
+      );
+    } else {
+      setAddedGraphEdges((prev) => prev.filter((e) => e.id !== edgeId));
+    }
+    if (selectedEdgeId === edgeId) setSelectedEdgeId(null);
+    if (modeRef.current === "edit-edge") setMode("select");
   }
 
   // merge-close-nodes (step 6b). Scan all live nodes (baseline minus
@@ -1288,67 +1414,135 @@ export function SlopeAuthor2() {
     graphNodeMarkersRef.current.forEach((m) => m.setMap(null));
     graphNodeMarkersRef.current = [];
 
-    const graphMode = mode === "add-node" || mode === "connect-nodes" || mode === "edit-edge";
+    const graphMode =
+      mode === "add-node" ||
+      mode === "connect-nodes" ||
+      mode === "edit-edge" ||
+      mode === "edit-node" ||
+      mode === "select";
     if (!graphMode) return;
     if (!loadedResort) return;
 
     const isConnect = mode === "connect-nodes";
+    const isEditNode = mode === "edit-node";
+    const isSelectMode = mode === "select";
     const deletedSet = new Set(deletedGraphNodeIds);
-    const existing = (loadedResort.graph?.nodes ?? []).filter(
-      (n) => !deletedSet.has(n.id),
-    );
+    // Apply nodeOverrides to baseline nodes so dragged-then-deselected
+    // positions persist after the user leaves edit-node mode.
+    const existing = (loadedResort.graph?.nodes ?? [])
+      .filter((n) => !deletedSet.has(n.id))
+      .map((n) => {
+        const ov = nodeOverrides[n.id];
+        return ov ? { ...n, ...ov } : n;
+      });
 
     for (const n of existing) {
       const isPending = anchorNodeId === n.id;
+      const isSelectedNode = selectedNodeId === n.id;
+      const draggable = isEditNode && isSelectedNode;
+      const baseColor = isPending
+        ? "#facc15"
+        : isSelectedNode
+          ? "#22d3ee"
+          : "#64748b";
       const marker = new google.maps.Marker({
         position: { lat: n.lat, lng: n.lng },
         map,
+        draggable,
         title: `node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m`,
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
           // Bump scale in connect-nodes mode so existing nodes are
-          // easier to hit. Pending-from gets the largest treatment.
-          scale: isPending ? 9 : isConnect ? 6 : 4,
-          fillColor: isPending ? "#facc15" : "#64748b", // yellow-400 vs slate-500
-          fillOpacity: isPending ? 1 : 0.85,
+          // easier to hit. Pending-from / selected get larger.
+          scale: isPending || isSelectedNode ? 9 : isConnect ? 6 : 4,
+          fillColor: baseColor,
+          fillOpacity: isPending || isSelectedNode ? 1 : 0.85,
           strokeColor: "#ffffff",
-          strokeWeight: isPending ? 2 : 1,
+          strokeWeight: isPending || isSelectedNode ? 2 : 1,
         },
+        zIndex: isSelectedNode ? 50 : isPending ? 40 : 10,
       });
       if (isConnect) {
         marker.addListener("click", () => pickConnectNodeRef.current(n.id));
+      } else if (isEditNode || isSelectMode) {
+        marker.addListener("click", () => selectNode(n.id));
+      }
+      if (draggable) {
+        marker.addListener("dragend", (ev: google.maps.MapMouseEvent) => {
+          if (!ev.latLng) return;
+          const lat = ev.latLng.lat();
+          const lng = ev.latLng.lng();
+          const alt = n.alt_m;
+          setNodeOverrides((prev) => ({
+            ...prev,
+            [n.id]: { ...prev[n.id], lat, lng },
+          }));
+          applyNodeMove(n.id, lat, lng, alt);
+        });
       }
       graphNodeMarkersRef.current.push(marker);
     }
 
     for (const n of addedGraphNodes) {
       const isPending = anchorNodeId === n.id;
+      const isSelectedNode = selectedNodeId === n.id;
+      const draggable = isEditNode && isSelectedNode;
       const marker = new google.maps.Marker({
         position: { lat: n.lat, lng: n.lng },
         map,
+        draggable,
         title: isConnect
           ? `new node ${n.id} — click to ${isPending ? "cancel" : "connect"}`
-          : `new node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m — right-click to remove`,
+          : `new node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m`,
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
-          scale: isPending ? 9 : 7,
-          fillColor: isPending ? "#facc15" : "#22c55e", // yellow-400 vs emerald-500
+          scale: isPending || isSelectedNode ? 9 : 7,
+          fillColor: isPending
+            ? "#facc15"
+            : isSelectedNode
+              ? "#22d3ee"
+              : "#22c55e", // yellow / cyan / emerald
           fillOpacity: 1,
           strokeColor: "#ffffff",
           strokeWeight: 2,
         },
+        zIndex: isSelectedNode ? 50 : isPending ? 40 : 20,
       });
       if (isConnect) {
         marker.addListener("click", () => pickConnectNodeRef.current(n.id));
-      } else {
-        // add-node mode keeps the right-click-to-remove gesture.
+      } else if (isEditNode || isSelectMode) {
+        marker.addListener("click", () => selectNode(n.id));
+        // add-node mode also keeps the right-click-remove gesture for
+        // newly-dropped nodes, restored below.
+      } else if (mode === "add-node") {
         marker.addListener("rightclick", () => {
           setAddedGraphNodes((prev) => prev.filter((x) => x.id !== n.id));
         });
       }
+      if (draggable) {
+        marker.addListener("dragend", (ev: google.maps.MapMouseEvent) => {
+          if (!ev.latLng) return;
+          const lat = ev.latLng.lat();
+          const lng = ev.latLng.lng();
+          const alt = n.alt_m;
+          setAddedGraphNodes((prev) =>
+            prev.map((x) => (x.id === n.id ? { ...x, lat, lng } : x)),
+          );
+          applyNodeMove(n.id, lat, lng, alt);
+        });
+      }
       graphNodeMarkersRef.current.push(marker);
     }
-  }, [mode, mapReady, loadedResort, addedGraphNodes, anchorNodeId, deletedGraphNodeIds]);
+  }, [
+    mode,
+    mapReady,
+    loadedResort,
+    addedGraphNodes,
+    anchorNodeId,
+    deletedGraphNodeIds,
+    selectedNodeId,
+    nodeOverrides,
+  ]);
 
   // ── Graph edges overlay (select + connect-nodes + edit-edge) ──
   //
@@ -1518,6 +1712,10 @@ export function SlopeAuthor2() {
         e.preventDefault();
         setSelectedEdgeId(null);
         setMode("select");
+      } else if (m === "edit-node") {
+        e.preventDefault();
+        setSelectedNodeId(null);
+        setMode("select");
       }
     }
     window.addEventListener("keydown", onKey);
@@ -1555,11 +1753,12 @@ export function SlopeAuthor2() {
     const graphEdgesEdited = Object.keys(edgeOverrides).length;
     const graphNodesDeleted = deletedGraphNodeIds.length;
     const graphEdgesDeleted = deletedGraphEdgeIds.length;
+    const graphNodesEdited = Object.keys(nodeOverrides).length;
     if (
       slopeEdits + slopeAdded + slopeDeleted +
       liftEdits + liftAdded + liftDeleted +
       placeEdits + graphNodesAdded + graphEdgesAdded + graphEdgesEdited +
-      graphNodesDeleted + graphEdgesDeleted === 0
+      graphNodesDeleted + graphEdgesDeleted + graphNodesEdited === 0
     )
       return null;
 
@@ -1641,14 +1840,18 @@ export function SlopeAuthor2() {
         graphEdgesAdded > 0 ||
         graphEdgesEdited > 0 ||
         graphNodesDeleted > 0 ||
-        graphEdgesDeleted > 0) &&
+        graphEdgesDeleted > 0 ||
+        graphNodesEdited > 0) &&
       loadedResort.graph
     ) {
       const deletedNodeSet = new Set(deletedGraphNodeIds);
       const deletedEdgeSet = new Set(deletedGraphEdgeIds);
-      const keptBaselineNodes = loadedResort.graph.nodes.filter(
-        (n) => !deletedNodeSet.has(n.id),
-      );
+      const keptBaselineNodes = loadedResort.graph.nodes
+        .filter((n) => !deletedNodeSet.has(n.id))
+        .map((n) => {
+          const ov = nodeOverrides[n.id];
+          return ov ? { ...n, ...ov } : n;
+        });
       const editedBaselineEdges = loadedResort.graph.edges
         .filter((e) => !deletedEdgeSet.has(e.id))
         .map((e) => {
@@ -1688,9 +1891,11 @@ export function SlopeAuthor2() {
     if (graphEdgesEdited > 0)
       parts.push(`edit ${graphEdgesEdited} graph edge${graphEdgesEdited === 1 ? "" : "s"}`);
     if (graphNodesDeleted > 0)
-      parts.push(`merge ${graphNodesDeleted} graph node${graphNodesDeleted === 1 ? "" : "s"}`);
+      parts.push(`delete ${graphNodesDeleted} graph node${graphNodesDeleted === 1 ? "" : "s"}`);
     if (graphEdgesDeleted > 0)
-      parts.push(`drop ${graphEdgesDeleted} self-loop edge${graphEdgesDeleted === 1 ? "" : "s"}`);
+      parts.push(`delete ${graphEdgesDeleted} graph edge${graphEdgesDeleted === 1 ? "" : "s"}`);
+    if (graphNodesEdited > 0)
+      parts.push(`edit ${graphNodesEdited} graph node${graphNodesEdited === 1 ? "" : "s"}`);
 
     return {
       slug: loadedResort.ref.slug,
@@ -1699,7 +1904,7 @@ export function SlopeAuthor2() {
       files,
       message: `slope-author-2: ${parts.join(" + ")}`,
     };
-  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes, addedGraphEdges, edgeOverrides, deletedGraphNodeIds, deletedGraphEdgeIds]);
+  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes, addedGraphEdges, edgeOverrides, deletedGraphNodeIds, deletedGraphEdgeIds, nodeOverrides]);
 
   const desc = modeDescriptor(mode);
   const descI18n = MODE_I18N[desc.mode];
@@ -1753,6 +1958,7 @@ export function SlopeAuthor2() {
           hasSlope={selectedSlopeId !== null}
           hasLift={selectedLiftId !== null}
           hasEdge={selectedEdgeId !== null}
+          hasNode={selectedNodeId !== null}
         />
 
         <div className="relative flex-1 min-h-0 md:h-full md:flex-1">
@@ -1866,6 +2072,69 @@ export function SlopeAuthor2() {
                     : null
                 }
                 onClearSelection={() => selectEdge(null)}
+                onDelete={() => {
+                  if (selectedEdgeId) deleteEdge(selectedEdgeId);
+                }}
+              />
+            )}
+
+            {mode === "edit-node" && (
+              <EditNodeStatusPanel
+                selectedNodeId={selectedNodeId}
+                selectedNode={
+                  selectedNodeId
+                    ? [
+                        ...(loadedResort?.graph?.nodes ?? []).map((n) => {
+                          const ov = nodeOverrides[n.id];
+                          return ov ? { ...n, ...ov } : n;
+                        }),
+                        ...addedGraphNodes,
+                      ].find((n) => n.id === selectedNodeId) ?? null
+                    : null
+                }
+                hasOverride={
+                  selectedNodeId !== null && !!nodeOverrides[selectedNodeId]
+                }
+                onPatchKind={(kind) => {
+                  if (!selectedNodeId) return;
+                  const isBaseline = (loadedResort?.graph?.nodes ?? []).some(
+                    (n) => n.id === selectedNodeId,
+                  );
+                  if (isBaseline) {
+                    setNodeOverrides((prev) => ({
+                      ...prev,
+                      [selectedNodeId]: { ...prev[selectedNodeId], kind },
+                    }));
+                  } else {
+                    setAddedGraphNodes((prev) =>
+                      prev.map((n) =>
+                        n.id === selectedNodeId ? { ...n, kind } : n,
+                      ),
+                    );
+                  }
+                }}
+                onPatchAlt={(alt_m) => {
+                  if (!selectedNodeId) return;
+                  const isBaseline = (loadedResort?.graph?.nodes ?? []).some(
+                    (n) => n.id === selectedNodeId,
+                  );
+                  if (isBaseline) {
+                    setNodeOverrides((prev) => ({
+                      ...prev,
+                      [selectedNodeId]: { ...prev[selectedNodeId], alt_m },
+                    }));
+                  } else {
+                    setAddedGraphNodes((prev) =>
+                      prev.map((n) =>
+                        n.id === selectedNodeId ? { ...n, alt_m } : n,
+                      ),
+                    );
+                  }
+                }}
+                onClearSelection={() => selectNode(null)}
+                onDelete={() => {
+                  if (selectedNodeId) deleteNode(selectedNodeId);
+                }}
               />
             )}
 
@@ -1881,6 +2150,22 @@ export function SlopeAuthor2() {
                   overrides={edgeOverrides}
                   selectedId={selectedEdgeId}
                   onSelect={(id) => selectEdge(id)}
+                />
+              )}
+
+            {loadedResort?.graph &&
+              (mode === "edit-node" ||
+                mode === "edit-edge" ||
+                mode === "connect-nodes" ||
+                mode === "select") && (
+                <NodesListPanel
+                  baselineNodes={loadedResort.graph.nodes.filter(
+                    (n) => !deletedGraphNodeIds.includes(n.id),
+                  )}
+                  addedNodes={addedGraphNodes}
+                  overrides={nodeOverrides}
+                  selectedId={selectedNodeId}
+                  onSelect={(id) => selectNode(id)}
                 />
               )}
 
@@ -2790,10 +3075,12 @@ function EditEdgeStatusPanel({
   selectedEdgeId,
   selectedEdge,
   onClearSelection,
+  onDelete,
 }: {
   selectedEdgeId: string | null;
   selectedEdge: GraphEdge | null;
   onClearSelection: () => void;
+  onDelete: () => void;
 }) {
   const t = useTranslations("slopeAuthor");
   const kindKey =
@@ -2846,6 +3133,14 @@ function EditEdgeStatusPanel({
           className="rounded-md border border-[var(--border)] px-3 py-1.5 text-red-300 hover:text-red-200 disabled:opacity-40"
         >
           {t("editEdgeStopEditing")}
+        </button>
+        <button
+          type="button"
+          onClick={onDelete}
+          disabled={!selectedEdge}
+          className="rounded-md border border-red-500/60 bg-red-500/10 px-3 py-1.5 text-red-200 hover:bg-red-500/20 disabled:opacity-40"
+        >
+          {t("editEdgeDeleteButton")}
         </button>
       </div>
     </section>
@@ -2952,6 +3247,229 @@ function EdgesListPanel({
                 </span>
                 <span className="break-all text-[10px] text-[var(--fg-dim)]">
                   {e.from} → {e.to} · {e.geometry.length}v · {t(kindKey)}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
+
+const NODE_KIND_OPTIONS: { value: GraphNodeKind | ""; labelKey: string }[] = [
+  { value: "", labelKey: "editNodeKindUnset" },
+  { value: "summit", labelKey: "editNodeKindSummit" },
+  { value: "base", labelKey: "editNodeKindBase" },
+  { value: "fork", labelKey: "editNodeKindFork" },
+  { value: "merge", labelKey: "editNodeKindMerge" },
+  { value: "lift_top", labelKey: "editNodeKindLiftTop" },
+  { value: "lift_bottom", labelKey: "editNodeKindLiftBottom" },
+  { value: "lift_station", labelKey: "editNodeKindLiftStation" },
+  { value: "waypoint", labelKey: "editNodeKindWaypoint" },
+];
+
+function EditNodeStatusPanel({
+  selectedNodeId,
+  selectedNode,
+  hasOverride,
+  onPatchKind,
+  onPatchAlt,
+  onClearSelection,
+  onDelete,
+}: {
+  selectedNodeId: string | null;
+  selectedNode: GraphNode | null;
+  hasOverride: boolean;
+  onPatchKind: (kind: GraphNodeKind | undefined) => void;
+  onPatchAlt: (alt_m: number) => void;
+  onClearSelection: () => void;
+  onDelete: () => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  return (
+    <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-[#22d3ee]">
+          {t("editNodePanelTitle")}
+        </p>
+        {selectedNode ? (
+          <>
+            <p className="mt-1 break-all text-[10px] text-[var(--fg-muted)]">
+              {t("editNodeSelectedLabel")}: <code>{selectedNodeId}</code>
+              {hasOverride && (
+                <span className="ml-2 rounded bg-cyan-500/20 px-1 py-0.5 text-[9px] uppercase tracking-widest text-cyan-300">
+                  ✎
+                </span>
+              )}
+            </p>
+            <p className="mt-0.5 text-[10px] text-[var(--fg-muted)]">
+              {t("editNodeCoords", {
+                lat: selectedNode.lat.toFixed(6),
+                lng: selectedNode.lng.toFixed(6),
+              })}
+            </p>
+            <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+              {t("editNodeDragHint")}
+            </p>
+          </>
+        ) : (
+          <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+            {t("editNodeNoSelection")}
+          </p>
+        )}
+      </header>
+      {selectedNode && (
+        <div className="space-y-2">
+          <label className="block">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+              {t("editNodeKindLabel")}
+            </span>
+            <select
+              value={selectedNode.kind ?? ""}
+              onChange={(e) =>
+                onPatchKind(
+                  e.target.value ? (e.target.value as GraphNodeKind) : undefined,
+                )
+              }
+              className="mt-1 block w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-xs text-[var(--fg)]"
+            >
+              {NODE_KIND_OPTIONS.map((opt) => (
+                <option key={opt.value || "unset"} value={opt.value}>
+                  {t(opt.labelKey)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+              {t("editNodeAltLabel")}
+            </span>
+            <input
+              type="number"
+              step={1}
+              value={selectedNode.alt_m}
+              onChange={(e) => {
+                const v = Number.parseFloat(e.target.value);
+                if (Number.isFinite(v)) onPatchAlt(v);
+              }}
+              className="mt-1 block w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-xs text-[var(--fg)]"
+            />
+          </label>
+        </div>
+      )}
+      <div className="mt-2 flex flex-wrap gap-2 text-xs">
+        <button
+          type="button"
+          onClick={onClearSelection}
+          disabled={!selectedNode}
+          className="rounded-md border border-[var(--border)] px-3 py-1.5 text-red-300 hover:text-red-200 disabled:opacity-40"
+        >
+          {t("editNodeStopEditing")}
+        </button>
+        <button
+          type="button"
+          onClick={onDelete}
+          disabled={!selectedNode}
+          className="rounded-md border border-red-500/60 bg-red-500/10 px-3 py-1.5 text-red-200 hover:bg-red-500/20 disabled:opacity-40"
+        >
+          {t("editNodeDeleteButton")}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function NodesListPanel({
+  baselineNodes,
+  addedNodes,
+  overrides,
+  selectedId,
+  onSelect,
+}: {
+  baselineNodes: GraphNode[];
+  addedNodes: GraphNode[];
+  overrides: Record<string, Partial<GraphNode>>;
+  selectedId: string | null;
+  onSelect: (id: string) => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  const editedCount = Object.keys(overrides).length;
+  const total = baselineNodes.length + addedNodes.length;
+  if (total === 0) {
+    return (
+      <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
+        <header className="mb-1">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+            {t("nodesPanelTitle", { count: 0 })}
+          </p>
+        </header>
+        <p className="text-[10px] text-[var(--fg-muted)]">
+          {t("nodesPanelEmpty")}
+        </p>
+      </section>
+    );
+  }
+  const effective: { n: GraphNode; isAdded: boolean; isEdited: boolean }[] = [
+    ...baselineNodes.map((n) => ({
+      n: overrides[n.id] ? { ...n, ...overrides[n.id] } : n,
+      isAdded: false,
+      isEdited: !!overrides[n.id],
+    })),
+    ...addedNodes.map((n) => ({ n, isAdded: true, isEdited: false })),
+  ];
+  return (
+    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+          {t("nodesPanelTitle", { count: total })}
+          {editedCount > 0 ? (
+            <span className="ml-2 text-[#22d3ee]">
+              · {t("nodesPanelEditedChip", { count: editedCount })}
+            </span>
+          ) : null}
+        </p>
+        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          {t("nodesPanelHint")}
+        </p>
+      </header>
+      <ul className="space-y-1 text-[11px]">
+        {effective.map(({ n, isAdded, isEdited }) => {
+          const isSel = n.id === selectedId;
+          return (
+            <li key={n.id}>
+              <button
+                type="button"
+                onClick={() => onSelect(n.id)}
+                className={`flex w-full flex-col items-start gap-0.5 rounded-md border px-2 py-1.5 text-left transition ${
+                  isSel
+                    ? "border-[#22d3ee] bg-[#22d3ee]/10 text-[var(--fg)]"
+                    : "border-[var(--border)] bg-transparent text-[var(--fg-muted)] hover:bg-[var(--bg-elev)] hover:text-[var(--fg)]"
+                }`}
+                aria-pressed={isSel}
+              >
+                <span className="flex w-full items-center justify-between gap-2">
+                  <code className="break-all text-[10px]">{n.id}</code>
+                  <span className="flex flex-none items-center gap-1 text-[9px] uppercase tracking-widest">
+                    {isAdded && (
+                      <span className="rounded bg-emerald-500/20 px-1 py-0.5 text-emerald-300">
+                        new
+                      </span>
+                    )}
+                    {isEdited && (
+                      <span className="rounded bg-cyan-500/20 px-1 py-0.5 text-cyan-300">
+                        ✎
+                      </span>
+                    )}
+                    {isSel && (
+                      <span className="rounded bg-cyan-500/20 px-1 py-0.5 text-cyan-300">
+                        {t("nodesPanelSelected")}
+                      </span>
+                    )}
+                  </span>
+                </span>
+                <span className="break-all text-[10px] text-[var(--fg-dim)]">
+                  {n.kind ?? t("editNodeKindUnset")} · {n.alt_m.toFixed(0)}m
                 </span>
               </button>
             </li>
