@@ -74,7 +74,7 @@ export const MODE_DESCRIPTORS: ModeDescriptor[] = [
   { mode: "draw-lift", icon: "🚠", enabled: true },
   { mode: "add-node", icon: "●", enabled: true },
   { mode: "connect-nodes", icon: "─", enabled: true },
-  { mode: "edit-edge", icon: "↔", enabled: false, requiresSelection: "edge" },
+  { mode: "edit-edge", icon: "↔", enabled: true, requiresSelection: "edge" },
 ];
 
 export function ModeToolbar({
@@ -82,11 +82,13 @@ export function ModeToolbar({
   onModeChange,
   hasSlope,
   hasLift,
+  hasEdge,
 }: {
   mode: EditorMode;
   onModeChange: (mode: EditorMode) => void;
   hasSlope: boolean;
   hasLift: boolean;
+  hasEdge: boolean;
 }) {
   const t = useTranslations("slopeAuthor");
   return (
@@ -97,7 +99,8 @@ export function ModeToolbar({
       {MODE_DESCRIPTORS.map((d) => {
         const blockedBySelection =
           (d.requiresSelection === "slope" && !hasSlope) ||
-          (d.requiresSelection === "lift" && !hasLift);
+          (d.requiresSelection === "lift" && !hasLift) ||
+          (d.requiresSelection === "edge" && !hasEdge);
         const disabled = !d.enabled || blockedBySelection;
         const active = mode === d.mode;
         const i18n = MODE_I18N[d.mode];

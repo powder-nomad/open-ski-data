@@ -104,6 +104,15 @@ type PickedPoint = {
 
 type SlopeOverride = Partial<SlopeRecord>;
 type LiftOverride = Partial<LiftRecord>;
+type EdgeOverride = Partial<GraphEdge>;
+
+// Graph-edge polyline colors. Existing baseline edges read as dim
+// slate so they don't compete with the brighter session-added edges
+// (emerald). When an edge is being edited, both kinds switch to cyan
+// to match the slope/lift edit treatment.
+const EDGE_BASELINE_COLOR = "#64748b"; // slate-500
+const EDGE_ADDED_COLOR = "#22c55e"; // emerald-500
+const EDGE_EDIT_COLOR = "#22d3ee"; // cyan-400
 
 export function SlopeAuthor2() {
   const t = useTranslations("slopeAuthor");
@@ -285,6 +294,17 @@ export function SlopeAuthor2() {
   // mode change away from connect-nodes, and on anchor self-click.
   const [anchorNodeId, setAnchorNodeId] = useState<string | null>(null);
 
+  // edit-edge mode: which edge is being edited and per-baseline-edge
+  // geometry overrides. Selection drives the editable polyline
+  // treatment; overrides accumulate vertex drag/insert/delete
+  // mutations the user makes during the session. Added-this-session
+  // edges (addedGraphEdges) mutate in place instead — no override
+  // map needed since they don't have a baseline to override.
+  const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
+  const [edgeOverrides, setEdgeOverrides] = useState<
+    Record<string, EdgeOverride>
+  >({});
+
   // OSM Overpass re-import status. Same flow as v1: pull
   // piste:type=downhill ways within 5km of the resort centre, drop
   // the ones whose endpoints match an existing slope (≤10m), append
@@ -341,6 +361,8 @@ export function SlopeAuthor2() {
     setAddedGraphNodes([]);
     setAddedGraphEdges([]);
     setAnchorNodeId(null);
+    setSelectedEdgeId(null);
+    setEdgeOverrides({});
     setDeletedSlopeIds([]);
     setDeletedLiftIds([]);
     setDrawSlopePoints([]);
@@ -359,6 +381,16 @@ export function SlopeAuthor2() {
   function selectLift(id: string | null) {
     setSelectedLiftId(id);
     if (id) setSelectedSlopeId(null);
+  }
+  // Selecting an edge clears slope+lift so the right rail only ever
+  // shows one entity. Symmetric with selectSlope/selectLift; gates
+  // the edit-edge toolbar button (requiresSelection: "edge").
+  function selectEdge(id: string | null) {
+    setSelectedEdgeId(id);
+    if (id) {
+      setSelectedSlopeId(null);
+      setSelectedLiftId(null);
+    }
   }
 
   // Delete a slope. If it's an added-this-session record, drop it
@@ -1140,14 +1172,18 @@ export function SlopeAuthor2() {
     }
   }, [mode, mapReady, loadedResort, addedGraphNodes, anchorNodeId]);
 
-  // ── Graph edges overlay (connect-nodes + edit-edge only) ──────
+  // ── Graph edges overlay (select + connect-nodes + edit-edge) ──
   //
-  // Renders existing edges in dim slate so the user can see what's
-  // already connected, and this-session-added edges in emerald to
-  // surface what the current edits look like. Always straight-line
-  // 2-point polylines (matching the geometry pickConnectNode
-  // produces); when edit-edge ships, it'll render the curved
-  // versions instead.
+  // Renders existing edges in dim slate, session-added edges in
+  // emerald, and the currently-selected edge in cyan with Google
+  // Maps' built-in editable handles (drag vertex, drag midpoint to
+  // insert, right-click vertex to delete). Path mutations sync into
+  // edgeOverrides (baseline edges) or addedGraphEdges (session
+  // edges) so the patch bundle picks them up.
+  //
+  // Edges are clickable in `select` and `edit-edge` modes — the
+  // panel-list pick is the primary entry point, but click-on-line
+  // also works once the user knows the gesture exists.
   const graphEdgeLinesRef = useRef<google.maps.Polyline[]>([]);
   useEffect(() => {
     const map = googleMap.current;
@@ -1155,41 +1191,148 @@ export function SlopeAuthor2() {
     graphEdgeLinesRef.current.forEach((p) => p.setMap(null));
     graphEdgeLinesRef.current = [];
 
-    const showEdges = mode === "connect-nodes" || mode === "edit-edge";
+    const showEdges =
+      mode === "connect-nodes" || mode === "edit-edge" || mode === "select";
     if (!showEdges || !loadedResort) return;
 
-    const existing = loadedResort.graph?.edges ?? [];
-    for (const e of existing) {
-      const line = new google.maps.Polyline({
-        map,
-        path: e.geometry.map((p) => ({ lat: p.lat, lng: p.lng })),
-        strokeColor: "#64748b",
-        strokeOpacity: 0.55,
-        strokeWeight: 2,
-      });
-      graphEdgeLinesRef.current.push(line);
-    }
-    for (const e of addedGraphEdges) {
-      const line = new google.maps.Polyline({
-        map,
-        path: e.geometry.map((p) => ({ lat: p.lat, lng: p.lng })),
-        strokeColor: "#22c55e",
-        strokeOpacity: 0.95,
-        strokeWeight: 3,
-      });
-      graphEdgeLinesRef.current.push(line);
-    }
-  }, [mode, mapReady, loadedResort, addedGraphEdges]);
+    // Baseline edges with per-edge overrides applied. The override's
+    // `geometry` (when present) is the source of truth for the
+    // polyline path; anything else (from/to/kind) flows through too.
+    const baselineEdges = (loadedResort.graph?.edges ?? []).map((e) => {
+      const ov = edgeOverrides[e.id];
+      return ov ? { ...e, ...ov } : e;
+    });
 
-  // Esc cancels the pending "from" node in connect-nodes mode.
-  // Also cleared automatically when the user leaves connect-nodes
-  // (handled in the mode-change effect below).
+    const renderEdge = (e: GraphEdge, isAdded: boolean) => {
+      const isSelected = e.id === selectedEdgeId;
+      const isEditing = isSelected && mode === "edit-edge";
+      const path = e.geometry.map((p) => ({ lat: p.lat, lng: p.lng }));
+      const line = new google.maps.Polyline({
+        map,
+        path,
+        strokeColor: isEditing
+          ? EDGE_EDIT_COLOR
+          : isAdded
+            ? EDGE_ADDED_COLOR
+            : EDGE_BASELINE_COLOR,
+        strokeOpacity: isEditing ? 1 : isAdded ? 0.95 : isSelected ? 0.9 : 0.55,
+        strokeWeight: isEditing ? 4 : isSelected ? 3 : isAdded ? 3 : 2,
+        clickable: true,
+        editable: isEditing,
+        zIndex: isEditing ? 30 : isAdded ? 20 : 10,
+      });
+      line.addListener("click", () => {
+        const m = modeRef.current;
+        if (m === "select" || m === "edit-edge") {
+          selectEdge(e.id);
+        }
+      });
+      if (isEditing) {
+        // Mirror path mutations back into the right store. set_at /
+        // insert_at / remove_at cover drag, midpoint-insert, and
+        // right-click-delete. Inserted vertices interpolate alt_m
+        // from the neighbour with the smaller index (cheap, keeps the
+        // schema satisfied; user can refine via /api/elevation in a
+        // later commit if needed).
+        //
+        // Guard: when the Maps API key is restricted (e.g.
+        // RefererNotAllowedMapError on localhost), getPath() can
+        // throw or return undefined. Skip the sync wiring in that
+        // case so a broken key doesn't crash the editor tree.
+        let livePath: google.maps.MVCArray<google.maps.LatLng> | undefined;
+        try {
+          livePath = line.getPath();
+        } catch {
+          livePath = undefined;
+        }
+        if (!livePath) {
+          graphEdgeLinesRef.current.push(line);
+          return;
+        }
+        const sync = () => {
+          const arr = livePath.getArray();
+          const oldGeom = e.geometry;
+          const nextGeom: GraphEdge["geometry"] = arr.map((p, i) => {
+            const lat = p.lat();
+            const lng = p.lng();
+            // Try to preserve the original alt_m by matching positions
+            // against the baseline edge geometry — drag mutations
+            // preserve indices, only inserts/removes shift them. If
+            // the position matches an old vertex, reuse its alt_m;
+            // otherwise interpolate from neighbours.
+            const match = oldGeom.find(
+              (g) =>
+                Math.abs(g.lat - lat) < 1e-9 && Math.abs(g.lng - lng) < 1e-9,
+            );
+            if (match) return { lat, lng, alt_m: match.alt_m };
+            // Interpolate from the inserted vertex's neighbours in
+            // the NEW array — they're either old (with alt_m) or
+            // freshly inserted (rare cascade; fall back to 0).
+            const prev = i > 0 ? arr[i - 1] : null;
+            const next = i < arr.length - 1 ? arr[i + 1] : null;
+            const altOf = (g: google.maps.LatLng | null) => {
+              if (!g) return null;
+              const m = oldGeom.find(
+                (v) =>
+                  Math.abs(v.lat - g.lat()) < 1e-9 &&
+                  Math.abs(v.lng - g.lng()) < 1e-9,
+              );
+              return m?.alt_m ?? null;
+            };
+            const prevAlt = altOf(prev);
+            const nextAlt = altOf(next);
+            const alt_m =
+              prevAlt !== null && nextAlt !== null
+                ? (prevAlt + nextAlt) / 2
+                : (prevAlt ?? nextAlt ?? 0);
+            return { lat, lng, alt_m };
+          });
+          if (isAdded) {
+            setAddedGraphEdges((prev) =>
+              prev.map((x) => (x.id === e.id ? { ...x, geometry: nextGeom } : x)),
+            );
+          } else {
+            setEdgeOverrides((prev) => ({
+              ...prev,
+              [e.id]: { ...prev[e.id], geometry: nextGeom },
+            }));
+          }
+        };
+        google.maps.event.addListener(livePath, "set_at", sync);
+        google.maps.event.addListener(livePath, "insert_at", sync);
+        google.maps.event.addListener(livePath, "remove_at", sync);
+      }
+      graphEdgeLinesRef.current.push(line);
+    };
+
+    for (const e of baselineEdges) renderEdge(e, false);
+    for (const e of addedGraphEdges) renderEdge(e, true);
+  }, [
+    mode,
+    mapReady,
+    loadedResort,
+    addedGraphEdges,
+    edgeOverrides,
+    selectedEdgeId,
+  ]);
+
+  // Esc cancels the pending "from" node in connect-nodes mode, OR
+  // drops the edge selection in edit-edge mode (which also flips the
+  // toolbar back to a state where edit-edge is disabled). Cleared
+  // automatically when the user leaves connect-nodes (handled in the
+  // mode-change effect below); edit-edge selection is sticky so the
+  // user can switch between select and edit-edge without losing it.
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (modeRef.current !== "connect-nodes") return;
-      if (e.key === "Escape") {
+      const m = modeRef.current;
+      if (e.key !== "Escape") return;
+      if (m === "connect-nodes") {
         e.preventDefault();
         setAnchorNodeId(null);
+      } else if (m === "edit-edge") {
+        e.preventDefault();
+        setSelectedEdgeId(null);
+        setMode("select");
       }
     }
     window.addEventListener("keydown", onKey);
@@ -1224,10 +1367,11 @@ export function SlopeAuthor2() {
     const placeEdits = Object.keys(placeOverride).length;
     const graphNodesAdded = addedGraphNodes.length;
     const graphEdgesAdded = addedGraphEdges.length;
+    const graphEdgesEdited = Object.keys(edgeOverrides).length;
     if (
       slopeEdits + slopeAdded + slopeDeleted +
       liftEdits + liftAdded + liftDeleted +
-      placeEdits + graphNodesAdded + graphEdgesAdded === 0
+      placeEdits + graphNodesAdded + graphEdgesAdded + graphEdgesEdited === 0
     )
       return null;
 
@@ -1301,13 +1445,21 @@ export function SlopeAuthor2() {
     // Graph emission: only when an existing graph is loaded (the
     // schema requires `nodes` min 2 + `edges` min 1, so we can't
     // bootstrap a brand-new graph from added nodes alone). Merged
-    // graph = existing.nodes ++ addedGraphNodes, existing edges
-    // unchanged. snap_config pass-through preserved.
-    if ((graphNodesAdded > 0 || graphEdgesAdded > 0) && loadedResort.graph) {
+    // graph = existing.nodes ++ addedGraphNodes, edges =
+    // baseline-with-overrides ++ addedGraphEdges. snap_config
+    // pass-through preserved.
+    if (
+      (graphNodesAdded > 0 || graphEdgesAdded > 0 || graphEdgesEdited > 0) &&
+      loadedResort.graph
+    ) {
+      const editedBaselineEdges = loadedResort.graph.edges.map((e) => {
+        const ov = edgeOverrides[e.id];
+        return ov ? { ...e, ...ov } : e;
+      });
       const merged: SlopeGraphRecord = {
         ...loadedResort.graph,
         nodes: [...loadedResort.graph.nodes, ...addedGraphNodes],
-        edges: [...loadedResort.graph.edges, ...addedGraphEdges],
+        edges: [...editedBaselineEdges, ...addedGraphEdges],
       };
       files["slope-graph.json"] =
         JSON.stringify(
@@ -1334,6 +1486,8 @@ export function SlopeAuthor2() {
       parts.push(`add ${graphNodesAdded} graph node${graphNodesAdded === 1 ? "" : "s"}`);
     if (graphEdgesAdded > 0)
       parts.push(`add ${graphEdgesAdded} graph edge${graphEdgesAdded === 1 ? "" : "s"}`);
+    if (graphEdgesEdited > 0)
+      parts.push(`edit ${graphEdgesEdited} graph edge${graphEdgesEdited === 1 ? "" : "s"}`);
 
     return {
       slug: loadedResort.ref.slug,
@@ -1342,7 +1496,7 @@ export function SlopeAuthor2() {
       files,
       message: `slope-author-2: ${parts.join(" + ")}`,
     };
-  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes, addedGraphEdges]);
+  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes, addedGraphEdges, edgeOverrides]);
 
   const desc = modeDescriptor(mode);
   const descI18n = MODE_I18N[desc.mode];
@@ -1395,6 +1549,7 @@ export function SlopeAuthor2() {
           onModeChange={setMode}
           hasSlope={selectedSlopeId !== null}
           hasLift={selectedLiftId !== null}
+          hasEdge={selectedEdgeId !== null}
         />
 
         <div className="relative flex-1 min-h-0 md:h-full md:flex-1">
@@ -1492,6 +1647,37 @@ export function SlopeAuthor2() {
                 }
               />
             )}
+
+            {mode === "edit-edge" && (
+              <EditEdgeStatusPanel
+                selectedEdgeId={selectedEdgeId}
+                selectedEdge={
+                  selectedEdgeId
+                    ? [
+                        ...(loadedResort?.graph?.edges ?? []).map((e) => {
+                          const ov = edgeOverrides[e.id];
+                          return ov ? { ...e, ...ov } : e;
+                        }),
+                        ...addedGraphEdges,
+                      ].find((e) => e.id === selectedEdgeId) ?? null
+                    : null
+                }
+                onClearSelection={() => selectEdge(null)}
+              />
+            )}
+
+            {loadedResort?.graph &&
+              (mode === "edit-edge" ||
+                mode === "connect-nodes" ||
+                mode === "select") && (
+                <EdgesListPanel
+                  baselineEdges={loadedResort.graph.edges}
+                  addedEdges={addedGraphEdges}
+                  overrides={edgeOverrides}
+                  selectedId={selectedEdgeId}
+                  onSelect={(id) => selectEdge(id)}
+                />
+              )}
 
             {mode === "draw-lift" && (
               <DrawLiftStatusPanel
@@ -2357,6 +2543,182 @@ function ConnectNodesStatusPanel({
           {t("connectNodesUndoLast")}
         </button>
       </div>
+    </section>
+  );
+}
+
+function EditEdgeStatusPanel({
+  selectedEdgeId,
+  selectedEdge,
+  onClearSelection,
+}: {
+  selectedEdgeId: string | null;
+  selectedEdge: GraphEdge | null;
+  onClearSelection: () => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  const kindKey =
+    selectedEdge?.kind === "slope"
+      ? "edgesPanelKindSlope"
+      : selectedEdge?.kind === "lift"
+        ? "edgesPanelKindLift"
+        : selectedEdge?.kind === "traverse"
+          ? "edgesPanelKindTraverse"
+          : "edgesPanelKindOther";
+  return (
+    <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-[#22d3ee]">
+          {t("editEdgePanelTitle")}
+        </p>
+        {selectedEdge ? (
+          <>
+            <p className="mt-1 break-all text-[10px] text-[var(--fg-muted)]">
+              {t("editEdgeSelectedLabel")}:{" "}
+              <code>{selectedEdgeId}</code>
+            </p>
+            <p className="mt-0.5 break-all text-[10px] text-[var(--fg-muted)]">
+              {t("editEdgeFromTo", {
+                fromId: selectedEdge.from,
+                toId: selectedEdge.to,
+              })}
+            </p>
+            <p className="mt-0.5 text-[10px] text-[var(--fg-muted)]">
+              {t("editEdgeVertexCount", {
+                count: selectedEdge.geometry.length,
+                kind: t(kindKey),
+              })}
+            </p>
+            <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+              {t("editEdgeDragHint")}
+            </p>
+          </>
+        ) : (
+          <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+            {t("editEdgeNoSelection")}
+          </p>
+        )}
+      </header>
+      <div className="flex flex-wrap gap-2 text-xs">
+        <button
+          type="button"
+          onClick={onClearSelection}
+          disabled={!selectedEdge}
+          className="rounded-md border border-[var(--border)] px-3 py-1.5 text-red-300 hover:text-red-200 disabled:opacity-40"
+        >
+          {t("editEdgeStopEditing")}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function EdgesListPanel({
+  baselineEdges,
+  addedEdges,
+  overrides,
+  selectedId,
+  onSelect,
+}: {
+  baselineEdges: GraphEdge[];
+  addedEdges: GraphEdge[];
+  overrides: Record<string, EdgeOverride>;
+  selectedId: string | null;
+  onSelect: (id: string) => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  const editedCount = Object.keys(overrides).length;
+  const total = baselineEdges.length + addedEdges.length;
+  if (total === 0) {
+    return (
+      <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
+        <header className="mb-1">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+            {t("edgesPanelTitle", { count: 0 })}
+          </p>
+        </header>
+        <p className="text-[10px] text-[var(--fg-muted)]">
+          {t("edgesPanelEmpty")}
+        </p>
+      </section>
+    );
+  }
+  // Effective edge list (baseline-with-overrides ++ added) for the
+  // panel. Baseline first to match the patch-bundle emission order.
+  const effective: { e: GraphEdge; isAdded: boolean; isEdited: boolean }[] = [
+    ...baselineEdges.map((e) => ({
+      e: overrides[e.id] ? { ...e, ...overrides[e.id] } : e,
+      isAdded: false,
+      isEdited: !!overrides[e.id],
+    })),
+    ...addedEdges.map((e) => ({ e, isAdded: true, isEdited: false })),
+  ];
+  return (
+    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+          {t("edgesPanelTitle", { count: total })}
+          {editedCount > 0 ? (
+            <span className="ml-2 text-[#22d3ee]">
+              · {t("edgesPanelEditedChip", { count: editedCount })}
+            </span>
+          ) : null}
+        </p>
+        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          {t("edgesPanelHint")}
+        </p>
+      </header>
+      <ul className="space-y-1 text-[11px]">
+        {effective.map(({ e, isAdded, isEdited }) => {
+          const isSel = e.id === selectedId;
+          const kindKey =
+            e.kind === "slope"
+              ? "edgesPanelKindSlope"
+              : e.kind === "lift"
+                ? "edgesPanelKindLift"
+                : e.kind === "traverse"
+                  ? "edgesPanelKindTraverse"
+                  : "edgesPanelKindOther";
+          return (
+            <li key={e.id}>
+              <button
+                type="button"
+                onClick={() => onSelect(e.id)}
+                className={`flex w-full flex-col items-start gap-0.5 rounded-md border px-2 py-1.5 text-left transition ${
+                  isSel
+                    ? "border-[#22d3ee] bg-[#22d3ee]/10 text-[var(--fg)]"
+                    : "border-[var(--border)] bg-transparent text-[var(--fg-muted)] hover:bg-[var(--bg-elev)] hover:text-[var(--fg)]"
+                }`}
+                aria-pressed={isSel}
+              >
+                <span className="flex w-full items-center justify-between gap-2">
+                  <code className="break-all text-[10px]">{e.id}</code>
+                  <span className="flex flex-none items-center gap-1 text-[9px] uppercase tracking-widest">
+                    {isAdded && (
+                      <span className="rounded bg-emerald-500/20 px-1 py-0.5 text-emerald-300">
+                        new
+                      </span>
+                    )}
+                    {isEdited && (
+                      <span className="rounded bg-cyan-500/20 px-1 py-0.5 text-cyan-300">
+                        ✎
+                      </span>
+                    )}
+                    {isSel && (
+                      <span className="rounded bg-cyan-500/20 px-1 py-0.5 text-cyan-300">
+                        {t("edgesPanelSelected")}
+                      </span>
+                    )}
+                  </span>
+                </span>
+                <span className="break-all text-[10px] text-[var(--fg-dim)]">
+                  {e.from} → {e.to} · {e.geometry.length}v · {t(kindKey)}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }
