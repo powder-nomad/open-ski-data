@@ -2121,10 +2121,16 @@ export function SlopeAuthor2() {
   }, [currentSnapshot]);
 
   // Whenever the loaded resort changes (initial load or switch), drop
-  // the undo stack — those snapshots reference the prior resort's ids
-  // and would be nonsensical to replay against new graph state.
+  // the undo stack AND reset lastSnapshotRef. Resetting the ref is
+  // load-bearing: the reset useEffect at the top of the component
+  // wipes all 13 mutation states to fresh empty objects on slug
+  // change, and ref-equality would otherwise fire the tracker on the
+  // next render and push a phantom "pre-load" snapshot onto the
+  // freshly-cleared stack. Nulling the ref makes the next tracker
+  // tick re-initialize from the post-reset state instead.
   useEffect(() => {
     setUndoStack([]);
+    lastSnapshotRef.current = null;
   }, [loadedResort?.ref.slug]);
 
   const undo = useCallback(() => {
