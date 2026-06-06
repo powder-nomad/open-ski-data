@@ -164,6 +164,52 @@ type UndoSnapshot = {
   deletedGraphEdgeIds: string[];
 };
 
+// Autosave: serialized snapshot + wall-clock at write time. Stored per
+// resort under `osd-edit:draft:<country>/<region>/<slug>` so switching
+// resorts doesn't trample drafts.
+type StoredDraft = { snapshot: UndoSnapshot; savedAt: number };
+
+const AUTOSAVE_DEBOUNCE_MS = 750;
+
+function draftKey(ref: {
+  slug: string;
+  countryCode: string;
+  regionSlug: string;
+}): string {
+  return `osd-edit:draft:${ref.countryCode}/${ref.regionSlug}/${ref.slug}`;
+}
+
+function isSnapshotEmpty(s: UndoSnapshot): boolean {
+  return (
+    Object.keys(s.slopeOverrides).length === 0 &&
+    s.addedSlopes.length === 0 &&
+    s.deletedSlopeIds.length === 0 &&
+    Object.keys(s.liftOverrides).length === 0 &&
+    s.addedLifts.length === 0 &&
+    s.deletedLiftIds.length === 0 &&
+    Object.keys(s.placeOverride).length === 0 &&
+    Object.keys(s.nodeOverrides).length === 0 &&
+    s.addedGraphNodes.length === 0 &&
+    s.deletedGraphNodeIds.length === 0 &&
+    Object.keys(s.edgeOverrides).length === 0 &&
+    s.addedGraphEdges.length === 0 &&
+    s.deletedGraphEdgeIds.length === 0
+  );
+}
+
+function formatRelativeTime(savedAt: number, locale: string): string {
+  const diffMs = Date.now() - savedAt;
+  const diffMin = Math.max(0, Math.round(diffMs / 60000));
+  // `numeric: "auto"` gives "just now" / "방금" instead of "0 minutes ago".
+  const fmt = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
+  if (diffMin < 1) return fmt.format(0, "minute");
+  if (diffMin < 60) return fmt.format(-diffMin, "minute");
+  const diffH = Math.round(diffMin / 60);
+  if (diffH < 24) return fmt.format(-diffH, "hour");
+  const diffD = Math.round(diffH / 24);
+  return fmt.format(-diffD, "day");
+}
+
 export function SlopeAuthor2() {
   const t = useTranslations("slopeAuthor");
   const locale = useLocale();
@@ -2151,10 +2197,120 @@ export function SlopeAuthor2() {
   // next render and push a phantom "pre-load" snapshot onto the
   // freshly-cleared stack. Nulling the ref makes the next tracker
   // tick re-initialize from the post-reset state instead.
+  //
+  // Also re-arms the autosave guards so the restore-check effect can
+  // read the new resort's draft before the autosave-write effect has
+  // a chance to wipe it during the post-reset empty-snapshot tick.
+  const [hasSavedDraft, setHasSavedDraft] = useState<StoredDraft | null>(null);
+  const pendingRestoreCheckRef = useRef<boolean>(true);
   useEffect(() => {
     setUndoStack([]);
     lastSnapshotRef.current = null;
+    setHasSavedDraft(null);
+    pendingRestoreCheckRef.current = true;
   }, [loadedResort?.ref.slug]);
+
+  // Read a draft (if any) for the freshly-loaded resort and offer it
+  // up via the RestoreBanner. Empty drafts get cleaned up silently.
+  useEffect(() => {
+    if (!loadedResort) {
+      pendingRestoreCheckRef.current = false;
+      return;
+    }
+    try {
+      const key = draftKey(loadedResort.ref);
+      const raw = localStorage.getItem(key);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as StoredDraft;
+      if (
+        !parsed ||
+        typeof parsed.savedAt !== "number" ||
+        !parsed.snapshot ||
+        isSnapshotEmpty(parsed.snapshot)
+      ) {
+        try {
+          localStorage.removeItem(key);
+        } catch {}
+        return;
+      }
+      setHasSavedDraft(parsed);
+    } catch {
+      // Best-effort: corrupted JSON / disabled storage shouldn't
+      // break loading.
+    } finally {
+      pendingRestoreCheckRef.current = false;
+    }
+  }, [loadedResort?.ref.slug, loadedResort]);
+
+  // Debounced autosave-write. Guards:
+  //   - skip while the restore-check is still pending (the empty
+  //     post-reset snapshot would otherwise erase the very key we're
+  //     about to read)
+  //   - skip while a RestoreBanner is unresolved (don't trample the
+  //     draft the user hasn't accepted/discarded yet)
+  //   - empty snapshot → remove the key instead of writing it (keeps
+  //     the storage tidy and avoids re-prompting on the next visit)
+  useEffect(() => {
+    if (pendingRestoreCheckRef.current) return;
+    if (!loadedResort) return;
+    if (hasSavedDraft) return;
+    const key = draftKey(loadedResort.ref);
+    if (isSnapshotEmpty(currentSnapshot)) {
+      try {
+        localStorage.removeItem(key);
+      } catch {}
+      return;
+    }
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem(
+          key,
+          JSON.stringify({
+            snapshot: currentSnapshot,
+            savedAt: Date.now(),
+          } satisfies StoredDraft),
+        );
+      } catch {
+        // Quota / private-mode failures are non-fatal — the user
+        // still has the in-memory edits.
+      }
+    }, AUTOSAVE_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [currentSnapshot, loadedResort, hasSavedDraft]);
+
+  const restoreDraft = useCallback(() => {
+    setHasSavedDraft((current) => {
+      if (!current) return null;
+      const s = current.snapshot;
+      // Same no-recapture trick as undo() — pre-set the tracker ref
+      // so the ref-equality short-circuit fires and the restored
+      // state doesn't produce a phantom undo entry.
+      lastSnapshotRef.current = s;
+      setSlopeOverrides(s.slopeOverrides);
+      setAddedSlopes(s.addedSlopes);
+      setDeletedSlopeIds(s.deletedSlopeIds);
+      setLiftOverrides(s.liftOverrides);
+      setAddedLifts(s.addedLifts);
+      setDeletedLiftIds(s.deletedLiftIds);
+      setPlaceOverride(s.placeOverride);
+      setNodeOverrides(s.nodeOverrides);
+      setAddedGraphNodes(s.addedGraphNodes);
+      setDeletedGraphNodeIds(s.deletedGraphNodeIds);
+      setEdgeOverrides(s.edgeOverrides);
+      setAddedGraphEdges(s.addedGraphEdges);
+      setDeletedGraphEdgeIds(s.deletedGraphEdgeIds);
+      return null;
+    });
+  }, []);
+
+  const discardDraft = useCallback(() => {
+    if (loadedResort) {
+      try {
+        localStorage.removeItem(draftKey(loadedResort.ref));
+      } catch {}
+    }
+    setHasSavedDraft(null);
+  }, [loadedResort]);
 
   const undo = useCallback(() => {
     setUndoStack((stack) => {
@@ -2289,6 +2445,14 @@ export function SlopeAuthor2() {
             <WelcomeIntro open={welcomeOpen} onDismiss={dismissWelcome} />
 
             <ResortLoader onLoad={setLoadedResort} />
+
+            {hasSavedDraft && (
+              <RestoreBanner
+                draft={hasSavedDraft}
+                onRestore={restoreDraft}
+                onDiscard={discardDraft}
+              />
+            )}
 
             <UndoBar depth={undoStack.length} onUndo={undo} />
 
@@ -2658,7 +2822,9 @@ export function SlopeAuthor2() {
 
             {patchBundle && <PatchPreviewPanel bundle={patchBundle} />}
 
-            {patchBundle && <PatchSaver bundle={patchBundle} />}
+            {patchBundle && (
+              <PatchSaver bundle={patchBundle} onReset={discardDraft} />
+            )}
           </div>
         </aside>
       </div>
@@ -3921,6 +4087,53 @@ function WelcomeIntro({
           <span>{t("welcomeStep3")}</span>
         </li>
       </ol>
+    </section>
+  );
+}
+
+function RestoreBanner({
+  draft,
+  onRestore,
+  onDiscard,
+}: {
+  draft: StoredDraft;
+  onRestore: () => void;
+  onDiscard: () => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  const locale = useLocale();
+  const when = formatRelativeTime(draft.savedAt, locale);
+  return (
+    <section
+      data-testid="restore-banner"
+      className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-3"
+    >
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-300">
+          {t("restoreDraftTitle")}
+        </p>
+        <p className="mt-1 text-[11px] text-[var(--fg-muted)]">
+          {t("restoreDraftBody", { when })}
+        </p>
+      </header>
+      <div className="flex gap-2">
+        <button
+          type="button"
+          data-testid="restore-draft-button"
+          onClick={onRestore}
+          className="flex-1 rounded-md border border-amber-500/40 bg-amber-500/15 px-2 py-1.5 text-[11px] font-semibold text-amber-100 transition hover:bg-amber-500/25"
+        >
+          {t("restoreDraftButton")}
+        </button>
+        <button
+          type="button"
+          data-testid="discard-draft-button"
+          onClick={onDiscard}
+          className="flex-1 rounded-md border border-[var(--border)] bg-transparent px-2 py-1.5 text-[11px] font-semibold text-[var(--fg-muted)] transition hover:text-[var(--fg)]"
+        >
+          {t("discardDraftButton")}
+        </button>
+      </div>
     </section>
   );
 }
