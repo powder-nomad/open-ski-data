@@ -2,6 +2,20 @@
 
 This repository is meant for pull-request-based community updates to ski reference data.
 
+## Easy mode: the web editor
+
+Most edits don't need a clone. Open
+**<https://osd-edit.pages.dev>**, pick the resort, edit on the map,
+click save. The editor signs you in with GitHub, forks the repo to
+your account, and opens a pull request back here — all without the
+command line. See [docs/EDITOR-GUIDE.md](./docs/EDITOR-GUIDE.md)
+for a feature-by-feature tour.
+
+The rest of this document covers the **manual PR path** — useful
+when you're adding a new country, doing bulk imports, or editing
+the schemas. The same contribution rules below apply to both
+paths.
+
 ## Contribution Rules
 
 - prefer official resort, operator, or tourism-board sources when available

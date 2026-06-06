@@ -4,6 +4,23 @@ Canonical ski place reference data for apps, APIs, and public websites.
 
 This repository is intended to become a contributor-maintained public data source for ski areas around the world. It stores mostly static or slow-changing facts such as place identity, geography, terrain metadata, lift metadata, webcams, and ski-domain groupings.
 
+## Quick links
+
+| You want to… | Go here |
+|---|---|
+| **Fix a resort right now** (no clone, no PR) | **<https://osd-edit.pages.dev>** — sign in with GitHub, click. |
+| Understand the whole project | [docs/REPO-OVERVIEW.md](./docs/REPO-OVERVIEW.md) |
+| Use the data in an app | [Raw Usage](#raw-usage) below + [docs/SCHEMAS.md](./docs/SCHEMAS.md) |
+| Contribute via pull request | [CONTRIBUTING.md](./CONTRIBUTING.md) |
+| Tour the web editor | [docs/EDITOR-GUIDE.md](./docs/EDITOR-GUIDE.md) |
+| Hack on the editor itself | [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) + `git checkout pages` |
+| Rename a slug | [docs/SLUG-LIFECYCLE.md](./docs/SLUG-LIFECYCLE.md) |
+
+> **Two branches:** `main` (this branch) holds data + schemas; `pages`
+> holds the web editor. They are **orphan** branches with no shared
+> history — don't try to merge them. See
+> [docs/REPO-OVERVIEW.md](./docs/REPO-OVERVIEW.md) for the layout.
+
 ## License & Attribution
 
 Dual-license:
@@ -124,13 +141,18 @@ Planned future categories:
 
 ## Validation
 
-Run the repository validator locally:
+Run the repository validators locally:
 
 ```bash
-node scripts/check-reference-data.mjs
+npm run check:reference-data   # JSON sanity + schema validation + index integrity
+npm run check:stable-ids       # slope/lift id stability across renames
+npm run check:aliases          # aliases ledger well-formedness
+npm run check:provenance       # provenance coverage (warn mode)
 ```
 
-The validator checks JSON sanity, hierarchical path consistency, index integrity, and ski-domain membership references.
+The same scripts run in CI on every push and PR to `main`. See
+[docs/ARCHITECTURE.md#ci](./docs/ARCHITECTURE.md#ci) for what CI
+does on each branch.
 
 ## Raw Usage
 
@@ -196,3 +218,14 @@ identifying where the data originated:
 
 See [NOTICE](./NOTICE) for the full attribution policy and
 `schemas/place.schema.json` for the `provenance` field shape.
+
+## Documentation
+
+The full doc set lives under [`docs/`](./docs/):
+
+- [REPO-OVERVIEW.md](./docs/REPO-OVERVIEW.md) — branches, directory map, contribution lifecycle, external dependencies
+- [EDITOR-GUIDE.md](./docs/EDITOR-GUIDE.md) — contributor-facing tour of the web editor at <https://osd-edit.pages.dev>
+- [SCHEMAS.md](./docs/SCHEMAS.md) — entity-by-entity field reference for everything in `registry/`
+- [ARCHITECTURE.md](./docs/ARCHITECTURE.md) — engineer-facing stack overview, save flow, OAuth handshake, CI, deploy
+- [SLUG-LIFECYCLE.md](./docs/SLUG-LIFECYCLE.md) — slug rename rules + the aliases ledger
+- [CONTRIBUTING.md](./CONTRIBUTING.md) — contribution rules, provenance conventions, path rules
