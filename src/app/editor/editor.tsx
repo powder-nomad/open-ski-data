@@ -185,6 +185,29 @@ export function SlopeAuthor2() {
     "half",
   );
 
+  // Cold-visit onboarding: shown on first visit; dismiss writes a
+  // localStorage flag so repeat visits skip it. The "?" button in the
+  // header force-reopens (sets welcomeOpen = true) for users who
+  // dismissed and want to re-read the explainer.
+  const [welcomeOpen, setWelcomeOpen] = useState<boolean>(true);
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("osd-edit:welcome-seen") === "1") {
+        setWelcomeOpen(false);
+      }
+    } catch {
+      // localStorage may be disabled (private mode, cookies blocked) —
+      // safe to keep showing the intro every time in that case.
+    }
+  }, []);
+  const dismissWelcome = useCallback(() => {
+    setWelcomeOpen(false);
+    try {
+      localStorage.setItem("osd-edit:welcome-seen", "1");
+    } catch {}
+  }, []);
+  const reopenWelcome = useCallback(() => setWelcomeOpen(true), []);
+
   const [mode, setMode] = useState<EditorMode>("select");
   const modeRef = useRef<EditorMode>(mode);
   useEffect(() => {
@@ -2190,6 +2213,16 @@ export function SlopeAuthor2() {
             <h1 className="text-sm font-bold md:text-base">{t("title")}</h1>
           </div>
           <div className="flex items-center gap-2 text-xs md:gap-3">
+            <button
+              type="button"
+              data-testid="welcome-help"
+              onClick={reopenWelcome}
+              aria-label={t("welcomeHelpLabel")}
+              title={t("welcomeHelpLabel")}
+              className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-[var(--bg-elev)] text-[11px] font-bold text-[var(--fg-muted)] transition hover:text-[var(--fg)]"
+            >
+              ?
+            </button>
             <span className="rounded-full bg-[var(--bg-elev)] px-3 py-1 font-semibold text-[var(--fg-muted)]">
               {t("mode")}: <span className="text-[var(--fg)]">{descLabel}</span>
             </span>
@@ -2253,6 +2286,8 @@ export function SlopeAuthor2() {
           </button>
 
           <div className="no-scrollbar p-3 space-y-4 overflow-y-auto md:h-full md:overflow-y-auto">
+            <WelcomeIntro open={welcomeOpen} onDismiss={dismissWelcome} />
+
             <ResortLoader onLoad={setLoadedResort} />
 
             <UndoBar depth={undoStack.length} onUndo={undo} />
@@ -3835,6 +3870,57 @@ function LintPanel({
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+function WelcomeIntro({
+  open,
+  onDismiss,
+}: {
+  open: boolean;
+  onDismiss: () => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  if (!open) return null;
+  return (
+    <section
+      data-testid="welcome-intro"
+      className="rounded-lg border border-sky-500/40 bg-sky-500/5 p-3"
+    >
+      <header className="mb-2 flex items-center justify-between gap-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-sky-300">
+          {t("welcomeTitle")}
+        </p>
+        <button
+          type="button"
+          data-testid="welcome-dismiss"
+          onClick={onDismiss}
+          className="rounded-md border border-sky-500/40 bg-sky-500/10 px-2 py-1 text-[11px] font-semibold text-sky-100 transition hover:bg-sky-500/20"
+        >
+          {t("welcomeDismiss")}
+        </button>
+      </header>
+      <ol className="space-y-2 text-[11px] text-[var(--fg-muted)]">
+        <li className="flex gap-2">
+          <span className="flex-none rounded-full bg-sky-500/20 px-1.5 text-[10px] font-semibold text-sky-200">
+            1
+          </span>
+          <span>{t("welcomeStep1")}</span>
+        </li>
+        <li className="flex gap-2">
+          <span className="flex-none rounded-full bg-sky-500/20 px-1.5 text-[10px] font-semibold text-sky-200">
+            2
+          </span>
+          <span>{t("welcomeStep2")}</span>
+        </li>
+        <li className="flex gap-2">
+          <span className="flex-none rounded-full bg-sky-500/20 px-1.5 text-[10px] font-semibold text-sky-200">
+            3
+          </span>
+          <span>{t("welcomeStep3")}</span>
+        </li>
+      </ol>
     </section>
   );
 }
