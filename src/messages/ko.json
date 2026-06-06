@@ -119,6 +119,8 @@
     "restoreDraftBody": "이 브라우저에 편집 내용이 남아 있습니다 — {when} 저장됨.",
     "restoreDraftButton": "복구",
     "discardDraftButton": "버리기",
+    "conflictsTitle": "이 리조트에 열린 PR ({count})",
+    "conflictsHint": "다른 기여자의 편집을 덮어쓰지 않도록 저장하기 전에 조율하세요.",
     "comingSoon": "준비 중",
     "selectFirstSlope": "먼저 슬로프를 선택하세요",
     "selectFirstLift": "먼저 리프트를 선택하세요",

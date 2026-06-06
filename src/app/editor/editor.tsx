@@ -18,7 +18,11 @@ import {
 } from "@/lib/resort-loader";
 import { PatchSaver, type PatchBundle } from "@/lib/ci-status";
 import { useSession } from "@/lib/use-session";
-import { contribute } from "@/lib/github-client";
+import {
+  contribute,
+  UPSTREAM_OWNER,
+  UPSTREAM_REPO,
+} from "@/lib/github-client";
 import {
   distanceM,
   fromOsmCoord,
@@ -195,6 +199,53 @@ function isSnapshotEmpty(s: UndoSnapshot): boolean {
     s.addedGraphEdges.length === 0 &&
     s.deletedGraphEdgeIds.length === 0
   );
+}
+
+// Conflict awareness: a pull request on upstream is "touching" this
+// resort if its title contains the country/region/slug path the editor
+// stamps into every commit message + PR title. That keeps the check
+// to a single PR-list API call instead of an N+1 over per-PR file
+// diffs. Match-by-title is good enough because the editor authors
+// every relevant PR with `Edit <cc>/<region>/<slug>` or
+// `Add <cc>/<region>/<slug>` shapes.
+type ConflictInfo = {
+  number: number;
+  title: string;
+  url: string;
+  user: string;
+};
+
+async function fetchOpenPrsTouching(
+  ref: { slug: string; countryCode: string; regionSlug: string },
+  signal: AbortSignal,
+): Promise<ConflictInfo[]> {
+  // Unauthenticated GitHub REST: 60 req/hr per IP. For prod-scale
+  // mass-collab traffic this should be fronted by a Cloudflare Pages
+  // function that proxies with a server-side token (or short-TTL KV
+  // cache). Tracked as a follow-up; rate-limit failures here are
+  // silent because the badge is purely informational.
+  const url = `https://api.github.com/repos/${UPSTREAM_OWNER}/${UPSTREAM_REPO}/pulls?state=open&per_page=100`;
+  const res = await fetch(url, {
+    headers: { Accept: "application/vnd.github+json" },
+    signal,
+  });
+  if (!res.ok) return [];
+  const prs = (await res.json()) as Array<{
+    number: number;
+    title: string;
+    html_url: string;
+    user: { login: string } | null;
+  }>;
+  if (!Array.isArray(prs)) return [];
+  const slugPath = `${ref.countryCode}/${ref.regionSlug}/${ref.slug}`;
+  return prs
+    .filter((pr) => typeof pr.title === "string" && pr.title.includes(slugPath))
+    .map((pr) => ({
+      number: pr.number,
+      title: pr.title,
+      url: pr.html_url,
+      user: pr.user?.login ?? "unknown",
+    }));
 }
 
 function formatRelativeTime(savedAt: number, locale: string): string {
@@ -2316,6 +2367,29 @@ export function SlopeAuthor2() {
     setHasSavedDraft(null);
   }, [loadedResort]);
 
+  // Conflict-awareness: query upstream open PRs whose title matches
+  // the current resort. Fires once per resort load; debounced via the
+  // AbortController so rapid resort-switching cancels in-flight calls.
+  const [conflicts, setConflicts] = useState<ConflictInfo[]>([]);
+  useEffect(() => {
+    if (!loadedResort) {
+      setConflicts([]);
+      return;
+    }
+    const controller = new AbortController();
+    fetchOpenPrsTouching(loadedResort.ref, controller.signal)
+      .then((found) => {
+        if (controller.signal.aborted) return;
+        setConflicts(found);
+      })
+      .catch(() => {
+        // AbortError on resort switch + network/rate-limit failures
+        // are non-fatal — the badge is purely informational.
+        if (!controller.signal.aborted) setConflicts([]);
+      });
+    return () => controller.abort();
+  }, [loadedResort?.ref.slug, loadedResort?.ref.countryCode, loadedResort?.ref.regionSlug]);
+
   const undo = useCallback(() => {
     setUndoStack((stack) => {
       if (stack.length === 0) return stack;
@@ -2449,6 +2523,8 @@ export function SlopeAuthor2() {
             <WelcomeIntro open={welcomeOpen} onDismiss={dismissWelcome} />
 
             <ResortLoader onLoad={setLoadedResort} />
+
+            <ConflictBadge conflicts={conflicts} />
 
             {hasSavedDraft && (
               <RestoreBanner
@@ -4091,6 +4167,48 @@ function WelcomeIntro({
           <span>{t("welcomeStep3")}</span>
         </li>
       </ol>
+    </section>
+  );
+}
+
+function ConflictBadge({ conflicts }: { conflicts: ConflictInfo[] }) {
+  const t = useTranslations("slopeAuthor");
+  if (conflicts.length === 0) return null;
+  return (
+    <section
+      data-testid="conflict-badge"
+      className="rounded-lg border border-orange-500/40 bg-orange-500/5 p-3"
+    >
+      <header className="mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-orange-300">
+          {t("conflictsTitle", { count: conflicts.length })}
+        </p>
+        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          {t("conflictsHint")}
+        </p>
+      </header>
+      <ul
+        data-testid="conflict-list"
+        className="space-y-1 text-[11px]"
+      >
+        {conflicts.map((c) => (
+          <li
+            key={c.number}
+            className="rounded-md border border-[var(--border)] bg-transparent px-2 py-1 text-[10px]"
+          >
+            <a
+              href={c.url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-[var(--accent-soft)] underline"
+            >
+              #{c.number}
+            </a>{" "}
+            <span className="text-[var(--fg)]">{c.title}</span>
+            <span className="ml-1 text-[var(--fg-dim)]">— {c.user}</span>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

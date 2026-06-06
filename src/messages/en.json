@@ -119,6 +119,8 @@
     "restoreDraftBody": "We kept your work in this browser — saved {when}.",
     "restoreDraftButton": "Restore",
     "discardDraftButton": "Discard",
+    "conflictsTitle": "Open PRs touching this resort ({count})",
+    "conflictsHint": "Coordinate with these contributors before you save to avoid clobbering their edits.",
     "comingSoon": "Coming soon",
     "selectFirstSlope": "Select a slope first",
     "selectFirstLift": "Select a lift first",
