@@ -198,11 +198,15 @@ function isSnapshotEmpty(s: UndoSnapshot): boolean {
 }
 
 function formatRelativeTime(savedAt: number, locale: string): string {
-  const diffMs = Date.now() - savedAt;
-  const diffMin = Math.max(0, Math.round(diffMs / 60000));
-  // `numeric: "auto"` gives "just now" / "방금" instead of "0 minutes ago".
+  const diffMs = Math.max(0, Date.now() - savedAt);
   const fmt = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
-  if (diffMin < 1) return fmt.format(0, "minute");
+  // Sub-minute renders as seconds — EN "5 seconds ago" reads better
+  // than "this minute" for fresh writes, and KO gets "5초 전".
+  if (diffMs < 60_000) {
+    const diffSec = Math.max(1, Math.round(diffMs / 1000));
+    return fmt.format(-diffSec, "second");
+  }
+  const diffMin = Math.round(diffMs / 60_000);
   if (diffMin < 60) return fmt.format(-diffMin, "minute");
   const diffH = Math.round(diffMin / 60);
   if (diffH < 24) return fmt.format(-diffH, "hour");
