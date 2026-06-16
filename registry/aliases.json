@@ -1,4 +1,5 @@
 {
-  "$comment": "Slug rename ledger. Append-only — record every rename that has been published widely enough that downstream consumers may have adopted it. Skip the ledger for force-renames that happen before any downstream picks the slug up (typos caught quickly). See ../docs/SLUG-LIFECYCLE.md for the full flow.",
-  "renames": []
+  "$comment": "Slug rename ledger. Append-only — record every rename that has been published widely enough that downstream consumers may have adopted it. Skip the ledger for force-renames that happen before any downstream picks the slug up (typos caught quickly). Two independent monotonic cursors: `renames[*].seq` for place_slug renames, `items[*].seq` for lift/slope/webcam id renames; consumers track only the seq spaces they care about. See ../docs/SLUG-LIFECYCLE.md for the full flow.",
+  "renames": [],
+  "items": []
 }

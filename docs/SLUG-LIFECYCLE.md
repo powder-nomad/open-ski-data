@@ -6,20 +6,32 @@ Downstream consumers — Ridgecast (stores `places.slug`), SkiWatch
 (URL routes `/resorts/:slug`), Snowple, anyone else hitting the
 CDN — key off these.
 
-Once a slug ships in a release, you generally can't change it
-without breaking those consumers. This doc spells out the two
-sanctioned ways to change one anyway.
+The same lifecycle rules apply to **per-place item identifiers** —
+`slope.id`, `lift.id`, `webcam.label`. Snowple addresses a lift
+status as the composite key `<place_slug>.<lift.id>` (eg.
+`high1.gondola-express`); changing either component breaks the
+join.
+
+Once any of these identifiers ships in a release, you generally
+can't change it without breaking consumers. This doc spells out the
+two sanctioned ways to change one anyway.
 
 ## TL;DR
 
 | Situation | Use |
 |---|---|
-| You typed a slug, opened a PR, nobody else has touched it yet | **Force-rename** — edit the dir + `place_slug`, push. Done. |
-| The slug shipped in `main` and consumers may have already cached it | **Aliased rename** — append to `registry/aliases.json`, then change `place_slug`. |
+| You typed a slug/id, opened a PR, nobody else has touched it yet | **Force-rename** — edit the dir/JSON, push. Done. |
+| A `place_slug` shipped in `main` and consumers may have cached it | **Aliased place rename** — append to `aliases.json#/renames`, then change `place_slug`. |
+| A `slope.id` / `lift.id` / `webcam.label` shipped in `main` and consumers may have cached it | **Aliased item rename** — append to `aliases.json#/items`, then change the id in the sidecar. |
 
 The aliases.json validator (`scripts/check-aliases.mjs`) doesn't
 care which path you take — it only checks that whatever you put in
 the ledger is well-formed. Force-renames simply skip the ledger.
+
+The stable-id guard (`scripts/check-stable-ids.mjs`) consults
+`aliases.json` to reconcile expected renames against the base ref
+diff — append the ledger entry in the same PR as the rename and the
+guard treats it as acknowledged rather than drift.
 
 ## Decision rule
 
@@ -55,17 +67,22 @@ canonical slug. Any rows / cached entries under the old slug
 become orphans — operator-side cleanup if they made it that far,
 which by definition they didn't here.
 
-## Path 2 — Aliased rename (with ledger)
+## Path 2 — Aliased place rename (with ledger)
 
-Use when the slug has been published widely.
+Use when the `place_slug` has been published widely.
 
-1. **Append the rename entry first** to `registry/aliases.json`:
+1. **Append the rename entry first** to `registry/aliases.json`,
+   under the `renames` array. The `seq` field is a strictly
+   increasing positive integer starting at 1 — pick the next value
+   after the last entry. The two arrays in this file have
+   independent seq spaces.
 
    ```jsonc
    {
      "renames": [
-       { "from": "old-slug", "to": "new-slug", "at": "2026-05-17" }
-     ]
+       { "seq": 1, "from": "old-slug", "to": "new-slug", "at": "2026-05-17" }
+     ],
+     "items": []
    }
    ```
 
@@ -78,16 +95,18 @@ Use when the slug has been published widely.
    ```
 
 3. **Commit both changes in the same PR** so consumers see the
-   intent and the data together.
+   intent and the data together. `check-stable-ids.mjs` rewrites
+   every `slope:/lift:/webcam:` id under the old slug to the new
+   one before diffing, so no `allow-id-change` label is needed.
 
 4. The aliases validator confirms structural validity in CI.
 
 ### What downstream consumers do
 
 - **Ridgecast** runs `refresh_registry_aliases()` daily. For each
-  ledger entry where `from` still exists in `places.slug`, it runs
-  `UPDATE places SET slug = to WHERE slug = from`. Idempotent —
-  safe to repeat.
+  `renames` entry where `from` still exists in `places.slug`, it
+  runs `UPDATE places SET slug = to WHERE slug = from`. Idempotent
+  — safe to repeat.
 - **SkiWatch** can build the aliases into its 404 handler: on
   `/resorts/<unknown>`, look up the slug in aliases, 301 to the
   canonical URL. Or it can preemptively rewrite its registry at
@@ -96,18 +115,85 @@ Use when the slug has been published widely.
   in-memory map, redirect any incoming reference to the canonical
   slug.
 
+### Incremental cursors
+
+Both `renames` and `items` entries carry a `seq` integer that is
+strictly monotonic within its array. Consumers that have already
+ingested up to seq `N` can stream only entries with `seq > N` on
+their next sync — no need to re-read or re-process the whole
+ledger. The two arrays have independent cursor spaces, so a
+consumer that only cares about place renames can ignore the
+`items` cursor entirely.
+
+## Path 3 — Aliased item rename (with ledger)
+
+Use when a `slope.id` / `lift.id` / `webcam.label` has been
+published widely and renaming it directly would orphan downstream
+rows.
+
+1. **Append the rename entry first** to `aliases.json#/items`.
+   Each entry binds the rename to a specific `place_slug` so the
+   same `from` id can be reused across resorts without ambiguity
+   (eg. two resorts both having a `bunny` slope is fine — the
+   composite `<place_slug>.<id>` key already disambiguates them).
+
+   ```jsonc
+   {
+     "renames": [],
+     "items": [
+       {
+         "seq": 1,
+         "kind": "lift",
+         "place_slug": "high1",
+         "from": "g1",
+         "to": "gondola-express",
+         "at": "2026-06-16"
+       }
+     ]
+   }
+   ```
+
+   - `kind` is one of `"lift"`, `"slope"`, `"webcam"`.
+   - `place_slug` is the **current** slug — if the place is also
+     being renamed in the same PR, use the post-rename slug here
+     and add the `renames` entry alongside it.
+   - For `webcam`, `from`/`to` are `label` values (webcams have no
+     id field).
+
+2. **Then update the id in the sidecar** (`slopes.json` /
+   `lifts.json` / `webcams.json`) and any `connected_lift_ids` /
+   `connected_slope_ids` references that pointed at the old id.
+
+3. **Commit both changes in the same PR.** `check-stable-ids.mjs`
+   sees the ledger entry, rewrites the base side from old → new,
+   and reports the rename as acknowledged.
+
+4. The aliases validator confirms structural validity in CI.
+
+### Item-id uniqueness within a file
+
+`check-reference-data.mjs` rejects duplicate `id` values within a
+single `slopes.json` / `lifts.json` and duplicate `label` values
+within a single `webcams.json`. The composite-slug rules already
+handle cross-resort collisions (eg. two resorts both having a
+`bunny` slope is fine — they live under different `place_slug`s),
+so the validator only checks in-file uniqueness.
+
 ## Append-only rule
 
 Never edit or remove an existing aliases entry. The ledger is the
 authoritative history downstream consumers depend on. If a rename
 turned out to be wrong, append a *new* entry reversing it
 (`from: new-slug, to: original`); the validator forbids the same
-`from` appearing twice, so this scheme also forbids "renaming a
-renamed slug" — you'd have to rename via the latest canonical.
+`from` appearing twice in `renames`, and forbids the same
+`(place_slug, kind, from)` tuple appearing twice in `items`. So
+this scheme also forbids "renaming a renamed identifier" — you'd
+have to chain the next rename via the latest canonical.
 
 ## What about non-slug field changes?
 
-Out of scope for this doc. `place_slug` and the directory name are
+Out of scope for this doc. `place_slug`, the directory name, and
+the item identifiers (`slope.id`, `lift.id`, `webcam.label`) are
 the only fields treated as identifiers; rename anything else freely.
 
 ## Atomicity across services

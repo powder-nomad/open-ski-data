@@ -2,16 +2,26 @@
 //
 // Rules:
 //   - File parses as JSON.
-//   - `renames` is an array.
-//   - Each entry has `from` (kebab-case slug), `to` (kebab-case slug),
-//     `at` (ISO date YYYY-MM-DD).
-//   - `from` != `to`.
-//   - No duplicate `from` values (a slug can only be renamed once;
-//     follow-up renames should chain through the new slug).
-//   - Each `to` resolves to a real place_slug under registry/<...>/<to>/.
-//     Otherwise the alias points nowhere and consumers will produce
-//     orphans. Emits a warning, not an error, in case a `to` was
-//     planned but the place file hasn't been added yet.
+//   - `renames` is an array (place_slug renames).
+//   - `items` is an array (lift / slope / webcam id renames within a place).
+//   - Each `renames` entry has `seq` (positive integer), `from` (kebab-case
+//     slug), `to` (kebab-case slug), `at` (ISO date YYYY-MM-DD).
+//   - Each `items` entry has `seq` (positive integer), `kind`
+//     ("lift" | "slope" | "webcam"), `place_slug` (kebab-case slug),
+//     `from` (id/label), `to` (id/label), `at` (ISO date YYYY-MM-DD).
+//   - `from` != `to` in both arrays.
+//   - `seq` is strictly increasing and starts at 1 within each array
+//     (each array has its own independent cursor space; consumers
+//     subscribe to only the seq spaces they care about).
+//   - No duplicate `from` values in `renames` (a slug can only be
+//     renamed once; chain follow-up renames through the new slug).
+//   - No duplicate (`place_slug`, `kind`, `from`) tuples in `items`
+//     (same rationale: chain follow-ups through the new id).
+//   - Each `renames.to` resolves to a real place_slug under
+//     registry/<...>/<to>/. Otherwise the alias points nowhere and
+//     consumers will produce orphans. Emits a warning, not an error,
+//     in case a `to` was planned but the place file hasn't been
+//     added yet.
 
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -40,6 +50,7 @@ async function exists(filePath) {
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]*$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const VALID_ITEM_KINDS = new Set(["lift", "slope", "webcam"]);
 
 function expectString(value, ctx) {
   if (typeof value !== "string" || value.length === 0) {
@@ -70,6 +81,27 @@ function expectDate(value, ctx) {
     return false;
   }
   return true;
+}
+
+function expectPositiveInt(value, ctx) {
+  if (!Number.isInteger(value) || value < 1) {
+    errors.push(`${ctx}: must be a positive integer (got ${JSON.stringify(value)})`);
+    return false;
+  }
+  return true;
+}
+
+function expectKind(value, ctx) {
+  if (!expectString(value, ctx)) return false;
+  if (!VALID_ITEM_KINDS.has(value)) {
+    errors.push(`${ctx}: "${value}" is not a valid kind (${[...VALID_ITEM_KINDS].join("|")})`);
+    return false;
+  }
+  return true;
+}
+
+function expectNonEmptyString(value, ctx) {
+  return expectString(value, ctx);
 }
 
 // Build a slug → place.json path index from registry/, so we can verify
@@ -126,8 +158,17 @@ async function main() {
     return finalize();
   }
 
+  // `items` is optional for the empty case but required to be an array
+  // if present. Treat a missing field as `[]` so older files don't error.
+  const items = doc.items === undefined ? [] : doc.items;
+  if (!Array.isArray(items)) {
+    errors.push(`${rel(aliasesPath)}: \`items\` must be an array`);
+    return finalize();
+  }
+
   const seenFrom = new Map();
   const slugIndex = await buildSlugIndex();
+  let renamesSeqCursor = 0;
 
   for (const [i, entry] of renames.entries()) {
     const ctx = `${rel(aliasesPath)}#/renames/${i}`;
@@ -135,9 +176,21 @@ async function main() {
       errors.push(`${ctx}: each entry must be an object`);
       continue;
     }
+    const okSeq = expectPositiveInt(entry.seq, `${ctx}/seq`);
     const okFrom = expectSlug(entry.from, `${ctx}/from`);
     const okTo = expectSlug(entry.to, `${ctx}/to`);
     expectDate(entry.at, `${ctx}/at`);
+
+    if (okSeq) {
+      const expected = renamesSeqCursor + 1;
+      if (entry.seq !== expected) {
+        errors.push(
+          `${ctx}/seq: expected ${expected} (strictly increasing from 1, no gaps) ` +
+          `but got ${entry.seq}`,
+        );
+      }
+      renamesSeqCursor = entry.seq;
+    }
 
     if (okFrom && okTo && entry.from === entry.to) {
       errors.push(`${ctx}: \`from\` and \`to\` must differ`);
@@ -162,7 +215,62 @@ async function main() {
     }
   }
 
-  finalize(renames.length);
+  // Items: lift / slope / webcam id renames within a single place.
+  // Independent seq cursor. Dedupe key is (place_slug, kind, from) so
+  // chaining `id-a → id-b → id-c` is allowed (two entries with
+  // different `from`s), but renaming `id-a` twice is not.
+  const seenItem = new Map();
+  let itemsSeqCursor = 0;
+
+  for (const [i, entry] of items.entries()) {
+    const ctx = `${rel(aliasesPath)}#/items/${i}`;
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+      errors.push(`${ctx}: each entry must be an object`);
+      continue;
+    }
+    const okSeq = expectPositiveInt(entry.seq, `${ctx}/seq`);
+    const okKind = expectKind(entry.kind, `${ctx}/kind`);
+    const okPlace = expectSlug(entry.place_slug, `${ctx}/place_slug`);
+    const okFrom = expectNonEmptyString(entry.from, `${ctx}/from`);
+    const okTo = expectNonEmptyString(entry.to, `${ctx}/to`);
+    expectDate(entry.at, `${ctx}/at`);
+
+    if (okSeq) {
+      const expected = itemsSeqCursor + 1;
+      if (entry.seq !== expected) {
+        errors.push(
+          `${ctx}/seq: expected ${expected} (strictly increasing from 1, no gaps) ` +
+          `but got ${entry.seq}`,
+        );
+      }
+      itemsSeqCursor = entry.seq;
+    }
+
+    if (okFrom && okTo && entry.from === entry.to) {
+      errors.push(`${ctx}: \`from\` and \`to\` must differ`);
+    }
+
+    if (okKind && okPlace && okFrom) {
+      const key = `${entry.kind}:${entry.place_slug}/${entry.from}`;
+      if (seenItem.has(key)) {
+        errors.push(
+          `${ctx}: ${key} already renamed at index ${seenItem.get(key)} ` +
+          `— an item id can only be renamed once. Chain follow-up renames through the new id.`,
+        );
+      } else {
+        seenItem.set(key, i);
+      }
+    }
+
+    if (okPlace && !slugIndex.has(entry.place_slug)) {
+      warnings.push(
+        `${ctx}/place_slug: "${entry.place_slug}" doesn't match any place under registry/. ` +
+        `If the place was also renamed, add the \`renames\` entry first and use the new slug here.`,
+      );
+    }
+  }
+
+  finalize(renames.length + items.length);
 }
 
 function finalize(count) {
@@ -170,7 +278,7 @@ function finalize(count) {
     for (const w of warnings) console.warn(`warn: ${w}`);
   }
   if (errors.length === 0) {
-    console.log(`aliases.json ok (${count ?? 0} entries valid)`);
+    console.log(`aliases.json ok (${count ?? 0} entries valid across renames+items)`);
     process.exit(0);
   }
   for (const e of errors) console.error(`error: ${e}`);

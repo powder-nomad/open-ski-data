@@ -275,6 +275,14 @@ async function validateSkiDomains(placeMap) {
 }
 
 async function validateStructuredAssets(placeMap) {
+  // For each sidecar file, the entry array carries an identifier that
+  // is the stable handle Altera syncs by (`id` for slopes/lifts,
+  // `label` for webcams — webcams have no id in the schema). Within
+  // one file these must be unique; a duplicate would silently mask one
+  // entry during sync. Cross-resort collisions are fine: the composite
+  // `<place_slug>.<id>` namespace already disambiguates them.
+  const ID_KEY_BY_SUFFIX = { slopes: "id", lifts: "id", webcams: "label" };
+  const ARRAY_KEY_BY_SUFFIX = { slopes: "slopes", lifts: "lifts", webcams: "webcams" };
   for (const place of placeMap.values()) {
     const baseDir = path.join(registryRoot, place.country_code, place.region_slug, place.place_slug);
     for (const suffix of ["slopes", "webcams", "lifts"]) {
@@ -298,6 +306,29 @@ async function validateStructuredAssets(placeMap) {
         data.place_slug === place.place_slug,
         `${rel(filePath)}: place_slug does not match file name`,
       );
+
+      // slopes/lifts schemas accept `id` as string or integer; webcams
+      // use a string `label`. Normalize to string for dedupe so the
+      // set lookup is unambiguous, but only treat empty-string and
+      // null/undefined as "missing".
+      const idKey = ID_KEY_BY_SUFFIX[suffix];
+      const entries = data[ARRAY_KEY_BY_SUFFIX[suffix]];
+      if (Array.isArray(entries)) {
+        const seenIds = new Set();
+        for (const [i, entry] of entries.entries()) {
+          const id = entry?.[idKey];
+          if (id == null || (typeof id === "string" && id.length === 0)) {
+            errors.push(`${rel(filePath)}: ${suffix}[${i}] missing required '${idKey}'`);
+            continue;
+          }
+          const key = String(id);
+          if (seenIds.has(key)) {
+            errors.push(`${rel(filePath)}: duplicate ${suffix} ${idKey} '${key}' within file`);
+          } else {
+            seenIds.add(key);
+          }
+        }
+      }
     }
   }
 }
