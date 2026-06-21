@@ -182,6 +182,11 @@
     "slopeListHintSelect": "Click a slope on the map or here to select. Switch to ✎ Slope geom in the toolbar to edit its polyline.",
     "slopeListHintEditing": "Drag a vertex to move. Double-click a segment to insert a vertex. Right-click a vertex to remove. Edits save when you commit the patch below.",
     "liftListHintSelect": "Click a lift on the map or here. Switch to 🚡 Lift geom in the toolbar to edit its polyline.",
-    "liftListHintEditing": "Drag a vertex to move. Double-click a segment to insert. Right-click to remove."
+    "liftListHintEditing": "Drag a vertex to move. Double-click a segment to insert. Right-click to remove.",
+    "entityTabSlopes": "Slopes",
+    "entityTabLifts": "Lifts",
+    "entityTabEdges": "Edges",
+    "entityTabNodes": "Nodes",
+    "entitySearchPlaceholder": "Search…"
   }
 }

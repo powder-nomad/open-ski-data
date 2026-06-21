@@ -182,6 +182,11 @@
     "slopeListHintSelect": "지도 또는 목록에서 슬로프를 클릭해 선택하세요. ✎ 슬로프 편집 모드로 전환하면 폴리라인을 편집할 수 있습니다.",
     "slopeListHintEditing": "꼭짓점을 드래그해 이동, 선분을 더블클릭해 꼭짓점 삽입, 우클릭으로 삭제. 아래 패치를 커밋하면 편집이 저장됩니다.",
     "liftListHintSelect": "지도 또는 목록에서 리프트를 클릭하세요. 🚡 리프트 편집 모드로 전환하면 폴리라인을 편집할 수 있습니다.",
-    "liftListHintEditing": "꼭짓점을 드래그해 이동, 더블클릭으로 삽입, 우클릭으로 삭제."
+    "liftListHintEditing": "꼭짓점을 드래그해 이동, 더블클릭으로 삽입, 우클릭으로 삭제.",
+    "entityTabSlopes": "슬로프",
+    "entityTabLifts": "리프트",
+    "entityTabEdges": "엣지",
+    "entityTabNodes": "노드",
+    "entitySearchPlaceholder": "검색…"
   }
 }

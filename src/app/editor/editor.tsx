@@ -507,6 +507,12 @@ export function SlopeAuthor2() {
     Record<string, Partial<GraphNode>>
   >({});
 
+  // Entity browser: which tab is active and the live search string.
+  const [activeEntityTab, setActiveEntityTab] = useState<
+    "slopes" | "lifts" | "edges" | "nodes"
+  >("slopes");
+  const [entitySearch, setEntitySearch] = useState("");
+
   // OSM Overpass re-import status. Same flow as v1: pull
   // piste:type=downhill ways within 5km of the resort centre, drop
   // the ones whose endpoints match an existing slope (≤10m), append
@@ -584,11 +590,31 @@ export function SlopeAuthor2() {
   // the right-rail meta panel only renders one entity at a time.
   function selectSlope(id: string | null) {
     setSelectedSlopeId(id);
-    if (id) setSelectedLiftId(null);
+    if (id) {
+      setSelectedLiftId(null);
+      setActiveEntityTab("slopes");
+      setEntitySearch("");
+      const slope = effectiveSlopes.find((s) => s.id === id);
+      const coords = slope?.coordinates;
+      if (coords?.length) {
+        const mid = coords[Math.floor(coords.length / 2)];
+        googleMap.current?.panTo({ lat: mid.lat, lng: mid.lon });
+      }
+    }
   }
   function selectLift(id: string | null) {
     setSelectedLiftId(id);
-    if (id) setSelectedSlopeId(null);
+    if (id) {
+      setSelectedSlopeId(null);
+      setActiveEntityTab("lifts");
+      setEntitySearch("");
+      const lift = effectiveLifts.find((l) => l.id === id);
+      const coords = lift?.coordinates;
+      if (coords?.length) {
+        const mid = coords[Math.floor(coords.length / 2)];
+        googleMap.current?.panTo({ lat: mid.lat, lng: mid.lon });
+      }
+    }
   }
   // Selecting an edge clears slope+lift so the right rail only ever
   // shows one entity. Symmetric with selectSlope/selectLift; gates
@@ -599,6 +625,15 @@ export function SlopeAuthor2() {
       setSelectedSlopeId(null);
       setSelectedLiftId(null);
       setSelectedNodeId(null);
+      setActiveEntityTab("edges");
+      setEntitySearch("");
+      const edge =
+        loadedResortRef.current?.graph?.edges.find((e) => e.id === id) ??
+        addedGraphEdgesRef.current.find((e) => e.id === id);
+      if (edge?.geometry.length) {
+        const mid = edge.geometry[Math.floor(edge.geometry.length / 2)];
+        googleMap.current?.panTo({ lat: mid.lat, lng: mid.lng });
+      }
     }
   }
   // Selecting a node clears slope/lift/edge — same one-entity-at-a-
@@ -610,6 +645,14 @@ export function SlopeAuthor2() {
       setSelectedSlopeId(null);
       setSelectedLiftId(null);
       setSelectedEdgeId(null);
+      setActiveEntityTab("nodes");
+      setEntitySearch("");
+      const node =
+        loadedResortRef.current?.graph?.nodes.find((n) => n.id === id) ??
+        addedGraphNodesRef.current.find((n) => n.id === id);
+      if (node) {
+        googleMap.current?.panTo({ lat: node.lat, lng: node.lng });
+      }
     }
   }
 
@@ -2587,7 +2630,149 @@ export function SlopeAuthor2() {
               />
             )}
 
-            {mode === "edit-edge" && (
+            {mode === "draw-lift" && (
+              <DrawLiftStatusPanel
+                points={drawLiftPoints}
+                pending={pendingDrawLift !== null}
+                onFinishNow={() => {
+                  if (drawLiftPoints.length < 2) return;
+                  setPendingDrawLift({ points: drawLiftPoints.slice() });
+                }}
+                onUndoVertex={() =>
+                  setDrawLiftPoints((prev) => prev.slice(0, -1))
+                }
+                onCancel={() => {
+                  setDrawLiftPoints([]);
+                  setPendingDrawLift(null);
+                }}
+              />
+            )}
+
+            {pendingDrawLift && loadedResort && (
+              <FinalizeLiftPanel
+                points={pendingDrawLift.points}
+                existingIds={new Set([
+                  ...loadedResort.lifts.map((l) => l.id),
+                  ...addedLifts.map((l) => l.id),
+                ])}
+                onCommit={(record) => {
+                  setAddedLifts((prev) => [...prev, record]);
+                  setDrawLiftPoints([]);
+                  setPendingDrawLift(null);
+                  setMode("select");
+                }}
+                onCancel={() => {
+                  setPendingDrawLift(null);
+                }}
+              />
+            )}
+
+            {/* ── Entity browser: tabs + search + contained list ── */}
+            {loadedResort && (
+              <EntityBrowserPanel
+                activeTab={activeEntityTab}
+                onTabChange={setActiveEntityTab}
+                search={entitySearch}
+                onSearchChange={setEntitySearch}
+                selectedId={
+                  selectedSlopeId ??
+                  selectedLiftId ??
+                  selectedEdgeId ??
+                  selectedNodeId
+                }
+                slopes={effectiveSlopes}
+                lifts={effectiveLifts}
+                baselineEdges={
+                  loadedResort.graph?.edges.filter(
+                    (e) => !deletedGraphEdgeIds.includes(e.id),
+                  ) ?? []
+                }
+                addedEdges={addedGraphEdges}
+                edgeOverrides={edgeOverrides}
+                baselineNodes={
+                  loadedResort.graph?.nodes.filter(
+                    (n) => !deletedGraphNodeIds.includes(n.id),
+                  ) ?? []
+                }
+                addedNodes={addedGraphNodes}
+                nodeOverrides={nodeOverrides}
+                slopeOverrides={slopeOverrides}
+                liftOverrides={liftOverrides}
+                onSelectSlope={selectSlope}
+                onSelectLift={selectLift}
+                onSelectEdge={selectEdge}
+                onSelectNode={selectNode}
+              />
+            )}
+
+            {/* ── Edit zone: always immediately below the browser ── */}
+            {selectedSlope && (
+              <SlopeMetaPanel
+                slope={selectedSlope}
+                override={slopeOverrides[selectedSlope.id]}
+                onPatch={(patch) =>
+                  setSlopeOverrides((prev) => ({
+                    ...prev,
+                    [selectedSlope.id]: { ...prev[selectedSlope.id], ...patch },
+                  }))
+                }
+                isEditingGeom={mode === "edit-slope-geom"}
+                onEditGeom={() => setMode("edit-slope-geom")}
+                onResetGeom={() => {
+                  setSlopeOverrides((prev) => {
+                    const cur = prev[selectedSlope.id];
+                    if (!cur) return prev;
+                    const { coordinates: _drop, ...rest } = cur;
+                    void _drop;
+                    if (Object.keys(rest).length === 0) {
+                      const next = { ...prev };
+                      delete next[selectedSlope.id];
+                      return next;
+                    }
+                    return { ...prev, [selectedSlope.id]: rest };
+                  });
+                }}
+                hasOverrideGeom={
+                  Boolean(slopeOverrides[selectedSlope.id]?.coordinates)
+                }
+                onDelete={() => deleteSlope(selectedSlope.id)}
+              />
+            )}
+
+            {selectedLift && (
+              <LiftMetaPanel
+                lift={selectedLift}
+                override={liftOverrides[selectedLift.id]}
+                onPatch={(patch) =>
+                  setLiftOverrides((prev) => ({
+                    ...prev,
+                    [selectedLift.id]: { ...prev[selectedLift.id], ...patch },
+                  }))
+                }
+                isEditingGeom={mode === "edit-lift-geom"}
+                onEditGeom={() => setMode("edit-lift-geom")}
+                onResetGeom={() => {
+                  setLiftOverrides((prev) => {
+                    const cur = prev[selectedLift.id];
+                    if (!cur) return prev;
+                    const { coordinates: _drop, ...rest } = cur;
+                    void _drop;
+                    if (Object.keys(rest).length === 0) {
+                      const next = { ...prev };
+                      delete next[selectedLift.id];
+                      return next;
+                    }
+                    return { ...prev, [selectedLift.id]: rest };
+                  });
+                }}
+                hasOverrideGeom={
+                  Boolean(liftOverrides[selectedLift.id]?.coordinates)
+                }
+                onDelete={() => deleteLift(selectedLift.id)}
+              />
+            )}
+
+            {selectedEdgeId !== null && (
               <EditEdgeStatusPanel
                 selectedEdgeId={selectedEdgeId}
                 selectedEdge={
@@ -2608,7 +2793,7 @@ export function SlopeAuthor2() {
               />
             )}
 
-            {mode === "edit-node" && (
+            {selectedNodeId !== null && (
               <EditNodeStatusPanel
                 selectedNodeId={selectedNodeId}
                 selectedNode={
@@ -2668,37 +2853,7 @@ export function SlopeAuthor2() {
               />
             )}
 
-            {loadedResort?.graph &&
-              (mode === "edit-edge" ||
-                mode === "connect-nodes" ||
-                mode === "select") && (
-                <EdgesListPanel
-                  baselineEdges={loadedResort.graph.edges.filter(
-                    (e) => !deletedGraphEdgeIds.includes(e.id),
-                  )}
-                  addedEdges={addedGraphEdges}
-                  overrides={edgeOverrides}
-                  selectedId={selectedEdgeId}
-                  onSelect={(id) => selectEdge(id)}
-                />
-              )}
-
-            {loadedResort?.graph &&
-              (mode === "edit-node" ||
-                mode === "edit-edge" ||
-                mode === "connect-nodes" ||
-                mode === "select") && (
-                <NodesListPanel
-                  baselineNodes={loadedResort.graph.nodes.filter(
-                    (n) => !deletedGraphNodeIds.includes(n.id),
-                  )}
-                  addedNodes={addedGraphNodes}
-                  overrides={nodeOverrides}
-                  selectedId={selectedNodeId}
-                  onSelect={(id) => selectNode(id)}
-                />
-              )}
-
+            {/* ── Utility panels ── */}
             {loadedResort?.graph && (
               <LintPanel
                 issues={lintIssues}
@@ -2740,43 +2895,6 @@ export function SlopeAuthor2() {
               />
             )}
 
-            {mode === "draw-lift" && (
-              <DrawLiftStatusPanel
-                points={drawLiftPoints}
-                pending={pendingDrawLift !== null}
-                onFinishNow={() => {
-                  if (drawLiftPoints.length < 2) return;
-                  setPendingDrawLift({ points: drawLiftPoints.slice() });
-                }}
-                onUndoVertex={() =>
-                  setDrawLiftPoints((prev) => prev.slice(0, -1))
-                }
-                onCancel={() => {
-                  setDrawLiftPoints([]);
-                  setPendingDrawLift(null);
-                }}
-              />
-            )}
-
-            {pendingDrawLift && loadedResort && (
-              <FinalizeLiftPanel
-                points={pendingDrawLift.points}
-                existingIds={new Set([
-                  ...loadedResort.lifts.map((l) => l.id),
-                  ...addedLifts.map((l) => l.id),
-                ])}
-                onCommit={(record) => {
-                  setAddedLifts((prev) => [...prev, record]);
-                  setDrawLiftPoints([]);
-                  setPendingDrawLift(null);
-                  setMode("select");
-                }}
-                onCancel={() => {
-                  setPendingDrawLift(null);
-                }}
-              />
-            )}
-
             {loadedResort && effectivePlace && (
               <PlaceMetaPanel
                 place={effectivePlace}
@@ -2792,107 +2910,6 @@ export function SlopeAuthor2() {
               <OsmImportPanel
                 status={osmImport}
                 onImport={importFromOsm}
-              />
-            )}
-
-            {loadedResort && (
-              <SlopeListPanel
-                resort={loadedResort}
-                effectiveSlopes={effectiveSlopes}
-                selectedId={selectedSlopeId}
-                onSelect={selectSlope}
-                overrides={slopeOverrides}
-                deletedCount={deletedSlopeIds.length}
-                onRestoreAll={() => setDeletedSlopeIds([])}
-                hint={
-                  mode === "edit-slope-geom"
-                    ? t("slopeListHintEditing")
-                    : t("slopeListHintSelect")
-                }
-              />
-            )}
-
-            {selectedSlope && (
-              <SlopeMetaPanel
-                slope={selectedSlope}
-                override={slopeOverrides[selectedSlope.id]}
-                onPatch={(patch) =>
-                  setSlopeOverrides((prev) => ({
-                    ...prev,
-                    [selectedSlope.id]: { ...prev[selectedSlope.id], ...patch },
-                  }))
-                }
-                isEditingGeom={mode === "edit-slope-geom"}
-                onEditGeom={() => setMode("edit-slope-geom")}
-                onResetGeom={() => {
-                  // Drop just the coordinates override — keep any
-                  // metadata edits intact.
-                  setSlopeOverrides((prev) => {
-                    const cur = prev[selectedSlope.id];
-                    if (!cur) return prev;
-                    const { coordinates: _drop, ...rest } = cur;
-                    void _drop;
-                    if (Object.keys(rest).length === 0) {
-                      const next = { ...prev };
-                      delete next[selectedSlope.id];
-                      return next;
-                    }
-                    return { ...prev, [selectedSlope.id]: rest };
-                  });
-                }}
-                hasOverrideGeom={
-                  Boolean(slopeOverrides[selectedSlope.id]?.coordinates)
-                }
-                onDelete={() => deleteSlope(selectedSlope.id)}
-              />
-            )}
-
-            {loadedResort && (
-              <LiftListPanel
-                effectiveLifts={effectiveLifts}
-                selectedId={selectedLiftId}
-                onSelect={selectLift}
-                overrides={liftOverrides}
-                deletedCount={deletedLiftIds.length}
-                onRestoreAll={() => setDeletedLiftIds([])}
-                hint={
-                  mode === "edit-lift-geom"
-                    ? t("liftListHintEditing")
-                    : t("liftListHintSelect")
-                }
-              />
-            )}
-
-            {selectedLift && (
-              <LiftMetaPanel
-                lift={selectedLift}
-                override={liftOverrides[selectedLift.id]}
-                onPatch={(patch) =>
-                  setLiftOverrides((prev) => ({
-                    ...prev,
-                    [selectedLift.id]: { ...prev[selectedLift.id], ...patch },
-                  }))
-                }
-                isEditingGeom={mode === "edit-lift-geom"}
-                onEditGeom={() => setMode("edit-lift-geom")}
-                onResetGeom={() => {
-                  setLiftOverrides((prev) => {
-                    const cur = prev[selectedLift.id];
-                    if (!cur) return prev;
-                    const { coordinates: _drop, ...rest } = cur;
-                    void _drop;
-                    if (Object.keys(rest).length === 0) {
-                      const next = { ...prev };
-                      delete next[selectedLift.id];
-                      return next;
-                    }
-                    return { ...prev, [selectedLift.id]: rest };
-                  });
-                }}
-                hasOverrideGeom={
-                  Boolean(liftOverrides[selectedLift.id]?.coordinates)
-                }
-                onDelete={() => deleteLift(selectedLift.id)}
               />
             )}
 
@@ -5192,6 +5209,286 @@ function PickListPanel({
                 : "fetching…"}
           </li>
         ))}
+      </ul>
+    </section>
+  );
+}
+
+type EntityTab = "slopes" | "lifts" | "edges" | "nodes";
+
+function EntityBrowserPanel({
+  activeTab,
+  onTabChange,
+  search,
+  onSearchChange,
+  selectedId,
+  slopes,
+  lifts,
+  baselineEdges,
+  addedEdges,
+  edgeOverrides,
+  baselineNodes,
+  addedNodes,
+  nodeOverrides,
+  slopeOverrides,
+  liftOverrides,
+  onSelectSlope,
+  onSelectLift,
+  onSelectEdge,
+  onSelectNode,
+}: {
+  activeTab: EntityTab;
+  onTabChange: (tab: EntityTab) => void;
+  search: string;
+  onSearchChange: (v: string) => void;
+  selectedId: string | null;
+  slopes: SlopeRecord[];
+  lifts: LiftRecord[];
+  baselineEdges: GraphEdge[];
+  addedEdges: GraphEdge[];
+  edgeOverrides: Record<string, EdgeOverride>;
+  baselineNodes: GraphNode[];
+  addedNodes: GraphNode[];
+  nodeOverrides: Record<string, Partial<GraphNode>>;
+  slopeOverrides: Record<string, SlopeOverride>;
+  liftOverrides: Record<string, LiftOverride>;
+  onSelectSlope: (id: string) => void;
+  onSelectLift: (id: string) => void;
+  onSelectEdge: (id: string) => void;
+  onSelectNode: (id: string) => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  const listRef = useRef<HTMLUListElement>(null);
+  const q = search.trim().toLowerCase();
+
+  useEffect(() => {
+    if (!listRef.current || !selectedId) return;
+    const el = listRef.current.querySelector<HTMLElement>("[data-selected=true]");
+    el?.scrollIntoView({ block: "nearest" });
+  }, [selectedId]);
+
+  const tabs: { key: EntityTab; label: string; count: number }[] = [
+    { key: "slopes", label: t("entityTabSlopes"), count: slopes.length },
+    { key: "lifts", label: t("entityTabLifts"), count: lifts.length },
+    {
+      key: "edges",
+      label: t("entityTabEdges"),
+      count: baselineEdges.length + addedEdges.length,
+    },
+    {
+      key: "nodes",
+      label: t("entityTabNodes"),
+      count: baselineNodes.length + addedNodes.length,
+    },
+  ];
+
+  function matchesSearch(text: string) {
+    return !q || text.toLowerCase().includes(q);
+  }
+
+  const selectedEdgeId =
+    activeTab === "edges" ? selectedId : null;
+  const selectedNodeId =
+    activeTab === "nodes" ? selectedId : null;
+  const selectedSlopeId =
+    activeTab === "slopes" ? selectedId : null;
+  const selectedLiftId =
+    activeTab === "lifts" ? selectedId : null;
+
+  return (
+    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 overflow-hidden">
+      {/* Tab bar */}
+      <div className="flex border-b border-[var(--border)]">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() => onTabChange(tab.key)}
+            className={`flex-1 px-1 py-2 text-[10px] font-semibold transition ${
+              activeTab === tab.key
+                ? "border-b-2 border-[var(--accent)] text-[var(--fg)]"
+                : "text-[var(--fg-dim)] hover:text-[var(--fg-muted)]"
+            }`}
+          >
+            {tab.label}
+            <span
+              className={`ml-1 ${activeTab === tab.key ? "text-[var(--accent-soft)]" : "text-[var(--fg-dim)]"}`}
+            >
+              ({tab.count})
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* Search */}
+      <div className="border-b border-[var(--border)] px-2 py-1.5">
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => onSearchChange(e.target.value)}
+          placeholder={t("entitySearchPlaceholder")}
+          className="w-full rounded-md bg-[var(--bg-elev)] px-2 py-1 text-[11px] text-[var(--fg)] placeholder:text-[var(--fg-dim)] outline-none"
+        />
+      </div>
+
+      {/* List */}
+      <ul
+        ref={listRef}
+        className="no-scrollbar max-h-56 overflow-y-auto space-y-0.5 p-1.5"
+      >
+        {activeTab === "slopes" &&
+          slopes
+            .filter((s) => matchesSearch(s.name ?? s.id))
+            .map((s) => {
+              const isSel = s.id === selectedSlopeId;
+              const dirty = !!slopeOverrides[s.id];
+              return (
+                <li key={s.id}>
+                  <button
+                    type="button"
+                    data-selected={isSel}
+                    onClick={() => onSelectSlope(s.id)}
+                    className={`flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-xs transition ${
+                      isSel
+                        ? "bg-[var(--accent)]/15 text-[var(--fg)]"
+                        : "text-[var(--fg-muted)] hover:bg-[var(--bg-elev)] hover:text-[var(--fg)]"
+                    }`}
+                  >
+                    <span className="truncate font-medium">{s.name || s.id}</span>
+                    <span className="flex flex-none items-center gap-1 text-[10px] text-[var(--fg-dim)]">
+                      {dirty && (
+                        <span className="rounded bg-amber-500/20 px-1 py-0.5 text-[9px] font-semibold text-amber-300">
+                          &#x270E;
+                        </span>
+                      )}
+                      {(s.coordinates?.length ?? 0)}pt
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+
+        {activeTab === "lifts" &&
+          lifts
+            .filter((l) => matchesSearch(l.name ?? l.id))
+            .map((l) => {
+              const isSel = l.id === selectedLiftId;
+              const dirty = !!liftOverrides[l.id];
+              return (
+                <li key={l.id}>
+                  <button
+                    type="button"
+                    data-selected={isSel}
+                    onClick={() => onSelectLift(l.id)}
+                    className={`flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-xs transition ${
+                      isSel
+                        ? "bg-[var(--accent)]/15 text-[var(--fg)]"
+                        : "text-[var(--fg-muted)] hover:bg-[var(--bg-elev)] hover:text-[var(--fg)]"
+                    }`}
+                  >
+                    <span className="truncate font-medium">{l.name || l.id}</span>
+                    <span className="flex flex-none items-center gap-1 text-[10px] text-[var(--fg-dim)]">
+                      {dirty && (
+                        <span className="rounded bg-amber-500/20 px-1 py-0.5 text-[9px] font-semibold text-amber-300">
+                          &#x270E;
+                        </span>
+                      )}
+                      {l.type ?? "—"}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+
+        {activeTab === "edges" &&
+          [
+            ...baselineEdges.map((e) => ({
+              e: edgeOverrides[e.id] ? { ...e, ...edgeOverrides[e.id] } : e,
+              isAdded: false,
+              isEdited: !!edgeOverrides[e.id],
+            })),
+            ...addedEdges.map((e) => ({ e, isAdded: true, isEdited: false })),
+          ]
+            .filter(({ e }) =>
+              matchesSearch(`${e.id} ${e.from} ${e.to} ${e.kind}`),
+            )
+            .map(({ e, isAdded, isEdited }) => {
+              const isSel = e.id === selectedEdgeId;
+              return (
+                <li key={e.id}>
+                  <button
+                    type="button"
+                    data-selected={isSel}
+                    onClick={() => onSelectEdge(e.id)}
+                    className={`flex w-full flex-col items-start gap-0.5 rounded-md border px-2 py-1.5 text-left transition ${
+                      isSel
+                        ? "border-[#22d3ee] bg-[#22d3ee]/10 text-[var(--fg)]"
+                        : "border-transparent text-[var(--fg-muted)] hover:bg-[var(--bg-elev)] hover:text-[var(--fg)]"
+                    }`}
+                    aria-pressed={isSel}
+                  >
+                    <span className="flex w-full items-center justify-between gap-1">
+                      <code className="text-[10px]">{e.id}</code>
+                      <span className="flex items-center gap-1 text-[9px]">
+                        {isAdded && (
+                          <span className="rounded bg-emerald-500/20 px-1 text-emerald-300">new</span>
+                        )}
+                        {isEdited && (
+                          <span className="rounded bg-cyan-500/20 px-1 text-cyan-300">&#x270E;</span>
+                        )}
+                      </span>
+                    </span>
+                    <span className="text-[10px] text-[var(--fg-dim)]">
+                      {e.from} → {e.to} · {e.geometry.length}v · {e.kind}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+
+        {activeTab === "nodes" &&
+          [
+            ...baselineNodes.map((n) => ({
+              n: nodeOverrides[n.id] ? { ...n, ...nodeOverrides[n.id] } : n,
+              isAdded: false,
+              isEdited: !!nodeOverrides[n.id],
+            })),
+            ...addedNodes.map((n) => ({ n, isAdded: true, isEdited: false })),
+          ]
+            .filter(({ n }) => matchesSearch(`${n.id} ${n.kind ?? ""}`))
+            .map(({ n, isAdded, isEdited }) => {
+              const isSel = n.id === selectedNodeId;
+              return (
+                <li key={n.id}>
+                  <button
+                    type="button"
+                    data-selected={isSel}
+                    onClick={() => onSelectNode(n.id)}
+                    className={`flex w-full flex-col items-start gap-0.5 rounded-md border px-2 py-1.5 text-left transition ${
+                      isSel
+                        ? "border-[#22d3ee] bg-[#22d3ee]/10 text-[var(--fg)]"
+                        : "border-transparent text-[var(--fg-muted)] hover:bg-[var(--bg-elev)] hover:text-[var(--fg)]"
+                    }`}
+                    aria-pressed={isSel}
+                  >
+                    <span className="flex w-full items-center justify-between gap-1">
+                      <code className="text-[10px]">{n.id}</code>
+                      <span className="flex items-center gap-1 text-[9px]">
+                        {isAdded && (
+                          <span className="rounded bg-emerald-500/20 px-1 text-emerald-300">new</span>
+                        )}
+                        {isEdited && (
+                          <span className="rounded bg-cyan-500/20 px-1 text-cyan-300">&#x270E;</span>
+                        )}
+                      </span>
+                    </span>
+                    <span className="text-[10px] text-[var(--fg-dim)]">
+                      {n.kind ?? "waypoint"} · {n.alt_m}m
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
       </ul>
     </section>
   );
