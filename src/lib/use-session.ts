@@ -27,16 +27,34 @@ type SessionData = {
   status: "loading" | "authenticated" | "anonymous";
 };
 
-const initial: SessionData = {
-  user: null,
-  accessToken: null,
-  status: "loading",
+/**
+ * Audit-mode short-circuit. When `NEXT_PUBLIC_AUDIT_MODE === "1"`,
+ * skip the GitHub OAuth round-trip entirely and return a synthetic
+ * signed-in session. Used by the autonomous visual-audit loop
+ * (`scripts/audit.mjs`) which renders the editor for screenshots
+ * without a real contributor flow. The sentinel access token will
+ * make any accidental GitHub call fail loudly rather than touch
+ * production. Production builds never set the flag.
+ */
+const AUDIT_MODE = process.env.NEXT_PUBLIC_AUDIT_MODE === "1";
+const AUDIT_SESSION: SessionData = {
+  user: { login: "osd-audit" },
+  accessToken: "audit-mode-no-network",
+  status: "authenticated",
 };
+
+const initial: SessionData = AUDIT_MODE
+  ? AUDIT_SESSION
+  : { user: null, accessToken: null, status: "loading" };
 
 export function useSession() {
   const [data, setData] = useState<SessionData>(initial);
 
   const refresh = useCallback(async () => {
+    if (AUDIT_MODE) {
+      setData(AUDIT_SESSION);
+      return;
+    }
     try {
       const res = await fetch("/api/auth/session", {
         credentials: "same-origin",
@@ -64,6 +82,7 @@ export function useSession() {
   }, []);
 
   useEffect(() => {
+    if (AUDIT_MODE) return;
     void refresh();
   }, [refresh]);
 
