@@ -1,16 +1,41 @@
 # Visual Audit Rubric — Google Earth Aesthetic
 
 The evaluator scores each round's screenshots (`.audit/round-NNN/*.png`)
-against a pinned Google Earth reference shot
-(`scripts/audit/reference/google-earth.png`). Six axes, each 1–5.
-A round ships when **every axis ≥ 4** — not on average; on every axis.
+against two pinned dark-mode Google Earth reference shots:
+- `scripts/audit/reference/google-earth-dark-1.png` — clean idle
+  state, no panels populated (tooltip-only on map)
+- `scripts/audit/reference/google-earth-dark-2.png` — populated
+  side card with an elevation chart, drawing in progress
 
-## Pinned aesthetic
+Six axes, each 1–5. A round ships when **every axis ≥ 4** — not on
+average; on every axis.
 
-Google Earth is map-centric, atmospheric, and recedes its own chrome.
-Surfaces feel like translucent layers floating in cool-blue space.
-Type is restrained. The map dominates the canvas; UI is only as
-visible as it needs to be.
+## Pinned aesthetic — dark-mode Google Earth, concretely
+
+What the references actually show, translated to CSS-able rules:
+
+- **Floating chrome.** No edge-rails. Top utility bar is a
+  translucent strip, not a solid bar. Side panel is a card with a
+  rounded edge attached to the right, not a full-height pane. Bottom
+  controls are floating circular buttons over the map.
+- **Glass surfaces.** Panel backgrounds are dark-translucent
+  (~`rgba(15,20,30,0.62)`) with `backdrop-filter: blur(12px)` so the
+  map shows through faintly. No solid `#131a26` cards.
+- **Depth via shadow, not borders.** Soft drop shadow
+  (`0 8px 32px rgba(0,0,0,0.5)`) separates surfaces from the map.
+  Hairline borders only where strictly needed
+  (`rgba(255,255,255,0.05)`).
+- **Generous rounding.** Panel corners ~`16px` (`rounded-2xl`),
+  buttons ~`9999px` (pill), search bars ~`24px`.
+- **Restrained type.** White-ish on glass, two weights max (400
+  for keys, 500 for values), three sizes max in chrome, no SHOUTY
+  UPPERCASE small caps.
+- **Map dominance.** Chrome occupies ≤20% of the canvas at rest.
+  All persistent chrome can be banished to a single corner or hidden
+  on the top strip.
+- **One accent.** Sky-blue (`--accent`) used sparingly — active
+  states + single CTA. Drawing/markup color (yellow) is map-content,
+  not chrome.
 
 ## Axes
 
