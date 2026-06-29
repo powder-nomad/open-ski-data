@@ -4161,20 +4161,20 @@ function WelcomeIntro({
         </button>
       </header>
       <ol className="space-y-2 text-[11px] text-[var(--fg-muted)]">
-        <li className="flex gap-2">
-          <span className="flex-none rounded-full bg-sky-500/20 px-1.5 text-[10px] font-semibold text-sky-200">
+        <li className="flex items-start gap-2">
+          <span className="mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-sky-500/20 text-[10px] font-semibold leading-none text-sky-200">
             1
           </span>
           <span>{t("welcomeStep1")}</span>
         </li>
-        <li className="flex gap-2">
-          <span className="flex-none rounded-full bg-sky-500/20 px-1.5 text-[10px] font-semibold text-sky-200">
+        <li className="flex items-start gap-2">
+          <span className="mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-sky-500/20 text-[10px] font-semibold leading-none text-sky-200">
             2
           </span>
           <span>{t("welcomeStep2")}</span>
         </li>
-        <li className="flex gap-2">
-          <span className="flex-none rounded-full bg-sky-500/20 px-1.5 text-[10px] font-semibold text-sky-200">
+        <li className="flex items-start gap-2">
+          <span className="mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-sky-500/20 text-[10px] font-semibold leading-none text-sky-200">
             3
           </span>
           <span>{t("welcomeStep3")}</span>
