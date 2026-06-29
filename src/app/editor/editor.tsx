@@ -2480,68 +2480,65 @@ export function SlopeAuthor2() {
         : "max-h-[80dvh]";
 
   return (
-    <section className="relative flex h-[100dvh] w-full flex-col overflow-hidden bg-[#071521] text-[var(--fg)]">
-      <header className="flex-none border-b border-[var(--border)] bg-[var(--bg-surface)] px-3 py-2 md:px-4">
-        <div className="flex flex-wrap items-center justify-between gap-2 md:gap-3">
-          <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[var(--accent-soft)]">
+    <section className="relative h-[100dvh] w-full overflow-hidden bg-[#071521] text-[var(--fg)]">
+      {/* ── Map canvas — full viewport, all chrome floats over it ── */}
+      <div className="absolute inset-0">
+        {mapError ? (
+          <div className="flex h-full items-center justify-center p-6 text-center text-sm text-[var(--fg-muted)]">
+            {t("mapFailed")}: {mapError}
+          </div>
+        ) : (
+          <div ref={mapRef} className="h-full w-full" aria-label="Map canvas" />
+        )}
+        {!mapReady && !mapError && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-[var(--fg-muted)]">
+            {t("loadingMap")}
+          </div>
+        )}
+      </div>
+
+      {/* ── Floating header — glass card top-left ── */}
+      <header className="pointer-events-none absolute left-4 right-4 top-4 z-20 md:right-auto md:w-[22rem]">
+        <div className="pointer-events-auto flex items-center justify-between gap-3 rounded-2xl border border-white/5 bg-[var(--bg-glass)] px-4 py-2.5 shadow-[var(--shadow-glass)] backdrop-blur-md">
+          <div className="min-w-0">
+            <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[var(--accent-soft)]">
               {t("devEyebrow")}
             </p>
-            <h1 className="text-sm font-bold md:text-base">{t("title")}</h1>
+            <h1 className="truncate text-sm font-bold">{t("title")}</h1>
           </div>
-          <div className="flex items-center gap-2 text-xs md:gap-3">
+          <div className="flex flex-none items-center gap-2 text-xs">
             <button
               type="button"
               data-testid="welcome-help"
               onClick={reopenWelcome}
               aria-label={t("welcomeHelpLabel")}
               title={t("welcomeHelpLabel")}
-              className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-[var(--bg-elev)] text-[11px] font-bold text-[var(--fg-muted)] transition hover:text-[var(--fg)]"
+              className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-white/10 text-[11px] font-bold text-[var(--fg-muted)] transition hover:bg-white/20 hover:text-[var(--fg)]"
             >
               ?
             </button>
-            <span className="rounded-full bg-[var(--bg-elev)] px-3 py-1 font-semibold text-[var(--fg-muted)]">
-              {t("mode")}: <span className="text-[var(--fg)]">{descLabel}</span>
-            </span>
-            {/* Long hint repeats inside the map's floating badge — hide
-                here on mobile so the header stays one line tall. */}
-            <span className="hidden text-[var(--fg-muted)] md:inline">{descHint}</span>
           </div>
         </div>
       </header>
 
-      <div className="flex flex-1 flex-col md:flex-row md:overflow-hidden">
-        <ModeToolbar
-          mode={mode}
-          onModeChange={setMode}
-          hasSlope={selectedSlopeId !== null}
-          hasLift={selectedLiftId !== null}
-          hasEdge={selectedEdgeId !== null}
-          hasNode={selectedNodeId !== null}
-        />
-
-        <div className="relative flex-1 min-h-0 md:h-full md:flex-1">
-          {mapError ? (
-            <div className="flex h-full items-center justify-center p-6 text-center text-sm text-[var(--fg-muted)]">
-              {t("mapFailed")}: {mapError}
-            </div>
-          ) : (
-            <div ref={mapRef} className="h-full w-full" aria-label="Map canvas" />
-          )}
-          {!mapReady && !mapError && (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-[var(--fg-muted)]">
-              {t("loadingMap")}
-            </div>
-          )}
-          {/* Mode hint lives in the desktop header (line ~833) and in
-              the mobile drawer handle (below). Floating overlay
-              removed — the transparent badge over the map was hard
-              to read and competed with Google's controls. */}
+      {/* ── Floating mode dock — glass card bottom-left at md+, top scroll on mobile ── */}
+      <div className="pointer-events-none absolute left-0 right-0 top-[68px] z-20 md:bottom-10 md:left-4 md:right-auto md:top-auto">
+        <div className="pointer-events-auto md:inline-flex">
+          <ModeToolbar
+            mode={mode}
+            onModeChange={setMode}
+            hasSlope={selectedSlopeId !== null}
+            hasLift={selectedLiftId !== null}
+            hasEdge={selectedEdgeId !== null}
+            hasNode={selectedNodeId !== null}
+          />
         </div>
+      </div>
 
-        <aside
-          className={`flex w-full flex-none flex-col overflow-hidden bg-[var(--bg-page)] shadow-2xl transition-[max-height] duration-200 ease-out fixed bottom-0 left-0 right-0 z-30 rounded-t-3xl ${drawerMaxH} md:relative md:bottom-auto md:left-auto md:right-auto md:z-auto md:max-h-none md:w-[24rem] md:border-l md:border-[var(--border)] md:rounded-none md:shadow-none md:transition-none`}
-        >
+      {/* ── Right rail / mobile drawer ── */}
+      <aside
+        className={`pointer-events-auto flex w-full flex-none flex-col overflow-hidden bg-[var(--bg-glass)] shadow-[var(--shadow-glass)] backdrop-blur-md transition-[max-height] duration-200 ease-out fixed bottom-0 left-0 right-0 z-30 rounded-t-3xl border-t border-white/5 ${drawerMaxH} md:absolute md:bottom-4 md:left-auto md:right-4 md:top-[64px] md:z-20 md:max-h-[calc(100dvh-80px)] md:w-[22rem] md:rounded-2xl md:border md:border-white/5 md:transition-none`}
+      >
           {/* Mobile drawer handle — click to cycle peek → half → full
               → peek. Surfaces the mode hint inline, replacing the
               floating overlay. Hidden on desktop (md+) where the
@@ -2924,7 +2921,6 @@ export function SlopeAuthor2() {
             )}
           </div>
         </aside>
-      </div>
     </section>
   );
 }

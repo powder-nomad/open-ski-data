@@ -99,7 +99,7 @@ export function ModeToolbar({
   return (
     <nav
       aria-label={t("mode")}
-      className="no-scrollbar flex w-full flex-none flex-row items-stretch gap-1 overflow-x-auto border-b border-[var(--border)] bg-[var(--bg-surface)] px-2 py-1.5 md:h-full md:w-16 md:flex-col md:overflow-x-visible md:border-b-0 md:border-r md:px-0 md:py-3"
+      className="no-scrollbar flex w-full flex-none flex-row items-stretch gap-0.5 overflow-x-auto rounded-none border-b border-white/5 bg-[var(--bg-glass)] px-2 py-1.5 backdrop-blur-md shadow-[var(--shadow-glass)] md:w-auto md:gap-1 md:overflow-x-visible md:rounded-2xl md:border md:border-white/5 md:px-2 md:py-2"
     >
       {MODE_DESCRIPTORS.map((d) => {
         const blockedBySelection =
@@ -131,12 +131,12 @@ export function ModeToolbar({
             type="button"
             disabled={disabled}
             onClick={() => onModeChange(d.mode)}
-            className={`flex flex-none flex-col items-center gap-0.5 rounded-md px-2 py-1.5 text-[10px] font-semibold transition md:mx-2 md:px-1 md:py-2 ${
+            className={`flex flex-none flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 text-[10px] font-semibold transition md:px-2 md:py-2 ${
               active
-                ? "bg-[var(--accent)] text-[var(--accent-ink)]"
+                ? "bg-[var(--accent)] text-[var(--accent-ink)] shadow-[0_4px_12px_rgba(34,211,238,0.25)]"
                 : disabled
                   ? "text-[var(--fg-dim)] opacity-40"
-                  : "text-[var(--fg-muted)] hover:bg-[var(--bg-elev)] hover:text-[var(--fg)]"
+                  : "text-[var(--fg-muted)] hover:bg-white/10 hover:text-[var(--fg)]"
             }`}
             title={disabledReason ?? hint}
             aria-label={`${label} — ${disabledReason ?? hint}`}
