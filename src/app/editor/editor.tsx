@@ -2501,7 +2501,7 @@ export function SlopeAuthor2() {
       <header className="pointer-events-none absolute left-4 right-4 top-4 z-20 md:right-auto md:w-[22rem]">
         <div className="pointer-events-auto flex items-center justify-between gap-3 rounded-2xl border border-white/5 bg-[var(--bg-glass)] px-4 py-2.5 shadow-[var(--shadow-glass)] backdrop-blur-md">
           <div className="min-w-0">
-            <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[var(--accent-soft)]">
+            <p className="text-[9px] font-semibold text-[var(--accent-soft)]">
               {t("devEyebrow")}
             </p>
             <h1 className="truncate text-sm font-bold">{t("title")}</h1>
@@ -2950,7 +2950,7 @@ function SlopeListPanel({
   return (
     <section>
       <header className="mb-2 flex items-center justify-between gap-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
+        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
           {t("slopeCountHeader", { count: effectiveSlopes.length })}
         </p>
         <span className="flex items-center gap-2 text-[10px] text-[var(--fg-dim)]">
@@ -3037,7 +3037,7 @@ function SlopeMetaPanel({
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
+        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
           {t("selectedSlope")}
         </p>
         <h3 className="mt-0.5 truncate text-sm font-semibold text-[var(--fg)]">
@@ -3138,7 +3138,7 @@ function LiftListPanel({
   return (
     <section>
       <header className="mb-2 flex items-center justify-between gap-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
+        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
           {t("liftCountHeader", { count: effectiveLifts.length })}
         </p>
         <span className="flex items-center gap-2 text-[10px] text-[var(--fg-dim)]">
@@ -3220,7 +3220,7 @@ function LiftMetaPanel({
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
+        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
           {t("selectedLift")}
         </p>
         <h3 className="mt-0.5 truncate text-sm font-semibold text-[var(--fg)]">
@@ -3250,7 +3250,7 @@ function LiftMetaPanel({
           currentLocale={locale}
         />
         <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
-          <span className="font-semibold uppercase tracking-widest text-[var(--fg-dim)]">
+          <span className="font-semibold text-[var(--fg-dim)]">
             {t("typeLabel")}
           </span>
           <select
@@ -3343,7 +3343,7 @@ function PlaceMetaPanel({
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2 flex items-start justify-between gap-2">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
+          <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
             Place / ski area
           </p>
           <h3 className="mt-0.5 truncate text-sm font-semibold text-[var(--fg)]">
@@ -3448,7 +3448,7 @@ function LabeledInput({
 }) {
   return (
     <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
-      <span className="font-semibold uppercase tracking-widest text-[var(--fg-dim)]">
+      <span className="font-semibold text-[var(--fg-dim)]">
         {label}
       </span>
       <input
@@ -3498,13 +3498,13 @@ function LocalizedNameEditor({
 
   return (
     <div className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
-      <span className="font-semibold uppercase tracking-widest text-[var(--fg-dim)]">
+      <span className="font-semibold text-[var(--fg-dim)]">
         {label}
       </span>
       <div className="grid grid-cols-3 gap-2">
         {I18N_LOCALES.map((locale) => (
           <label key={locale} className="grid gap-1">
-            <span className="text-[9px] uppercase tracking-wider text-[var(--fg-dim)]">
+            <span className="text-[9px] text-[var(--fg-dim)]">
               {locale} {currentLocale === locale ? "✓" : ""}
               <br />
               {localeLabels[locale]}
@@ -3533,7 +3533,7 @@ function LabeledNumber({
 }) {
   return (
     <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
-      <span className="font-semibold uppercase tracking-widest text-[var(--fg-dim)]">
+      <span className="font-semibold text-[var(--fg-dim)]">
         {label}
       </span>
       <input
@@ -3576,7 +3576,7 @@ function ConnectNodesStatusPanel({
   if (!hasGraph) {
     return (
       <section className="rounded-lg border border-amber-400/40 bg-amber-400/10 p-3">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-300">
+        <p className="text-[10px] font-semibold text-amber-300">
           {t("connectNodesMode")}
         </p>
         <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
@@ -3588,7 +3588,7 @@ function ConnectNodesStatusPanel({
   return (
     <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[#22d3ee]">
+        <p className="text-[10px] font-semibold text-[#22d3ee]">
           {t("connectNodesMode")} ·{" "}
           {anchorNodeId
             ? t("connectNodesPickSecond")
@@ -3648,7 +3648,7 @@ function EditEdgeStatusPanel({
   return (
     <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[#22d3ee]">
+        <p className="text-[10px] font-semibold text-[#22d3ee]">
           {t("editEdgePanelTitle")}
         </p>
         {selectedEdge ? (
@@ -3721,7 +3721,7 @@ function EdgesListPanel({
     return (
       <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
         <header className="mb-1">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+          <p className="text-[10px] font-semibold text-[var(--fg-muted)]">
             {t("edgesPanelTitle", { count: 0 })}
           </p>
         </header>
@@ -3744,7 +3744,7 @@ function EdgesListPanel({
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+        <p className="text-[10px] font-semibold text-[var(--fg-muted)]">
           {t("edgesPanelTitle", { count: total })}
           {editedCount > 0 ? (
             <span className="ml-2 text-[#22d3ee]">
@@ -3781,7 +3781,7 @@ function EdgesListPanel({
               >
                 <span className="flex w-full items-center justify-between gap-2">
                   <code className="break-all text-[10px]">{e.id}</code>
-                  <span className="flex flex-none items-center gap-1 text-[9px] uppercase tracking-widest">
+                  <span className="flex flex-none items-center gap-1 text-[10px]">
                     {isAdded && (
                       <span className="rounded bg-emerald-500/20 px-1 py-0.5 text-emerald-300">
                         new
@@ -3844,7 +3844,7 @@ function EditNodeStatusPanel({
   return (
     <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[#22d3ee]">
+        <p className="text-[10px] font-semibold text-[#22d3ee]">
           {t("editNodePanelTitle")}
         </p>
         {selectedNode ? (
@@ -3852,7 +3852,7 @@ function EditNodeStatusPanel({
             <p className="mt-1 break-all text-[10px] text-[var(--fg-muted)]">
               {t("editNodeSelectedLabel")}: <code>{selectedNodeId}</code>
               {hasOverride && (
-                <span className="ml-2 rounded bg-cyan-500/20 px-1 py-0.5 text-[9px] uppercase tracking-widest text-cyan-300">
+                <span className="ml-2 rounded bg-cyan-500/20 px-1 py-0.5 text-[9px] text-cyan-300">
                   ✎
                 </span>
               )}
@@ -3876,7 +3876,7 @@ function EditNodeStatusPanel({
       {selectedNode && (
         <div className="space-y-2">
           <label className="block">
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+            <span className="text-[10px] font-semibold text-[var(--fg-muted)]">
               {t("editNodeKindLabel")}
             </span>
             <select
@@ -3896,7 +3896,7 @@ function EditNodeStatusPanel({
             </select>
           </label>
           <label className="block">
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+            <span className="text-[10px] font-semibold text-[var(--fg-muted)]">
               {t("editNodeAltLabel")}
             </span>
             <input
@@ -3954,7 +3954,7 @@ function NodesListPanel({
     return (
       <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
         <header className="mb-1">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+          <p className="text-[10px] font-semibold text-[var(--fg-muted)]">
             {t("nodesPanelTitle", { count: 0 })}
           </p>
         </header>
@@ -3975,7 +3975,7 @@ function NodesListPanel({
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+        <p className="text-[10px] font-semibold text-[var(--fg-muted)]">
           {t("nodesPanelTitle", { count: total })}
           {editedCount > 0 ? (
             <span className="ml-2 text-[#22d3ee]">
@@ -4004,7 +4004,7 @@ function NodesListPanel({
               >
                 <span className="flex w-full items-center justify-between gap-2">
                   <code className="break-all text-[10px]">{n.id}</code>
-                  <span className="flex flex-none items-center gap-1 text-[9px] uppercase tracking-widest">
+                  <span className="flex flex-none items-center gap-1 text-[10px]">
                     {isAdded && (
                       <span className="rounded bg-emerald-500/20 px-1 py-0.5 text-emerald-300">
                         new
@@ -4056,7 +4056,7 @@ function LintPanel({
     return (
       <section className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3">
         <header>
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-emerald-300">
+          <p className="text-[10px] font-semibold text-emerald-300">
             {t("lintPanelTitle", { count: 0 })}
           </p>
           <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
@@ -4082,7 +4082,7 @@ function LintPanel({
   return (
     <section className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-300">
+        <p className="text-[10px] font-semibold text-amber-300">
           {t("lintPanelTitle", { count: total })}
         </p>
         <p className="mt-1 flex flex-wrap gap-2 text-[10px] text-[var(--fg-muted)]">
@@ -4148,7 +4148,7 @@ function WelcomeIntro({
       className="rounded-lg border border-sky-500/40 bg-sky-500/5 p-3"
     >
       <header className="mb-2 flex items-center justify-between gap-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-sky-300">
+        <p className="text-[10px] font-semibold text-sky-300">
           {t("welcomeTitle")}
         </p>
         <button
@@ -4193,7 +4193,7 @@ function ConflictBadge({ conflicts }: { conflicts: ConflictInfo[] }) {
       className="rounded-lg border border-orange-500/40 bg-orange-500/5 p-3"
     >
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-orange-300">
+        <p className="text-[10px] font-semibold text-orange-300">
           {t("conflictsTitle", { count: conflicts.length })}
         </p>
         <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
@@ -4244,7 +4244,7 @@ function RestoreBanner({
       className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-3"
     >
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-300">
+        <p className="text-[10px] font-semibold text-amber-300">
           {t("restoreDraftTitle")}
         </p>
         <p className="mt-1 text-[11px] text-[var(--fg-muted)]">
@@ -4287,7 +4287,7 @@ function UndoBar({
       data-testid="undo-bar"
       className="flex items-center justify-between gap-2 rounded-lg border border-violet-500/40 bg-violet-500/5 px-3 py-2"
     >
-      <span className="text-[10px] font-semibold uppercase tracking-widest text-violet-300">
+      <span className="text-[10px] font-semibold text-violet-300">
         {t("undoBarLabel", { count: depth })}
       </span>
       <button
@@ -4322,7 +4322,7 @@ function PatchPreviewPanel({ bundle }: { bundle: PatchBundle }) {
       className="rounded-lg border border-sky-500/40 bg-sky-500/5 p-3"
     >
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-sky-300">
+        <p className="text-[10px] font-semibold text-sky-300">
           {t("patchPreviewTitle", { count: parts.length })}
         </p>
         <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
@@ -4343,7 +4343,7 @@ function PatchPreviewPanel({ bundle }: { bundle: PatchBundle }) {
         ))}
       </ul>
       <div className="mt-2 border-t border-[var(--border)] pt-2">
-        <p className="text-[9px] uppercase tracking-wider text-[var(--fg-dim)]">
+        <p className="text-[9px] text-[var(--fg-dim)]">
           {t("patchPreviewFilesLabel", { count: files.length })}
         </p>
         <ul
@@ -4386,7 +4386,7 @@ function MergeCloseNodesPanel({
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+        <p className="text-[10px] font-semibold text-[var(--fg-muted)]">
           {t("mergeCloseNodesPanelTitle")}
         </p>
         <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
@@ -4448,7 +4448,7 @@ function MergeNodePromptPanel({
   return (
     <section className="rounded-lg border border-amber-400/40 bg-amber-400/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-300">
+        <p className="text-[10px] font-semibold text-amber-300">
           {t("mergeNodesPromptTitle")}
         </p>
         <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
@@ -4505,7 +4505,7 @@ function DrawSlopeStatusPanel({
   return (
     <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[#22d3ee]">
+        <p className="text-[10px] font-semibold text-[#22d3ee]">
           Drawing slope · {points.length} vertex{points.length === 1 ? "" : "es"}
         </p>
         <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
@@ -4585,7 +4585,7 @@ function FinalizeSlopePanel({
   return (
     <section className="rounded-lg border border-[var(--accent)]/40 bg-[var(--accent)]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
+        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
           Finalize new slope
         </p>
         <p className="text-[10px] text-[var(--fg-dim)]">
@@ -4677,7 +4677,7 @@ function DrawLiftStatusPanel({
   return (
     <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[#22d3ee]">
+        <p className="text-[10px] font-semibold text-[#22d3ee]">
           Drawing lift · {points.length} vertex{points.length === 1 ? "" : "es"}
         </p>
         <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
@@ -4749,7 +4749,7 @@ function FinalizeLiftPanel({
   return (
     <section className="rounded-lg border border-[var(--accent)]/40 bg-[var(--accent)]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
+        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
           Finalize new lift
         </p>
         <p className="text-[10px] text-[var(--fg-dim)]">
@@ -4775,7 +4775,7 @@ function FinalizeLiftPanel({
         )}
         <LabeledInput label="Name" value={name} onChange={setName} />
         <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
-          <span className="font-semibold uppercase tracking-widest text-[var(--fg-dim)]">
+          <span className="font-semibold text-[var(--fg-dim)]">
             Type
           </span>
           <select
@@ -4970,7 +4970,7 @@ function NewPlaceForm() {
     <section className="rounded-lg border border-[var(--accent)]/40 bg-[var(--accent)]/10 p-3">
       <header className="mb-2 flex items-start justify-between gap-2">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
+          <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
             {t("newPlaceTitle")}
           </p>
           <p className="text-[10px] text-[var(--fg-dim)]">
@@ -5140,7 +5140,7 @@ function OsmImportPanel({
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
+        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
           Import from OpenStreetMap
         </p>
         <p className="mt-0.5 text-[10px] text-[var(--fg-dim)]">
@@ -5183,7 +5183,7 @@ function PickListPanel({
   return (
     <section>
       <header className="mb-1 flex items-center justify-between">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
+        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
           Picks ({picks.length})
         </p>
         <button

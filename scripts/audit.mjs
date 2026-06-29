@@ -85,37 +85,79 @@ const ROUTES = [
     path: "/",
     waitFor: 'nav[aria-label="Mode"]',
     extraWait: { selector: ".gm-style", optional: true, timeout: 12_000 },
-    interact: async (page) => {
-      // Dismiss welcome so it doesn't crowd the populated panel.
-      await page.evaluate(() => {
-        try { localStorage.setItem("osd-edit:welcome-seen", "1"); } catch {}
-      });
-      await page.reload({ waitUntil: "domcontentloaded" });
-      await page.waitForSelector('nav[aria-label="Mode"]', { timeout: 20_000 });
-      // Wait for the resort registry to load (select options > 1).
-      await page.waitForFunction(
-        () => document.querySelectorAll("select option").length > 1,
-        { timeout: 20_000 },
-      );
-      // Pick the first non-placeholder resort.
-      const slug = await page.evaluate(() => {
-        const select = document.querySelector("select");
-        if (!select) return null;
-        const first = Array.from(select.options).find((o) => o.value);
-        return first ? first.value : null;
-      });
-      if (!slug) throw new Error("no resort slugs found in dropdown");
-      await page.selectOption("select", slug);
-      // Wait for the entity browser to render (it only mounts when a
-      // resort is loaded).
-      await page.waitForSelector('input[type="search"], input[placeholder]', {
-        timeout: 15_000,
-      });
-    },
+    interact: loadFirstResort,
     settleMs: 3_000,
     region: "viewport",
   },
+  {
+    // Simulates entering "add-node" mode (graph editing). The mode dock
+    // highlights the active tile and the cursor mode + hint shift.
+    name: "add-node-mode",
+    path: "/",
+    waitFor: 'nav[aria-label="Mode"]',
+    extraWait: { selector: ".gm-style", optional: true, timeout: 12_000 },
+    interact: async (page) => {
+      await loadFirstResort(page);
+      // MODE_DESCRIPTORS order: pick, select, edit-slope-geom, draw-slope,
+      // edit-lift-geom, draw-lift, add-node, ... so add-node is the 7th
+      // button (1-indexed). Use nth-child rather than aria-label to
+      // avoid coupling to translation strings.
+      await page.locator('nav[aria-label="Mode"] button:nth-child(7)').click();
+    },
+    settleMs: 1_500,
+    region: "viewport",
+  },
+  {
+    // Simulates selecting a feature from the entity browser — the
+    // user-facing equivalent of "click a feature on the map → meta
+    // panel slides in". The slopes tab is active by default after a
+    // resort loads, so we just click the first slope item. Drive the
+    // DOM list rather than the map canvas (Google Maps synthetic
+    // clicks are unreliable).
+    name: "slope-selected",
+    path: "/",
+    waitFor: 'nav[aria-label="Mode"]',
+    extraWait: { selector: ".gm-style", optional: true, timeout: 12_000 },
+    interact: async (page) => {
+      await loadFirstResort(page);
+      // The entity browser's list is the only <ul> with
+      // `data-selected` buttons inside. Pick the first option.
+      const firstItem = page
+        .locator('ul li button[data-selected]')
+        .first();
+      await firstItem.waitFor({ timeout: 10_000 });
+      await firstItem.click();
+    },
+    settleMs: 2_000,
+    region: "viewport",
+  },
 ];
+
+/**
+ * Shared interaction: dismiss the welcome, wait for the resort
+ * registry to populate the dropdown, pick the first one, wait for the
+ * entity browser to mount. Used by every "engaged-state" route.
+ */
+async function loadFirstResort(page) {
+  await page.evaluate(() => {
+    try { localStorage.setItem("osd-edit:welcome-seen", "1"); } catch {}
+  });
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page.waitForSelector('nav[aria-label="Mode"]', { timeout: 20_000 });
+  await page.waitForFunction(
+    () => document.querySelectorAll("select option").length > 1,
+    { timeout: 20_000 },
+  );
+  const slug = await page.evaluate(() => {
+    const select = document.querySelector("select");
+    if (!select) return null;
+    const first = Array.from(select.options).find((o) => o.value);
+    return first ? first.value : null;
+  });
+  if (!slug) throw new Error("no resort slugs found in dropdown");
+  await page.selectOption("select", slug);
+  await page.waitForSelector('input[type="search"]', { timeout: 15_000 });
+}
 
 async function nextRoundDir() {
   if (!existsSync(AUDIT_DIR)) await mkdir(AUDIT_DIR);

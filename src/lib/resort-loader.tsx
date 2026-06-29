@@ -301,8 +301,8 @@ export function ResortLoader({
   }
 
   return (
-    <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
-      <label className="mb-1 block text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]/80">
+    <div className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
+      <label className="mb-1 block text-[11px] font-semibold text-[var(--fg-muted)]">
         {t("editExistingResort")}
       </label>
       {refs === null ? (
