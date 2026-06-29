@@ -75,6 +75,46 @@ const ROUTES = [
     },
     region: { selector: '[data-testid="welcome-intro"]' },
   },
+  {
+    // Simulates a real user picking a resort from the dropdown. Once
+    // a resort loads, the map flies to it and the right panel
+    // populates with the entity browser (slopes / lifts / nodes / edges).
+    // Reference flow: Google Earth's "click a feature → side panel
+    // slides in with data + elevation".
+    name: "resort-loaded",
+    path: "/",
+    waitFor: 'nav[aria-label="Mode"]',
+    extraWait: { selector: ".gm-style", optional: true, timeout: 12_000 },
+    interact: async (page) => {
+      // Dismiss welcome so it doesn't crowd the populated panel.
+      await page.evaluate(() => {
+        try { localStorage.setItem("osd-edit:welcome-seen", "1"); } catch {}
+      });
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await page.waitForSelector('nav[aria-label="Mode"]', { timeout: 20_000 });
+      // Wait for the resort registry to load (select options > 1).
+      await page.waitForFunction(
+        () => document.querySelectorAll("select option").length > 1,
+        { timeout: 20_000 },
+      );
+      // Pick the first non-placeholder resort.
+      const slug = await page.evaluate(() => {
+        const select = document.querySelector("select");
+        if (!select) return null;
+        const first = Array.from(select.options).find((o) => o.value);
+        return first ? first.value : null;
+      });
+      if (!slug) throw new Error("no resort slugs found in dropdown");
+      await page.selectOption("select", slug);
+      // Wait for the entity browser to render (it only mounts when a
+      // resort is loaded).
+      await page.waitForSelector('input[type="search"], input[placeholder]', {
+        timeout: 15_000,
+      });
+    },
+    settleMs: 3_000,
+    region: "viewport",
+  },
 ];
 
 async function nextRoundDir() {
