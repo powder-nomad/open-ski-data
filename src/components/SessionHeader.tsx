@@ -46,7 +46,7 @@ export function SessionHeader() {
   return (
     <div className="pointer-events-none fixed right-3 top-3 z-50 flex items-center gap-2">
       {status === "loading" && (
-        <span className="pointer-events-auto rounded-full border border-[var(--border)] bg-[var(--bg-elev)]/80 px-3 py-1 text-[11px] text-[var(--fg-dim)] backdrop-blur">
+        <span className="pointer-events-auto rounded-full border border-white/5 bg-[var(--bg-glass)] px-3 py-1 text-[11px] text-[var(--fg-dim)] shadow-[var(--shadow-glass)] backdrop-blur-md">
           …
         </span>
       )}
@@ -66,7 +66,7 @@ export function SessionHeader() {
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elev)]/85 px-2 py-1 text-[11px] font-semibold text-[var(--fg)] shadow-md backdrop-blur transition hover:bg-[var(--bg-elev)]"
+            className="inline-flex items-center gap-2 rounded-full border border-white/5 bg-[var(--bg-glass)] px-2 py-1 text-[11px] font-semibold text-[var(--fg)] shadow-[var(--shadow-glass)] backdrop-blur-md transition hover:bg-[var(--bg-elev)]"
             aria-haspopup="menu"
             aria-expanded={menuOpen}
             aria-label={`Signed in as ${user.login} — open menu`}
@@ -89,7 +89,7 @@ export function SessionHeader() {
           {menuOpen && (
             <div
               role="menu"
-              className="absolute right-0 top-full mt-1 min-w-[180px] rounded-lg border border-[var(--border)] bg-[var(--bg-elev)] p-1 text-[11px] text-[var(--fg)] shadow-xl"
+              className="absolute right-0 top-full mt-1 min-w-[180px] rounded-2xl border border-white/5 bg-[var(--bg-glass)] p-1 text-[11px] text-[var(--fg)] shadow-[var(--shadow-glass)] backdrop-blur-md"
             >
               <a
                 href={`https://github.com/${encodeURIComponent(user.login)}`}

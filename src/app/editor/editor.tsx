@@ -3039,7 +3039,7 @@ function SlopeMetaPanel({
   const difficulty = (override?.difficulty ?? slope.difficulty ?? "") as string;
   const lengthM = override?.length_m ?? slope.length_m ?? null;
   return (
-    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-surface)]/60 p-3">
+    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
           {t("selectedSlope")}
@@ -3222,7 +3222,7 @@ function LiftMetaPanel({
   const lengthM = override?.length_m ?? lift.length_m ?? null;
   const verticalM = override?.vertical_m ?? lift.vertical_m ?? null;
   return (
-    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-surface)]/60 p-3">
+    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
           {t("selectedLift")}
@@ -3344,7 +3344,7 @@ function PlaceMetaPanel({
   const summitM = place.elevations?.summit_m ?? null;
   const tagsCsv = (place.tags ?? []).join(", ");
   return (
-    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-surface)]/60 p-3">
+    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2 flex items-start justify-between gap-2">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
@@ -3723,7 +3723,7 @@ function EdgesListPanel({
   const total = baselineEdges.length + addedEdges.length;
   if (total === 0) {
     return (
-      <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
+      <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
         <header className="mb-1">
           <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
             {t("edgesPanelTitle", { count: 0 })}
@@ -3746,7 +3746,7 @@ function EdgesListPanel({
     ...addedEdges.map((e) => ({ e, isAdded: true, isEdited: false })),
   ];
   return (
-    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
+    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
           {t("edgesPanelTitle", { count: total })}
@@ -3956,7 +3956,7 @@ function NodesListPanel({
   const total = baselineNodes.length + addedNodes.length;
   if (total === 0) {
     return (
-      <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
+      <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
         <header className="mb-1">
           <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
             {t("nodesPanelTitle", { count: 0 })}
@@ -3977,7 +3977,7 @@ function NodesListPanel({
     ...addedNodes.map((n) => ({ n, isAdded: true, isEdited: false })),
   ];
   return (
-    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
+    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
           {t("nodesPanelTitle", { count: total })}
@@ -4388,7 +4388,7 @@ function MergeCloseNodesPanel({
   const t = useTranslations("slopeAuthor");
   const noneFound = lastRewired === 0 && deletedNodeCount === 0;
   return (
-    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 p-3">
+    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
           {t("mergeCloseNodesPanelTitle")}
@@ -5142,7 +5142,7 @@ function OsmImportPanel({
   onImport: () => void;
 }) {
   return (
-    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-surface)]/60 p-3">
+    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-soft)]">
           Import from OpenStreetMap
@@ -5296,7 +5296,7 @@ function EntityBrowserPanel({
     activeTab === "lifts" ? selectedId : null;
 
   return (
-    <section className="rounded-lg border border-[var(--border)] bg-[var(--bg-elev)]/40 overflow-hidden">
+    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] overflow-hidden">
       {/* Tab bar */}
       <div className="flex border-b border-[var(--border)]">
         {tabs.map((tab) => (

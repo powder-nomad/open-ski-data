@@ -21,6 +21,12 @@
    * through. Solid surface tone matches the header chrome. */
   --bg-page: #0b0f17;
 
+  /* Glass surfaces — translucent + blurred fill for panels that
+   * float over the map. Targets the dark-mode Google Earth look:
+   * dark tint, hint of inner glow via shadow, no hard borders. */
+  --bg-glass: rgba(15, 20, 30, 0.62);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.5);
+
   --fg: #e7ecf3;
   --fg-muted: #93a0b3;
   --fg-dim: #6b778a;
