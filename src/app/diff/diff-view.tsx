@@ -18,6 +18,7 @@ import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import { webRuntimeConfig } from "@/lib/runtime-config";
 import { usePrDiff } from "./use-pr-diff";
 import { DiffSummary } from "./diff-summary";
+import { DiffLanding } from "./diff-landing";
 import type { GraphNode, GraphEdge } from "@/lib/resort-loader";
 
 // Module-level guard — shared across editor.tsx if both are mounted
@@ -304,23 +305,11 @@ export function DiffView() {
       )}
 
       {/* Top-left card — PR info */}
-      <div className="absolute left-3 top-3 z-10 rounded-2xl bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] border border-white/5 p-3 max-w-xs w-[calc(100vw-5rem)] md:w-72">
+      <div className={`absolute left-3 top-3 z-10 rounded-2xl bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] border border-white/5 p-3 w-[calc(100vw-5rem)] ${isIdle ? "md:w-80" : "md:w-72"}`}>
         {isIdle ? (
-          <div className="space-y-2">
+          <div className="space-y-3">
             <p className="text-sm font-semibold text-[var(--fg)]">PR diff viewer</p>
-            <p className="text-xs text-[var(--fg-muted)]">
-              Paste a PR number or SHA pair to review a changeset on the map.
-            </p>
-            <div className="space-y-1">
-              <p className="text-[10px] font-semibold text-[var(--fg-dim)]">By PR number</p>
-              <code className="block text-[10px] text-[var(--fg-muted)] bg-[var(--bg-elev)] rounded px-2 py-1">
-                /diff?pr=2
-              </code>
-              <p className="text-[10px] font-semibold text-[var(--fg-dim)]">By SHAs</p>
-              <code className="block text-[10px] text-[var(--fg-muted)] bg-[var(--bg-elev)] rounded px-2 py-1">
-                /diff?base=&lt;sha&gt;&head=&lt;sha&gt;
-              </code>
-            </div>
+            <DiffLanding />
           </div>
         ) : isLoading ? (
           <div className="space-y-1">
