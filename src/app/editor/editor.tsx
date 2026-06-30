@@ -960,6 +960,15 @@ export function SlopeAuthor2() {
           zoom: DEFAULT_ZOOM,
           mapTypeId: "terrain",
           clickableIcons: false,
+          // Mobile: accept single-finger pan without the "use two fingers" toast
+          gestureHandling: "greedy",
+          // Hide native controls — our glass chrome replaces them
+          zoomControl: false,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false,
+          rotateControl: false,
+          scaleControl: false,
         });
         googleMap.current = map;
         map.addListener("click", (e: google.maps.MapMouseEvent) => {

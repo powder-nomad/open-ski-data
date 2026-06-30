@@ -75,6 +75,13 @@ export function DiffView() {
           zoom: DEFAULT_ZOOM,
           mapTypeId: "terrain",
           clickableIcons: false,
+          gestureHandling: "greedy",
+          zoomControl: false,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false,
+          rotateControl: false,
+          scaleControl: false,
         });
         googleMap.current = map;
         setMapReady(true);
