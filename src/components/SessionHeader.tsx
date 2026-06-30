@@ -45,11 +45,7 @@ export function SessionHeader() {
 
   return (
     <div className="pointer-events-none fixed right-3 top-3 z-50 flex items-center gap-2">
-      {status === "loading" && (
-        <span className="pointer-events-auto rounded-full border border-white/5 bg-[var(--bg-glass)] px-3 py-1 text-[11px] text-[var(--fg-dim)] shadow-[var(--shadow-glass)] backdrop-blur-md">
-          …
-        </span>
-      )}
+      {status === "loading" && null}
 
       {status === "anonymous" && (
         <a

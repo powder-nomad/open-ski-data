@@ -199,6 +199,10 @@
     "colorSchemeDark": "다크",
     "colorSchemeSystemHint": "OS / 브라우저 설정을 따릅니다",
     "langEn": "English",
-    "langKo": "한국어"
+    "langKo": "한국어",
+    "aboutSection": "정보",
+    "aboutDescription": "osd-edit는 스키 리조트 지도 오픈 데이터셋인 open-ski-data 프로젝트의 커뮤니티 편집기입니다.",
+    "aboutRepo": "GitHub에서 소스 보기 ↗",
+    "aboutLicense": "데이터: ODbL · 코드: MIT"
   }
 }

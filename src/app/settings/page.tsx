@@ -118,6 +118,22 @@ export default function SettingsPage() {
             </p>
           )}
         </SectionCard>
+
+        {/* About */}
+        <SectionCard title={t("aboutSection")}>
+          <p className="mb-3 text-sm text-[var(--fg-muted)]">
+            {t("aboutDescription")}
+          </p>
+          <a
+            href="https://github.com/powder-nomad/open-ski-data"
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm text-[var(--accent)] transition hover:underline"
+          >
+            {t("aboutRepo")}
+          </a>
+          <p className="mt-3 text-xs text-[var(--fg-dim)]">{t("aboutLicense")}</p>
+        </SectionCard>
       </div>
     </main>
   );

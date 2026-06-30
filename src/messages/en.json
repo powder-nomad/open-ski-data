@@ -199,6 +199,10 @@
     "colorSchemeDark": "Dark",
     "colorSchemeSystemHint": "Follows your OS / browser preference",
     "langEn": "English",
-    "langKo": "한국어"
+    "langKo": "한국어",
+    "aboutSection": "About",
+    "aboutDescription": "osd-edit is a community editor for the open-ski-data project — an open dataset of ski resort maps.",
+    "aboutRepo": "View source on GitHub ↗",
+    "aboutLicense": "Data: ODbL · Code: MIT"
   }
 }
