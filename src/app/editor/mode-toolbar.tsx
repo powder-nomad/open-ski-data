@@ -99,7 +99,9 @@ export function ModeToolbar({
   return (
     <nav
       aria-label={t("mode")}
-      className="no-scrollbar flex w-full flex-none flex-row items-stretch gap-0.5 overflow-x-auto rounded-none border-b border-white/5 bg-[var(--bg-glass)] px-2 py-1.5 backdrop-blur-md shadow-[var(--shadow-glass)] md:w-auto md:gap-1 md:overflow-x-visible md:rounded-2xl md:border md:border-white/5 md:px-2 md:py-2"
+      /* Mobile: compact centered pill with icons only, sits above the drawer.
+       * Desktop: glass card inline-flex with icon + label buttons. */
+      className="no-scrollbar inline-flex max-w-[calc(100vw-5rem)] flex-none flex-row items-center gap-0 overflow-x-auto rounded-full border border-white/10 bg-[var(--bg-glass)] px-1.5 py-1 shadow-[var(--shadow-glass)] backdrop-blur-md md:max-w-none md:gap-1 md:rounded-2xl md:border-white/5 md:px-2 md:py-2"
     >
       {MODE_DESCRIPTORS.map((d) => {
         const blockedBySelection =
@@ -131,7 +133,7 @@ export function ModeToolbar({
             type="button"
             disabled={disabled}
             onClick={() => onModeChange(d.mode)}
-            className={`flex flex-none flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 text-[10px] font-semibold transition md:px-2 md:py-2 ${
+            className={`flex flex-none flex-col items-center gap-0.5 rounded-lg px-1.5 py-1 text-[10px] font-semibold transition md:rounded-xl md:px-2 md:py-2 ${
               active
                 ? "bg-[var(--accent)] text-[var(--accent-ink)] shadow-[0_4px_12px_rgba(34,211,238,0.25)]"
                 : disabled
@@ -141,10 +143,11 @@ export function ModeToolbar({
             title={disabledReason ?? hint}
             aria-label={`${label} — ${disabledReason ?? hint}`}
           >
-            <span aria-hidden className="text-base leading-none">
+            <span aria-hidden className="text-sm leading-none md:text-base">
               {d.icon}
             </span>
-            <span className="whitespace-nowrap text-[9px] leading-tight tracking-tight">
+            {/* Labels hidden on mobile — icon-only pill saves space */}
+            <span className="hidden whitespace-nowrap text-[9px] leading-tight tracking-tight md:block">
               {label}
             </span>
           </button>

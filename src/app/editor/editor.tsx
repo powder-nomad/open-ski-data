@@ -2497,14 +2497,15 @@ export function SlopeAuthor2() {
         )}
       </div>
 
-      {/* ── Floating header — glass card top-left ── */}
-      <header className="pointer-events-none absolute left-4 right-4 top-4 z-20 md:right-auto md:w-[22rem]">
-        <div className="pointer-events-auto flex items-center justify-between gap-3 rounded-2xl border border-white/5 bg-[var(--bg-glass)] px-4 py-2.5 shadow-[var(--shadow-glass)] backdrop-blur-md">
+      {/* ── Floating header — compact pill on mobile, wider card on desktop ── */}
+      <header className="pointer-events-none absolute left-4 top-4 z-20 md:w-[22rem]">
+        <div className="pointer-events-auto flex items-center justify-between gap-3 rounded-2xl border border-white/5 bg-[var(--bg-glass)] px-3 py-2 shadow-[var(--shadow-glass)] backdrop-blur-md md:px-4 md:py-2.5">
           <div className="min-w-0">
-            <p className="text-[9px] font-semibold text-[var(--accent-soft)]">
+            {/* Eyebrow hidden on mobile — saves header height */}
+            <p className="hidden text-[9px] font-semibold text-[var(--accent-soft)] md:block">
               {t("devEyebrow")}
             </p>
-            <h1 className="truncate text-sm font-bold">{t("title")}</h1>
+            <h1 className="truncate text-xs font-bold md:text-sm">{t("title")}</h1>
           </div>
           <div className="flex flex-none items-center gap-2 text-xs">
             <button
@@ -2521,9 +2522,12 @@ export function SlopeAuthor2() {
         </div>
       </header>
 
-      {/* ── Floating mode dock — glass card bottom-left at md+, top scroll on mobile ── */}
-      <div className="pointer-events-none absolute left-0 right-0 top-[68px] z-20 md:bottom-10 md:left-4 md:right-auto md:top-auto">
-        <div className="pointer-events-auto md:inline-flex">
+      {/* ── Mode dock — top-center pill on mobile, bottom-left card on desktop ──
+           Mobile: sits just below the header chip at top-14, always visible
+           regardless of the drawer state. Icon-only pill keeps it compact.
+           Desktop: glass card bottom-left, unchanged. */}
+      <div className="pointer-events-none absolute left-0 right-0 top-14 z-20 flex justify-center md:bottom-10 md:left-4 md:right-auto md:top-auto md:block">
+        <div className="pointer-events-auto">
           <ModeToolbar
             mode={mode}
             onModeChange={setMode}
@@ -2537,7 +2541,8 @@ export function SlopeAuthor2() {
 
       {/* ── Right rail / mobile drawer ── */}
       <aside
-        className={`pointer-events-auto flex w-full flex-none flex-col overflow-hidden bg-[var(--bg-glass)] shadow-[var(--shadow-glass)] backdrop-blur-md transition-[max-height] duration-200 ease-out fixed bottom-0 left-0 right-0 z-30 rounded-t-3xl border-t border-white/5 ${drawerMaxH} md:absolute md:bottom-4 md:left-auto md:right-4 md:top-[64px] md:z-20 md:max-h-[calc(100dvh-80px)] md:w-[22rem] md:rounded-2xl md:border md:border-white/5 md:transition-none`}
+        data-mobile-sheet
+        className={`pointer-events-auto flex w-full flex-none flex-col overflow-hidden bg-[var(--bg-glass)] shadow-[var(--shadow-glass)] md:backdrop-blur-md transition-[max-height] duration-200 ease-out fixed bottom-0 left-0 right-0 z-30 rounded-t-3xl border-t border-white/10 ${drawerMaxH} md:absolute md:bottom-4 md:left-auto md:right-4 md:top-[64px] md:z-20 md:max-h-[calc(100dvh-80px)] md:w-[22rem] md:rounded-2xl md:border md:border-white/5 md:transition-none`}
       >
           {/* Mobile drawer handle — click to cycle peek → half → full
               → peek. Surfaces the mode hint inline, replacing the
@@ -2548,7 +2553,7 @@ export function SlopeAuthor2() {
             onClick={cycleDrawer}
             aria-label={`${descLabel}: ${descHint} — toggle drawer`}
             aria-expanded={drawerState !== "peek"}
-            className="flex w-full flex-none flex-col items-center gap-1 border-b border-[var(--border)] bg-[var(--bg-elev)]/60 px-3 py-2 transition hover:bg-[var(--bg-elev)] md:hidden"
+            className="flex w-full flex-none flex-col items-center gap-1 border-b border-[var(--border)] bg-[var(--bg-elev)] px-3 py-2 transition hover:bg-[var(--bg-elev-strong)] md:hidden"
           >
             <span aria-hidden className="block h-1 w-10 rounded-full bg-[var(--fg-dim)]" />
             <span className="line-clamp-1 text-[11px] text-[var(--fg-muted)]">
