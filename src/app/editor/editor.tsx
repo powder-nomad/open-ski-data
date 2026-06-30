@@ -2551,7 +2551,7 @@ export function SlopeAuthor2() {
       {/* ── Right rail / mobile drawer ── */}
       <aside
         data-mobile-sheet
-        className={`pointer-events-auto flex w-full flex-none flex-col overflow-hidden bg-[var(--bg-glass)] shadow-[var(--shadow-glass)] md:backdrop-blur-md transition-[max-height] duration-200 ease-out fixed bottom-0 left-0 right-0 z-30 rounded-t-3xl border-t border-white/10 ${drawerMaxH} md:absolute md:bottom-4 md:left-auto md:right-4 md:top-[64px] md:z-20 md:max-h-[calc(100dvh-80px)] md:w-[22rem] md:rounded-2xl md:border md:border-white/5 md:transition-none`}
+        className={`pointer-events-auto flex w-full flex-none flex-col overflow-hidden bg-[var(--bg-elev)] shadow-[var(--shadow-glass)] md:bg-[var(--bg-glass)] md:backdrop-blur-md transition-[max-height] duration-200 ease-out fixed bottom-0 left-0 right-0 z-30 rounded-t-3xl border-t border-white/10 ${drawerMaxH} md:absolute md:bottom-4 md:left-auto md:right-4 md:top-[64px] md:z-20 md:max-h-[calc(100dvh-80px)] md:w-[22rem] md:rounded-2xl md:border md:border-white/5 md:transition-none`}
       >
           {/* Mobile drawer handle — click to cycle peek → half → full
               → peek. Surfaces the mode hint inline, replacing the
