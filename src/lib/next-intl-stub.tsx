@@ -43,7 +43,10 @@ const ALL_MESSAGES: Record<SupportedLocale, LoadedMessages> = {
   ko: koMessages as unknown as LoadedMessages,
 };
 
+const LS_KEY = "osd-edit:locale";
+
 const LocaleContext = createContext<SupportedLocale>(DEFAULT_LOCALE);
+const SetLocaleContext = createContext<(l: SupportedLocale) => void>(() => {});
 
 function detectFromNavigator(): SupportedLocale {
   if (typeof navigator === "undefined") return DEFAULT_LOCALE;
@@ -54,25 +57,48 @@ function detectFromNavigator(): SupportedLocale {
   return DEFAULT_LOCALE;
 }
 
+function readStoredLocale(): SupportedLocale | null {
+  try {
+    const v = localStorage.getItem(LS_KEY);
+    if (v && SUPPORTED_LOCALES.includes(v as SupportedLocale)) {
+      return v as SupportedLocale;
+    }
+  } catch {}
+  return null;
+}
+
 export function LocaleProvider({ children }: { children: ReactNode }) {
   // Initial value MUST match server render to avoid hydration #418.
-  // We then bump it post-mount with the navigator-detected locale.
-  const [locale, setLocale] = useState<SupportedLocale>(DEFAULT_LOCALE);
+  // Post-mount: prefer localStorage pick, then navigator auto-detect.
+  const [locale, setLocaleState] = useState<SupportedLocale>(DEFAULT_LOCALE);
+
   useEffect(() => {
-    const next = detectFromNavigator();
-    if (next !== locale) setLocale(next);
-    // Keep the <html lang> attr in sync for accessibility / SEO.
+    const next = readStoredLocale() ?? detectFromNavigator();
+    if (next !== locale) setLocaleState(next);
     if (typeof document !== "undefined") {
       document.documentElement.lang = next;
     }
-    // We intentionally only re-detect on mount; session-level locale
-    // is fine for an editor. Empty deps array to skip the linter
-    // warning about `locale` — see the if-guard above.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const setLocale = (next: SupportedLocale) => {
+    try { localStorage.setItem(LS_KEY, next); } catch {}
+    setLocaleState(next);
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = next;
+    }
+  };
+
   return (
-    <LocaleContext.Provider value={locale}>{children}</LocaleContext.Provider>
+    <SetLocaleContext.Provider value={setLocale}>
+      <LocaleContext.Provider value={locale}>{children}</LocaleContext.Provider>
+    </SetLocaleContext.Provider>
   );
+}
+
+/** Returns a setter that persists the chosen locale to localStorage. */
+export function useSetLocale(): (l: SupportedLocale) => void {
+  return useContext(SetLocaleContext);
 }
 
 function interpolate(

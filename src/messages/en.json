@@ -188,5 +188,17 @@
     "entityTabEdges": "Edges",
     "entityTabNodes": "Nodes",
     "entitySearchPlaceholder": "Search…"
+  },
+  "settings": {
+    "title": "Settings",
+    "backToEditor": "← Back to editor",
+    "languageSection": "Language",
+    "colorSchemeSection": "Color scheme",
+    "colorSchemeSystem": "System",
+    "colorSchemeLight": "Light",
+    "colorSchemeDark": "Dark",
+    "colorSchemeSystemHint": "Follows your OS / browser preference",
+    "langEn": "English",
+    "langKo": "한국어"
   }
 }

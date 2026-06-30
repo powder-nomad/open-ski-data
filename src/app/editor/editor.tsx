@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import { webRuntimeConfig } from "@/lib/runtime-config";
@@ -2507,7 +2508,7 @@ export function SlopeAuthor2() {
             </p>
             <h1 className="truncate text-xs font-bold md:text-sm">{t("title")}</h1>
           </div>
-          <div className="flex flex-none items-center gap-2 text-xs">
+          <div className="flex flex-none items-center gap-1.5 text-xs">
             <button
               type="button"
               data-testid="welcome-help"
@@ -2518,6 +2519,14 @@ export function SlopeAuthor2() {
             >
               ?
             </button>
+            <Link
+              href="/settings"
+              aria-label="Settings"
+              title="Settings"
+              className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-white/10 text-[13px] text-[var(--fg-muted)] transition hover:bg-white/20 hover:text-[var(--fg)]"
+            >
+              ⚙
+            </Link>
           </div>
         </div>
       </header>

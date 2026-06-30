@@ -188,5 +188,17 @@
     "entityTabEdges": "엣지",
     "entityTabNodes": "노드",
     "entitySearchPlaceholder": "검색…"
+  },
+  "settings": {
+    "title": "설정",
+    "backToEditor": "← 편집기로 돌아가기",
+    "languageSection": "언어",
+    "colorSchemeSection": "색 테마",
+    "colorSchemeSystem": "시스템",
+    "colorSchemeLight": "라이트",
+    "colorSchemeDark": "다크",
+    "colorSchemeSystemHint": "OS / 브라우저 설정을 따릅니다",
+    "langEn": "English",
+    "langKo": "한국어"
   }
 }
