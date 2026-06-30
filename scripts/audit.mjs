@@ -131,6 +131,27 @@ const ROUTES = [
     settleMs: 2_000,
     region: "viewport",
   },
+  {
+    // /diff with no params — empty/landing state. Should render the
+    // glass shell with "paste a PR link or SHA pair" prompt, no crash.
+    name: "diff-empty-state",
+    path: "/diff",
+    waitFor: null,
+    settleMs: 1_500,
+    region: "viewport",
+  },
+  {
+    // /diff?pr=2 — Alpensia dedup PR. Should render the map at
+    // Alpensia with 6 red dashed dup edges + 1 red node ring, right
+    // panel shows "1 graph-node removed, 6 graph-edge removed, 0 geometry
+    // changes" banner. Fetches from GitHub API + raw.githubusercontent.com
+    // so needs network; settleMs is generous.
+    name: "diff-pr-2",
+    path: "/diff?pr=2",
+    waitFor: null,
+    settleMs: 8_000,
+    region: "viewport",
+  },
 ];
 
 /**
