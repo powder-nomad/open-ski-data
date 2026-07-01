@@ -1276,8 +1276,8 @@ export function SlopeAuthor2() {
         }
       }
     }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
   }, [drawSlopePoints, drawLiftPoints]);
 
   // ── Render dropped pin markers ────────────────────────────────
@@ -1352,6 +1352,31 @@ export function SlopeAuthor2() {
   effectiveSlopesRef.current = effectiveSlopes;
   const effectiveLiftsRef = useRef(effectiveLifts);
   effectiveLiftsRef.current = effectiveLifts;
+
+  // deleteByIdRef: re-assigned each render so the keyboard handler
+  // (registered once with [] deps) always invokes deletion functions
+  // whose closures capture CURRENT state — not the initial-render values.
+  // Without this, deleteNode / deleteEdge read `loadedResort = null` from
+  // their stale first-render closure and early-return harmlessly.
+  const deleteByIdRef = useRef<(id: string) => void>(() => {});
+  deleteByIdRef.current = (id: string) => {
+    if (effectiveSlopes.some((s) => s.id === id)) deleteSlope(id);
+    else if (effectiveLifts.some((l) => l.id === id)) deleteLift(id);
+    else if (
+      [
+        ...(loadedResort?.graph?.nodes ?? []),
+        ...addedGraphNodes,
+      ].some((n) => n.id === id)
+    )
+      deleteNode(id);
+    else if (
+      [
+        ...(loadedResort?.graph?.edges ?? []),
+        ...addedGraphEdges,
+      ].some((e) => e.id === id)
+    )
+      deleteEdge(id);
+  };
 
   const effectivePlace = useMemo<PlaceRecord | null>(() => {
     if (!loadedResort) return null;
@@ -2107,6 +2132,28 @@ export function SlopeAuthor2() {
     function onKey(e: KeyboardEvent) {
       const m = modeRef.current;
       if (e.key !== "Escape") return;
+      // Clear multi-selection first — takes priority over mode-specific actions.
+      if (multiSelectedIdsRef.current.size > 0) {
+        e.preventDefault();
+        setMultiSelectedIds(new Set());
+        return;
+      }
+      if (m === "select") {
+        // Deselect whatever single entity is highlighted.
+        const hasSel =
+          selectedSlopeIdRef.current !== null ||
+          selectedLiftIdRef.current !== null ||
+          selectedNodeIdRef.current !== null ||
+          selectedEdgeIdRef.current !== null;
+        if (hasSel) {
+          e.preventDefault();
+          setSelectedSlopeId(null);
+          setSelectedLiftId(null);
+          setSelectedNodeId(null);
+          setSelectedEdgeId(null);
+        }
+        return;
+      }
       if (m === "connect-nodes") {
         e.preventDefault();
         setAnchorNodeId(null);
@@ -2120,8 +2167,9 @@ export function SlopeAuthor2() {
         setMode("select");
       }
     }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    // Capture phase so Google Maps event interception doesn't block Escape.
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
   }, []);
 
   // Delete / Backspace: delete the multi-selected entities (if any) or
@@ -2156,32 +2204,15 @@ export function SlopeAuthor2() {
       if (toDelete.size === 0) return;
       e.preventDefault();
 
-      const resort = loadedResortRef.current;
-      if (!resort) return;
-      const slopes = effectiveSlopesRef.current;
-      const lifts = effectiveLiftsRef.current;
-      const slopeIdSet = new Set(slopes.map((s) => s.id));
-      const liftIdSet = new Set(lifts.map((l) => l.id));
-      const nodeIdSet = new Set([
-        ...(resort.graph?.nodes ?? []).map((n) => n.id),
-        ...addedGraphNodesRef.current.map((n) => n.id),
-      ]);
-      const edgeIdSet = new Set([
-        ...(resort.graph?.edges ?? []).map((e) => e.id),
-        ...addedGraphEdgesRef.current.map((e) => e.id),
-      ]);
-
       for (const id of toDelete) {
-        if (slopeIdSet.has(id)) deleteSlope(id);
-        else if (liftIdSet.has(id)) deleteLift(id);
-        else if (nodeIdSet.has(id)) deleteNode(id);
-        else if (edgeIdSet.has(id)) deleteEdge(id);
+        deleteByIdRef.current(id);
       }
       setMultiSelectedIds(new Set());
     }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-    // Empty deps — reads all current values through stable refs.
+    // Capture phase so Google Maps keyboard interception can't eat the event.
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+    // Empty deps — all current values reached via stable refs or deleteByIdRef.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
