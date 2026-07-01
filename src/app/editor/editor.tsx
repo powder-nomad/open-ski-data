@@ -343,6 +343,12 @@ export function SlopeAuthor2() {
     modeRef.current = mode;
   }, [mode]);
 
+  // Map type: "terrain" for the planning view, "hybrid" for satellite+labels.
+  const [mapTypeId, setMapTypeId] = useState<"terrain" | "hybrid">("terrain");
+  useEffect(() => {
+    googleMap.current?.setMapTypeId(mapTypeId);
+  }, [mapTypeId]);
+
   // Pick mode state: dropped pins + their elevation. Bare-minimum;
   // a fuller v2 brings a list panel like v1's, but the marker-on-map
   // proves the pattern.
@@ -1610,16 +1616,45 @@ export function SlopeAuthor2() {
     setOsmImport({ kind: "fetching" });
     const { latitude, longitude } = loadedResort.place.coordinates;
     const radiusM = 5000;
+    // 60s server-side timeout to handle busy Overpass nodes gracefully.
     const query =
-      `[out:json][timeout:30];` +
+      `[out:json][timeout:60];` +
       `way["piste:type"="downhill"](around:${radiusM},${latitude},${longitude});` +
       `out geom;`;
+    // Try mirrors in order so a 504 on the primary doesn't block the import.
+    const OVERPASS_ENDPOINTS = [
+      "https://overpass-api.de/api/interpreter",
+      "https://overpass.kumi.systems/api/interpreter",
+      "https://z.overpass-api.de/api/interpreter",
+    ];
     try {
-      const res = await fetch("https://overpass-api.de/api/interpreter", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `data=${encodeURIComponent(query)}`,
-      });
+      let res: Response | null = null;
+      let lastErr = "";
+      for (const endpoint of OVERPASS_ENDPOINTS) {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 30_000);
+        try {
+          res = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `data=${encodeURIComponent(query)}`,
+            signal: ctrl.signal,
+          });
+          clearTimeout(timer);
+          // A 504 means the endpoint is overloaded — try the next mirror.
+          if (res.status !== 504) break;
+          lastErr = `${endpoint}: HTTP 504`;
+          res = null;
+        } catch {
+          clearTimeout(timer);
+          lastErr = `${endpoint}: timeout or network error`;
+          res = null;
+        }
+      }
+      if (!res) {
+        setOsmImport({ kind: "error", message: `All Overpass mirrors failed: ${lastErr}` });
+        return;
+      }
       if (!res.ok) {
         setOsmImport({
           kind: "error",
@@ -2859,6 +2894,22 @@ export function SlopeAuthor2() {
             <h1 className="truncate text-xs font-bold md:text-sm">{t("title")}</h1>
           </div>
           <div className="flex flex-none items-center gap-1.5 text-xs">
+            {mapReady && (
+              <button
+                type="button"
+                onClick={() =>
+                  setMapTypeId((t) => (t === "terrain" ? "hybrid" : "terrain"))
+                }
+                title={
+                  mapTypeId === "terrain"
+                    ? "Switch to satellite view"
+                    : "Switch to terrain view"
+                }
+                className="flex h-6 items-center rounded-full bg-white/10 px-2 text-[10px] font-semibold text-[var(--fg-muted)] transition hover:bg-white/20 hover:text-[var(--fg)]"
+              >
+                {mapTypeId === "terrain" ? "🛰 Sat" : "🗺 Map"}
+              </button>
+            )}
             <button
               type="button"
               data-testid="welcome-help"
