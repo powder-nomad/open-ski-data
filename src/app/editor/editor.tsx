@@ -110,6 +110,29 @@ type I18nLocale = (typeof I18N_LOCALES)[number];
 
 let mapsConfigured = false;
 
+// Convert a lat/lng to map-container-relative pixel coordinates.
+// Returns null when the map projection isn't ready yet.
+function latLngToPixel(
+  map: google.maps.Map,
+  lat: number,
+  lng: number,
+): { x: number; y: number } | null {
+  const projection = map.getProjection();
+  if (!projection) return null;
+  const bounds = map.getBounds();
+  if (!bounds) return null;
+  const zoom = map.getZoom();
+  if (zoom === undefined) return null;
+  const scale = Math.pow(2, zoom);
+  const nwWorld = projection.fromLatLngToPoint(
+    new google.maps.LatLng(bounds.getNorthEast().lat(), bounds.getSouthWest().lng()),
+  );
+  if (!nwWorld) return null;
+  const pt = projection.fromLatLngToPoint(new google.maps.LatLng(lat, lng));
+  if (!pt) return null;
+  return { x: (pt.x - nwWorld.x) * scale, y: (pt.y - nwWorld.y) * scale };
+}
+
 type PickedPoint = {
   id: string;
   lat: number;
@@ -129,6 +152,10 @@ type EdgeOverride = Partial<GraphEdge>;
 const EDGE_BASELINE_COLOR = "#64748b"; // slate-500
 const EDGE_ADDED_COLOR = "#22c55e"; // emerald-500
 const EDGE_EDIT_COLOR = "#22d3ee"; // cyan-400
+
+// Multi-select highlight color — rose-500. Distinct from amber (selected)
+// and cyan (editing) so the user can see "ready to delete" at a glance.
+const MULTI_SELECT_COLOR = "#f43f5e";
 
 // Lint issue discriminated union. Each issue points at one entity
 // id so the LintPanel can click-to-jump straight into the right
@@ -514,6 +541,21 @@ export function SlopeAuthor2() {
   >("slopes");
   const [entitySearch, setEntitySearch] = useState("");
 
+  // Multi-select: a set of entity ids captured by the box-drag gesture.
+  // Delete/Backspace deletes everything here (or falls back to the single
+  // selection if the set is empty).
+  const [multiSelectedIds, setMultiSelectedIds] = useState<Set<string>>(
+    new Set(),
+  );
+  // Visual state for the box-select drag rectangle. null = not dragging.
+  const [boxRect, setBoxRect] = useState<{
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    crossing: boolean; // true = R→L (crossing), false = L→R (window)
+  } | null>(null);
+
   // OSM Overpass re-import status. Same flow as v1: pull
   // piste:type=downhill ways within 5km of the resort centre, drop
   // the ones whose endpoints match an existing slope (≤10m), append
@@ -558,6 +600,23 @@ export function SlopeAuthor2() {
   const slopeLineRefs = useRef<Map<string, google.maps.Polyline>>(new Map());
   const liftLineRefs = useRef<Map<string, google.maps.Polyline>>(new Map());
 
+  // "Latest value" refs — assigned each render so stable effects can
+  // read current state without being re-created on every render.
+  const multiSelectedIdsRef = useRef(multiSelectedIds);
+  multiSelectedIdsRef.current = multiSelectedIds;
+  const selectedSlopeIdRef = useRef(selectedSlopeId);
+  selectedSlopeIdRef.current = selectedSlopeId;
+  const selectedLiftIdRef = useRef(selectedLiftId);
+  selectedLiftIdRef.current = selectedLiftId;
+  const selectedNodeIdRef = useRef(selectedNodeId);
+  selectedNodeIdRef.current = selectedNodeId;
+  const selectedEdgeIdRef = useRef(selectedEdgeId);
+  selectedEdgeIdRef.current = selectedEdgeId;
+  const deletedGraphNodeIdsRef = useRef(deletedGraphNodeIds);
+  deletedGraphNodeIdsRef.current = deletedGraphNodeIds;
+  const deletedGraphEdgeIdsRef = useRef(deletedGraphEdgeIds);
+  deletedGraphEdgeIdsRef.current = deletedGraphEdgeIds;
+
   // Selection state cleared when the resort changes.
   useEffect(() => {
     setSelectedSlopeId(null);
@@ -585,12 +644,14 @@ export function SlopeAuthor2() {
     setPendingDrawSlope(null);
     setPendingDrawLift(null);
     setPicks([]);
+    setMultiSelectedIds(new Set());
   }, [loadedResort?.ref.slug]);
 
   // Selecting a slope clears the lift selection and vice-versa —
   // the right-rail meta panel only renders one entity at a time.
   function selectSlope(id: string | null) {
     setSelectedSlopeId(id);
+    if (id) setMultiSelectedIds(new Set());
     if (id) {
       setSelectedLiftId(null);
       setActiveEntityTab("slopes");
@@ -605,6 +666,7 @@ export function SlopeAuthor2() {
   }
   function selectLift(id: string | null) {
     setSelectedLiftId(id);
+    if (id) setMultiSelectedIds(new Set());
     if (id) {
       setSelectedSlopeId(null);
       setActiveEntityTab("lifts");
@@ -622,6 +684,7 @@ export function SlopeAuthor2() {
   // the edit-edge toolbar button (requiresSelection: "edge").
   function selectEdge(id: string | null) {
     setSelectedEdgeId(id);
+    if (id) setMultiSelectedIds(new Set());
     if (id) {
       setSelectedSlopeId(null);
       setSelectedLiftId(null);
@@ -642,6 +705,7 @@ export function SlopeAuthor2() {
   // "node"). Used by the on-map click handler and NodesListPanel.
   function selectNode(id: string | null) {
     setSelectedNodeId(id);
+    if (id) setMultiSelectedIds(new Set());
     if (id) {
       setSelectedSlopeId(null);
       setSelectedLiftId(null);
@@ -1056,6 +1120,7 @@ export function SlopeAuthor2() {
     if (m === "select") {
       setSelectedSlopeId(null);
       setSelectedLiftId(null);
+      setMultiSelectedIds(new Set());
     }
     // Snap-on-create: a freshly-dropped vertex within SNAP_RADIUS_M
     // of an existing graph node, an existing slope/lift vertex, or
@@ -1281,6 +1346,13 @@ export function SlopeAuthor2() {
     return [...fromBaseline, ...addedLifts];
   }, [loadedResort, liftOverrides, addedLifts, deletedLiftIds]);
 
+  // Refs for effectiveSlopes/effectiveLifts — placed after the memos so
+  // they reference the computed values, not stale closures.
+  const effectiveSlopesRef = useRef(effectiveSlopes);
+  effectiveSlopesRef.current = effectiveSlopes;
+  const effectiveLiftsRef = useRef(effectiveLifts);
+  effectiveLiftsRef.current = effectiveLifts;
+
   const effectivePlace = useMemo<PlaceRecord | null>(() => {
     if (!loadedResort) return null;
     if (Object.keys(placeOverride).length === 0) return loadedResort.place;
@@ -1398,6 +1470,7 @@ export function SlopeAuthor2() {
       if (!slope.coordinates || slope.coordinates.length < 2) continue;
       const isSelected = slope.id === selectedSlopeId;
       const isEditing = isSelected && mode === "edit-slope-geom";
+      const isMultiSel = multiSelectedIds.has(slope.id);
       const path = slope.coordinates.map((c) => ({ lat: c.lat, lng: c.lon }));
       const polyline = new google.maps.Polyline({
         map,
@@ -1406,9 +1479,11 @@ export function SlopeAuthor2() {
           ? SLOPE_EDIT_COLOR
           : isSelected
             ? SLOPE_SELECTED_COLOR
-            : SLOPE_BASELINE_COLOR,
+            : isMultiSel
+              ? MULTI_SELECT_COLOR
+              : SLOPE_BASELINE_COLOR,
         strokeOpacity: 0.9,
-        strokeWeight: isSelected ? 4 : 2.5,
+        strokeWeight: isSelected || isMultiSel ? 4 : 2.5,
         clickable: true,
         editable: isEditing,
       });
@@ -1443,7 +1518,7 @@ export function SlopeAuthor2() {
       }
       slopeLineRefs.current.set(slope.id, polyline);
     }
-  }, [effectiveSlopes, loadedResort, selectedSlopeId, mode]);
+  }, [effectiveSlopes, loadedResort, selectedSlopeId, mode, multiSelectedIds]);
 
   // ── Render lift polylines (parallel to slope render) ─────────
 
@@ -1460,6 +1535,7 @@ export function SlopeAuthor2() {
       if (!lift.coordinates || lift.coordinates.length < 2) continue;
       const isSelected = lift.id === selectedLiftId;
       const isEditing = isSelected && mode === "edit-lift-geom";
+      const isMultiSel = multiSelectedIds.has(lift.id);
       const path = lift.coordinates.map((c) => ({ lat: c.lat, lng: c.lon }));
       const polyline = new google.maps.Polyline({
         map,
@@ -1468,9 +1544,11 @@ export function SlopeAuthor2() {
           ? LIFT_EDIT_COLOR
           : isSelected
             ? LIFT_SELECTED_COLOR
-            : LIFT_BASELINE_COLOR,
+            : isMultiSel
+              ? MULTI_SELECT_COLOR
+              : LIFT_BASELINE_COLOR,
         strokeOpacity: 0.95,
-        strokeWeight: isSelected ? 4 : 3,
+        strokeWeight: isSelected || isMultiSel ? 4 : 3,
         clickable: true,
         editable: isEditing,
       });
@@ -1498,7 +1576,7 @@ export function SlopeAuthor2() {
       }
       liftLineRefs.current.set(lift.id, polyline);
     }
-  }, [effectiveLifts, loadedResort, selectedLiftId, mode]);
+  }, [effectiveLifts, loadedResort, selectedLiftId, mode, multiSelectedIds]);
 
   // ── OSM Overpass re-import ────────────────────────────────────
 
@@ -1755,12 +1833,15 @@ export function SlopeAuthor2() {
     for (const n of existing) {
       const isPending = anchorNodeId === n.id;
       const isSelectedNode = selectedNodeId === n.id;
+      const isMultiSelNode = multiSelectedIds.has(n.id);
       const draggable = isEditNode && isSelectedNode;
       const baseColor = isPending
         ? "#facc15"
         : isSelectedNode
           ? "#22d3ee"
-          : "#64748b";
+          : isMultiSelNode
+            ? MULTI_SELECT_COLOR
+            : "#64748b";
       const marker = new google.maps.Marker({
         position: { lat: n.lat, lng: n.lng },
         map,
@@ -1768,15 +1849,13 @@ export function SlopeAuthor2() {
         title: `node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m`,
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
-          // Bump scale in connect-nodes mode so existing nodes are
-          // easier to hit. Pending-from / selected get larger.
-          scale: isPending || isSelectedNode ? 9 : isConnect ? 6 : 4,
+          scale: isPending || isSelectedNode || isMultiSelNode ? 9 : isConnect ? 6 : 4,
           fillColor: baseColor,
-          fillOpacity: isPending || isSelectedNode ? 1 : 0.85,
+          fillOpacity: isPending || isSelectedNode || isMultiSelNode ? 1 : 0.85,
           strokeColor: "#ffffff",
-          strokeWeight: isPending || isSelectedNode ? 2 : 1,
+          strokeWeight: isPending || isSelectedNode || isMultiSelNode ? 2 : 1,
         },
-        zIndex: isSelectedNode ? 50 : isPending ? 40 : 10,
+        zIndex: isSelectedNode ? 50 : isPending ? 40 : isMultiSelNode ? 30 : 10,
       });
       if (isConnect) {
         marker.addListener("click", () => pickConnectNodeRef.current(n.id));
@@ -1812,17 +1891,19 @@ export function SlopeAuthor2() {
           : `new node ${n.id}${n.kind ? ` · ${n.kind}` : ""} · ${n.alt_m.toFixed(0)}m`,
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
-          scale: isPending || isSelectedNode ? 9 : 7,
+          scale: isPending || isSelectedNode || multiSelectedIds.has(n.id) ? 9 : 7,
           fillColor: isPending
             ? "#facc15"
             : isSelectedNode
               ? "#22d3ee"
-              : "#22c55e", // yellow / cyan / emerald
+              : multiSelectedIds.has(n.id)
+                ? MULTI_SELECT_COLOR
+                : "#22c55e",
           fillOpacity: 1,
           strokeColor: "#ffffff",
           strokeWeight: 2,
         },
-        zIndex: isSelectedNode ? 50 : isPending ? 40 : 20,
+        zIndex: isSelectedNode ? 50 : isPending ? 40 : multiSelectedIds.has(n.id) ? 30 : 20,
       });
       if (isConnect) {
         marker.addListener("click", () => pickConnectNodeRef.current(n.id));
@@ -1858,6 +1939,7 @@ export function SlopeAuthor2() {
     deletedGraphNodeIds,
     selectedNodeId,
     nodeOverrides,
+    multiSelectedIds,
   ]);
 
   // ── Graph edges overlay (select + connect-nodes + edit-edge) ──
@@ -1900,20 +1982,23 @@ export function SlopeAuthor2() {
     const renderEdge = (e: GraphEdge, isAdded: boolean) => {
       const isSelected = e.id === selectedEdgeId;
       const isEditing = isSelected && mode === "edit-edge";
+      const isMultiSel = multiSelectedIds.has(e.id);
       const path = e.geometry.map((p) => ({ lat: p.lat, lng: p.lng }));
       const line = new google.maps.Polyline({
         map,
         path,
         strokeColor: isEditing
           ? EDGE_EDIT_COLOR
-          : isAdded
-            ? EDGE_ADDED_COLOR
-            : EDGE_BASELINE_COLOR,
-        strokeOpacity: isEditing ? 1 : isAdded ? 0.95 : isSelected ? 0.9 : 0.55,
-        strokeWeight: isEditing ? 4 : isSelected ? 3 : isAdded ? 3 : 2,
+          : isMultiSel
+            ? MULTI_SELECT_COLOR
+            : isAdded
+              ? EDGE_ADDED_COLOR
+              : EDGE_BASELINE_COLOR,
+        strokeOpacity: isEditing ? 1 : isMultiSel ? 1 : isAdded ? 0.95 : isSelected ? 0.9 : 0.55,
+        strokeWeight: isEditing ? 4 : isMultiSel ? 3 : isSelected ? 3 : isAdded ? 3 : 2,
         clickable: true,
         editable: isEditing,
-        zIndex: isEditing ? 30 : isAdded ? 20 : 10,
+        zIndex: isEditing ? 30 : isMultiSel ? 25 : isAdded ? 20 : 10,
       });
       line.addListener("click", () => {
         const m = modeRef.current;
@@ -2009,6 +2094,7 @@ export function SlopeAuthor2() {
     edgeOverrides,
     selectedEdgeId,
     deletedGraphEdgeIds,
+    multiSelectedIds,
   ]);
 
   // Esc cancels the pending "from" node in connect-nodes mode, OR
@@ -2038,6 +2124,67 @@ export function SlopeAuthor2() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // Delete / Backspace: delete the multi-selected entities (if any) or
+  // the single-selected entity. Reads all current values through refs
+  // so this effect never needs to be re-registered.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== "Delete" && e.key !== "Backspace") return;
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable
+      )
+        return;
+
+      const multi = multiSelectedIdsRef.current;
+      const toDelete = new Set<string>();
+      if (multi.size > 0) {
+        for (const id of multi) toDelete.add(id);
+      } else {
+        const sId = selectedSlopeIdRef.current;
+        const lId = selectedLiftIdRef.current;
+        const nId = selectedNodeIdRef.current;
+        const eId = selectedEdgeIdRef.current;
+        if (sId) toDelete.add(sId);
+        else if (lId) toDelete.add(lId);
+        else if (nId) toDelete.add(nId);
+        else if (eId) toDelete.add(eId);
+      }
+      if (toDelete.size === 0) return;
+      e.preventDefault();
+
+      const resort = loadedResortRef.current;
+      if (!resort) return;
+      const slopes = effectiveSlopesRef.current;
+      const lifts = effectiveLiftsRef.current;
+      const slopeIdSet = new Set(slopes.map((s) => s.id));
+      const liftIdSet = new Set(lifts.map((l) => l.id));
+      const nodeIdSet = new Set([
+        ...(resort.graph?.nodes ?? []).map((n) => n.id),
+        ...addedGraphNodesRef.current.map((n) => n.id),
+      ]);
+      const edgeIdSet = new Set([
+        ...(resort.graph?.edges ?? []).map((e) => e.id),
+        ...addedGraphEdgesRef.current.map((e) => e.id),
+      ]);
+
+      for (const id of toDelete) {
+        if (slopeIdSet.has(id)) deleteSlope(id);
+        else if (liftIdSet.has(id)) deleteLift(id);
+        else if (nodeIdSet.has(id)) deleteNode(id);
+        else if (edgeIdSet.has(id)) deleteEdge(id);
+      }
+      setMultiSelectedIds(new Set());
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // Empty deps — reads all current values through stable refs.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Clear pending whenever the user leaves connect-nodes — otherwise
   // a stale "first node selected" indicator follows them into other
   // modes, which is confusing.
@@ -2046,6 +2193,153 @@ export function SlopeAuthor2() {
       setAnchorNodeId(null);
     }
   }, [mode, anchorNodeId]);
+
+  // Clear multi-selection when the user switches away from select mode.
+  useEffect(() => {
+    if (mode !== "select") setMultiSelectedIds(new Set());
+  }, [mode]);
+
+  // Box-drag multi-select — only active in select mode.
+  // Left-to-right drag: window select (entities fully inside rect).
+  // Right-to-left drag: crossing select (entities touching rect).
+  //
+  // Implementation: listen on the map container div for mousedown,
+  // then track mousemove/mouseup on window. After threshold movement
+  // (>5px) we disable map panning so the drag doesn't pan the map.
+  useEffect(() => {
+    if (mode !== "select" || !mapReady) return;
+    const container = mapRef.current;
+    const map = googleMap.current;
+    if (!container || !map) return;
+
+    let startX = 0;
+    let startY = 0;
+    let curX = 0;
+    let curY = 0;
+    let isDragging = false;
+
+    const onMouseDown = (e: MouseEvent) => {
+      if (e.button !== 0) return;
+      const r = container.getBoundingClientRect();
+      startX = e.clientX - r.left;
+      startY = e.clientY - r.top;
+      curX = startX;
+      curY = startY;
+      isDragging = false;
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!(e.buttons & 1)) return;
+      const r = container.getBoundingClientRect();
+      curX = e.clientX - r.left;
+      curY = e.clientY - r.top;
+      const dx = curX - startX;
+      const dy = curY - startY;
+      if (!isDragging && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+        isDragging = true;
+        map.setOptions({ draggable: false });
+      }
+      if (isDragging) {
+        setBoxRect({
+          x: Math.min(startX, curX),
+          y: Math.min(startY, curY),
+          w: Math.abs(dx),
+          h: Math.abs(dy),
+          crossing: curX < startX,
+        });
+      }
+    };
+
+    const onMouseUp = (e: MouseEvent) => {
+      if (e.button !== 0) return;
+      if (isDragging) {
+        map.setOptions({ draggable: true });
+        isDragging = false;
+        const rect = {
+          x: Math.min(startX, curX),
+          y: Math.min(startY, curY),
+          w: Math.abs(curX - startX),
+          h: Math.abs(curY - startY),
+        };
+        const crossing = curX < startX;
+        if (rect.w > 5 || rect.h > 5) {
+          const resort = loadedResortRef.current;
+          const tombNodes = new Set(deletedGraphNodeIdsRef.current);
+          const tombEdges = new Set(deletedGraphEdgeIdsRef.current);
+          const liveNodes: GraphNode[] = [
+            ...(resort?.graph?.nodes ?? []).filter((n) => !tombNodes.has(n.id)),
+            ...addedGraphNodesRef.current,
+          ];
+          const liveEdges: GraphEdge[] = [
+            ...(resort?.graph?.edges ?? []).filter((e) => !tombEdges.has(e.id)),
+            ...addedGraphEdgesRef.current,
+          ];
+          const found = new Set<string>();
+          const ptIn = (px: number, py: number) =>
+            px >= rect.x &&
+            px <= rect.x + rect.w &&
+            py >= rect.y &&
+            py <= rect.y + rect.h;
+
+          const checkCoords = (
+            coords: { lat: number; lng: number }[],
+            id: string,
+          ) => {
+            const pixels = coords
+              .map((c) => latLngToPixel(map, c.lat, c.lng))
+              .filter(Boolean) as { x: number; y: number }[];
+            if (!pixels.length) return;
+            if (crossing) {
+              if (pixels.some((p) => ptIn(p.x, p.y))) found.add(id);
+            } else {
+              if (pixels.every((p) => ptIn(p.x, p.y))) found.add(id);
+            }
+          };
+
+          for (const s of effectiveSlopesRef.current) {
+            if (s.coordinates?.length) {
+              checkCoords(
+                s.coordinates.map((c) => ({ lat: c.lat, lng: c.lon })),
+                s.id,
+              );
+            }
+          }
+          for (const l of effectiveLiftsRef.current) {
+            if (l.coordinates?.length) {
+              checkCoords(
+                l.coordinates.map((c) => ({ lat: c.lat, lng: c.lon })),
+                l.id,
+              );
+            }
+          }
+          for (const n of liveNodes) {
+            const p = latLngToPixel(map, n.lat, n.lng);
+            if (p && ptIn(p.x, p.y)) found.add(n.id);
+          }
+          for (const edge of liveEdges) {
+            if (edge.geometry?.length) {
+              checkCoords(edge.geometry, edge.id);
+            }
+          }
+          setMultiSelectedIds(found);
+        }
+        setBoxRect(null);
+      }
+    };
+
+    container.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    return () => {
+      container.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      map.setOptions({ draggable: true });
+      setBoxRect(null);
+    };
+  // Runs when mode becomes/leaves select. Tombstone sets are in refs.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, mapReady]);
 
   // Build patch bundle for the saver. PatchBundle shape is
   // `{slug, countryCode, regionSlug, files}` — a flat map of
@@ -2500,6 +2794,22 @@ export function SlopeAuthor2() {
         ) : (
           <div ref={mapRef} className="h-full w-full" aria-label="Map canvas" />
         )}
+        {/* Box-select drag rectangle overlay */}
+        {boxRect && (
+          <div
+            className="pointer-events-none absolute"
+            style={{
+              left: boxRect.x,
+              top: boxRect.y,
+              width: boxRect.w,
+              height: boxRect.h,
+              border: `2px ${boxRect.crossing ? "dashed" : "solid"} ${boxRect.crossing ? "#f87171" : "#60a5fa"}`,
+              backgroundColor: boxRect.crossing
+                ? "rgba(244,63,94,0.08)"
+                : "rgba(96,165,250,0.10)",
+            }}
+          />
+        )}
         {!mapReady && !mapError && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-[var(--fg-muted)]">
             {t("loadingMap")}
@@ -2556,6 +2866,27 @@ export function SlopeAuthor2() {
           />
         </div>
       </div>
+
+      {/* Multi-select count badge — shown when box-select grabbed entities */}
+      {multiSelectedIds.size > 0 && (
+        <div className="pointer-events-none absolute bottom-24 left-0 right-0 z-20 flex justify-center md:bottom-6 md:left-28 md:right-auto">
+          <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-[#f43f5e]/40 bg-[#0f172a]/90 px-3 py-1.5 text-xs shadow-lg backdrop-blur-md">
+            <span className="h-2 w-2 flex-none rounded-full bg-[#f43f5e]" />
+            <span className="font-semibold text-[var(--fg)]">
+              {multiSelectedIds.size} selected
+            </span>
+            <span className="text-[var(--fg-dim)]">— Delete to remove</span>
+            <button
+              type="button"
+              onClick={() => setMultiSelectedIds(new Set())}
+              className="ml-1 text-[var(--fg-dim)] transition hover:text-[var(--fg)]"
+              aria-label="Clear selection"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ── Right rail / mobile drawer ── */}
       <aside
