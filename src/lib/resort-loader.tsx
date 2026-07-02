@@ -45,6 +45,9 @@ export type Provenance = {
 
 export type SlopeRecord = {
   id: string;
+  /** Human-stable kebab-case key. Downstream systems (snowple, slopecast) key off this
+   *  instead of `id` so the composite sourceKey is `{place_slug}:{slug}`. */
+  slug?: string;
   name: string;
   name_i18n?: Record<string, string>;
   type?: string;
@@ -65,6 +68,8 @@ export type SlopeRecord = {
 
 export type LiftRecord = {
   id: string;
+  /** Human-stable kebab-case key. Downstream systems key off this instead of `id`. */
+  slug?: string;
   name: string;
   name_i18n?: Record<string, string>;
   type?: string;
