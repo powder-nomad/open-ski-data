@@ -5,6 +5,7 @@
   "lifts": [
     {
       "id": "unnamed-535718867-l535718867",
+      "slug": "unnamed-535718867",
       "name": "unnamed-535718867",
       "name_i18n": {},
       "type": "chair_lift",
@@ -147,11 +148,12 @@
     },
     {
       "id": "unnamed-535718868-l535718868",
+      "slug": "unnamed-535718868",
       "name": "unnamed-535718868",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 728.0,
+      "length_m": 728,
       "vertical_m": null,
       "connected_slope_ids": [
         "unnamed-53571886400",
@@ -303,11 +305,12 @@
     },
     {
       "id": "unnamed-535718869-l535718869",
+      "slug": "unnamed-535718869",
       "name": "unnamed-535718869",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
-      "length_m": 708.0,
+      "length_m": 708,
       "vertical_m": null,
       "connected_slope_ids": [],
       "connected_lift_ids": [],
@@ -456,6 +459,7 @@
     },
     {
       "id": "unnamed-535718870-l535718870",
+      "slug": "unnamed-535718870",
       "name": "unnamed-535718870",
       "name_i18n": {},
       "type": "chair_lift",
@@ -576,6 +580,7 @@
     },
     {
       "id": "unnamed-535718871-l535718871",
+      "slug": "unnamed-535718871",
       "name": "unnamed-535718871",
       "name_i18n": {},
       "type": "chair_lift",
@@ -651,6 +656,7 @@
     },
     {
       "id": "unnamed-535722637-l535722637",
+      "slug": "unnamed-535722637",
       "name": "unnamed-535722637",
       "name_i18n": {},
       "type": "chair_lift",
@@ -764,6 +770,7 @@
     },
     {
       "id": "unnamed-535722642-l535722642",
+      "slug": "unnamed-535722642",
       "name": "unnamed-535722642",
       "name_i18n": {},
       "type": "chair_lift",
@@ -874,6 +881,7 @@
     },
     {
       "id": "unnamed-535722643-l535722643",
+      "slug": "unnamed-535722643",
       "name": "unnamed-535722643",
       "name_i18n": {},
       "type": "chair_lift",

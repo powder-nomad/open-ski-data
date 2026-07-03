@@ -6,6 +6,7 @@
   "slopes": [
     {
       "id": "unnamed-545967313",
+      "slug": "unnamed-545967313",
       "name": "unnamed-545967313",
       "name_i18n": {},
       "type": "run",
@@ -519,6 +520,7 @@
     },
     {
       "id": "blues",
+      "slug": "blues",
       "name": "Blues",
       "name_i18n": {
         "ko": "블루스",
@@ -593,6 +595,7 @@
     },
     {
       "id": "rock",
+      "slug": "rock",
       "name": "Rock",
       "name_i18n": {
         "ko": "락",
@@ -723,6 +726,7 @@
     },
     {
       "id": "classic",
+      "slug": "classic",
       "name": "Classic",
       "name_i18n": {
         "ko": "클래식",
@@ -872,6 +876,7 @@
     },
     {
       "id": "reggae",
+      "slug": "reggae",
       "name": "Reggae",
       "name_i18n": {
         "ko": "레게",
@@ -967,6 +972,7 @@
     },
     {
       "id": "jazz",
+      "slug": "jazz",
       "name": "Jazz",
       "name_i18n": {
         "ko": "재즈",
@@ -1125,6 +1131,7 @@
     },
     {
       "id": "funky",
+      "slug": "funky",
       "name": "Funky",
       "name_i18n": {
         "ko": "펑키",
@@ -1226,6 +1233,7 @@
     },
     {
       "id": "unnamed-996685262",
+      "slug": "unnamed-996685262",
       "name": "unnamed-996685262",
       "name_i18n": {},
       "type": "run",
@@ -1260,6 +1268,7 @@
     },
     {
       "id": 0,
+      "slug": "ballad",
       "name": "Ballad",
       "name_i18n": {
         "ko": "발라드",
@@ -1274,6 +1283,7 @@
     },
     {
       "id": 1,
+      "slug": "techno-1",
       "name": "Techno 1",
       "name_i18n": {
         "ko": "테크노 1",
@@ -1288,6 +1298,7 @@
     },
     {
       "id": 2,
+      "slug": "techno-2",
       "name": "Techno 2",
       "name_i18n": {
         "ko": "테크노 2",
@@ -1302,6 +1313,7 @@
     },
     {
       "id": 3,
+      "slug": "hip-hop-1",
       "name": "Hip-hop 1",
       "name_i18n": {
         "ko": "힙합 1",
@@ -1316,6 +1328,7 @@
     },
     {
       "id": 4,
+      "slug": "hip-hop-2",
       "name": "Hip-hop 2",
       "name_i18n": {
         "ko": "힙합 2",

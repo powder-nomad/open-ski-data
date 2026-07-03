@@ -6,6 +6,7 @@
   "lifts": [
     {
       "id": "unnamed-295407268-l295407268",
+      "slug": "unnamed-295407268",
       "name": "unnamed-295407268",
       "name_i18n": {},
       "type": "chair_lift",
@@ -126,6 +127,7 @@
     },
     {
       "id": "unnamed-295407272-l295407272",
+      "slug": "unnamed-295407272",
       "name": "unnamed-295407272",
       "name_i18n": {},
       "type": "chair_lift",
@@ -326,6 +328,7 @@
     },
     {
       "id": "unnamed-295407274-l295407274",
+      "slug": "unnamed-295407274",
       "name": "unnamed-295407274",
       "name_i18n": {},
       "type": "chair_lift",
@@ -491,6 +494,7 @@
     },
     {
       "id": 0,
+      "slug": "eden",
       "name": "Eden",
       "name_i18n": {
         "ko": "에덴",
@@ -504,6 +508,7 @@
     },
     {
       "id": 1,
+      "slug": "valley",
       "name": "Valley",
       "name_i18n": {
         "ko": "밸리",
@@ -517,6 +522,7 @@
     },
     {
       "id": 2,
+      "slug": "adam",
       "name": "Adam",
       "name_i18n": {
         "ko": "아담",

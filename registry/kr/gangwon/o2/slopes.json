@@ -6,6 +6,7 @@
   "slopes": [
     {
       "id": "unnamed-79121776800",
+      "slug": "unnamed-79121776800",
       "name": "unnamed-79121776800",
       "name_i18n": {},
       "type": "run",
@@ -144,6 +145,7 @@
     },
     {
       "id": "unnamed-79121776807",
+      "slug": "unnamed-79121776807",
       "name": "unnamed-79121776807",
       "name_i18n": {},
       "type": "run",
@@ -259,6 +261,7 @@
     },
     {
       "id": "unnamed-79121776814",
+      "slug": "unnamed-79121776814",
       "name": "unnamed-79121776814",
       "name_i18n": {},
       "type": "run",
@@ -297,6 +300,7 @@
     },
     {
       "id": "unnamed-79121776815",
+      "slug": "unnamed-79121776815",
       "name": "unnamed-79121776815",
       "name_i18n": {},
       "type": "run",
@@ -327,6 +331,7 @@
     },
     {
       "id": "unnamed-79121776900",
+      "slug": "unnamed-79121776900",
       "name": "unnamed-79121776900",
       "name_i18n": {},
       "type": "run",
@@ -648,6 +653,7 @@
     },
     {
       "id": "unnamed-79121776925",
+      "slug": "unnamed-79121776925",
       "name": "unnamed-79121776925",
       "name_i18n": {},
       "type": "run",
@@ -775,6 +781,7 @@
     },
     {
       "id": "unnamed-79121776935",
+      "slug": "unnamed-79121776935",
       "name": "unnamed-79121776935",
       "name_i18n": {},
       "type": "run",
@@ -805,6 +812,7 @@
     },
     {
       "id": "unnamed-79121777300",
+      "slug": "unnamed-79121777300",
       "name": "unnamed-79121777300",
       "name_i18n": {},
       "type": "run",
@@ -1118,6 +1126,7 @@
     },
     {
       "id": "unnamed-79121777332",
+      "slug": "unnamed-79121777332",
       "name": "unnamed-79121777332",
       "name_i18n": {},
       "type": "run",
@@ -1152,6 +1161,7 @@
     },
     {
       "id": "unnamed-79121777333",
+      "slug": "unnamed-79121777333",
       "name": "unnamed-79121777333",
       "name_i18n": {},
       "type": "run",
@@ -1445,6 +1455,7 @@
     },
     {
       "id": "unnamed-79121777700",
+      "slug": "unnamed-79121777700",
       "name": "unnamed-79121777700",
       "name_i18n": {},
       "type": "run",
@@ -1478,6 +1489,7 @@
     },
     {
       "id": "unnamed-79121777702",
+      "slug": "unnamed-79121777702",
       "name": "unnamed-79121777702",
       "name_i18n": {},
       "type": "run",
@@ -1513,6 +1525,7 @@
     },
     {
       "id": "unnamed-79121777703",
+      "slug": "unnamed-79121777703",
       "name": "unnamed-79121777703",
       "name_i18n": {},
       "type": "run",
@@ -1548,6 +1561,7 @@
     },
     {
       "id": "unnamed-79121777704",
+      "slug": "unnamed-79121777704",
       "name": "unnamed-79121777704",
       "name_i18n": {},
       "type": "run",
@@ -1659,6 +1673,7 @@
     },
     {
       "id": "unnamed-79121777713",
+      "slug": "unnamed-79121777713",
       "name": "unnamed-79121777713",
       "name_i18n": {},
       "type": "run",
@@ -1812,6 +1827,7 @@
     },
     {
       "id": "unnamed-79121777800",
+      "slug": "unnamed-79121777800",
       "name": "unnamed-79121777800",
       "name_i18n": {},
       "type": "run",
@@ -1859,6 +1875,7 @@
     },
     {
       "id": "unnamed-79121777801",
+      "slug": "unnamed-79121777801",
       "name": "unnamed-79121777801",
       "name_i18n": {},
       "type": "run",
@@ -2010,6 +2027,7 @@
     },
     {
       "id": "unnamed-79121777810",
+      "slug": "unnamed-79121777810",
       "name": "unnamed-79121777810",
       "name_i18n": {},
       "type": "run",
@@ -2048,6 +2066,7 @@
     },
     {
       "id": "unnamed-79121777811",
+      "slug": "unnamed-79121777811",
       "name": "unnamed-79121777811",
       "name_i18n": {},
       "type": "run",
@@ -2199,6 +2218,7 @@
     },
     {
       "id": "unnamed-79121777818",
+      "slug": "unnamed-79121777818",
       "name": "unnamed-79121777818",
       "name_i18n": {},
       "type": "run",
@@ -2234,6 +2254,7 @@
     },
     {
       "id": "unnamed-79121777900",
+      "slug": "unnamed-79121777900",
       "name": "unnamed-79121777900",
       "name_i18n": {},
       "type": "run",
@@ -2393,6 +2414,7 @@
     },
     {
       "id": "unnamed-79121777907",
+      "slug": "unnamed-79121777907",
       "name": "unnamed-79121777907",
       "name_i18n": {},
       "type": "run",
@@ -2427,6 +2449,7 @@
     },
     {
       "id": "unnamed-79121777908",
+      "slug": "unnamed-79121777908",
       "name": "unnamed-79121777908",
       "name_i18n": {},
       "type": "run",
@@ -2582,6 +2605,7 @@
     },
     {
       "id": "unnamed-79121777917",
+      "slug": "unnamed-79121777917",
       "name": "unnamed-79121777917",
       "name_i18n": {},
       "type": "run",
@@ -2629,6 +2653,7 @@
     },
     {
       "id": "unnamed-79121777918",
+      "slug": "unnamed-79121777918",
       "name": "unnamed-79121777918",
       "name_i18n": {},
       "type": "run",
@@ -2664,6 +2689,7 @@
     },
     {
       "id": "unnamed-82336286500",
+      "slug": "unnamed-82336286500",
       "name": "unnamed-82336286500",
       "name_i18n": {},
       "type": "run",
@@ -2997,6 +3023,7 @@
     },
     {
       "id": "unnamed-82336286517",
+      "slug": "unnamed-82336286517",
       "name": "unnamed-82336286517",
       "name_i18n": {},
       "type": "run",
@@ -3075,6 +3102,7 @@
     },
     {
       "id": "unnamed-82336286522",
+      "slug": "unnamed-82336286522",
       "name": "unnamed-82336286522",
       "name_i18n": {},
       "type": "run",
@@ -3121,6 +3149,7 @@
     },
     {
       "id": "unnamed-82336286524",
+      "slug": "unnamed-82336286524",
       "name": "unnamed-82336286524",
       "name_i18n": {},
       "type": "run",
@@ -3398,6 +3427,7 @@
     },
     {
       "id": "unnamed-82336286600",
+      "slug": "unnamed-82336286600",
       "name": "unnamed-82336286600",
       "name_i18n": {},
       "type": "run",
@@ -3443,6 +3473,7 @@
     },
     {
       "id": "unnamed-82336286601",
+      "slug": "unnamed-82336286601",
       "name": "unnamed-82336286601",
       "name_i18n": {},
       "type": "run",
@@ -3554,6 +3585,7 @@
     },
     {
       "id": "unnamed-82336286604",
+      "slug": "unnamed-82336286604",
       "name": "unnamed-82336286604",
       "name_i18n": {},
       "type": "run",
@@ -3668,6 +3700,7 @@
     },
     {
       "id": "unnamed-82336286607",
+      "slug": "unnamed-82336286607",
       "name": "unnamed-82336286607",
       "name_i18n": {},
       "type": "run",
@@ -3727,6 +3760,7 @@
     },
     {
       "id": "unnamed-82336286700",
+      "slug": "unnamed-82336286700",
       "name": "unnamed-82336286700",
       "name_i18n": {},
       "type": "run",
@@ -3995,6 +4029,7 @@
     },
     {
       "id": "unnamed-82336286711",
+      "slug": "unnamed-82336286711",
       "name": "unnamed-82336286711",
       "name_i18n": {},
       "type": "run",
@@ -4037,6 +4072,7 @@
     },
     {
       "id": "unnamed-82336286712",
+      "slug": "unnamed-82336286712",
       "name": "unnamed-82336286712",
       "name_i18n": {},
       "type": "run",
@@ -4103,6 +4139,7 @@
     },
     {
       "id": "unnamed-82336286714",
+      "slug": "unnamed-82336286714",
       "name": "unnamed-82336286714",
       "name_i18n": {},
       "type": "run",
@@ -4141,6 +4178,7 @@
     },
     {
       "id": "unnamed-82336286800",
+      "slug": "unnamed-82336286800",
       "name": "unnamed-82336286800",
       "name_i18n": {},
       "type": "run",
@@ -4272,6 +4310,7 @@
     },
     {
       "id": "unnamed-82336286804",
+      "slug": "unnamed-82336286804",
       "name": "unnamed-82336286804",
       "name_i18n": {},
       "type": "run",
@@ -4343,6 +4382,7 @@
     },
     {
       "id": "unnamed-82336286808",
+      "slug": "unnamed-82336286808",
       "name": "unnamed-82336286808",
       "name_i18n": {},
       "type": "run",
@@ -4378,6 +4418,7 @@
     },
     {
       "id": "unnamed-82336286809",
+      "slug": "unnamed-82336286809",
       "name": "unnamed-82336286809",
       "name_i18n": {},
       "type": "run",
@@ -4521,6 +4562,7 @@
     },
     {
       "id": "unnamed-823362869",
+      "slug": "unnamed-823362869",
       "name": "unnamed-823362869",
       "name_i18n": {},
       "type": "run",
@@ -4677,6 +4719,7 @@
     },
     {
       "id": "unnamed-823362870",
+      "slug": "unnamed-823362870",
       "name": "unnamed-823362870",
       "name_i18n": {},
       "type": "run",
@@ -5005,6 +5048,7 @@
     },
     {
       "id": "unnamed-823362871",
+      "slug": "unnamed-823362871",
       "name": "unnamed-823362871",
       "name_i18n": {},
       "type": "run",
@@ -5204,6 +5248,7 @@
     },
     {
       "id": 0,
+      "slug": "dream1",
       "name": "DREAM1",
       "name_i18n": {
         "ko": "드림1",
@@ -5219,6 +5264,7 @@
     },
     {
       "id": 1,
+      "slug": "dream2",
       "name": "DREAM2",
       "name_i18n": {
         "ko": "드림2",
@@ -5234,6 +5280,7 @@
     },
     {
       "id": 2,
+      "slug": "head",
       "name": "HEAD",
       "name_i18n": {
         "ko": "헤드",
@@ -5249,6 +5296,7 @@
     },
     {
       "id": 3,
+      "slug": "happy",
       "name": "HAPPY",
       "name_i18n": {
         "ko": "해피",
@@ -5264,6 +5312,7 @@
     },
     {
       "id": 4,
+      "slug": "glory1",
       "name": "GLORY1",
       "name_i18n": {
         "ko": "글로리1",
@@ -5279,6 +5328,7 @@
     },
     {
       "id": 5,
+      "slug": "glory2",
       "name": "GLORY2",
       "name_i18n": {
         "ko": "글로리2",
@@ -5294,6 +5344,7 @@
     },
     {
       "id": 6,
+      "slug": "glory3",
       "name": "GLORY3",
       "name_i18n": {
         "ko": "글로리3",
@@ -5309,6 +5360,7 @@
     },
     {
       "id": 7,
+      "slug": "passion1",
       "name": "PASSION1",
       "name_i18n": {
         "ko": "패션1",
@@ -5324,6 +5376,7 @@
     },
     {
       "id": 8,
+      "slug": "passion2",
       "name": "PASSION2",
       "name_i18n": {
         "ko": "패션2",
@@ -5339,6 +5392,7 @@
     },
     {
       "id": 9,
+      "slug": "challenge1",
       "name": "CHALLENGE1",
       "name_i18n": {
         "ko": "첼린지1",
@@ -5354,6 +5408,7 @@
     },
     {
       "id": 10,
+      "slug": "challenge2",
       "name": "CHALLENGE2",
       "name_i18n": {
         "ko": "첼린지2",
@@ -5369,6 +5424,7 @@
     },
     {
       "id": 11,
+      "slug": "challenge3",
       "name": "CHALLENGE3",
       "name_i18n": {
         "ko": "첼린지3",
@@ -5384,6 +5440,7 @@
     },
     {
       "id": 12,
+      "slug": "halfpipe",
       "name": "Halfpipe",
       "name_i18n": {
         "ko": "하프파이프",

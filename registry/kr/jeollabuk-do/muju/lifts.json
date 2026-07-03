@@ -6,6 +6,7 @@
   "lifts": [
     {
       "id": "gondola-l27909068",
+      "slug": "gondola",
       "name": "Gondola",
       "name_i18n": {
         "ko": "곤도라",
@@ -496,6 +497,7 @@
     },
     {
       "id": "muju-express-l293598170",
+      "slug": "muju-express",
       "name": "Muju Express",
       "name_i18n": {
         "ko": "무주 익스프레스",
@@ -808,6 +810,7 @@
     },
     {
       "id": "cruiser-l293598171",
+      "slug": "cruiser",
       "name": "Cruiser",
       "name_i18n": {
         "ko": "크루저",
@@ -1043,6 +1046,7 @@
     },
     {
       "id": "melody-l293598172",
+      "slug": "melody",
       "name": "Melody",
       "name_i18n": {
         "ko": "멜로디",
@@ -1275,6 +1279,7 @@
     },
     {
       "id": "chorus-l293598175",
+      "slug": "chorus",
       "name": "Chorus",
       "name_i18n": {
         "ko": "코러스",
@@ -1590,6 +1595,7 @@
     },
     {
       "id": "school-bus-l293598177",
+      "slug": "school-bus",
       "name": "School Bus",
       "name_i18n": {
         "ko": "스쿨버스",
@@ -1672,6 +1678,7 @@
     },
     {
       "id": "boat-l293598179",
+      "slug": "boat",
       "name": "Boat",
       "name_i18n": {
         "ko": "보트",
@@ -1772,6 +1779,7 @@
     },
     {
       "id": "ssang-ssang-l293598181",
+      "slug": "ssang-ssang",
       "name": "Ssang Ssang",
       "name_i18n": {
         "en": "Ssang Ssang"
@@ -1937,6 +1945,7 @@
     },
     {
       "id": "canoe-l293598182",
+      "slug": "canoe",
       "name": "Canoe",
       "name_i18n": {
         "ko": "카누",
@@ -2074,6 +2083,7 @@
     },
     {
       "id": "yacht-l293598183",
+      "slug": "yacht",
       "name": "Yacht",
       "name_i18n": {
         "ko": "요트",
@@ -2227,6 +2237,7 @@
     },
     {
       "id": "unnamed-293598184-l293598184",
+      "slug": "unnamed-293598184",
       "name": "unnamed-293598184",
       "name_i18n": {},
       "type": "chair_lift",
@@ -2380,6 +2391,7 @@
     },
     {
       "id": "liner-l293598186",
+      "slug": "liner",
       "name": "Liner",
       "name_i18n": {
         "ko": "라이너",
@@ -2602,6 +2614,7 @@
     },
     {
       "id": "harmony-l293598187",
+      "slug": "harmony",
       "name": "Harmony",
       "name_i18n": {
         "ko": "하모니",
@@ -2882,6 +2895,7 @@
     },
     {
       "id": 0,
+      "slug": "jump",
       "name": "Jump",
       "name_i18n": {
         "ko": "점프",
@@ -2896,6 +2910,7 @@
     },
     {
       "id": 1,
+      "slug": "ssangssang",
       "name": "Ssangssang",
       "name_i18n": {
         "ko": "쌍쌍",
@@ -2910,6 +2925,7 @@
     },
     {
       "id": 2,
+      "slug": "echo",
       "name": "Echo",
       "name_i18n": {
         "ko": "에코",

@@ -6,6 +6,7 @@
   "slopes": [
     {
       "id": "eigerwall-run",
+      "slug": "the-eigerwall",
       "name": "The Eigerwall",
       "type": "run",
       "difficulty": "expert",
@@ -22,6 +23,7 @@
     },
     {
       "id": "eiger-express",
+      "slug": "eiger-express",
       "name": "Eiger Express",
       "type": "lift",
       "difficulty": "intermediate"

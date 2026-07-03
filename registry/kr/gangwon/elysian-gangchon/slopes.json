@@ -6,6 +6,7 @@
   "slopes": [
     {
       "id": "rabbit",
+      "slug": "rabbit",
       "name": "Rabbit",
       "name_i18n": {
         "ko": "래빗",
@@ -90,6 +91,7 @@
     },
     {
       "id": "deer",
+      "slug": "deer",
       "name": "Deer",
       "name_i18n": {
         "ko": "디어",
@@ -244,6 +246,7 @@
     },
     {
       "id": "puma",
+      "slug": "puma",
       "name": "Puma",
       "name_i18n": {
         "ko": "퓨마",
@@ -358,6 +361,7 @@
     },
     {
       "id": "leopard",
+      "slug": "leopard",
       "name": "Leopard",
       "name_i18n": {
         "ko": "레퍼드",
@@ -452,6 +456,7 @@
     },
     {
       "id": 0,
+      "slug": "panda",
       "name": "Panda",
       "name_i18n": {
         "ko": "팬더",
@@ -466,6 +471,7 @@
     },
     {
       "id": 1,
+      "slug": "dragon-rabbit",
       "name": "Dragon/Rabbit",
       "name_i18n": {
         "ko": "드래곤/래빗",
@@ -480,6 +486,7 @@
     },
     {
       "id": 2,
+      "slug": "horse-zebra",
       "name": "Horse/Zebra",
       "name_i18n": {
         "ko": "호스/제브라",
@@ -494,6 +501,7 @@
     },
     {
       "id": 3,
+      "slug": "horse-pegasus",
       "name": "Horse/Pegasus",
       "name_i18n": {
         "ko": "호스/페가수스",
@@ -508,6 +516,7 @@
     },
     {
       "id": 4,
+      "slug": "jaguar",
       "name": "Jaguar",
       "name_i18n": {
         "ko": "재규어",

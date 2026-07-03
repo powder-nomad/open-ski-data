@@ -6,6 +6,7 @@
   "slopes": [
     {
       "id": "panorama",
+      "slug": "panorama",
       "name": "Panorama",
       "name_i18n": {
         "ko": "파노라마",
@@ -235,6 +236,7 @@
     },
     {
       "id": "sparrow",
+      "slug": "sparrow",
       "name": "Sparrow",
       "name_i18n": {
         "ko": "스패로우",
@@ -396,6 +398,7 @@
     },
     {
       "id": "paradise",
+      "slug": "paradise",
       "name": "Paradise",
       "name_i18n": {
         "ko": "파라다이스",
@@ -539,6 +542,7 @@
     },
     {
       "id": "kiwi",
+      "slug": "kiwi",
       "name": "Kiwi",
       "name_i18n": {
         "ko": "키위",
@@ -717,6 +721,7 @@
     },
     {
       "id": "fantasy",
+      "slug": "fantasy",
       "name": "Fantasy",
       "name_i18n": {
         "ko": "환타지",
@@ -862,6 +867,7 @@
     },
     {
       "id": "penguin",
+      "slug": "penguin",
       "name": "Penguin",
       "name_i18n": {
         "ko": "펭귄",
@@ -979,6 +985,7 @@
     },
     {
       "id": "valley",
+      "slug": "valley",
       "name": "Valley",
       "name_i18n": {
         "ko": "밸리",
@@ -1203,6 +1210,7 @@
     },
     {
       "id": "duke",
+      "slug": "duke",
       "name": "Duke",
       "name_i18n": {
         "ko": "듀크(이상호)",
@@ -1345,6 +1353,7 @@
     },
     {
       "id": "mogul",
+      "slug": "mogul",
       "name": "Mogul",
       "name_i18n": {
         "ko": "모글",
@@ -1438,6 +1447,7 @@
     },
     {
       "id": "hawk",
+      "slug": "hawk",
       "name": "Hawk",
       "name_i18n": {
         "ko": "호크",
@@ -1555,6 +1565,7 @@
     },
     {
       "id": "unnamed-531574386",
+      "slug": "unnamed-531574386",
       "name": "unnamed-531574386",
       "name_i18n": {},
       "type": "run",
@@ -1611,6 +1622,7 @@
     },
     {
       "id": 0,
+      "slug": "dodo-training-only",
       "name": "Dodo (Training Only)",
       "name_i18n": {
         "ko": "도도(강습전용)",
@@ -1625,6 +1637,7 @@
     },
     {
       "id": 1,
+      "slug": "slope-style-ss-sbs",
       "name": "Slope Style (SS/SBS)",
       "name_i18n": {
         "ko": "슬로프스타일(SS/SBS)",
@@ -1639,6 +1652,7 @@
     },
     {
       "id": 2,
+      "slug": "champion",
       "name": "Champion",
       "name_i18n": {
         "ko": "챔피온",
@@ -1653,6 +1667,7 @@
     },
     {
       "id": 3,
+      "slug": "dizzy",
       "name": "Dizzy",
       "name_i18n": {
         "ko": "디지",
@@ -1667,6 +1682,7 @@
     },
     {
       "id": 4,
+      "slug": "extreme-park-upper",
       "name": "Extreme Park (Upper)",
       "name_i18n": {
         "ko": "익스트림파크(상단)",
@@ -1681,6 +1697,7 @@
     },
     {
       "id": 5,
+      "slug": "extreme-park-lower",
       "name": "Extreme Park (Lower)",
       "name_i18n": {
         "ko": "익스트림파크(하단)",
@@ -1695,6 +1712,7 @@
     },
     {
       "id": 6,
+      "slug": "halfpipe",
       "name": "Halfpipe",
       "name_i18n": {
         "ko": "하프파이프",

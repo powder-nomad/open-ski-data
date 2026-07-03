@@ -6,6 +6,7 @@
   "lifts": [
     {
       "id": "unnamed-l1036240367",
+      "slug": "unnamed",
       "name": "패밀리 리프트 (초중급)",
       "name_i18n": {
         "en": "패밀리 리프트 (초중급)"
@@ -170,6 +171,7 @@
     },
     {
       "id": "unnamed-l1036240368",
+      "slug": "unnamed",
       "name": "델타 리프트 (초중급)",
       "name_i18n": {
         "en": "델타 리프트 (초중급)"
@@ -308,6 +310,7 @@
     },
     {
       "id": "unnamed-l1036240369",
+      "slug": "unnamed",
       "name": "브라보 리프트 (중급)",
       "name_i18n": {
         "en": "브라보 리프트 (중급)"
@@ -485,6 +488,7 @@
     },
     {
       "id": "unnamed-l1036250234",
+      "slug": "unnamed",
       "name": "챌린지 리프트 (상급)",
       "name_i18n": {
         "en": "챌린지 리프트 (상급)"
@@ -640,6 +644,7 @@
     },
     {
       "id": "unnamed-l1036250235",
+      "slug": "unnamed",
       "name": "에코 리프트 (상급)",
       "name_i18n": {
         "en": "에코 리프트 (상급)"
@@ -768,6 +773,7 @@
     },
     {
       "id": "unnamed-l1036250236",
+      "slug": "unnamed",
       "name": "곤돌라",
       "name_i18n": {
         "en": "곤돌라"
@@ -1020,6 +1026,7 @@
     },
     {
       "id": "unnamed-l1036250237",
+      "slug": "unnamed",
       "name": "뉴알파 리프트 (초급)",
       "name_i18n": {
         "en": "뉴알파 리프트 (초급)"
@@ -1127,6 +1134,7 @@
     },
     {
       "id": "unnamed-l1036250238",
+      "slug": "unnamed",
       "name": "알파 리프트 (초급)",
       "name_i18n": {
         "en": "알파 리프트 (초급)"
@@ -1239,6 +1247,7 @@
     },
     {
       "id": "unnamed-1036272167-l1036272167",
+      "slug": "unnamed-1036272167",
       "name": "unnamed-1036272167",
       "name_i18n": {},
       "type": "magic_carpet",
@@ -1277,6 +1286,7 @@
     },
     {
       "id": 0,
+      "slug": "alpha",
       "name": "Alpha",
       "name_i18n": {
         "ko": "알파",
@@ -1289,6 +1299,7 @@
     },
     {
       "id": 1,
+      "slug": "new-alpha",
       "name": "New Alpha",
       "name_i18n": {
         "ko": "뉴알파",
@@ -1301,6 +1312,7 @@
     },
     {
       "id": 2,
+      "slug": "bravo",
       "name": "Bravo",
       "name_i18n": {
         "ko": "브라보",
@@ -1313,6 +1325,7 @@
     },
     {
       "id": 3,
+      "slug": "delta",
       "name": "Delta",
       "name_i18n": {
         "ko": "델타",
@@ -1325,6 +1338,7 @@
     },
     {
       "id": 4,
+      "slug": "echo",
       "name": "Echo",
       "name_i18n": {
         "ko": "에코",
@@ -1337,6 +1351,7 @@
     },
     {
       "id": 5,
+      "slug": "family",
       "name": "Family",
       "name_i18n": {
         "ko": "패밀리",
@@ -1349,6 +1364,7 @@
     },
     {
       "id": 6,
+      "slug": "challenge",
       "name": "Challenge",
       "name_i18n": {
         "ko": "첼린지",
@@ -1361,6 +1377,7 @@
     },
     {
       "id": 7,
+      "slug": "gondola",
       "name": "Gondola",
       "name_i18n": {
         "ko": "곤돌라",

@@ -6,6 +6,7 @@
   "lifts": [
     {
       "id": "rainbow-gondola-l376364815",
+      "slug": "rainbow-gondola",
       "name": "Rainbow Gondola",
       "name_i18n": {
         "en": "Rainbow Gondola"
@@ -696,6 +697,7 @@
     },
     {
       "id": "unnamed-477491141-l477491141",
+      "slug": "unnamed-477491141",
       "name": "unnamed-477491141",
       "name_i18n": {},
       "type": "chair_lift",
@@ -819,6 +821,7 @@
     },
     {
       "id": "unnamed-477491142-l477491142",
+      "slug": "unnamed-477491142",
       "name": "unnamed-477491142",
       "name_i18n": {},
       "type": "chair_lift",
@@ -959,6 +962,7 @@
     },
     {
       "id": "unnamed-477491143-l477491143",
+      "slug": "unnamed-477491143",
       "name": "unnamed-477491143",
       "name_i18n": {},
       "type": "chair_lift",
@@ -1100,6 +1104,7 @@
     },
     {
       "id": "gold-l477491147",
+      "slug": "gold",
       "name": "Gold",
       "name_i18n": {
         "ko": "골드",
@@ -1433,6 +1438,7 @@
     },
     {
       "id": "mega-green-l477491151",
+      "slug": "mega-green",
       "name": "Mega Green",
       "name_i18n": {
         "ko": "메가그린",
@@ -1571,6 +1577,7 @@
     },
     {
       "id": "rainbow-l533413168",
+      "slug": "rainbow",
       "name": "Rainbow",
       "name_i18n": {
         "ko": "레인보우",
@@ -1869,6 +1876,7 @@
     },
     {
       "id": "red-l533419417",
+      "slug": "red",
       "name": "Red",
       "name_i18n": {
         "ko": "레드",
@@ -2077,6 +2085,7 @@
     },
     {
       "id": "new-gold-l533419419",
+      "slug": "new-gold",
       "name": "New Gold",
       "name_i18n": {
         "ko": "뉴골드",
@@ -2235,6 +2244,7 @@
     },
     {
       "id": "silver-l533426025",
+      "slug": "silver",
       "name": "Silver",
       "name_i18n": {
         "ko": "실버",
@@ -2393,6 +2403,7 @@
     },
     {
       "id": "green-l1457094309",
+      "slug": "green",
       "name": "Green",
       "name_i18n": {
         "ko": "그린",
@@ -2516,6 +2527,7 @@
     },
     {
       "id": "unnamed-l1457094310",
+      "slug": "unnamed",
       "name": "블루",
       "name_i18n": {
         "en": "블루"
@@ -2636,6 +2648,7 @@
     },
     {
       "id": "bridge-l1464511412",
+      "slug": "bridge",
       "name": "Bridge",
       "name_i18n": {
         "ko": "브릿지",
@@ -2719,6 +2732,7 @@
     },
     {
       "id": 0,
+      "slug": "new-red",
       "name": "New Red",
       "name_i18n": {
         "ko": "뉴레드",
@@ -2737,6 +2751,7 @@
     },
     {
       "id": 1,
+      "slug": "blue",
       "name": "Blue",
       "name_i18n": {
         "ko": "블루",
@@ -2755,6 +2770,7 @@
     },
     {
       "id": 2,
+      "slug": "pink",
       "name": "Pink",
       "name_i18n": {
         "ko": "핑크",
@@ -2770,6 +2786,7 @@
     },
     {
       "id": 3,
+      "slug": "yellow",
       "name": "Yellow",
       "name_i18n": {
         "ko": "옐로우",
@@ -2787,6 +2804,7 @@
     },
     {
       "id": 4,
+      "slug": "new-yellow",
       "name": "New Yellow",
       "name_i18n": {
         "ko": "뉴옐로우",
@@ -2803,6 +2821,7 @@
     },
     {
       "id": 5,
+      "slug": "gondola",
       "name": "Gondola",
       "name_i18n": {
         "ko": "발왕산 관광케이블카",

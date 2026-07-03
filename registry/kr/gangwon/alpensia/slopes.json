@@ -6,6 +6,7 @@
   "slopes": [
     {
       "id": "bravo",
+      "slug": "bravo",
       "name": "Bravo",
       "name_i18n": {
         "ko": "브라보",
@@ -195,6 +196,7 @@
     },
     {
       "id": "alpha",
+      "slug": "alpha",
       "name": "Alpha",
       "name_i18n": {
         "ko": "알파",
@@ -294,6 +296,7 @@
     },
     {
       "id": "charlie",
+      "slug": "charlie",
       "name": "Charlie",
       "name_i18n": {
         "ko": "찰리",
@@ -429,6 +432,7 @@
     },
     {
       "id": "delta",
+      "slug": "delta",
       "name": "Delta",
       "name_i18n": {
         "ko": "델타",
@@ -556,6 +560,7 @@
     },
     {
       "id": "foxtrot",
+      "slug": "foxtrot",
       "name": "Foxtrot",
       "name_i18n": {
         "ko": "폭스트롯",
@@ -691,6 +696,7 @@
     },
     {
       "id": "0",
+      "slug": "echo",
       "name": "Echo",
       "name_i18n": {
         "ko": "에코",

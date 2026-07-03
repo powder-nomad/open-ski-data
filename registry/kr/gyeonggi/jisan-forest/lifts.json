@@ -6,6 +6,7 @@
   "lifts": [
     {
       "id": 0,
+      "slug": "lemon",
       "name": "Lemon",
       "name_i18n": {
         "ko": "레몬",
@@ -21,6 +22,7 @@
     },
     {
       "id": 1,
+      "slug": "orange",
       "name": "Orange",
       "name_i18n": {
         "ko": "오렌지",
@@ -36,6 +38,7 @@
     },
     {
       "id": 2,
+      "slug": "new-orange",
       "name": "New Orange",
       "name_i18n": {
         "ko": "뉴오렌지",
@@ -51,6 +54,7 @@
     },
     {
       "id": 3,
+      "slug": "blue",
       "name": "Blue",
       "name_i18n": {
         "ko": "블루",
@@ -66,6 +70,7 @@
     },
     {
       "id": 4,
+      "slug": "silver",
       "name": "Silver",
       "name_i18n": {
         "ko": "실버",

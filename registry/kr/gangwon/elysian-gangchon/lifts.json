@@ -6,6 +6,7 @@
   "lifts": [
     {
       "id": "e-lift-l1047299734",
+      "slug": "e-lift",
       "name": "E lift",
       "name_i18n": {
         "en": "E lift"
@@ -133,6 +134,7 @@
     },
     {
       "id": "b-lift-l104729973500",
+      "slug": "b-lift",
       "name": "B lift",
       "name_i18n": {
         "en": "B lift"
@@ -285,6 +287,7 @@
     },
     {
       "id": "b-lift-l104729973508",
+      "slug": "b-lift",
       "name": "B lift",
       "name_i18n": {
         "en": "B lift"
@@ -322,6 +325,7 @@
     },
     {
       "id": "a-lift-l1047299736",
+      "slug": "a-lift",
       "name": "A lift",
       "name_i18n": {
         "en": "A lift"
@@ -419,6 +423,7 @@
     },
     {
       "id": "c-lift-l1047299737",
+      "slug": "c-lift",
       "name": "C lift",
       "name_i18n": {
         "en": "C lift"
@@ -596,6 +601,7 @@
     },
     {
       "id": "d-lift-l104729973800",
+      "slug": "d-lift",
       "name": "D lift",
       "name_i18n": {
         "en": "D lift"
@@ -729,6 +735,7 @@
     },
     {
       "id": "d-lift-l104729973807",
+      "slug": "d-lift",
       "name": "D lift",
       "name_i18n": {
         "en": "D lift"
@@ -799,6 +806,7 @@
     },
     {
       "id": "a1-lift-l1466356818",
+      "slug": "a1-lift",
       "name": "A1 lift",
       "name_i18n": {
         "en": "A1 lift"
@@ -872,6 +880,7 @@
     },
     {
       "id": 0,
+      "slug": "a1",
       "name": "A1",
       "name_i18n": {
         "ko": "A1",
@@ -886,6 +895,7 @@
     },
     {
       "id": 1,
+      "slug": "a",
       "name": "A",
       "name_i18n": {
         "ko": "A",
@@ -900,6 +910,7 @@
     },
     {
       "id": 2,
+      "slug": "b",
       "name": "B",
       "name_i18n": {
         "ko": "B",
@@ -914,6 +925,7 @@
     },
     {
       "id": 3,
+      "slug": "c",
       "name": "C",
       "name_i18n": {
         "ko": "C",
@@ -928,6 +940,7 @@
     },
     {
       "id": 4,
+      "slug": "d",
       "name": "D",
       "name_i18n": {
         "ko": "D",
@@ -942,6 +955,7 @@
     },
     {
       "id": 5,
+      "slug": "e",
       "name": "E",
       "name_i18n": {
         "ko": "E",

@@ -6,6 +6,7 @@
   "lifts": [
     {
       "id": "unnamed-1364526037-l1364526037",
+      "slug": "unnamed-1364526037",
       "name": "unnamed-1364526037",
       "name_i18n": {},
       "type": "cable_car",
@@ -179,6 +180,7 @@
     },
     {
       "id": 0,
+      "slug": "flower",
       "name": "Flower",
       "name_i18n": {
         "ko": "플라워",
@@ -193,6 +195,7 @@
     },
     {
       "id": 1,
+      "slug": "bird",
       "name": "Bird",
       "name_i18n": {
         "ko": "버드",
@@ -207,6 +210,7 @@
     },
     {
       "id": 2,
+      "slug": "mountain",
       "name": "Mountain",
       "name_i18n": {
         "ko": "마운틴",

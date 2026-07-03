@@ -6,6 +6,7 @@
   "lifts": [
     {
       "id": "0",
+      "slug": "lift-1",
       "name": "Lift 1",
       "name_i18n": {
         "ko": "리프트 1",
@@ -136,6 +137,7 @@
     },
     {
       "id": "1",
+      "slug": "lift-2",
       "name": "Lift 2",
       "name_i18n": {
         "ko": "리프트 2",
@@ -285,6 +287,7 @@
     },
     {
       "id": "2",
+      "slug": "lift-3",
       "name": "Lift 3",
       "name_i18n": {
         "ko": "리프트 3",

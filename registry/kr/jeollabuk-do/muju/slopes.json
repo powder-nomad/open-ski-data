@@ -6,6 +6,7 @@
   "slopes": [
     {
       "id": "unnamed-975335041",
+      "slug": "unnamed-975335041",
       "name": "unnamed-975335041",
       "name_i18n": {},
       "type": "run",
@@ -44,6 +45,7 @@
     },
     {
       "id": "unnamed-975335043",
+      "slug": "unnamed-975335043",
       "name": "unnamed-975335043",
       "name_i18n": {},
       "type": "run",
@@ -103,6 +105,7 @@
     },
     {
       "id": "unnamed-975335048",
+      "slug": "unnamed-975335048",
       "name": "unnamed-975335048",
       "name_i18n": {},
       "type": "run",
@@ -209,6 +212,7 @@
     },
     {
       "id": "unnamed-975335057",
+      "slug": "unnamed-975335057",
       "name": "unnamed-975335057",
       "name_i18n": {},
       "type": "run",
@@ -264,6 +268,7 @@
     },
     {
       "id": "unnamed-975335061",
+      "slug": "unnamed-975335061",
       "name": "unnamed-975335061",
       "name_i18n": {},
       "type": "run",
@@ -331,6 +336,7 @@
     },
     {
       "id": "unnamed-975335062",
+      "slug": "unnamed-975335062",
       "name": "unnamed-975335062",
       "name_i18n": {},
       "type": "run",
@@ -385,6 +391,7 @@
     },
     {
       "id": "unnamed-975335063",
+      "slug": "unnamed-975335063",
       "name": "unnamed-975335063",
       "name_i18n": {},
       "type": "run",
@@ -432,6 +439,7 @@
     },
     {
       "id": "unnamed-975335078",
+      "slug": "unnamed-975335078",
       "name": "unnamed-975335078",
       "name_i18n": {},
       "type": "run",
@@ -467,6 +475,7 @@
     },
     {
       "id": "unnamed-975335079",
+      "slug": "unnamed-975335079",
       "name": "unnamed-975335079",
       "name_i18n": {},
       "type": "run",
@@ -504,6 +513,7 @@
     },
     {
       "id": "unnamed-975335080",
+      "slug": "unnamed-975335080",
       "name": "unnamed-975335080",
       "name_i18n": {},
       "type": "run",
@@ -532,6 +542,7 @@
     },
     {
       "id": "unnamed-975335081",
+      "slug": "unnamed-975335081",
       "name": "unnamed-975335081",
       "name_i18n": {},
       "type": "run",
@@ -592,6 +603,7 @@
     },
     {
       "id": "unnamed-97533508300",
+      "slug": "unnamed-97533508300",
       "name": "unnamed-97533508300",
       "name_i18n": {},
       "type": "run",
@@ -651,6 +663,7 @@
     },
     {
       "id": "unnamed-97533508303",
+      "slug": "unnamed-97533508303",
       "name": "unnamed-97533508303",
       "name_i18n": {},
       "type": "run",
@@ -682,6 +695,7 @@
     },
     {
       "id": 0,
+      "slug": "soyokgihang",
       "name": "Soyokgihang",
       "name_i18n": {
         "ko": "서역기행",
@@ -699,6 +713,7 @@
     },
     {
       "id": 1,
+      "slug": "eastern",
       "name": "Eastern",
       "name_i18n": {
         "ko": "이스턴",
@@ -716,6 +731,7 @@
     },
     {
       "id": 2,
+      "slug": "rookie-hill",
       "name": "Rookie Hill",
       "name_i18n": {
         "ko": "루키힐",
@@ -733,6 +749,7 @@
     },
     {
       "id": 3,
+      "slug": "western",
       "name": "Western",
       "name_i18n": {
         "ko": "웨스턴",
@@ -750,6 +767,7 @@
     },
     {
       "id": 4,
+      "slug": "turbo",
       "name": "Turbo",
       "name_i18n": {
         "ko": "터보",
@@ -767,6 +785,7 @@
     },
     {
       "id": 5,
+      "slug": "sun-down",
       "name": "Sun Down",
       "name_i18n": {
         "ko": "썬다운",
@@ -784,6 +803,7 @@
     },
     {
       "id": 6,
+      "slug": "freeway",
       "name": "Freeway",
       "name_i18n": {
         "ko": "프리웨이",
@@ -801,6 +821,7 @@
     },
     {
       "id": 7,
+      "slug": "panorama",
       "name": "Panorama",
       "name_i18n": {
         "ko": "파노라마",
@@ -818,6 +839,7 @@
     },
     {
       "id": 8,
+      "slug": "raiders-lower-zone",
       "name": "Raiders Lower Zone",
       "name_i18n": {
         "ko": "레이더스 하단",
@@ -835,6 +857,7 @@
     },
     {
       "id": 9,
+      "slug": "yamaga",
       "name": "Yamaga",
       "name_i18n": {
         "ko": "야마가",
@@ -852,6 +875,7 @@
     },
     {
       "id": 10,
+      "slug": "raiders-higher-zone",
       "name": "Raiders Higher Zone",
       "name_i18n": {
         "ko": "레이더스 상단",
@@ -869,6 +893,7 @@
     },
     {
       "id": 11,
+      "slug": "spitz-lower-zone",
       "name": "Spitz Lower Zone",
       "name_i18n": {
         "ko": "스피츠 하단",
@@ -886,6 +911,7 @@
     },
     {
       "id": 12,
+      "slug": "silk-road-lower-zone",
       "name": "Silk Road Lower Zone",
       "name_i18n": {
         "ko": "실크로드 하단",
@@ -903,6 +929,7 @@
     },
     {
       "id": 13,
+      "slug": "silk-road-upper",
       "name": "Silk Road Upper",
       "name_i18n": {
         "ko": "실크로드 상단",
@@ -920,6 +947,7 @@
     },
     {
       "id": 14,
+      "slug": "connection",
       "name": "Connection",
       "name_i18n": {
         "ko": "커넥션",
@@ -937,6 +965,7 @@
     },
     {
       "id": 15,
+      "slug": "minuet",
       "name": "Minuet",
       "name_i18n": {
         "ko": "미뉴에트",
@@ -954,6 +983,7 @@
     },
     {
       "id": 16,
+      "slug": "mozart",
       "name": "Mozart",
       "name_i18n": {
         "ko": "모차르트",
@@ -971,6 +1001,7 @@
     },
     {
       "id": 17,
+      "slug": "allegro",
       "name": "Allegro",
       "name_i18n": {
         "ko": "알레그로",
@@ -988,6 +1019,7 @@
     },
     {
       "id": 18,
+      "slug": "waltz",
       "name": "Waltz",
       "name_i18n": {
         "ko": "왈츠",
@@ -1005,6 +1037,7 @@
     },
     {
       "id": 19,
+      "slug": "cadenza",
       "name": "Cadenza",
       "name_i18n": {
         "ko": "카덴자",
@@ -1022,6 +1055,7 @@
     },
     {
       "id": 20,
+      "slug": "polka",
       "name": "Polka",
       "name_i18n": {
         "ko": "폴카",

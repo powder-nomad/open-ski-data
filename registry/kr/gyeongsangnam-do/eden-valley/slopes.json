@@ -6,6 +6,7 @@
   "slopes": [
     {
       "id": 0,
+      "slug": "basic",
       "name": "Basic",
       "name_i18n": {
         "ko": "베이직",
@@ -21,6 +22,7 @@
     },
     {
       "id": 1,
+      "slug": "main",
       "name": "Main",
       "name_i18n": {
         "ko": "메인",
@@ -36,6 +38,7 @@
     },
     {
       "id": 2,
+      "slug": "jupiter",
       "name": "Jupiter",
       "name_i18n": {
         "ko": "쥬피터",
@@ -51,6 +54,7 @@
     },
     {
       "id": 3,
+      "slug": "saturn",
       "name": "Saturn",
       "name_i18n": {
         "ko": "새턴",
@@ -66,6 +70,7 @@
     },
     {
       "id": 4,
+      "slug": "uranus",
       "name": "Uranus",
       "name_i18n": {
         "ko": "우라누스",
@@ -81,6 +86,7 @@
     },
     {
       "id": 5,
+      "slug": "mercury",
       "name": "Mercury",
       "name_i18n": {
         "ko": "머큐리",
@@ -96,6 +102,7 @@
     },
     {
       "id": 6,
+      "slug": "venus",
       "name": "Venus",
       "name_i18n": {
         "ko": "비너스",

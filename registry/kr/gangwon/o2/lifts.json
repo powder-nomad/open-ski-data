@@ -6,6 +6,7 @@
   "lifts": [
     {
       "id": "unnamed-791217770-l791217770",
+      "slug": "unnamed-791217770",
       "name": "unnamed-791217770",
       "name_i18n": {},
       "type": "chair_lift",
@@ -319,6 +320,7 @@
     },
     {
       "id": "unnamed-791217774-l791217774",
+      "slug": "unnamed-791217774",
       "name": "unnamed-791217774",
       "name_i18n": {},
       "type": "chair_lift",
@@ -722,6 +724,7 @@
     },
     {
       "id": "unnamed-791217775-l791217775",
+      "slug": "unnamed-791217775",
       "name": "unnamed-791217775",
       "name_i18n": {},
       "type": "chair_lift",
@@ -920,6 +923,7 @@
     },
     {
       "id": 0,
+      "slug": "apple",
       "name": "Apple",
       "name_i18n": {
         "ko": "애플",
@@ -933,6 +937,7 @@
     },
     {
       "id": 1,
+      "slug": "cherry",
       "name": "Cherry",
       "name_i18n": {
         "ko": "체리",
@@ -946,6 +951,7 @@
     },
     {
       "id": 2,
+      "slug": "orange",
       "name": "Orange",
       "name_i18n": {
         "ko": "오렌지",
@@ -959,6 +965,7 @@
     },
     {
       "id": 3,
+      "slug": "tomato",
       "name": "Tomato",
       "name_i18n": {
         "ko": "토마토",
@@ -972,6 +979,7 @@
     },
     {
       "id": 4,
+      "slug": "sweet-shuttle",
       "name": "Sweet Shuttle",
       "name_i18n": {
         "ko": "스위트셔틀",

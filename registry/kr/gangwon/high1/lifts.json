@@ -6,6 +6,7 @@
   "lifts": [
     {
       "id": "hera-l535760430",
+      "slug": "hera",
       "name": "Hera",
       "name_i18n": {
         "ko": "헤라",
@@ -260,6 +261,7 @@
     },
     {
       "id": "victoria-l535760431",
+      "slug": "victoria",
       "name": "Victoria",
       "name_i18n": {
         "ko": "빅토리아",
@@ -509,6 +511,7 @@
     },
     {
       "id": "apollo-l535760433",
+      "slug": "apollo",
       "name": "Apollo",
       "name_i18n": {
         "ko": "아폴로",
@@ -744,6 +747,7 @@
     },
     {
       "id": "zeus-l535760435",
+      "slug": "zeus",
       "name": "Zeus",
       "name_i18n": {
         "ko": "제우스",
@@ -1134,6 +1138,7 @@
     },
     {
       "id": "jupiter-l535760436",
+      "slug": "jupiter",
       "name": "Jupiter",
       "name_i18n": {
         "ko": "주피터",
@@ -1341,6 +1346,7 @@
     },
     {
       "id": "mountain-gondola-l535760437",
+      "slug": "mountain-gondola",
       "name": "Mountain Gondola",
       "name_i18n": {
         "en": "Mountain Gondola"
@@ -1883,6 +1889,7 @@
     },
     {
       "id": "athena-l535760438",
+      "slug": "athena",
       "name": "Athena",
       "name_i18n": {
         "ko": "아테나",
@@ -2195,6 +2202,7 @@
     },
     {
       "id": "high1-gondola-l53576043900",
+      "slug": "high1-gondola",
       "name": "High1 Gondola",
       "name_i18n": {
         "en": "High1 Gondola"
@@ -2527,6 +2535,7 @@
     },
     {
       "id": "high1-gondola-l53576043910",
+      "slug": "high1-gondola",
       "name": "High1 Gondola",
       "name_i18n": {
         "en": "High1 Gondola"
@@ -2559,6 +2568,7 @@
     },
     {
       "id": "high1-gondola-l53576043911",
+      "slug": "high1-gondola",
       "name": "High1 Gondola",
       "name_i18n": {
         "en": "High1 Gondola"
@@ -2711,6 +2721,7 @@
     },
     {
       "id": "valley-gondola-l632081931",
+      "slug": "valley-gondola",
       "name": "Valley Gondola",
       "name_i18n": {
         "en": "Valley Gondola"
@@ -2946,6 +2957,7 @@
     },
     {
       "id": 0,
+      "slug": "valley",
       "name": "Valley",
       "name_i18n": {
         "ko": "밸리",
@@ -2959,6 +2971,7 @@
     },
     {
       "id": 1,
+      "slug": "mountain",
       "name": "Mountain",
       "name_i18n": {
         "ko": "마운틴",
@@ -2972,6 +2985,7 @@
     },
     {
       "id": 2,
+      "slug": "palace",
       "name": "Palace",
       "name_i18n": {
         "ko": "팰리스",

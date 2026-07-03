@@ -6,6 +6,7 @@
   "slopes": [
     {
       "id": "unnamed-47324698200",
+      "slug": "unnamed-47324698200",
       "name": "unnamed-47324698200",
       "name_i18n": {},
       "type": "run",
@@ -35,6 +36,7 @@
     },
     {
       "id": "unnamed-47324698201",
+      "slug": "unnamed-47324698201",
       "name": "unnamed-47324698201",
       "name_i18n": {},
       "type": "run",
@@ -66,6 +68,7 @@
     },
     {
       "id": "unnamed-47324698202",
+      "slug": "unnamed-47324698202",
       "name": "unnamed-47324698202",
       "name_i18n": {},
       "type": "run",
@@ -97,6 +100,7 @@
     },
     {
       "id": "unnamed-47324698203",
+      "slug": "unnamed-47324698203",
       "name": "unnamed-47324698203",
       "name_i18n": {},
       "type": "run",
@@ -154,6 +158,7 @@
     },
     {
       "id": "unnamed-47866029200",
+      "slug": "unnamed-47866029200",
       "name": "unnamed-47866029200",
       "name_i18n": {},
       "type": "run",
@@ -185,6 +190,7 @@
     },
     {
       "id": "unnamed-47866029201",
+      "slug": "unnamed-47866029201",
       "name": "unnamed-47866029201",
       "name_i18n": {},
       "type": "run",
@@ -232,6 +238,7 @@
     },
     {
       "id": "unnamed-47866029206",
+      "slug": "unnamed-47866029206",
       "name": "unnamed-47866029206",
       "name_i18n": {},
       "type": "run",
@@ -257,6 +264,7 @@
     },
     {
       "id": "unnamed-47866029300",
+      "slug": "unnamed-47866029300",
       "name": "unnamed-47866029300",
       "name_i18n": {},
       "type": "run",
@@ -284,6 +292,7 @@
     },
     {
       "id": "unnamed-47866029301",
+      "slug": "unnamed-47866029301",
       "name": "unnamed-47866029301",
       "name_i18n": {},
       "type": "run",
@@ -359,6 +368,7 @@
     },
     {
       "id": "unnamed-47866029314",
+      "slug": "unnamed-47866029314",
       "name": "unnamed-47866029314",
       "name_i18n": {},
       "type": "run",
@@ -386,6 +396,7 @@
     },
     {
       "id": "gold-fantastic",
+      "slug": "gold-fantastic",
       "name": "Gold Fantastic",
       "name_i18n": {
         "ko": "골드 환타스틱",
@@ -761,6 +772,7 @@
     },
     {
       "id": "gold-valley",
+      "slug": "gold-valley",
       "name": "Gold Valley",
       "name_i18n": {
         "ko": "골드밸리",
@@ -1061,6 +1073,7 @@
     },
     {
       "id": "gold-paradise",
+      "slug": "gold-paradise",
       "name": "Gold Paradise",
       "name_i18n": {
         "ko": "골드파라다이스",
@@ -1458,6 +1471,7 @@
     },
     {
       "id": "unnamed-533194496",
+      "slug": "unnamed-533194496",
       "name": "unnamed-533194496",
       "name_i18n": {},
       "type": "run",
@@ -1505,6 +1519,7 @@
     },
     {
       "id": "red-paradise",
+      "slug": "red-paradise",
       "name": "Red Paradise",
       "name_i18n": {
         "ko": "레드파라다이스",
@@ -1831,6 +1846,7 @@
     },
     {
       "id": "new-gold",
+      "slug": "new-gold",
       "name": "New Gold",
       "name_i18n": {
         "ko": "뉴골드",
@@ -2000,6 +2016,7 @@
     },
     {
       "id": "unnamed-533199661",
+      "slug": "unnamed-533199661",
       "name": "unnamed-533199661",
       "name_i18n": {},
       "type": "run",
@@ -2039,6 +2056,7 @@
     },
     {
       "id": "red",
+      "slug": "red",
       "name": "Red",
       "name_i18n": {
         "ko": "레드",
@@ -2180,6 +2198,7 @@
     },
     {
       "id": "unnamed-533199663",
+      "slug": "unnamed-533199663",
       "name": "unnamed-533199663",
       "name_i18n": {},
       "type": "run",
@@ -2216,6 +2235,7 @@
     },
     {
       "id": "blue",
+      "slug": "blue",
       "name": "Blue",
       "name_i18n": {
         "ko": "블루",
@@ -2344,6 +2364,7 @@
     },
     {
       "id": "new-red",
+      "slug": "new-red",
       "name": "New Red",
       "name_i18n": {
         "ko": "뉴레드",
@@ -2424,6 +2445,7 @@
     },
     {
       "id": "pink",
+      "slug": "pink",
       "name": "Pink",
       "name_i18n": {
         "ko": "핑크",
@@ -2539,6 +2561,7 @@
     },
     {
       "id": "unnamed-533210088",
+      "slug": "unnamed-533210088",
       "name": "unnamed-533210088",
       "name_i18n": {},
       "type": "run",
@@ -2568,6 +2591,7 @@
     },
     {
       "id": "rainbow-paradise",
+      "slug": "rainbow-paradise",
       "name": "Rainbow Paradise",
       "name_i18n": {
         "ko": "레인보우파라다이스",
@@ -3463,6 +3487,7 @@
     },
     {
       "id": "unnamed-533239978",
+      "slug": "unnamed-533239978",
       "name": "unnamed-533239978",
       "name_i18n": {},
       "type": "run",
@@ -3546,6 +3571,7 @@
     },
     {
       "id": "silver",
+      "slug": "silver",
       "name": "Silver",
       "name_i18n": {
         "ko": "실버",
@@ -3729,6 +3755,7 @@
     },
     {
       "id": "silver-paradise",
+      "slug": "silver-paradise",
       "name": "Silver Paradise",
       "name_i18n": {
         "ko": "실버파라다이스",
@@ -3944,6 +3971,7 @@
     },
     {
       "id": "mega-green",
+      "slug": "mega-green",
       "name": "Mega Green",
       "name_i18n": {
         "ko": "메가그린",
@@ -4050,6 +4078,7 @@
     },
     {
       "id": "yellow",
+      "slug": "yellow",
       "name": "Yellow",
       "name_i18n": {
         "ko": "옐로우",
@@ -4133,6 +4162,7 @@
     },
     {
       "id": "unnamed-53340624700",
+      "slug": "unnamed-53340624700",
       "name": "unnamed-53340624700",
       "name_i18n": {},
       "type": "run",
@@ -4166,6 +4196,7 @@
     },
     {
       "id": "unnamed-53340624703",
+      "slug": "unnamed-53340624703",
       "name": "unnamed-53340624703",
       "name_i18n": {},
       "type": "run",
@@ -4206,6 +4237,7 @@
     },
     {
       "id": "new-yellow",
+      "slug": "new-yellow",
       "name": "New Yellow",
       "name_i18n": {
         "ko": "뉴옐로우",
@@ -4293,6 +4325,7 @@
     },
     {
       "id": "unnamed-55115994300",
+      "slug": "unnamed-55115994300",
       "name": "unnamed-55115994300",
       "name_i18n": {},
       "type": "run",
@@ -4344,6 +4377,7 @@
     },
     {
       "id": "unnamed-55115994303",
+      "slug": "unnamed-55115994303",
       "name": "unnamed-55115994303",
       "name_i18n": {},
       "type": "run",
@@ -4371,6 +4405,7 @@
     },
     {
       "id": "unnamed-55115994304",
+      "slug": "unnamed-55115994304",
       "name": "unnamed-55115994304",
       "name_i18n": {},
       "type": "run",
@@ -4398,6 +4433,7 @@
     },
     {
       "id": "unnamed-55115994305",
+      "slug": "unnamed-55115994305",
       "name": "unnamed-55115994305",
       "name_i18n": {},
       "type": "run",
@@ -4577,6 +4613,7 @@
     },
     {
       "id": "unnamed-55171856200",
+      "slug": "unnamed-55171856200",
       "name": "unnamed-55171856200",
       "name_i18n": {},
       "type": "run",
@@ -5035,6 +5072,7 @@
     },
     {
       "id": "unnamed-55171856296",
+      "slug": "unnamed-55171856296",
       "name": "unnamed-55171856296",
       "name_i18n": {},
       "type": "run",
@@ -5066,6 +5104,7 @@
     },
     {
       "id": "unnamed-55171856297",
+      "slug": "unnamed-55171856297",
       "name": "unnamed-55171856297",
       "name_i18n": {},
       "type": "run",
@@ -5097,6 +5136,7 @@
     },
     {
       "id": "unnamed-55171856298",
+      "slug": "unnamed-55171856298",
       "name": "unnamed-55171856298",
       "name_i18n": {},
       "type": "run",
@@ -5128,6 +5168,7 @@
     },
     {
       "id": "unnamed-55171856299",
+      "slug": "unnamed-55171856299",
       "name": "unnamed-55171856299",
       "name_i18n": {},
       "type": "run",
@@ -5175,6 +5216,7 @@
     },
     {
       "id": "unnamed-551718562103",
+      "slug": "unnamed-551718562103",
       "name": "unnamed-551718562103",
       "name_i18n": {},
       "type": "run",
@@ -5213,6 +5255,7 @@
     },
     {
       "id": "unnamed-996685258",
+      "slug": "unnamed-996685258",
       "name": "unnamed-996685258",
       "name_i18n": {},
       "type": "run",
@@ -5253,6 +5296,7 @@
     },
     {
       "id": "unnamed-996685260",
+      "slug": "unnamed-996685260",
       "name": "unnamed-996685260",
       "name_i18n": {},
       "type": "run",
@@ -5297,6 +5341,7 @@
     },
     {
       "id": 0,
+      "slug": "rainbow-4",
       "name": "Rainbow 4",
       "name_i18n": {
         "ko": "레인보우 4",
@@ -5313,6 +5358,7 @@
     },
     {
       "id": 1,
+      "slug": "rainbow-1",
       "name": "Rainbow 1",
       "name_i18n": {
         "ko": "레인보우 1",
@@ -5329,6 +5375,7 @@
     },
     {
       "id": 2,
+      "slug": "rainbow-2",
       "name": "Rainbow 2",
       "name_i18n": {
         "ko": "레인보우 2",
@@ -5345,6 +5392,7 @@
     },
     {
       "id": 3,
+      "slug": "rainbow-3",
       "name": "Rainbow 3",
       "name_i18n": {
         "ko": "레인보우 3",
@@ -5361,6 +5409,7 @@
     },
     {
       "id": 4,
+      "slug": "dragon-park",
       "name": "Dragon Park",
       "name_i18n": {
         "ko": "드래곤파크",

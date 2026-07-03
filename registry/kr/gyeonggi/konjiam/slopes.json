@@ -6,6 +6,7 @@
   "slopes": [
     {
       "id": 0,
+      "slug": "whisen",
       "name": "Whisen",
       "name_i18n": {
         "ko": "휘센",
@@ -22,6 +23,7 @@
     },
     {
       "id": 1,
+      "slug": "ixio",
       "name": "Ixio",
       "name_i18n": {
         "ko": "익시오",
@@ -38,6 +40,7 @@
     },
     {
       "id": 2,
+      "slug": "gram-1",
       "name": "Gram 1",
       "name_i18n": {
         "ko": "그램1",
@@ -54,6 +57,7 @@
     },
     {
       "id": 3,
+      "slug": "gram-2",
       "name": "Gram 2",
       "name_i18n": {
         "ko": "그램2",
@@ -70,6 +74,7 @@
     },
     {
       "id": 4,
+      "slug": "thinq-1",
       "name": "ThinQ 1",
       "name_i18n": {
         "ko": "씽큐1",
@@ -86,6 +91,7 @@
     },
     {
       "id": 5,
+      "slug": "thinq-2",
       "name": "ThinQ 2",
       "name_i18n": {
         "ko": "씽큐2",
@@ -102,6 +108,7 @@
     },
     {
       "id": 6,
+      "slug": "thinq-3",
       "name": "ThinQ 3",
       "name_i18n": {
         "ko": "씽큐3",
@@ -118,6 +125,7 @@
     },
     {
       "id": 7,
+      "slug": "thinq-br",
       "name": "ThinQ Br",
       "name_i18n": {
         "ko": "씽큐Br",
@@ -134,6 +142,7 @@
     },
     {
       "id": 8,
+      "slug": "cnp1",
       "name": "CNP1",
       "name_i18n": {
         "ko": "CNP1",
@@ -150,6 +159,7 @@
     },
     {
       "id": 9,
+      "slug": "cnp2",
       "name": "CNP2",
       "name_i18n": {
         "ko": "CNP2",

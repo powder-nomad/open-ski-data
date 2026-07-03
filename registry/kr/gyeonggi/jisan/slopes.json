@@ -5,6 +5,7 @@
   "slopes": [
     {
       "id": "unnamed-535718855",
+      "slug": "unnamed-535718855",
       "name": "unnamed-535718855",
       "name_i18n": {},
       "type": "run",
@@ -104,6 +105,7 @@
     },
     {
       "id": "unnamed-53571885600",
+      "slug": "unnamed-53571885600",
       "name": "unnamed-53571885600",
       "name_i18n": {},
       "type": "run",
@@ -137,11 +139,12 @@
     },
     {
       "id": "unnamed-53571885602",
+      "slug": "unnamed-53571885602",
       "name": "unnamed-53571885602",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
-      "length_m": 547.0,
+      "length_m": 547,
       "connected_slope_ids": [
         "unnamed-535718855",
         "unnamed-53571885600"
@@ -248,6 +251,7 @@
     },
     {
       "id": "unnamed-535718861",
+      "slug": "unnamed-535718861",
       "name": "unnamed-535718861",
       "name_i18n": {},
       "type": "run",
@@ -345,6 +349,7 @@
     },
     {
       "id": "unnamed-535718862",
+      "slug": "unnamed-535718862",
       "name": "unnamed-535718862",
       "name_i18n": {},
       "type": "run",
@@ -402,6 +407,7 @@
     },
     {
       "id": "unnamed-53571886300",
+      "slug": "unnamed-53571886300",
       "name": "unnamed-53571886300",
       "name_i18n": {},
       "type": "run",
@@ -449,6 +455,7 @@
     },
     {
       "id": "unnamed-53571886305",
+      "slug": "unnamed-53571886305",
       "name": "unnamed-53571886305",
       "name_i18n": {},
       "type": "run",
@@ -506,6 +513,7 @@
     },
     {
       "id": "unnamed-53571886309",
+      "slug": "unnamed-53571886309",
       "name": "unnamed-53571886309",
       "name_i18n": {},
       "type": "run",
@@ -581,6 +589,7 @@
     },
     {
       "id": "unnamed-53571886400",
+      "slug": "unnamed-53571886400",
       "name": "unnamed-53571886400",
       "name_i18n": {},
       "type": "run",
@@ -643,6 +652,7 @@
     },
     {
       "id": "unnamed-53571886408",
+      "slug": "unnamed-53571886408",
       "name": "unnamed-53571886408",
       "name_i18n": {},
       "type": "run",
@@ -778,6 +788,7 @@
     },
     {
       "id": "unnamed-53571886500",
+      "slug": "unnamed-53571886500",
       "name": "unnamed-53571886500",
       "name_i18n": {},
       "type": "run",
@@ -831,6 +842,7 @@
     },
     {
       "id": "unnamed-53571886508",
+      "slug": "unnamed-53571886508",
       "name": "unnamed-53571886508",
       "name_i18n": {},
       "type": "run",
@@ -874,6 +886,7 @@
     },
     {
       "id": "unnamed-53571886600",
+      "slug": "unnamed-53571886600",
       "name": "unnamed-53571886600",
       "name_i18n": {},
       "type": "run",
@@ -945,6 +958,7 @@
     },
     {
       "id": "unnamed-53571886609",
+      "slug": "unnamed-53571886609",
       "name": "unnamed-53571886609",
       "name_i18n": {},
       "type": "run",
@@ -1080,6 +1094,7 @@
     },
     {
       "id": "unnamed-53571886625",
+      "slug": "unnamed-53571886625",
       "name": "unnamed-53571886625",
       "name_i18n": {},
       "type": "run",
@@ -1139,6 +1154,7 @@
     },
     {
       "id": "unnamed-535722638",
+      "slug": "unnamed-535722638",
       "name": "unnamed-535722638",
       "name_i18n": {},
       "type": "run",
@@ -1225,6 +1241,7 @@
     },
     {
       "id": "unnamed-535722640",
+      "slug": "unnamed-535722640",
       "name": "unnamed-535722640",
       "name_i18n": {},
       "type": "run",
@@ -1381,6 +1398,7 @@
     },
     {
       "id": "unnamed-53572264100",
+      "slug": "unnamed-53572264100",
       "name": "unnamed-53572264100",
       "name_i18n": {},
       "type": "run",
@@ -1406,6 +1424,7 @@
     },
     {
       "id": "unnamed-53572264101",
+      "slug": "unnamed-53572264101",
       "name": "unnamed-53572264101",
       "name_i18n": {},
       "type": "run",
@@ -1516,6 +1535,7 @@
     },
     {
       "id": "unnamed-53572264116",
+      "slug": "unnamed-53572264116",
       "name": "unnamed-53572264116",
       "name_i18n": {},
       "type": "run",
@@ -1592,6 +1612,7 @@
     },
     {
       "id": "unnamed-535726780",
+      "slug": "unnamed-535726780",
       "name": "unnamed-535726780",
       "name_i18n": {},
       "type": "run",
