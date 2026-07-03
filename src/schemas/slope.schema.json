@@ -18,11 +18,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "Stable identifier. Historically strings; SkiWatch source uses integers, so both are accepted.",
-            "type": ["string", "integer"]
-          },
-          "slug": {
-            "description": "Human-stable kebab-case key used as the downstream sourceKey component (e.g. snowple, slopecast). Required on new records; optional on legacy SkiWatch-imported records that carry integer ids.",
+            "description": "Stable kebab-case slug identifier, e.g. 'alpha' or 'rainbow-gondola'. Used as the sourceKey component by downstream systems: {place_slug}:{id}.",
             "type": "string",
             "pattern": "^[a-z0-9][a-z0-9-]*$"
           },

@@ -18,9 +18,8 @@
       "items": {
         "type": "object",
         "properties": {
-          "id": { "type": ["string", "integer"] },
-          "slug": {
-            "description": "Human-stable kebab-case key used as the downstream sourceKey component. Required on new records; optional on legacy records with integer ids.",
+          "id": {
+            "description": "Stable kebab-case slug identifier. Used as the sourceKey component by downstream systems: {place_slug}:{id}.",
             "type": "string",
             "pattern": "^[a-z0-9][a-z0-9-]*$"
           },

@@ -3468,7 +3468,6 @@ function SlopeMetaPanel({
   // Inputs read from baseline ⊕ override so they reflect any
   // pending edits without requiring a re-fetch.
   const name = override?.name ?? slope.name ?? "";
-  const slug = override?.slug ?? slope.slug ?? "";
   const difficulty = (override?.difficulty ?? slope.difficulty ?? "") as string;
   const lengthM = override?.length_m ?? slope.length_m ?? null;
   return (
@@ -3503,34 +3502,6 @@ function SlopeMetaPanel({
           onChange={(next) => onPatch({ name_i18n: next })}
           currentLocale={locale}
         />
-        <div className="grid gap-1">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-semibold text-[var(--fg-dim)]">
-              {t("slugLabel")}
-            </span>
-            <button
-              type="button"
-              onClick={() => onPatch({ slug: nameToSlug(name) })}
-              className="text-[9px] text-[var(--accent-soft)] hover:text-[var(--accent)] disabled:opacity-40"
-              disabled={!name.trim()}
-              title={t("slugFromName")}
-            >
-              {t("slugFromName")}
-            </button>
-          </div>
-          <input
-            type="text"
-            value={slug}
-            onChange={(e) => onPatch({ slug: e.target.value || undefined })}
-            placeholder={t("slugPlaceholder")}
-            className="rounded-md border border-[var(--border)] bg-[var(--bg-page)] px-2 py-1 font-mono text-[11px] text-[var(--fg)] placeholder:text-[var(--fg-dim)]"
-          />
-          {slug && !/^[a-z0-9][a-z0-9-]*$/.test(slug) && (
-            <p className="text-[9px] text-red-300">
-              Lowercase letters, digits, hyphens only; must start with a letter or digit.
-            </p>
-          )}
-        </div>
         <LabeledInput
           label={t("difficulty")}
           value={difficulty}
@@ -3678,7 +3649,6 @@ function LiftMetaPanel({
   const locale = useLocale();
   const t = useTranslations("slopeAuthor");
   const name = override?.name ?? lift.name ?? "";
-  const slug = override?.slug ?? lift.slug ?? "";
   const type = override?.type ?? lift.type ?? "";
   const capacity = override?.capacity_per_hour ?? lift.capacity_per_hour ?? null;
   const lengthM = override?.length_m ?? lift.length_m ?? null;
@@ -3715,34 +3685,6 @@ function LiftMetaPanel({
           onChange={(next) => onPatch({ name_i18n: next })}
           currentLocale={locale}
         />
-        <div className="grid gap-1">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-semibold text-[var(--fg-dim)]">
-              {t("slugLabel")}
-            </span>
-            <button
-              type="button"
-              onClick={() => onPatch({ slug: nameToSlug(name) })}
-              className="text-[9px] text-[var(--accent-soft)] hover:text-[var(--accent)] disabled:opacity-40"
-              disabled={!name.trim()}
-              title={t("slugFromName")}
-            >
-              {t("slugFromName")}
-            </button>
-          </div>
-          <input
-            type="text"
-            value={slug}
-            onChange={(e) => onPatch({ slug: e.target.value || undefined })}
-            placeholder={t("slugPlaceholder")}
-            className="rounded-md border border-[var(--border)] bg-[var(--bg-page)] px-2 py-1 font-mono text-[11px] text-[var(--fg)] placeholder:text-[var(--fg-dim)]"
-          />
-          {slug && !/^[a-z0-9][a-z0-9-]*$/.test(slug) && (
-            <p className="text-[9px] text-red-300">
-              Lowercase letters, digits, hyphens only; must start with a letter or digit.
-            </p>
-          )}
-        </div>
         <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
           <span className="font-semibold text-[var(--fg-dim)]">
             {t("typeLabel")}
@@ -5067,7 +5009,6 @@ function FinalizeSlopePanel({
     if (!canSave) return;
     onCommit({
       id: idTrimmed,
-      slug: idTrimmed,
       name: nameTrimmed,
       type: "run",
       difficulty: difficulty || null,
@@ -5246,7 +5187,6 @@ function FinalizeLiftPanel({
     if (!canSave) return;
     onCommit({
       id: idTrimmed,
-      slug: idTrimmed,
       name: nameTrimmed,
       type: type || undefined,
       coordinates: points.map((p) => ({ lat: p.lat, lon: p.lng })),
