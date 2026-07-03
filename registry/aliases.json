@@ -2809,46 +2809,6 @@
       "from": "rookie-hill",
       "to": "echo",
       "at": "2026-07-03"
-    },
-    {
-      "seq": 352,
-      "kind": "lift",
-      "place_slug": "yongpyong",
-      "from": "new-red",
-      "to": "rainbow-4",
-      "at": "2026-07-03"
-    },
-    {
-      "seq": 353,
-      "kind": "lift",
-      "place_slug": "yongpyong",
-      "from": "blue",
-      "to": "rainbow-1",
-      "at": "2026-07-03"
-    },
-    {
-      "seq": 354,
-      "kind": "lift",
-      "place_slug": "yongpyong",
-      "from": "pink",
-      "to": "rainbow-2",
-      "at": "2026-07-03"
-    },
-    {
-      "seq": 355,
-      "kind": "lift",
-      "place_slug": "yongpyong",
-      "from": "yellow",
-      "to": "rainbow-3",
-      "at": "2026-07-03"
-    },
-    {
-      "seq": 356,
-      "kind": "lift",
-      "place_slug": "yongpyong",
-      "from": "new-yellow",
-      "to": "dragon-park",
-      "at": "2026-07-03"
     }
   ]
 }
