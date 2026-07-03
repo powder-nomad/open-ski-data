@@ -2718,7 +2718,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "new-red",
+      "id": "rainbow-4",
       "name": "New Red",
       "name_i18n": {
         "ko": "뉴레드",
@@ -2736,7 +2736,7 @@
       ]
     },
     {
-      "id": "blue",
+      "id": "rainbow-1",
       "name": "Blue",
       "name_i18n": {
         "ko": "블루",
@@ -2754,7 +2754,7 @@
       ]
     },
     {
-      "id": "pink",
+      "id": "rainbow-2",
       "name": "Pink",
       "name_i18n": {
         "ko": "핑크",
@@ -2769,7 +2769,7 @@
       ]
     },
     {
-      "id": "yellow",
+      "id": "rainbow-3",
       "name": "Yellow",
       "name_i18n": {
         "ko": "옐로우",
@@ -2786,7 +2786,7 @@
       ]
     },
     {
-      "id": "new-yellow",
+      "id": "dragon-park",
       "name": "New Yellow",
       "name_i18n": {
         "ko": "뉴옐로우",
