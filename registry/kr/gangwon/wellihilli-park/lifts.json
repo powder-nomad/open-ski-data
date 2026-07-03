@@ -5,8 +5,7 @@
   "place_slug": "wellihilli-park",
   "lifts": [
     {
-      "id": "unnamed-l1036240367",
-      "slug": "unnamed",
+      "id": "unnamed",
       "name": "패밀리 리프트 (초중급)",
       "name_i18n": {
         "en": "패밀리 리프트 (초중급)"
@@ -15,12 +14,6 @@
       "capacity_per_hour": null,
       "length_m": 737,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "e",
-        "e1",
-        "s2"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.490862,
@@ -167,11 +160,16 @@
           "lon": 128.24361,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "e",
+        "e1",
+        "s2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-l1036240368",
-      "slug": "unnamed",
+      "id": "unnamed-2",
       "name": "델타 리프트 (초중급)",
       "name_i18n": {
         "en": "델타 리프트 (초중급)"
@@ -180,11 +178,6 @@
       "capacity_per_hour": null,
       "length_m": 575.3,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "d",
-        "d1"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.490039,
@@ -306,11 +299,15 @@
           "lon": 128.24692,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "d",
+        "d1"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-l1036240369",
-      "slug": "unnamed",
+      "id": "unnamed-3",
       "name": "브라보 리프트 (중급)",
       "name_i18n": {
         "en": "브라보 리프트 (중급)"
@@ -319,10 +316,6 @@
       "capacity_per_hour": null,
       "length_m": 854.2,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "b1"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.48874,
@@ -484,11 +477,14 @@
           "lon": 128.249142,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "b1"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-l1036250234",
-      "slug": "unnamed",
+      "id": "unnamed-4",
       "name": "챌린지 리프트 (상급)",
       "name_i18n": {
         "en": "챌린지 리프트 (상급)"
@@ -497,8 +493,6 @@
       "capacity_per_hour": null,
       "length_m": 718.5,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.485649,
@@ -640,11 +634,12 @@
           "lon": 128.244316,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-l1036250235",
-      "slug": "unnamed",
+      "id": "unnamed-5",
       "name": "에코 리프트 (상급)",
       "name_i18n": {
         "en": "에코 리프트 (상급)"
@@ -653,11 +648,6 @@
       "capacity_per_hour": null,
       "length_m": 603.7,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "e2",
-        "s1"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.485436,
@@ -769,11 +759,15 @@
           "lon": 128.243426,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "e2",
+        "s1"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-l1036250236",
-      "slug": "unnamed",
+      "id": "unnamed-6",
       "name": "곤돌라",
       "name_i18n": {
         "en": "곤돌라"
@@ -782,10 +776,6 @@
       "capacity_per_hour": null,
       "length_m": 1252.9,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "e2"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.490784,
@@ -1022,11 +1012,14 @@
           "lon": 128.243753,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "e2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-l1036250237",
-      "slug": "unnamed",
+      "id": "unnamed-7",
       "name": "뉴알파 리프트 (초급)",
       "name_i18n": {
         "en": "뉴알파 리프트 (초급)"
@@ -1035,10 +1028,6 @@
       "capacity_per_hour": null,
       "length_m": 463.7,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "a2"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.489932,
@@ -1130,11 +1119,14 @@
           "lon": 128.253856,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "a2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-l1036250238",
-      "slug": "unnamed",
+      "id": "unnamed-8",
       "name": "알파 리프트 (초급)",
       "name_i18n": {
         "en": "알파 리프트 (초급)"
@@ -1143,10 +1135,6 @@
       "capacity_per_hour": null,
       "length_m": 481,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "a2"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.490126,
@@ -1243,19 +1231,20 @@
           "lon": 128.253945,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "a2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-1036272167-l1036272167",
-      "slug": "unnamed-1036272167",
+      "id": "unnamed-1036272167",
       "name": "unnamed-1036272167",
       "name_i18n": {},
       "type": "magic_carpet",
       "capacity_per_hour": null,
       "length_m": 102.2,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.490276,
@@ -1282,11 +1271,12 @@
           "lon": 128.251211,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "alpha",
+      "id": "a1",
       "name": "Alpha",
       "name_i18n": {
         "ko": "알파",
@@ -1298,8 +1288,7 @@
       "ride_time_s": 130
     },
     {
-      "id": 1,
-      "slug": "new-alpha",
+      "id": "a2",
       "name": "New Alpha",
       "name_i18n": {
         "ko": "뉴알파",
@@ -1311,8 +1300,7 @@
       "ride_time_s": 125
     },
     {
-      "id": 2,
-      "slug": "bravo",
+      "id": "a3",
       "name": "Bravo",
       "name_i18n": {
         "ko": "브라보",
@@ -1324,8 +1312,7 @@
       "ride_time_s": 209
     },
     {
-      "id": 3,
-      "slug": "delta",
+      "id": "b1",
       "name": "Delta",
       "name_i18n": {
         "ko": "델타",
@@ -1337,8 +1324,7 @@
       "ride_time_s": 154
     },
     {
-      "id": 4,
-      "slug": "echo",
+      "id": "b2",
       "name": "Echo",
       "name_i18n": {
         "ko": "에코",
@@ -1350,8 +1336,7 @@
       "ride_time_s": 170
     },
     {
-      "id": 5,
-      "slug": "family",
+      "id": "c1",
       "name": "Family",
       "name_i18n": {
         "ko": "패밀리",
@@ -1363,8 +1348,7 @@
       "ride_time_s": 195
     },
     {
-      "id": 6,
-      "slug": "challenge",
+      "id": "c2",
       "name": "Challenge",
       "name_i18n": {
         "ko": "첼린지",
@@ -1376,8 +1360,7 @@
       "ride_time_s": 200
     },
     {
-      "id": 7,
-      "slug": "gondola",
+      "id": "c3",
       "name": "Gondola",
       "name_i18n": {
         "ko": "곤돌라",

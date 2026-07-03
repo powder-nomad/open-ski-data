@@ -5,8 +5,7 @@
   "place_slug": "muju",
   "lifts": [
     {
-      "id": "gondola-l27909068",
-      "slug": "gondola",
+      "id": "gondola",
       "name": "Gondola",
       "name_i18n": {
         "ko": "곤도라",
@@ -17,8 +16,6 @@
       "capacity_per_hour": 2400,
       "length_m": 2659,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.888586,
@@ -493,11 +490,12 @@
       ],
       "seats": 8,
       "cabin_count": 103,
-      "speed_mps": 5
+      "speed_mps": 5,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "muju-express-l293598170",
-      "slug": "muju-express",
+      "id": "muju-express",
       "name": "Muju Express",
       "name_i18n": {
         "ko": "무주 익스프레스",
@@ -508,10 +506,6 @@
       "capacity_per_hour": 2400,
       "length_m": 1548,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "unnamed"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.890244,
@@ -806,11 +800,14 @@
       ],
       "seats": 4,
       "cabin_count": 108,
-      "speed_mps": 5
+      "speed_mps": 5,
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "cruiser-l293598171",
-      "slug": "cruiser",
+      "id": "cruiser",
       "name": "Cruiser",
       "name_i18n": {
         "ko": "크루저",
@@ -821,8 +818,6 @@
       "capacity_per_hour": 1800,
       "length_m": 1090,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.890259,
@@ -1042,11 +1037,12 @@
       ],
       "seats": 4,
       "cabin_count": 136,
-      "speed_mps": 2
+      "speed_mps": 2,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "melody-l293598172",
-      "slug": "melody",
+      "id": "melody",
       "name": "Melody",
       "name_i18n": {
         "ko": "멜로디",
@@ -1057,10 +1053,6 @@
       "capacity_per_hour": 2400,
       "length_m": 1086,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "unnamed"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.871849,
@@ -1275,11 +1267,14 @@
       ],
       "seats": 4,
       "cabin_count": 76,
-      "speed_mps": 5
+      "speed_mps": 5,
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "chorus-l293598175",
-      "slug": "chorus",
+      "id": "chorus",
       "name": "Chorus",
       "name_i18n": {
         "ko": "코러스",
@@ -1290,8 +1285,6 @@
       "capacity_per_hour": 2400,
       "length_m": 1588,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.888705,
@@ -1591,11 +1584,12 @@
       ],
       "seats": 4,
       "cabin_count": 110,
-      "speed_mps": 5
+      "speed_mps": 5,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "school-bus-l293598177",
-      "slug": "school-bus",
+      "id": "school-bus",
       "name": "School Bus",
       "name_i18n": {
         "ko": "스쿨버스",
@@ -1606,10 +1600,6 @@
       "capacity_per_hour": 750,
       "length_m": 286,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "unnamed"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.890664,
@@ -1674,11 +1664,14 @@
       ],
       "seats": 2,
       "cabin_count": 41,
-      "speed_mps": 1.5
+      "speed_mps": 1.5,
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "boat-l293598179",
-      "slug": "boat",
+      "id": "boat",
       "name": "Boat",
       "name_i18n": {
         "ko": "보트",
@@ -1689,8 +1682,6 @@
       "capacity_per_hour": 900,
       "length_m": 360,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.890195,
@@ -1775,11 +1766,12 @@
       ],
       "seats": 2,
       "cabin_count": 51,
-      "speed_mps": 1.8
+      "speed_mps": 1.8,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "ssang-ssang-l293598181",
-      "slug": "ssang-ssang",
+      "id": "ssang-ssang",
       "name": "Ssang Ssang",
       "name_i18n": {
         "en": "Ssang Ssang"
@@ -1788,8 +1780,6 @@
       "capacity_per_hour": null,
       "length_m": 768.2,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.889171,
@@ -1941,11 +1931,12 @@
           "lon": 127.737108,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "canoe-l293598182",
-      "slug": "canoe",
+      "id": "canoe",
       "name": "Canoe",
       "name_i18n": {
         "ko": "카누",
@@ -1956,10 +1947,6 @@
       "capacity_per_hour": 1800,
       "length_m": 595,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "unnamed-975335043"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.887653,
@@ -2079,11 +2066,14 @@
       ],
       "seats": 4,
       "cabin_count": 75,
-      "speed_mps": 1.8
+      "speed_mps": 1.8,
+      "connected_slope_ids": [
+        "unnamed-975335043"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "yacht-l293598183",
-      "slug": "yacht",
+      "id": "yacht",
       "name": "Yacht",
       "name_i18n": {
         "ko": "요트",
@@ -2094,11 +2084,6 @@
       "capacity_per_hour": 1800,
       "length_m": 685,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "unnamed",
-        "unnamed-975335081"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.890253,
@@ -2233,19 +2218,21 @@
       ],
       "seats": 4,
       "cabin_count": 85,
-      "speed_mps": 2
+      "speed_mps": 2,
+      "connected_slope_ids": [
+        "unnamed",
+        "unnamed-975335081"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-293598184-l293598184",
-      "slug": "unnamed-293598184",
+      "id": "unnamed-293598184",
       "name": "unnamed-293598184",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 696.3,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.888377,
@@ -2387,11 +2374,12 @@
           "lon": 127.745062,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "liner-l293598186",
-      "slug": "liner",
+      "id": "liner",
       "name": "Liner",
       "name_i18n": {
         "ko": "라이너",
@@ -2402,10 +2390,6 @@
       "capacity_per_hour": 2400,
       "length_m": 995,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "unnamed-975335043"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.890525,
@@ -2610,11 +2594,14 @@
       ],
       "seats": 4,
       "cabin_count": 70,
-      "speed_mps": 5
+      "speed_mps": 5,
+      "connected_slope_ids": [
+        "unnamed-975335043"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "harmony-l293598187",
-      "slug": "harmony",
+      "id": "harmony",
       "name": "Harmony",
       "name_i18n": {
         "ko": "하모니",
@@ -2625,8 +2612,6 @@
       "capacity_per_hour": 2400,
       "length_m": 1512,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.875435,
@@ -2891,11 +2876,12 @@
       ],
       "seats": 6,
       "cabin_count": 83,
-      "speed_mps": 4.2
+      "speed_mps": 4.2,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "jump",
+      "id": "soyokgihang",
       "name": "Jump",
       "name_i18n": {
         "ko": "점프",
@@ -2909,8 +2895,7 @@
       "speed_mps": 2
     },
     {
-      "id": 1,
-      "slug": "ssangssang",
+      "id": "eastern",
       "name": "Ssangssang",
       "name_i18n": {
         "ko": "쌍쌍",
@@ -2924,8 +2909,7 @@
       "speed_mps": 5
     },
     {
-      "id": 2,
-      "slug": "echo",
+      "id": "rookie-hill",
       "name": "Echo",
       "name_i18n": {
         "ko": "에코",

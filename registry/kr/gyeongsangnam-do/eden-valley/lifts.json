@@ -5,18 +5,13 @@
   "place_slug": "eden-valley",
   "lifts": [
     {
-      "id": "unnamed-295407268-l295407268",
-      "slug": "unnamed-295407268",
+      "id": "unnamed-295407268",
       "name": "unnamed-295407268",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 514.3,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "unnamed"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.428398,
@@ -123,21 +118,20 @@
           "lon": 128.987425,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-295407272-l295407272",
-      "slug": "unnamed-295407272",
+      "id": "unnamed-295407272",
       "name": "unnamed-295407272",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 968.3,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "unnamed"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.428281,
@@ -324,21 +318,20 @@
           "lon": 128.982278,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-295407274-l295407274",
-      "slug": "unnamed-295407274",
+      "id": "unnamed-295407274",
       "name": "unnamed-295407274",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 789,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "unnamed"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 35.428325,
@@ -490,11 +483,14 @@
           "lon": 128.988571,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "eden",
+      "id": "basic",
       "name": "Eden",
       "name_i18n": {
         "ko": "에덴",
@@ -507,8 +503,7 @@
       "speed_mps": 5
     },
     {
-      "id": 1,
-      "slug": "valley",
+      "id": "main",
       "name": "Valley",
       "name_i18n": {
         "ko": "밸리",
@@ -521,8 +516,7 @@
       "speed_mps": 5
     },
     {
-      "id": 2,
-      "slug": "adam",
+      "id": "jupiter",
       "name": "Adam",
       "name_i18n": {
         "ko": "아담",

@@ -6,19 +6,11 @@
   "slopes": [
     {
       "id": "unnamed-545967313",
-      "slug": "unnamed-545967313",
       "name": "unnamed-545967313",
       "name_i18n": {},
       "type": "run",
       "difficulty": null,
       "length_m": 3181.4,
-      "connected_slope_ids": [
-        "classic",
-        "jazz"
-      ],
-      "connected_lift_ids": [
-        "unnamed-1427700392-l1427700392"
-      ],
       "coordinates": [
         {
           "lat": 37.642603,
@@ -516,11 +508,17 @@
           "lat": 37.642603,
           "lon": 127.692474
         }
+      ],
+      "connected_slope_ids": [
+        "classic",
+        "jazz"
+      ],
+      "connected_lift_ids": [
+        "unnamed-1427700392"
       ]
     },
     {
       "id": "blues",
-      "slug": "blues",
       "name": "Blues",
       "name_i18n": {
         "ko": "블루스",
@@ -530,8 +528,6 @@
       "type": "run",
       "difficulty": "beginner",
       "length_m": 365,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.641303,
@@ -591,11 +587,12 @@
         }
       ],
       "width_m": 60,
-      "avg_angle_deg": 4
+      "avg_angle_deg": 4,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
       "id": "rock",
-      "slug": "rock",
       "name": "Rock",
       "name_i18n": {
         "ko": "락",
@@ -605,12 +602,6 @@
       "type": "run",
       "difficulty": "expert",
       "length_m": 610,
-      "connected_slope_ids": [
-        "ballards",
-        "reggae",
-        "unnamed-996685262"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.637723,
@@ -722,11 +713,16 @@
         }
       ],
       "width_m": 30,
-      "avg_angle_deg": 21
+      "avg_angle_deg": 21,
+      "connected_slope_ids": [
+        "ballards",
+        "reggae",
+        "unnamed-996685262"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "classic",
-      "slug": "classic",
       "name": "Classic",
       "name_i18n": {
         "ko": "클래식",
@@ -736,15 +732,6 @@
       "type": "run",
       "difficulty": "intermediate_advanced",
       "length_m": 450,
-      "connected_slope_ids": [
-        "jazz",
-        "reggae",
-        "unnamed-545967313"
-      ],
-      "connected_lift_ids": [
-        "unnamed-1427700383-l1427700383",
-        "unnamed-1427700392-l1427700392"
-      ],
       "coordinates": [
         {
           "lat": 37.637725,
@@ -872,11 +859,19 @@
         }
       ],
       "width_m": 35,
-      "avg_angle_deg": 12
+      "avg_angle_deg": 12,
+      "connected_slope_ids": [
+        "jazz",
+        "reggae",
+        "unnamed-545967313"
+      ],
+      "connected_lift_ids": [
+        "unnamed-1427700383",
+        "unnamed-1427700392"
+      ]
     },
     {
       "id": "reggae",
-      "slug": "reggae",
       "name": "Reggae",
       "name_i18n": {
         "ko": "레게",
@@ -886,13 +881,6 @@
       "type": "run",
       "difficulty": "intermediate_advanced",
       "length_m": 570,
-      "connected_slope_ids": [
-        "ballards",
-        "classic",
-        "rock",
-        "unnamed-996685262"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.641611,
@@ -968,11 +956,17 @@
         }
       ],
       "width_m": 37,
-      "avg_angle_deg": 14
+      "avg_angle_deg": 14,
+      "connected_slope_ids": [
+        "ballards",
+        "classic",
+        "rock",
+        "unnamed-996685262"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "jazz",
-      "slug": "jazz",
       "name": "Jazz",
       "name_i18n": {
         "ko": "재즈",
@@ -982,12 +976,6 @@
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 900,
-      "connected_slope_ids": [
-        "ballards",
-        "classic",
-        "unnamed-545967313"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.642806,
@@ -1127,11 +1115,16 @@
         }
       ],
       "width_m": 75,
-      "avg_angle_deg": 12
+      "avg_angle_deg": 12,
+      "connected_slope_ids": [
+        "ballards",
+        "classic",
+        "unnamed-545967313"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "funky",
-      "slug": "funky",
       "name": "Funky",
       "name_i18n": {
         "ko": "펑키",
@@ -1141,11 +1134,6 @@
       "type": "run",
       "difficulty": "intermediate_advanced",
       "length_m": 575,
-      "connected_slope_ids": [
-        "ballards",
-        "techno"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.638797,
@@ -1229,24 +1217,20 @@
         }
       ],
       "width_m": 30,
-      "avg_angle_deg": 16
+      "avg_angle_deg": 16,
+      "connected_slope_ids": [
+        "ballards",
+        "techno"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-996685262",
-      "slug": "unnamed-996685262",
       "name": "unnamed-996685262",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
       "length_m": 80.8,
-      "connected_slope_ids": [
-        "ballards",
-        "reggae",
-        "rock"
-      ],
-      "connected_lift_ids": [
-        "unnamed-1427700386-l1427700386"
-      ],
       "coordinates": [
         {
           "lat": 37.64296,
@@ -1264,11 +1248,18 @@
           "lat": 37.642781,
           "lon": 127.686841
         }
+      ],
+      "connected_slope_ids": [
+        "ballards",
+        "reggae",
+        "rock"
+      ],
+      "connected_lift_ids": [
+        "unnamed-1427700386"
       ]
     },
     {
-      "id": 0,
-      "slug": "ballad",
+      "id": "ballad",
       "name": "Ballad",
       "name_i18n": {
         "ko": "발라드",
@@ -1282,8 +1273,7 @@
       "avg_angle_deg": 8
     },
     {
-      "id": 1,
-      "slug": "techno-1",
+      "id": "techno-1",
       "name": "Techno 1",
       "name_i18n": {
         "ko": "테크노 1",
@@ -1297,8 +1287,7 @@
       "avg_angle_deg": 11
     },
     {
-      "id": 2,
-      "slug": "techno-2",
+      "id": "techno-2",
       "name": "Techno 2",
       "name_i18n": {
         "ko": "테크노 2",
@@ -1312,8 +1301,7 @@
       "avg_angle_deg": 17
     },
     {
-      "id": 3,
-      "slug": "hip-hop-1",
+      "id": "hip-hop-1",
       "name": "Hip-hop 1",
       "name_i18n": {
         "ko": "힙합 1",
@@ -1327,8 +1315,7 @@
       "avg_angle_deg": 11
     },
     {
-      "id": 4,
-      "slug": "hip-hop-2",
+      "id": "hip-hop-2",
       "name": "Hip-hop 2",
       "name_i18n": {
         "ko": "힙합 2",

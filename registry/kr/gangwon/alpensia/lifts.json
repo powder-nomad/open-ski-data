@@ -5,8 +5,7 @@
   "place_slug": "alpensia",
   "lifts": [
     {
-      "id": "0",
-      "slug": "lift-1",
+      "id": "echo",
       "name": "Lift 1",
       "name_i18n": {
         "ko": "리프트 1",
@@ -18,9 +17,6 @@
       "seats": 4,
       "cabin_count": 45,
       "speed_mps": 5,
-      "connected_slope_ids": [
-        0
-      ],
       "type": "chair_lift",
       "coordinates": [
         {
@@ -133,11 +129,13 @@
           "lon": 128.66895,
           "alt_m": null
         }
+      ],
+      "connected_slope_ids": [
+        "echo"
       ]
     },
     {
-      "id": "1",
-      "slug": "lift-2",
+      "id": "lift-2",
       "name": "Lift 2",
       "name_i18n": {
         "ko": "리프트 2",
@@ -149,13 +147,6 @@
       "seats": 6,
       "cabin_count": 43,
       "speed_mps": 5,
-      "connected_slope_ids": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
       "type": "chair_lift",
       "coordinates": [
         {
@@ -283,11 +274,17 @@
           "lon": 128.673009,
           "alt_m": null
         }
+      ],
+      "connected_slope_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
       ]
     },
     {
-      "id": "2",
-      "slug": "lift-3",
+      "id": "lift-3",
       "name": "Lift 3",
       "name_i18n": {
         "ko": "리프트 3",
@@ -299,13 +296,6 @@
       "seats": 6,
       "cabin_count": 44,
       "speed_mps": 5,
-      "connected_slope_ids": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
       "type": "chair_lift",
       "coordinates": [
         {
@@ -433,6 +423,13 @@
           "lon": 128.673566,
           "alt_m": null
         }
+      ],
+      "connected_slope_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
       ]
     }
   ]

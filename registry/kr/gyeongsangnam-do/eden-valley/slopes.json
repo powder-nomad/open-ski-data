@@ -5,8 +5,7 @@
   "place_slug": "eden-valley",
   "slopes": [
     {
-      "id": 0,
-      "slug": "basic",
+      "id": "basic",
       "name": "Basic",
       "name_i18n": {
         "ko": "베이직",
@@ -21,8 +20,7 @@
       "avg_angle_deg": 6.84277341263094
     },
     {
-      "id": 1,
-      "slug": "main",
+      "id": "main",
       "name": "Main",
       "name_i18n": {
         "ko": "메인",
@@ -37,8 +35,7 @@
       "avg_angle_deg": 5.710593137499643
     },
     {
-      "id": 2,
-      "slug": "jupiter",
+      "id": "jupiter",
       "name": "Jupiter",
       "name_i18n": {
         "ko": "쥬피터",
@@ -53,8 +50,7 @@
       "avg_angle_deg": 9.648045316098157
     },
     {
-      "id": 3,
-      "slug": "saturn",
+      "id": "saturn",
       "name": "Saturn",
       "name_i18n": {
         "ko": "새턴",
@@ -69,8 +65,7 @@
       "avg_angle_deg": 12.4
     },
     {
-      "id": 4,
-      "slug": "uranus",
+      "id": "uranus",
       "name": "Uranus",
       "name_i18n": {
         "ko": "우라누스",
@@ -85,8 +80,7 @@
       "avg_angle_deg": 9.090276920822323
     },
     {
-      "id": 5,
-      "slug": "mercury",
+      "id": "mercury",
       "name": "Mercury",
       "name_i18n": {
         "ko": "머큐리",
@@ -101,8 +95,7 @@
       "avg_angle_deg": 15.109575122340466
     },
     {
-      "id": 6,
-      "slug": "venus",
+      "id": "venus",
       "name": "Venus",
       "name_i18n": {
         "ko": "비너스",

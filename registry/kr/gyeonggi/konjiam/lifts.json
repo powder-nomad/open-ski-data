@@ -5,16 +5,13 @@
   "place_slug": "konjiam",
   "lifts": [
     {
-      "id": "unnamed-486063094-l486063094",
-      "slug": "unnamed-486063094",
+      "id": "unnamed-486063094",
       "name": "unnamed-486063094",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 306.1,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.338227,
@@ -81,19 +78,18 @@
           "lon": 127.289212,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-945151678-l945151678",
-      "slug": "unnamed-945151678",
+      "id": "unnamed-945151678",
       "name": "unnamed-945151678",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 651.2,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.337422,
@@ -230,21 +226,18 @@
           "lon": 127.284906,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-945151680-l945151680",
-      "slug": "unnamed-945151680",
+      "id": "unnamed-945151680",
       "name": "unnamed-945151680",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 1270.3,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "daebang-eo"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.336656,
@@ -486,21 +479,20 @@
           "lon": 127.281503,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "daebang-eo"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-945151681-l945151681",
-      "slug": "unnamed-945151681",
+      "id": "unnamed-945151681",
       "name": "unnamed-945151681",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 808.5,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "imyeonsu"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.334653,
@@ -662,22 +654,20 @@
           "lon": 127.281324,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "imyeonsu"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-94515168200-l94515168200",
-      "slug": "unnamed-94515168200",
+      "id": "unnamed-94515168200",
       "name": "unnamed-94515168200",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 897,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "daebang-eo",
-        "gwamegi"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.336547,
@@ -849,21 +839,21 @@
           "lon": 127.284957,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "daebang-eo",
+        "gwamegi"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-94515168207-l94515168207",
-      "slug": "unnamed-94515168207",
+      "id": "unnamed-94515168207",
       "name": "unnamed-94515168207",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 353.4,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "gwamegi"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.330981,
@@ -940,11 +930,14 @@
           "lon": 127.282064,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "gwamegi"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "whisen",
+      "id": "whisen",
       "name": "Whisen",
       "name_i18n": {
         "ko": "휘센",
@@ -959,8 +952,7 @@
       "speed_mps": 5
     },
     {
-      "id": 1,
-      "slug": "ixio",
+      "id": "ixio",
       "name": "Ixio",
       "name_i18n": {
         "ko": "익시오",
@@ -975,8 +967,7 @@
       "speed_mps": 5
     },
     {
-      "id": 2,
-      "slug": "gram",
+      "id": "gram-1",
       "name": "Gram",
       "name_i18n": {
         "ko": "그램",
@@ -991,8 +982,7 @@
       "speed_mps": 5
     },
     {
-      "id": 3,
-      "slug": "thinq",
+      "id": "gram-2",
       "name": "ThinQ",
       "name_i18n": {
         "ko": "씽큐",
@@ -1007,8 +997,7 @@
       "speed_mps": 5
     },
     {
-      "id": 4,
-      "slug": "cnp",
+      "id": "thinq-1",
       "name": "CNP",
       "name_i18n": {
         "ko": "CNP",

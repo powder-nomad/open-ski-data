@@ -5,8 +5,7 @@
   "place_slug": "jisan-forest",
   "lifts": [
     {
-      "id": 0,
-      "slug": "lemon",
+      "id": "1-1",
       "name": "Lemon",
       "name_i18n": {
         "ko": "레몬",
@@ -21,8 +20,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": 1,
-      "slug": "orange",
+      "id": "1",
       "name": "Orange",
       "name_i18n": {
         "ko": "오렌지",
@@ -37,8 +35,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": 2,
-      "slug": "new-orange",
+      "id": "2",
       "name": "New Orange",
       "name_i18n": {
         "ko": "뉴오렌지",
@@ -53,8 +50,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": 3,
-      "slug": "blue",
+      "id": "3",
       "name": "Blue",
       "name_i18n": {
         "ko": "블루",
@@ -69,8 +65,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": 4,
-      "slug": "silver",
+      "id": "5",
       "name": "Silver",
       "name_i18n": {
         "ko": "실버",

@@ -6,7 +6,6 @@
   "slopes": [
     {
       "id": "panorama",
-      "slug": "panorama",
       "name": "Panorama",
       "name_i18n": {
         "ko": "파노라마",
@@ -16,11 +15,6 @@
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 1450,
-      "connected_slope_ids": [
-        "paradise",
-        "sparrow"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.574285,
@@ -232,11 +226,15 @@
         }
       ],
       "elevation_m": 390,
-      "avg_angle_deg": 9.97
+      "avg_angle_deg": 9.97,
+      "connected_slope_ids": [
+        "paradise",
+        "sparrow"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "sparrow",
-      "slug": "sparrow",
       "name": "Sparrow",
       "name_i18n": {
         "ko": "스패로우",
@@ -246,15 +244,6 @@
       "type": "run",
       "difficulty": "beginner",
       "length_m": 978,
-      "connected_slope_ids": [
-        "board-cross",
-        "extreme-park",
-        "hawk-2",
-        "kiwi",
-        "panorama",
-        "paradise"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.581122,
@@ -394,11 +383,19 @@
         }
       ],
       "elevation_m": 120,
-      "avg_angle_deg": 6.98
+      "avg_angle_deg": 6.98,
+      "connected_slope_ids": [
+        "board-cross",
+        "extreme-park",
+        "hawk-2",
+        "kiwi",
+        "panorama",
+        "paradise"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "paradise",
-      "slug": "paradise",
       "name": "Paradise",
       "name_i18n": {
         "ko": "파라다이스",
@@ -408,13 +405,6 @@
       "type": "run",
       "difficulty": "expert",
       "length_m": 912,
-      "connected_slope_ids": [
-        "panorama",
-        "sparrow"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535362940-l535362940"
-      ],
       "coordinates": [
         {
           "lat": 37.574457,
@@ -538,11 +528,17 @@
         }
       ],
       "elevation_m": 255.5,
-      "avg_angle_deg": 15.65
+      "avg_angle_deg": 15.65,
+      "connected_slope_ids": [
+        "panorama",
+        "sparrow"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535362940"
+      ]
     },
     {
       "id": "kiwi",
-      "slug": "kiwi",
       "name": "Kiwi",
       "name_i18n": {
         "ko": "키위",
@@ -552,12 +548,6 @@
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 550,
-      "connected_slope_ids": [
-        "dig",
-        "fantasy",
-        "sparrow"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.574338,
@@ -717,11 +707,16 @@
         }
       ],
       "elevation_m": 127.5,
-      "avg_angle_deg": 13
+      "avg_angle_deg": 13,
+      "connected_slope_ids": [
+        "dig",
+        "fantasy",
+        "sparrow"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "fantasy",
-      "slug": "fantasy",
       "name": "Fantasy",
       "name_i18n": {
         "ko": "환타지",
@@ -731,15 +726,6 @@
       "type": "run",
       "difficulty": "advanced",
       "length_m": 503,
-      "connected_slope_ids": [
-        "board-cross",
-        "dig",
-        "hawk-2",
-        "kiwi",
-        "penguin",
-        "valley"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.578579,
@@ -863,11 +849,19 @@
         }
       ],
       "elevation_m": 89.5,
-      "avg_angle_deg": 10.08
+      "avg_angle_deg": 10.08,
+      "connected_slope_ids": [
+        "board-cross",
+        "dig",
+        "hawk-2",
+        "kiwi",
+        "penguin",
+        "valley"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "penguin",
-      "slug": "penguin",
       "name": "Penguin",
       "name_i18n": {
         "ko": "펭귄",
@@ -877,11 +871,6 @@
       "type": "run",
       "difficulty": "beginner",
       "length_m": 665,
-      "connected_slope_ids": [
-        "fantasy",
-        "valley"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.579529,
@@ -981,11 +970,15 @@
         }
       ],
       "elevation_m": 94,
-      "avg_angle_deg": 8.33
+      "avg_angle_deg": 8.33,
+      "connected_slope_ids": [
+        "fantasy",
+        "valley"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "valley",
-      "slug": "valley",
       "name": "Valley",
       "name_i18n": {
         "ko": "밸리",
@@ -995,14 +988,6 @@
       "type": "run",
       "difficulty": "intermediate_advanced",
       "length_m": 1110,
-      "connected_slope_ids": [
-        "fantasy",
-        "penguin",
-        "unnamed"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535362939-l535362939"
-      ],
       "coordinates": [
         {
           "lat": 37.573907,
@@ -1206,11 +1191,18 @@
         }
       ],
       "elevation_m": 294,
-      "avg_angle_deg": 15.4
+      "avg_angle_deg": 15.4,
+      "connected_slope_ids": [
+        "fantasy",
+        "penguin",
+        "unnamed"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535362939"
+      ]
     },
     {
       "id": "duke",
-      "slug": "duke",
       "name": "Duke",
       "name_i18n": {
         "ko": "듀크(이상호)",
@@ -1220,12 +1212,6 @@
       "type": "run",
       "difficulty": "intermediate_advanced",
       "length_m": 818,
-      "connected_slope_ids": [
-        "dodo",
-        "dove",
-        "unnamed-531574386"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.573666,
@@ -1349,11 +1335,16 @@
         }
       ],
       "elevation_m": 216,
-      "avg_angle_deg": 13.75
+      "avg_angle_deg": 13.75,
+      "connected_slope_ids": [
+        "dodo",
+        "dove",
+        "unnamed-531574386"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "mogul",
-      "slug": "mogul",
       "name": "Mogul",
       "name_i18n": {
         "ko": "모글",
@@ -1363,11 +1354,6 @@
       "type": "run",
       "difficulty": "expert",
       "length_m": 319,
-      "connected_slope_ids": [
-        "master-s-class",
-        "unnamed"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.577252,
@@ -1443,11 +1429,15 @@
         }
       ],
       "elevation_m": 109.85,
-      "avg_angle_deg": 19
+      "avg_angle_deg": 19,
+      "connected_slope_ids": [
+        "master-s-class",
+        "unnamed"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "hawk",
-      "slug": "hawk",
       "name": "Hawk",
       "name_i18n": {
         "ko": "호크",
@@ -1457,11 +1447,6 @@
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 643,
-      "connected_slope_ids": [
-        "half-pipe",
-        "hawk-2"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.580004,
@@ -1561,22 +1546,20 @@
         }
       ],
       "elevation_m": 128.35,
-      "avg_angle_deg": 11.28
+      "avg_angle_deg": 11.28,
+      "connected_slope_ids": [
+        "half-pipe",
+        "hawk-2"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-531574386",
-      "slug": "unnamed-531574386",
       "name": "unnamed-531574386",
       "name_i18n": {},
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 184.1,
-      "connected_slope_ids": [
-        "aerial",
-        "dove",
-        "duke"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.573792,
@@ -1618,11 +1601,16 @@
           "lat": 37.574912,
           "lon": 128.32309
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "aerial",
+        "dove",
+        "duke"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "dodo-training-only",
+      "id": "dodo-training-only",
       "name": "Dodo (Training Only)",
       "name_i18n": {
         "ko": "도도(강습전용)",
@@ -1636,8 +1624,7 @@
       "avg_angle_deg": 6.68
     },
     {
-      "id": 1,
-      "slug": "slope-style-ss-sbs",
+      "id": "slope-style-ss-sbs",
       "name": "Slope Style (SS/SBS)",
       "name_i18n": {
         "ko": "슬로프스타일(SS/SBS)",
@@ -1651,8 +1638,7 @@
       "avg_angle_deg": 14.93
     },
     {
-      "id": 2,
-      "slug": "champion",
+      "id": "champion",
       "name": "Champion",
       "name_i18n": {
         "ko": "챔피온",
@@ -1666,8 +1652,7 @@
       "avg_angle_deg": 16.08
     },
     {
-      "id": 3,
-      "slug": "dizzy",
+      "id": "dizzy",
       "name": "Dizzy",
       "name_i18n": {
         "ko": "디지",
@@ -1681,8 +1666,7 @@
       "avg_angle_deg": 15.4
     },
     {
-      "id": 4,
-      "slug": "extreme-park-upper",
+      "id": "extreme-park-upper",
       "name": "Extreme Park (Upper)",
       "name_i18n": {
         "ko": "익스트림파크(상단)",
@@ -1696,8 +1680,7 @@
       "avg_angle_deg": 9.35
     },
     {
-      "id": 5,
-      "slug": "extreme-park-lower",
+      "id": "extreme-park-lower",
       "name": "Extreme Park (Lower)",
       "name_i18n": {
         "ko": "익스트림파크(하단)",
@@ -1711,8 +1694,7 @@
       "avg_angle_deg": 9.35
     },
     {
-      "id": 6,
-      "slug": "halfpipe",
+      "id": "halfpipe",
       "name": "Halfpipe",
       "name_i18n": {
         "ko": "하프파이프",

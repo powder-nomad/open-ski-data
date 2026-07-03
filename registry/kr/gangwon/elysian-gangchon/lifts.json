@@ -5,8 +5,7 @@
   "place_slug": "elysian-gangchon",
   "lifts": [
     {
-      "id": "e-lift-l1047299734",
-      "slug": "e-lift",
+      "id": "e-lift",
       "name": "E lift",
       "name_i18n": {
         "en": "E lift"
@@ -15,10 +14,6 @@
       "capacity_per_hour": null,
       "length_m": 507.9,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "leopard"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.820861,
@@ -130,11 +125,14 @@
           "lon": 127.584681,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "leopard"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "b-lift-l104729973500",
-      "slug": "b-lift",
+      "id": "b-lift",
       "name": "B lift",
       "name_i18n": {
         "en": "B lift"
@@ -143,10 +141,6 @@
       "capacity_per_hour": null,
       "length_m": 675.1,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "dragon"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.815387,
@@ -283,11 +277,14 @@
           "lon": 127.583754,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "dragon"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "b-lift-l104729973508",
-      "slug": "b-lift",
+      "id": "b-lift-2",
       "name": "B lift",
       "name_i18n": {
         "en": "B lift"
@@ -296,10 +293,6 @@
       "capacity_per_hour": null,
       "length_m": 58.4,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "dragon"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.814923,
@@ -321,11 +314,14 @@
           "lon": 127.583091,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "dragon"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "a-lift-l1047299736",
-      "slug": "a-lift",
+      "id": "a-lift",
       "name": "A lift",
       "name_i18n": {
         "en": "A lift"
@@ -334,10 +330,6 @@
       "capacity_per_hour": null,
       "length_m": 349,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "dragon"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.815204,
@@ -419,11 +411,14 @@
           "lon": 127.587638,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "dragon"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "c-lift-l1047299737",
-      "slug": "c-lift",
+      "id": "c-lift",
       "name": "C lift",
       "name_i18n": {
         "en": "C lift"
@@ -432,10 +427,6 @@
       "capacity_per_hour": null,
       "length_m": 793.6,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "horse"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.820243,
@@ -597,11 +588,14 @@
           "lon": 127.583068,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "horse"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "d-lift-l104729973800",
-      "slug": "d-lift",
+      "id": "d-lift",
       "name": "D lift",
       "name_i18n": {
         "en": "D lift"
@@ -610,11 +604,6 @@
       "capacity_per_hour": null,
       "length_m": 528.7,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "deer",
-        "puma"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.820567,
@@ -731,11 +720,15 @@
           "lon": 127.584807,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "deer",
+        "puma"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "d-lift-l104729973807",
-      "slug": "d-lift",
+      "id": "d-lift-2",
       "name": "D lift",
       "name_i18n": {
         "en": "D lift"
@@ -744,8 +737,6 @@
       "capacity_per_hour": null,
       "length_m": 255.1,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.817206,
@@ -802,11 +793,12 @@
           "lon": 127.582736,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "a1-lift-l1466356818",
-      "slug": "a1-lift",
+      "id": "a1-lift",
       "name": "A1 lift",
       "name_i18n": {
         "en": "A1 lift"
@@ -815,11 +807,6 @@
       "capacity_per_hour": null,
       "length_m": 279,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "penda",
-        "zebra"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.815946,
@@ -876,11 +863,15 @@
           "lon": 127.589751,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "penda",
+        "zebra"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "a1",
+      "id": "panda",
       "name": "A1",
       "name_i18n": {
         "ko": "A1",
@@ -894,8 +885,7 @@
       "speed_mps": 1.2
     },
     {
-      "id": 1,
-      "slug": "a",
+      "id": "dragon-rabbit",
       "name": "A",
       "name_i18n": {
         "ko": "A",
@@ -909,8 +899,7 @@
       "speed_mps": 4
     },
     {
-      "id": 2,
-      "slug": "b",
+      "id": "horse-zebra",
       "name": "B",
       "name_i18n": {
         "ko": "B",
@@ -924,8 +913,7 @@
       "speed_mps": 4
     },
     {
-      "id": 3,
-      "slug": "c",
+      "id": "horse-pegasus",
       "name": "C",
       "name_i18n": {
         "ko": "C",
@@ -939,8 +927,7 @@
       "speed_mps": 4
     },
     {
-      "id": 4,
-      "slug": "d",
+      "id": "jaguar",
       "name": "D",
       "name_i18n": {
         "ko": "D",
@@ -954,8 +941,7 @@
       "speed_mps": 4
     },
     {
-      "id": 5,
-      "slug": "e",
+      "id": "e",
       "name": "E",
       "name_i18n": {
         "ko": "E",

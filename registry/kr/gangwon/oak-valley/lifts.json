@@ -5,16 +5,13 @@
   "place_slug": "oak-valley",
   "lifts": [
     {
-      "id": "unnamed-1364526037-l1364526037",
-      "slug": "unnamed-1364526037",
+      "id": "unnamed-1364526037",
       "name": "unnamed-1364526037",
       "name_i18n": {},
       "type": "cable_car",
       "capacity_per_hour": null,
       "length_m": 922.8,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.368036,
@@ -176,11 +173,12 @@
           "lon": 127.834575,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "flower",
+      "id": "a",
       "name": "Flower",
       "name_i18n": {
         "ko": "플라워",
@@ -194,8 +192,7 @@
       "speed_mps": 5
     },
     {
-      "id": 1,
-      "slug": "bird",
+      "id": "b",
       "name": "Bird",
       "name_i18n": {
         "ko": "버드",
@@ -209,8 +206,7 @@
       "speed_mps": 5
     },
     {
-      "id": 2,
-      "slug": "mountain",
+      "id": "c",
       "name": "Mountain",
       "name_i18n": {
         "ko": "마운틴",

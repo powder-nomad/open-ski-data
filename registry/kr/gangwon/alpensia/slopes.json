@@ -6,7 +6,6 @@
   "slopes": [
     {
       "id": "bravo",
-      "slug": "bravo",
       "name": "Bravo",
       "name_i18n": {
         "ko": "브라보",
@@ -16,10 +15,6 @@
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 1351,
-      "connected_slope_ids": [
-        "charlie"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.650073,
@@ -192,11 +187,14 @@
       ],
       "area_m2": 49115,
       "elevation_m": 194,
-      "avg_angle_deg": 4.915342887157992
+      "avg_angle_deg": 4.915342887157992,
+      "connected_slope_ids": [
+        "charlie"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "alpha",
-      "slug": "alpha",
       "name": "Alpha",
       "name_i18n": {
         "ko": "알파",
@@ -206,8 +204,6 @@
       "type": "run",
       "difficulty": "beginner",
       "length_m": 648,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.651806,
@@ -292,11 +288,12 @@
       ],
       "area_m2": 32481,
       "elevation_m": 78,
-      "avg_angle_deg": 3.9471525884133127
+      "avg_angle_deg": 3.9471525884133127,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
       "id": "charlie",
-      "slug": "charlie",
       "name": "Charlie",
       "name_i18n": {
         "ko": "찰리",
@@ -306,12 +303,6 @@
       "type": "run",
       "difficulty": "expert",
       "length_m": 374,
-      "connected_slope_ids": [
-        "bravo"
-      ],
-      "connected_lift_ids": [
-        "unnamed-477491142-l477491142"
-      ],
       "coordinates": [
         {
           "lat": 37.650388,
@@ -428,11 +419,16 @@
       ],
       "area_m2": 13794,
       "elevation_m": 194,
-      "avg_angle_deg": 11.914643827788685
+      "avg_angle_deg": 11.914643827788685,
+      "connected_slope_ids": [
+        "bravo"
+      ],
+      "connected_lift_ids": [
+        "unnamed-477491142-l477491142"
+      ]
     },
     {
       "id": "delta",
-      "slug": "delta",
       "name": "Delta",
       "name_i18n": {
         "ko": "델타",
@@ -442,12 +438,6 @@
       "type": "run",
       "difficulty": "advanced",
       "length_m": 634,
-      "connected_slope_ids": [
-        "eco"
-      ],
-      "connected_lift_ids": [
-        "unnamed-477491143-l477491143"
-      ],
       "coordinates": [
         {
           "lat": 37.650207,
@@ -556,11 +546,16 @@
       ],
       "area_m2": 12990,
       "elevation_m": 170,
-      "avg_angle_deg": 9.369385096487484
+      "avg_angle_deg": 9.369385096487484,
+      "connected_slope_ids": [
+        "eco"
+      ],
+      "connected_lift_ids": [
+        "unnamed-477491143-l477491143"
+      ]
     },
     {
       "id": "foxtrot",
-      "slug": "foxtrot",
       "name": "Foxtrot",
       "name_i18n": {
         "ko": "폭스트롯",
@@ -570,8 +565,6 @@
       "type": "run",
       "difficulty": "expert",
       "length_m": 826,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.650116,
@@ -692,11 +685,12 @@
       ],
       "area_m2": 26158,
       "elevation_m": 194,
-      "avg_angle_deg": 8.194263334630211
+      "avg_angle_deg": 8.194263334630211,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "0",
-      "slug": "echo",
+      "id": "echo",
       "name": "Echo",
       "name_i18n": {
         "ko": "에코",

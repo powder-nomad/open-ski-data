@@ -5,18 +5,13 @@
   "place_slug": "vivaldi-park",
   "lifts": [
     {
-      "id": "unnamed-1427700383-l1427700383",
-      "slug": "unnamed-1427700383",
+      "id": "unnamed-1427700383",
       "name": "unnamed-1427700383",
       "name_i18n": {},
       "type": "gondola",
       "capacity_per_hour": null,
       "length_m": 1116.8,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "classic"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.645455,
@@ -223,21 +218,20 @@
           "lon": 127.690346,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "classic"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-1427700386-l1427700386",
-      "slug": "unnamed-1427700386",
+      "id": "unnamed-1427700386",
       "name": "unnamed-1427700386",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 584.8,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "unnamed-996685262"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.637908,
@@ -344,19 +338,20 @@
           "lon": 127.687442,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-996685262"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-1427700387-l1427700387",
-      "slug": "unnamed-1427700387",
+      "id": "unnamed-1427700387",
       "name": "unnamed-1427700387",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 948.4,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.637528,
@@ -528,19 +523,18 @@
           "lon": 127.683018,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-1427700388-l1427700388",
-      "slug": "unnamed-1427700388",
+      "id": "unnamed-1427700388",
       "name": "unnamed-1427700388",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 581.2,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.644059,
@@ -647,19 +641,18 @@
           "lon": 127.684565,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-1427700389-l1427700389",
-      "slug": "unnamed-1427700389",
+      "id": "unnamed-1427700389",
       "name": "unnamed-1427700389",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 554,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.643987,
@@ -761,19 +754,18 @@
           "lon": 127.684305,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-1427700390-l1427700390",
-      "slug": "unnamed-1427700390",
+      "id": "unnamed-1427700390",
       "name": "unnamed-1427700390",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 477.1,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.643217,
@@ -860,19 +852,18 @@
           "lon": 127.683414,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-1427700391-l1427700391",
-      "slug": "unnamed-1427700391",
+      "id": "unnamed-1427700391",
       "name": "unnamed-1427700391",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 486.2,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.645092,
@@ -964,22 +955,18 @@
           "lon": 127.688439,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-1427700392-l1427700392",
-      "slug": "unnamed-1427700392",
+      "id": "unnamed-1427700392",
       "name": "unnamed-1427700392",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 831.1,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "classic",
-        "unnamed-545967313"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.645211,
@@ -1126,19 +1113,21 @@
           "lon": 127.692364,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "classic",
+        "unnamed-545967313"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-1427700393-l1427700393",
-      "slug": "unnamed-1427700393",
+      "id": "unnamed-1427700393",
       "name": "unnamed-1427700393",
       "name_i18n": {},
       "type": "gondola",
       "capacity_per_hour": null,
       "length_m": 916.9,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.64591,
@@ -1300,11 +1289,12 @@
           "lon": 127.692832,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "ballad-no-1",
+      "id": "ballad",
       "name": "Ballad no.1",
       "name_i18n": {
         "ko": "발라드 1호기",
@@ -1317,8 +1307,7 @@
       "cabin_count": 38
     },
     {
-      "id": 1,
-      "slug": "ballad-no-2",
+      "id": "techno-1",
       "name": "Ballad no.2",
       "name_i18n": {
         "ko": "발라드 2호기",
@@ -1331,8 +1320,7 @@
       "cabin_count": 41
     },
     {
-      "id": 2,
-      "slug": "jazz",
+      "id": "techno-2",
       "name": "Jazz",
       "name_i18n": {
         "ko": "재즈",
@@ -1345,8 +1333,7 @@
       "cabin_count": 53
     },
     {
-      "id": 3,
-      "slug": "hip-hop-no-1",
+      "id": "hip-hop-1",
       "name": "Hip-hop no.1",
       "name_i18n": {
         "ko": "힙합 1호기",
@@ -1359,8 +1346,7 @@
       "cabin_count": 74
     },
     {
-      "id": 4,
-      "slug": "hip-hop-no-2",
+      "id": "hip-hop-2",
       "name": "Hip-hop no.2",
       "name_i18n": {
         "ko": "힙합 2호기",
@@ -1373,8 +1359,7 @@
       "cabin_count": 76
     },
     {
-      "id": 5,
-      "slug": "techno",
+      "id": "techno",
       "name": "Techno",
       "name_i18n": {
         "ko": "테크노",
@@ -1387,8 +1372,7 @@
       "cabin_count": 51
     },
     {
-      "id": 6,
-      "slug": "gondola",
+      "id": "gondola",
       "name": "Gondola",
       "name_i18n": {
         "ko": "곤돌라",
@@ -1401,8 +1385,7 @@
       "cabin_count": 38
     },
     {
-      "id": 7,
-      "slug": "snowy-gondola",
+      "id": "snowy-gondola",
       "name": "Snowy Gondola",
       "name_i18n": {
         "ko": "스노위곤돌라",

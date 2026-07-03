@@ -6,24 +6,11 @@
   "slopes": [
     {
       "id": "unnamed-105836169500",
-      "slug": "unnamed-105836169500",
       "name": "unnamed-105836169500",
       "name_i18n": {},
       "type": "run",
       "difficulty": null,
       "length_m": 818.3,
-      "connected_slope_ids": [
-        "hera1",
-        "unnamed-105836169529",
-        "unnamed-105836169549",
-        "unnamed-105836169600",
-        "unnamed-105836169644",
-        "zeus1",
-        "zeus2"
-      ],
-      "connected_lift_ids": [
-        "hera-l535760430"
-      ],
       "coordinates": [
         {
           "lat": 37.182555,
@@ -189,25 +176,27 @@
           "lat": 37.179508,
           "lon": 128.823072
         }
-      ]
-    },
-    {
-      "id": "unnamed-105836169529",
-      "slug": "unnamed-105836169529",
-      "name": "unnamed-105836169529",
-      "name_i18n": {},
-      "type": "run",
-      "difficulty": null,
-      "length_m": 609,
+      ],
       "connected_slope_ids": [
-        "unnamed-105836169500",
+        "hera1",
+        "unnamed-105836169529",
         "unnamed-105836169549",
         "unnamed-105836169600",
         "unnamed-105836169644",
         "zeus1",
         "zeus2"
       ],
-      "connected_lift_ids": [],
+      "connected_lift_ids": [
+        "hera"
+      ]
+    },
+    {
+      "id": "unnamed-105836169529",
+      "name": "unnamed-105836169529",
+      "name_i18n": {},
+      "type": "run",
+      "difficulty": null,
+      "length_m": 609,
       "coordinates": [
         {
           "lat": 37.179508,
@@ -329,25 +318,24 @@
           "lat": 37.181813,
           "lon": 128.817945
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-105836169500",
+        "unnamed-105836169549",
+        "unnamed-105836169600",
+        "unnamed-105836169644",
+        "zeus1",
+        "zeus2"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-105836169549",
-      "slug": "unnamed-105836169549",
       "name": "unnamed-105836169549",
       "name_i18n": {},
       "type": "run",
       "difficulty": null,
       "length_m": 88.8,
-      "connected_slope_ids": [
-        "hera1",
-        "unnamed-105836169500",
-        "unnamed-105836169529",
-        "unnamed-105836169600",
-        "unnamed-105836169644",
-        "zeus2"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.181813,
@@ -365,25 +353,24 @@
           "lat": 37.182555,
           "lon": 128.817573
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "hera1",
+        "unnamed-105836169500",
+        "unnamed-105836169529",
+        "unnamed-105836169600",
+        "unnamed-105836169644",
+        "zeus2"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-105836169600",
-      "slug": "unnamed-105836169600",
       "name": "unnamed-105836169600",
       "name_i18n": {},
       "type": "run",
       "difficulty": null,
       "length_m": 1436.1,
-      "connected_slope_ids": [
-        "hera1",
-        "unnamed-105836169500",
-        "unnamed-105836169529",
-        "unnamed-105836169549",
-        "unnamed-105836169644",
-        "zeus2"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.182555,
@@ -657,25 +644,24 @@
           "lat": 37.181813,
           "lon": 128.817945
         }
-      ]
-    },
-    {
-      "id": "unnamed-105836169644",
-      "slug": "unnamed-105836169644",
-      "name": "unnamed-105836169644",
-      "name_i18n": {},
-      "type": "run",
-      "difficulty": null,
-      "length_m": 88.8,
+      ],
       "connected_slope_ids": [
         "hera1",
         "unnamed-105836169500",
         "unnamed-105836169529",
         "unnamed-105836169549",
-        "unnamed-105836169600",
+        "unnamed-105836169644",
         "zeus2"
       ],
-      "connected_lift_ids": [],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "unnamed-105836169644",
+      "name": "unnamed-105836169644",
+      "name_i18n": {},
+      "type": "run",
+      "difficulty": null,
+      "length_m": 88.8,
       "coordinates": [
         {
           "lat": 37.181813,
@@ -693,11 +679,19 @@
           "lat": 37.182555,
           "lon": 128.817573
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "hera1",
+        "unnamed-105836169500",
+        "unnamed-105836169529",
+        "unnamed-105836169549",
+        "unnamed-105836169600",
+        "zeus2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "zeus-1",
+      "id": "zeus-1",
       "name": "Zeus 1",
       "name_i18n": {
         "ko": "제우스 1",
@@ -713,8 +707,7 @@
       "max_angle_deg": 13.6
     },
     {
-      "id": 1,
-      "slug": "zeus-2",
+      "id": "zeus-2",
       "name": "Zeus 2",
       "name_i18n": {
         "ko": "제우스 2",
@@ -730,8 +723,7 @@
       "max_angle_deg": 13.5
     },
     {
-      "id": 2,
-      "slug": "zeus-3",
+      "id": "zeus-3",
       "name": "Zeus 3",
       "name_i18n": {
         "ko": "제우스 3",
@@ -747,8 +739,7 @@
       "max_angle_deg": 13.8
     },
     {
-      "id": 3,
-      "slug": "zeus-3-1",
+      "id": "zeus-3-1",
       "name": "Zeus 3-1",
       "name_i18n": {
         "ko": "제우스 3-1",
@@ -764,8 +755,7 @@
       "max_angle_deg": 10.8
     },
     {
-      "id": 4,
-      "slug": "victoria-1",
+      "id": "victoria-1",
       "name": "Victoria 1",
       "name_i18n": {
         "ko": "빅토리아 1",
@@ -781,8 +771,7 @@
       "max_angle_deg": 27.7
     },
     {
-      "id": 5,
-      "slug": "victoria-2",
+      "id": "victoria-2",
       "name": "Victoria 2",
       "name_i18n": {
         "ko": "빅토리아 2",
@@ -798,8 +787,7 @@
       "max_angle_deg": 25.8
     },
     {
-      "id": 6,
-      "slug": "victoria-3",
+      "id": "victoria-3",
       "name": "Victoria 3",
       "name_i18n": {
         "ko": "빅토리아 3",
@@ -815,8 +803,7 @@
       "max_angle_deg": 35.4
     },
     {
-      "id": 7,
-      "slug": "hera-1",
+      "id": "hera-1",
       "name": "Hera 1",
       "name_i18n": {
         "ko": "헤라 1",
@@ -832,8 +819,7 @@
       "max_angle_deg": 21.8
     },
     {
-      "id": 8,
-      "slug": "hera-2",
+      "id": "hera-2",
       "name": "Hera 2",
       "name_i18n": {
         "ko": "헤라 2",
@@ -849,8 +835,7 @@
       "max_angle_deg": 24.2
     },
     {
-      "id": 9,
-      "slug": "hera-3",
+      "id": "hera-3",
       "name": "Hera 3",
       "name_i18n": {
         "ko": "헤라 3",
@@ -866,8 +851,7 @@
       "max_angle_deg": 25.8
     },
     {
-      "id": 10,
-      "slug": "apollo-1",
+      "id": "apollo-1",
       "name": "Apollo 1",
       "name_i18n": {
         "ko": "아폴로 1",
@@ -883,8 +867,7 @@
       "max_angle_deg": 25.4
     },
     {
-      "id": 11,
-      "slug": "apollo-2",
+      "id": "apollo-2",
       "name": "Apollo 2",
       "name_i18n": {
         "ko": "아폴로 2",
@@ -900,8 +883,7 @@
       "max_angle_deg": 24.2
     },
     {
-      "id": 12,
-      "slug": "apollo-3",
+      "id": "apollo-3",
       "name": "Apollo 3",
       "name_i18n": {
         "ko": "아폴로 3",
@@ -917,8 +899,7 @@
       "max_angle_deg": 26.3
     },
     {
-      "id": 13,
-      "slug": "apollo-4",
+      "id": "apollo-4",
       "name": "Apollo 4",
       "name_i18n": {
         "ko": "아폴로 4",
@@ -934,8 +915,7 @@
       "max_angle_deg": 24.2
     },
     {
-      "id": 14,
-      "slug": "apollo-5",
+      "id": "apollo-5",
       "name": "Apollo 5",
       "name_i18n": {
         "ko": "아폴로 5",
@@ -951,8 +931,7 @@
       "max_angle_deg": 33
     },
     {
-      "id": 15,
-      "slug": "apollo-6",
+      "id": "apollo-6",
       "name": "Apollo 6",
       "name_i18n": {
         "ko": "아폴로 6",
@@ -968,8 +947,7 @@
       "max_angle_deg": 24.3
     },
     {
-      "id": 16,
-      "slug": "athena-2",
+      "id": "athena-2",
       "name": "Athena 2",
       "name_i18n": {
         "ko": "아테나 2",
@@ -985,8 +963,7 @@
       "max_angle_deg": 15.2
     },
     {
-      "id": 17,
-      "slug": "athena-3",
+      "id": "athena-3",
       "name": "Athena 3",
       "name_i18n": {
         "ko": "아테나 3",
@@ -1002,8 +979,7 @@
       "max_angle_deg": 11.3
     },
     {
-      "id": 18,
-      "slug": "athena-3-1",
+      "id": "athena-3-1",
       "name": "Athena 3-1",
       "name_i18n": {
         "ko": "아테나 3-1",

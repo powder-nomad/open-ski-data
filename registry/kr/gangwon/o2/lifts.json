@@ -5,16 +5,13 @@
   "place_slug": "o2",
   "lifts": [
     {
-      "id": "unnamed-791217770-l791217770",
-      "slug": "unnamed-791217770",
+      "id": "unnamed-791217770",
       "name": "unnamed-791217770",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 1651.9,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.179203,
@@ -316,19 +313,18 @@
           "lon": 128.927474,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-791217774-l791217774",
-      "slug": "unnamed-791217774",
+      "id": "unnamed-791217774",
       "name": "unnamed-791217774",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 2029,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.177881,
@@ -720,19 +716,18 @@
           "lon": 128.927603,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-791217775-l791217775",
-      "slug": "unnamed-791217775",
+      "id": "unnamed-791217775",
       "name": "unnamed-791217775",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 924.3,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.177298,
@@ -919,11 +914,12 @@
           "lon": 128.939003,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "apple",
+      "id": "dream1",
       "name": "Apple",
       "name_i18n": {
         "ko": "애플",
@@ -936,8 +932,7 @@
       "ride_time_s": 220
     },
     {
-      "id": 1,
-      "slug": "cherry",
+      "id": "dream2",
       "name": "Cherry",
       "name_i18n": {
         "ko": "체리",
@@ -950,8 +945,7 @@
       "ride_time_s": 360
     },
     {
-      "id": 2,
-      "slug": "orange",
+      "id": "head",
       "name": "Orange",
       "name_i18n": {
         "ko": "오렌지",
@@ -964,8 +958,7 @@
       "ride_time_s": 180
     },
     {
-      "id": 3,
-      "slug": "tomato",
+      "id": "happy",
       "name": "Tomato",
       "name_i18n": {
         "ko": "토마토",
@@ -978,8 +971,7 @@
       "ride_time_s": 300
     },
     {
-      "id": 4,
-      "slug": "sweet-shuttle",
+      "id": "glory1",
       "name": "Sweet Shuttle",
       "name_i18n": {
         "ko": "스위트셔틀",

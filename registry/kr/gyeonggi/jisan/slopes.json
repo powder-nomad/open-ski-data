@@ -5,17 +5,11 @@
   "slopes": [
     {
       "id": "unnamed-535718855",
-      "slug": "unnamed-535718855",
       "name": "unnamed-535718855",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
       "length_m": 495.9,
-      "connected_slope_ids": [
-        "unnamed-53571885600",
-        "unnamed-53571885602"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.211447,
@@ -101,23 +95,20 @@
           "lat": 37.215728,
           "lon": 127.345984
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-53571885600",
+        "unnamed-53571885602"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-53571885600",
-      "slug": "unnamed-53571885600",
       "name": "unnamed-53571885600",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
       "length_m": 58.6,
-      "connected_slope_ids": [
-        "unnamed-535718855",
-        "unnamed-53571885602"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535718870-l535718870"
-      ],
       "coordinates": [
         {
           "lat": 37.211121,
@@ -135,21 +126,22 @@
           "lat": 37.211447,
           "lon": 127.34446
         }
+      ],
+      "connected_slope_ids": [
+        "unnamed-535718855",
+        "unnamed-53571885602"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535718870"
       ]
     },
     {
       "id": "unnamed-53571885602",
-      "slug": "unnamed-53571885602",
       "name": "unnamed-53571885602",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
       "length_m": 547,
-      "connected_slope_ids": [
-        "unnamed-535718855",
-        "unnamed-53571885600"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.211447,
@@ -247,23 +239,20 @@
           "lat": 37.215865,
           "lon": 127.345551
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-535718855",
+        "unnamed-53571885600"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-535718861",
-      "slug": "unnamed-535718861",
       "name": "unnamed-535718861",
       "name_i18n": {},
       "type": "run",
       "difficulty": "advanced",
       "length_m": 468.8,
-      "connected_slope_ids": [
-        "unnamed-53571886300",
-        "unnamed-53571886305",
-        "unnamed-53571886500",
-        "unnamed-53571886508"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.21299,
@@ -345,23 +334,22 @@
           "lat": 37.21645,
           "lon": 127.342905
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-53571886300",
+        "unnamed-53571886305",
+        "unnamed-53571886500",
+        "unnamed-53571886508"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-535718862",
-      "slug": "unnamed-535718862",
       "name": "unnamed-535718862",
       "name_i18n": {},
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 176.4,
-      "connected_slope_ids": [
-        "unnamed-53571886305",
-        "unnamed-53571886309",
-        "unnamed-53571886400",
-        "unnamed-53571886408"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.212426,
@@ -403,25 +391,22 @@
           "lat": 37.213827,
           "lon": 127.341886
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-53571886305",
+        "unnamed-53571886309",
+        "unnamed-53571886400",
+        "unnamed-53571886408"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-53571886300",
-      "slug": "unnamed-53571886300",
       "name": "unnamed-53571886300",
       "name_i18n": {},
       "type": "run",
       "difficulty": "advanced",
       "length_m": 70.2,
-      "connected_slope_ids": [
-        "unnamed-535718861",
-        "unnamed-53571886305",
-        "unnamed-53571886600",
-        "unnamed-53571886609"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535718867-l535718867"
-      ],
       "coordinates": [
         {
           "lat": 37.213094,
@@ -451,23 +436,24 @@
           "lat": 37.21299,
           "lon": 127.339938
         }
+      ],
+      "connected_slope_ids": [
+        "unnamed-535718861",
+        "unnamed-53571886305",
+        "unnamed-53571886600",
+        "unnamed-53571886609"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535718867"
       ]
     },
     {
       "id": "unnamed-53571886305",
-      "slug": "unnamed-53571886305",
       "name": "unnamed-53571886305",
       "name_i18n": {},
       "type": "run",
       "difficulty": "advanced",
       "length_m": 201.3,
-      "connected_slope_ids": [
-        "unnamed-535718861",
-        "unnamed-535718862",
-        "unnamed-53571886300",
-        "unnamed-53571886309"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.21299,
@@ -509,21 +495,22 @@
           "lat": 37.213827,
           "lon": 127.341886
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-535718861",
+        "unnamed-535718862",
+        "unnamed-53571886300",
+        "unnamed-53571886309"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-53571886309",
-      "slug": "unnamed-53571886309",
       "name": "unnamed-53571886309",
       "name_i18n": {},
       "type": "run",
       "difficulty": "advanced",
       "length_m": 387.9,
-      "connected_slope_ids": [
-        "unnamed-535718862",
-        "unnamed-53571886305"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.213827,
@@ -585,24 +572,20 @@
           "lat": 37.216766,
           "lon": 127.34424
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-535718862",
+        "unnamed-53571886305"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-53571886400",
-      "slug": "unnamed-53571886400",
       "name": "unnamed-53571886400",
       "name_i18n": {},
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 181.1,
-      "connected_slope_ids": [
-        "unnamed-535718862",
-        "unnamed-53571886408",
-        "unnamed-53571886600"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535718868-l535718868"
-      ],
       "coordinates": [
         {
           "lat": 37.211552,
@@ -648,21 +631,23 @@
           "lat": 37.212426,
           "lon": 127.341011
         }
+      ],
+      "connected_slope_ids": [
+        "unnamed-535718862",
+        "unnamed-53571886408",
+        "unnamed-53571886600"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535718868"
       ]
     },
     {
       "id": "unnamed-53571886408",
-      "slug": "unnamed-53571886408",
       "name": "unnamed-53571886408",
       "name_i18n": {},
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 611.2,
-      "connected_slope_ids": [
-        "unnamed-535718862",
-        "unnamed-53571886400"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.212426,
@@ -784,23 +769,20 @@
           "lat": 37.216634,
           "lon": 127.344595
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-535718862",
+        "unnamed-53571886400"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-53571886500",
-      "slug": "unnamed-53571886500",
       "name": "unnamed-53571886500",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
       "length_m": 137.4,
-      "connected_slope_ids": [
-        "unnamed-535718861",
-        "unnamed-53571886508",
-        "unnamed-53571886609",
-        "unnamed-53571886625"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.217142,
@@ -838,21 +820,22 @@
           "lat": 37.21645,
           "lon": 127.342905
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-535718861",
+        "unnamed-53571886508",
+        "unnamed-53571886609",
+        "unnamed-53571886625"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-53571886508",
-      "slug": "unnamed-53571886508",
       "name": "unnamed-53571886508",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
       "length_m": 133.9,
-      "connected_slope_ids": [
-        "unnamed-535718861",
-        "unnamed-53571886500"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.21645,
@@ -882,25 +865,20 @@
           "lat": 37.217109,
           "lon": 127.344071
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-535718861",
+        "unnamed-53571886500"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-53571886600",
-      "slug": "unnamed-53571886600",
       "name": "unnamed-53571886600",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
       "length_m": 184.1,
-      "connected_slope_ids": [
-        "unnamed-53571886300",
-        "unnamed-53571886400",
-        "unnamed-53571886609"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535718867-l535718867",
-        "unnamed-535718868-l535718868"
-      ],
       "coordinates": [
         {
           "lat": 37.211552,
@@ -954,25 +932,24 @@
           "lat": 37.213094,
           "lon": 127.33923
         }
+      ],
+      "connected_slope_ids": [
+        "unnamed-53571886300",
+        "unnamed-53571886400",
+        "unnamed-53571886609"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535718867",
+        "unnamed-535718868"
       ]
     },
     {
       "id": "unnamed-53571886609",
-      "slug": "unnamed-53571886609",
       "name": "unnamed-53571886609",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
       "length_m": 660.1,
-      "connected_slope_ids": [
-        "unnamed-53571886300",
-        "unnamed-53571886500",
-        "unnamed-53571886600",
-        "unnamed-53571886625"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535718867-l535718867"
-      ],
       "coordinates": [
         {
           "lat": 37.213094,
@@ -1090,21 +1067,24 @@
           "lat": 37.217142,
           "lon": 127.341923
         }
+      ],
+      "connected_slope_ids": [
+        "unnamed-53571886300",
+        "unnamed-53571886500",
+        "unnamed-53571886600",
+        "unnamed-53571886625"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535718867"
       ]
     },
     {
       "id": "unnamed-53571886625",
-      "slug": "unnamed-53571886625",
       "name": "unnamed-53571886625",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
       "length_m": 186.3,
-      "connected_slope_ids": [
-        "unnamed-53571886500",
-        "unnamed-53571886609"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.217142,
@@ -1150,24 +1130,20 @@
           "lat": 37.217526,
           "lon": 127.343597
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-53571886500",
+        "unnamed-53571886609"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-535722638",
-      "slug": "unnamed-535722638",
       "name": "unnamed-535722638",
       "name_i18n": {},
       "type": "run",
       "difficulty": "advanced",
       "length_m": 341.9,
-      "connected_slope_ids": [
-        "unnamed-53572264100",
-        "unnamed-53572264101",
-        "unnamed-53572264116"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535722643-l535722643"
-      ],
       "coordinates": [
         {
           "lat": 37.210012,
@@ -1237,22 +1213,23 @@
           "lat": 37.212641,
           "lon": 127.299984
         }
+      ],
+      "connected_slope_ids": [
+        "unnamed-53572264100",
+        "unnamed-53572264101",
+        "unnamed-53572264116"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535722643"
       ]
     },
     {
       "id": "unnamed-535722640",
-      "slug": "unnamed-535722640",
       "name": "unnamed-535722640",
       "name_i18n": {},
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 567.2,
-      "connected_slope_ids": [
-        "unnamed-53572264116"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535722642-l535722642"
-      ],
       "coordinates": [
         {
           "lat": 37.210702,
@@ -1394,23 +1371,21 @@
           "lat": 37.214111,
           "lon": 127.296948
         }
+      ],
+      "connected_slope_ids": [
+        "unnamed-53572264116"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535722642"
       ]
     },
     {
       "id": "unnamed-53572264100",
-      "slug": "unnamed-53572264100",
       "name": "unnamed-53572264100",
       "name_i18n": {},
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 21.9,
-      "connected_slope_ids": [
-        "unnamed-535722638",
-        "unnamed-53572264101"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535722643-l535722643"
-      ],
       "coordinates": [
         {
           "lat": 37.209901,
@@ -1420,24 +1395,22 @@
           "lat": 37.210012,
           "lon": 127.30188
         }
+      ],
+      "connected_slope_ids": [
+        "unnamed-535722638",
+        "unnamed-53572264101"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535722643"
       ]
     },
     {
       "id": "unnamed-53572264101",
-      "slug": "unnamed-53572264101",
       "name": "unnamed-53572264101",
       "name_i18n": {},
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 429.8,
-      "connected_slope_ids": [
-        "unnamed-535722638",
-        "unnamed-53572264100",
-        "unnamed-53572264116"
-      ],
-      "connected_lift_ids": [
-        "unnamed-535722643-l535722643"
-      ],
       "coordinates": [
         {
           "lat": 37.210012,
@@ -1531,22 +1504,23 @@
           "lat": 37.212641,
           "lon": 127.299984
         }
+      ],
+      "connected_slope_ids": [
+        "unnamed-535722638",
+        "unnamed-53572264100",
+        "unnamed-53572264116"
+      ],
+      "connected_lift_ids": [
+        "unnamed-535722643"
       ]
     },
     {
       "id": "unnamed-53572264116",
-      "slug": "unnamed-53572264116",
       "name": "unnamed-53572264116",
       "name_i18n": {},
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 317.4,
-      "connected_slope_ids": [
-        "unnamed-535722638",
-        "unnamed-535722640",
-        "unnamed-53572264101"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.212641,
@@ -1608,20 +1582,21 @@
           "lat": 37.214201,
           "lon": 127.297047
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "unnamed-535722638",
+        "unnamed-535722640",
+        "unnamed-53572264101"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "unnamed-535726780",
-      "slug": "unnamed-535726780",
       "name": "unnamed-535726780",
       "name_i18n": {},
       "type": "run",
       "difficulty": "beginner",
       "length_m": 323.4,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [
-        "unnamed-535718871-l535718871"
-      ],
       "coordinates": [
         {
           "lat": 37.213035,
@@ -1691,6 +1666,10 @@
           "lat": 37.215451,
           "lon": 127.347157
         }
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": [
+        "unnamed-535718871"
       ]
     }
   ]

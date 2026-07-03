@@ -5,8 +5,7 @@
   "place_slug": "konjiam",
   "slopes": [
     {
-      "id": 0,
-      "slug": "whisen",
+      "id": "whisen",
       "name": "Whisen",
       "name_i18n": {
         "ko": "휘센",
@@ -22,8 +21,7 @@
       "avg_angle_deg": 7
     },
     {
-      "id": 1,
-      "slug": "ixio",
+      "id": "ixio",
       "name": "Ixio",
       "name_i18n": {
         "ko": "익시오",
@@ -39,8 +37,7 @@
       "avg_angle_deg": 10.4
     },
     {
-      "id": 2,
-      "slug": "gram-1",
+      "id": "gram-1",
       "name": "Gram 1",
       "name_i18n": {
         "ko": "그램1",
@@ -56,8 +53,7 @@
       "avg_angle_deg": 17.3
     },
     {
-      "id": 3,
-      "slug": "gram-2",
+      "id": "gram-2",
       "name": "Gram 2",
       "name_i18n": {
         "ko": "그램2",
@@ -73,8 +69,7 @@
       "avg_angle_deg": 13.6
     },
     {
-      "id": 4,
-      "slug": "thinq-1",
+      "id": "thinq-1",
       "name": "ThinQ 1",
       "name_i18n": {
         "ko": "씽큐1",
@@ -90,8 +85,7 @@
       "avg_angle_deg": 14.2
     },
     {
-      "id": 5,
-      "slug": "thinq-2",
+      "id": "thinq-2",
       "name": "ThinQ 2",
       "name_i18n": {
         "ko": "씽큐2",
@@ -107,8 +101,7 @@
       "avg_angle_deg": 12.9
     },
     {
-      "id": 6,
-      "slug": "thinq-3",
+      "id": "thinq-3",
       "name": "ThinQ 3",
       "name_i18n": {
         "ko": "씽큐3",
@@ -124,8 +117,7 @@
       "avg_angle_deg": 14.2
     },
     {
-      "id": 7,
-      "slug": "thinq-br",
+      "id": "thinq-br",
       "name": "ThinQ Br",
       "name_i18n": {
         "ko": "씽큐Br",
@@ -141,8 +133,7 @@
       "avg_angle_deg": 10.9
     },
     {
-      "id": 8,
-      "slug": "cnp1",
+      "id": "cnp1",
       "name": "CNP1",
       "name_i18n": {
         "ko": "CNP1",
@@ -158,8 +149,7 @@
       "avg_angle_deg": 10.9
     },
     {
-      "id": 9,
-      "slug": "cnp2",
+      "id": "cnp2",
       "name": "CNP2",
       "name_i18n": {
         "ko": "CNP2",

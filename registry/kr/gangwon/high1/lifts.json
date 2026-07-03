@@ -5,8 +5,7 @@
   "place_slug": "high1",
   "lifts": [
     {
-      "id": "hera-l535760430",
-      "slug": "hera",
+      "id": "hera",
       "name": "Hera",
       "name_i18n": {
         "ko": "헤라",
@@ -17,12 +16,6 @@
       "capacity_per_hour": null,
       "length_m": 1221,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "athena1",
-        "hera2",
-        "unnamed-105836169500"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.190181,
@@ -257,11 +250,16 @@
       ],
       "seats": 6,
       "speed_mps": 5,
-      "ride_time_s": 300
+      "ride_time_s": 300,
+      "connected_slope_ids": [
+        "athena1",
+        "hera2",
+        "unnamed-105836169500"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "victoria-l535760431",
-      "slug": "victoria",
+      "id": "victoria",
       "name": "Victoria",
       "name_i18n": {
         "ko": "빅토리아",
@@ -272,12 +270,6 @@
       "capacity_per_hour": null,
       "length_m": 1323,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "victoria1",
-        "victoria3",
-        "zeus1"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.189459,
@@ -507,11 +499,16 @@
       ],
       "seats": 4,
       "speed_mps": 5,
-      "ride_time_s": 300
+      "ride_time_s": 300,
+      "connected_slope_ids": [
+        "victoria1",
+        "victoria3",
+        "zeus1"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "apollo-l535760433",
-      "slug": "apollo",
+      "id": "apollo",
       "name": "Apollo",
       "name_i18n": {
         "ko": "아폴로",
@@ -522,8 +519,6 @@
       "capacity_per_hour": null,
       "length_m": 1232,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.197709,
@@ -743,11 +738,12 @@
       ],
       "seats": 4,
       "speed_mps": 5,
-      "ride_time_s": 360
+      "ride_time_s": 360,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "zeus-l535760435",
-      "slug": "zeus",
+      "id": "zeus",
       "name": "Zeus",
       "name_i18n": {
         "ko": "제우스",
@@ -758,8 +754,6 @@
       "capacity_per_hour": null,
       "length_m": 1912,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.204056,
@@ -1134,11 +1128,12 @@
       ],
       "seats": 6,
       "speed_mps": 5,
-      "ride_time_s": 420
+      "ride_time_s": 420,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "jupiter-l535760436",
-      "slug": "jupiter",
+      "id": "jupiter",
       "name": "Jupiter",
       "name_i18n": {
         "ko": "주피터",
@@ -1149,10 +1144,6 @@
       "capacity_per_hour": null,
       "length_m": 950,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "zeus3"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.20412,
@@ -1342,11 +1333,14 @@
       ],
       "seats": 6,
       "speed_mps": 5,
-      "ride_time_s": 240
+      "ride_time_s": 240,
+      "connected_slope_ids": [
+        "zeus3"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "mountain-gondola-l535760437",
-      "slug": "mountain-gondola",
+      "id": "mountain-gondola",
       "name": "Mountain Gondola",
       "name_i18n": {
         "en": "Mountain Gondola"
@@ -1355,10 +1349,6 @@
       "capacity_per_hour": null,
       "length_m": 2846.5,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "athena1"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.207993,
@@ -1885,11 +1875,14 @@
           "lon": 128.816824,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "athena1"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "athena-l535760438",
-      "slug": "athena",
+      "id": "athena",
       "name": "Athena",
       "name_i18n": {
         "ko": "아테나",
@@ -1900,10 +1893,6 @@
       "capacity_per_hour": null,
       "length_m": 1547,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "apollo3"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.207431,
@@ -2198,11 +2187,14 @@
       ],
       "seats": 6,
       "speed_mps": 5,
-      "ride_time_s": 360
+      "ride_time_s": 360,
+      "connected_slope_ids": [
+        "apollo3"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "high1-gondola-l53576043900",
-      "slug": "high1-gondola",
+      "id": "high1-gondola",
       "name": "High1 Gondola",
       "name_i18n": {
         "en": "High1 Gondola"
@@ -2211,10 +2203,6 @@
       "capacity_per_hour": null,
       "length_m": 1671.3,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "zeus2"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.174229,
@@ -2531,11 +2519,14 @@
           "lon": 128.82505,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "zeus2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "high1-gondola-l53576043910",
-      "slug": "high1-gondola",
+      "id": "high1-gondola-2",
       "name": "High1 Gondola",
       "name_i18n": {
         "en": "High1 Gondola"
@@ -2544,10 +2535,6 @@
       "capacity_per_hour": null,
       "length_m": 43.5,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "zeus2"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.180252,
@@ -2564,11 +2551,14 @@
           "lon": 128.824597,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "zeus2"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "high1-gondola-l53576043911",
-      "slug": "high1-gondola",
+      "id": "high1-gondola-3",
       "name": "High1 Gondola",
       "name_i18n": {
         "en": "High1 Gondola"
@@ -2577,10 +2567,6 @@
       "capacity_per_hour": null,
       "length_m": 737.7,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "athena1"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.180402,
@@ -2717,11 +2703,14 @@
           "lon": 128.816969,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "athena1"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "valley-gondola-l632081931",
-      "slug": "valley-gondola",
+      "id": "valley-gondola",
       "name": "Valley Gondola",
       "name_i18n": {
         "en": "Valley Gondola"
@@ -2730,8 +2719,6 @@
       "capacity_per_hour": null,
       "length_m": 1193.2,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.204904,
@@ -2953,11 +2940,12 @@
           "lon": 128.826351,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "valley",
+      "id": "zeus-1",
       "name": "Valley",
       "name_i18n": {
         "ko": "밸리",
@@ -2970,8 +2958,7 @@
       "ride_time_s": 360
     },
     {
-      "id": 1,
-      "slug": "mountain",
+      "id": "zeus-2",
       "name": "Mountain",
       "name_i18n": {
         "ko": "마운틴",
@@ -2984,8 +2971,7 @@
       "ride_time_s": 720
     },
     {
-      "id": 2,
-      "slug": "palace",
+      "id": "zeus-3",
       "name": "Palace",
       "name_i18n": {
         "ko": "팰리스",

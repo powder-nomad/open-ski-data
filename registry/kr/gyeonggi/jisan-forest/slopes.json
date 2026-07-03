@@ -5,8 +5,7 @@
   "place_slug": "jisan-forest",
   "slopes": [
     {
-      "id": 0,
-      "slug": "1-1",
+      "id": "1-1",
       "name": "1-1",
       "name_i18n": {
         "ko": "1-1",
@@ -22,8 +21,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": 1,
-      "slug": "1",
+      "id": "1",
       "name": "1",
       "name_i18n": {
         "ko": "1",
@@ -39,8 +37,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": 2,
-      "slug": "2",
+      "id": "2",
       "name": "2",
       "name_i18n": {
         "ko": "2",
@@ -56,8 +53,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": 3,
-      "slug": "3",
+      "id": "3",
       "name": "3",
       "name_i18n": {
         "ko": "3",
@@ -73,8 +69,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": 4,
-      "slug": "5",
+      "id": "5",
       "name": "5",
       "name_i18n": {
         "ko": "5",
@@ -90,8 +85,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": 5,
-      "slug": "6",
+      "id": "6",
       "name": "6",
       "name_i18n": {
         "ko": "6",
@@ -107,8 +101,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": 6,
-      "slug": "7",
+      "id": "7",
       "name": "7",
       "name_i18n": {
         "ko": "7",

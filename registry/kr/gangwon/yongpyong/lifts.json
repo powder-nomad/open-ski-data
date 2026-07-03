@@ -5,8 +5,7 @@
   "place_slug": "yongpyong",
   "lifts": [
     {
-      "id": "rainbow-gondola-l376364815",
-      "slug": "rainbow-gondola",
+      "id": "rainbow-gondola",
       "name": "Rainbow Gondola",
       "name_i18n": {
         "en": "Rainbow Gondola"
@@ -15,8 +14,6 @@
       "capacity_per_hour": null,
       "length_m": 3618,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.64398,
@@ -693,19 +690,18 @@
           "lon": 128.671877,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-477491141-l477491141",
-      "slug": "unnamed-477491141",
+      "id": "unnamed-477491141",
       "name": "unnamed-477491141",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 580,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.656414,
@@ -817,21 +813,18 @@
           "lon": 128.66895,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-477491142-l477491142",
-      "slug": "unnamed-477491142",
+      "id": "unnamed-477491142",
       "name": "unnamed-477491142",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 652.2,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "charlie"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.656103,
@@ -958,22 +951,20 @@
           "lon": 128.673009,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "charlie"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-477491143-l477491143",
-      "slug": "unnamed-477491143",
+      "id": "unnamed-477491143",
       "name": "unnamed-477491143",
       "name_i18n": {},
       "type": "chair_lift",
       "capacity_per_hour": null,
       "length_m": 661.8,
       "vertical_m": null,
-      "connected_slope_ids": [
-        "delta",
-        "eco"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.656142,
@@ -1100,11 +1091,15 @@
           "lon": 128.673566,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [
+        "delta",
+        "eco"
+      ],
+      "connected_lift_ids": []
     },
     {
-      "id": "gold-l477491147",
-      "slug": "gold",
+      "id": "gold",
       "name": "Gold",
       "name_i18n": {
         "ko": "골드",
@@ -1115,8 +1110,6 @@
       "capacity_per_hour": 3200,
       "length_m": 1689,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.623949,
@@ -1434,11 +1427,12 @@
           "alt_m": null
         }
       ],
-      "seats": 6
+      "seats": 6,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "mega-green-l477491151",
-      "slug": "mega-green",
+      "id": "mega-green",
       "name": "Mega Green",
       "name_i18n": {
         "ko": "메가그린",
@@ -1449,8 +1443,6 @@
       "capacity_per_hour": 3200,
       "length_m": 568,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.636691,
@@ -1573,11 +1565,12 @@
           "alt_m": null
         }
       ],
-      "seats": 6
+      "seats": 6,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "rainbow-l533413168",
-      "slug": "rainbow",
+      "id": "rainbow",
       "name": "Rainbow",
       "name_i18n": {
         "ko": "레인보우",
@@ -1588,8 +1581,6 @@
       "capacity_per_hour": 2400,
       "length_m": 1421,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.611686,
@@ -1872,11 +1863,12 @@
           "alt_m": null
         }
       ],
-      "seats": 4
+      "seats": 4,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "red-l533419417",
-      "slug": "red",
+      "id": "red",
       "name": "Red",
       "name_i18n": {
         "ko": "레드",
@@ -1887,8 +1879,6 @@
       "capacity_per_hour": 2400,
       "length_m": 905,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.636165,
@@ -2081,11 +2071,12 @@
           "alt_m": null
         }
       ],
-      "seats": 4
+      "seats": 4,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "new-gold-l533419419",
-      "slug": "new-gold",
+      "id": "new-gold",
       "name": "New Gold",
       "name_i18n": {
         "ko": "뉴골드",
@@ -2096,8 +2087,6 @@
       "capacity_per_hour": 720,
       "length_m": 720,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.63214,
@@ -2240,11 +2229,12 @@
           "alt_m": null
         }
       ],
-      "seats": 4
+      "seats": 4,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "silver-l533426025",
-      "slug": "silver",
+      "id": "silver",
       "name": "Silver",
       "name_i18n": {
         "ko": "실버",
@@ -2255,8 +2245,6 @@
       "capacity_per_hour": 1800,
       "length_m": 700,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.633264,
@@ -2399,11 +2387,12 @@
           "alt_m": null
         }
       ],
-      "seats": 4
+      "seats": 4,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "green-l1457094309",
-      "slug": "green",
+      "id": "green",
       "name": "Green",
       "name_i18n": {
         "ko": "그린",
@@ -2414,8 +2403,6 @@
       "capacity_per_hour": 2400,
       "length_m": 598,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.637884,
@@ -2523,11 +2510,12 @@
           "alt_m": null
         }
       ],
-      "seats": 4
+      "seats": 4,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "unnamed-l1457094310",
-      "slug": "unnamed",
+      "id": "unnamed",
       "name": "블루",
       "name_i18n": {
         "en": "블루"
@@ -2536,8 +2524,6 @@
       "capacity_per_hour": null,
       "length_m": 570.3,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.636468,
@@ -2644,11 +2630,12 @@
           "lon": 128.67798,
           "alt_m": null
         }
-      ]
+      ],
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": "bridge-l1464511412",
-      "slug": "bridge",
+      "id": "bridge",
       "name": "Bridge",
       "name_i18n": {
         "ko": "브릿지",
@@ -2659,8 +2646,6 @@
       "capacity_per_hour": 900,
       "length_m": 366,
       "vertical_m": null,
-      "connected_slope_ids": [],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.638742,
@@ -2728,11 +2713,12 @@
           "alt_m": null
         }
       ],
-      "seats": 2
+      "seats": 2,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
-      "id": 0,
-      "slug": "new-red",
+      "id": "rainbow-4",
       "name": "New Red",
       "name_i18n": {
         "ko": "뉴레드",
@@ -2743,15 +2729,14 @@
       "length_m": 550,
       "seats": 3,
       "connected_slope_ids": [
-        4,
-        10,
-        11,
-        13
+        "dragon-park",
+        "10",
+        "11",
+        "13"
       ]
     },
     {
-      "id": 1,
-      "slug": "blue",
+      "id": "rainbow-1",
       "name": "Blue",
       "name_i18n": {
         "ko": "블루",
@@ -2762,15 +2747,14 @@
       "length_m": 600,
       "seats": 2,
       "connected_slope_ids": [
-        4,
-        10,
-        11,
-        13
+        "dragon-park",
+        "10",
+        "11",
+        "13"
       ]
     },
     {
-      "id": 2,
-      "slug": "pink",
+      "id": "rainbow-2",
       "name": "Pink",
       "name_i18n": {
         "ko": "핑크",
@@ -2781,12 +2765,11 @@
       "length_m": 630,
       "seats": 3,
       "connected_slope_ids": [
-        2
+        "rainbow-2"
       ]
     },
     {
-      "id": 3,
-      "slug": "yellow",
+      "id": "rainbow-3",
       "name": "Yellow",
       "name_i18n": {
         "ko": "옐로우",
@@ -2797,14 +2780,13 @@
       "length_m": 496,
       "seats": 4,
       "connected_slope_ids": [
-        0,
-        1,
-        2
+        "rainbow-4",
+        "rainbow-1",
+        "rainbow-2"
       ]
     },
     {
-      "id": 4,
-      "slug": "new-yellow",
+      "id": "dragon-park",
       "name": "New Yellow",
       "name_i18n": {
         "ko": "뉴옐로우",
@@ -2815,13 +2797,12 @@
       "length_m": 348,
       "seats": 4,
       "connected_slope_ids": [
-        0,
-        1
+        "rainbow-4",
+        "rainbow-1"
       ]
     },
     {
-      "id": 5,
-      "slug": "gondola",
+      "id": "gondola",
       "name": "Gondola",
       "name_i18n": {
         "ko": "발왕산 관광케이블카",
@@ -2832,11 +2813,11 @@
       "length_m": 3742,
       "seats": 8,
       "connected_slope_ids": [
-        7,
-        12,
-        16,
-        17,
-        18
+        "7",
+        "12",
+        "16",
+        "17",
+        "18"
       ]
     }
   ]

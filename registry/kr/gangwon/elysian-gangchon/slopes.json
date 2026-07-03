@@ -6,7 +6,6 @@
   "slopes": [
     {
       "id": "rabbit",
-      "slug": "rabbit",
       "name": "Rabbit",
       "name_i18n": {
         "ko": "래빗",
@@ -16,10 +15,6 @@
       "type": "run",
       "difficulty": "beginner",
       "length_m": 436,
-      "connected_slope_ids": [
-        "penda"
-      ],
-      "connected_lift_ids": [],
       "coordinates": [
         {
           "lat": 37.814526,
@@ -87,11 +82,14 @@
         }
       ],
       "elevation_m": 34,
-      "max_angle_deg": 7.40691212849523
+      "max_angle_deg": 7.40691212849523,
+      "connected_slope_ids": [
+        "penda"
+      ],
+      "connected_lift_ids": []
     },
     {
       "id": "deer",
-      "slug": "deer",
       "name": "Deer",
       "name_i18n": {
         "ko": "디어",
@@ -101,12 +99,6 @@
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 945,
-      "connected_slope_ids": [
-        "horse"
-      ],
-      "connected_lift_ids": [
-        "d-lift-l104729973800"
-      ],
       "coordinates": [
         {
           "lat": 37.815344,
@@ -242,11 +234,16 @@
         }
       ],
       "elevation_m": 172,
-      "max_angle_deg": 18.26288994219413
+      "max_angle_deg": 18.26288994219413,
+      "connected_slope_ids": [
+        "horse"
+      ],
+      "connected_lift_ids": [
+        "d-lift"
+      ]
     },
     {
       "id": "puma",
-      "slug": "puma",
       "name": "Puma",
       "name_i18n": {
         "ko": "퓨마",
@@ -256,12 +253,6 @@
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 1175,
-      "connected_slope_ids": [
-        "leopard"
-      ],
-      "connected_lift_ids": [
-        "d-lift-l104729973800"
-      ],
       "coordinates": [
         {
           "lat": 37.815841,
@@ -357,11 +348,16 @@
         }
       ],
       "elevation_m": 120,
-      "max_angle_deg": 9.090276920822323
+      "max_angle_deg": 9.090276920822323,
+      "connected_slope_ids": [
+        "leopard"
+      ],
+      "connected_lift_ids": [
+        "d-lift"
+      ]
     },
     {
       "id": "leopard",
-      "slug": "leopard",
       "name": "Leopard",
       "name_i18n": {
         "ko": "레퍼드",
@@ -371,12 +367,6 @@
       "type": "run",
       "difficulty": "advanced",
       "length_m": 518,
-      "connected_slope_ids": [
-        "puma"
-      ],
-      "connected_lift_ids": [
-        "e-lift-l1047299734"
-      ],
       "coordinates": [
         {
           "lat": 37.818041,
@@ -452,11 +442,16 @@
         }
       ],
       "elevation_m": 124,
-      "max_angle_deg": 27.47443162627713
+      "max_angle_deg": 27.47443162627713,
+      "connected_slope_ids": [
+        "puma"
+      ],
+      "connected_lift_ids": [
+        "e-lift"
+      ]
     },
     {
-      "id": 0,
-      "slug": "panda",
+      "id": "panda",
       "name": "Panda",
       "name_i18n": {
         "ko": "팬더",
@@ -470,8 +465,7 @@
       "avg_angle_deg": 5.142764557884242
     },
     {
-      "id": 1,
-      "slug": "dragon-rabbit",
+      "id": "dragon-rabbit",
       "name": "Dragon/Rabbit",
       "name_i18n": {
         "ko": "드래곤/래빗",
@@ -485,8 +479,7 @@
       "max_angle_deg": 12.952764513375518
     },
     {
-      "id": 2,
-      "slug": "horse-zebra",
+      "id": "horse-zebra",
       "name": "Horse/Zebra",
       "name_i18n": {
         "ko": "호스/제브라",
@@ -500,8 +493,7 @@
       "max_angle_deg": 19.29004621918873
     },
     {
-      "id": 3,
-      "slug": "horse-pegasus",
+      "id": "horse-pegasus",
       "name": "Horse/Pegasus",
       "name_i18n": {
         "ko": "호스/페가수스",
@@ -515,8 +507,7 @@
       "max_angle_deg": 17.223436191131462
     },
     {
-      "id": 4,
-      "slug": "jaguar",
+      "id": "jaguar",
       "name": "Jaguar",
       "name_i18n": {
         "ko": "재규어",
