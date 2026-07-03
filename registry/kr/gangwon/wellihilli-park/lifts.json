@@ -169,7 +169,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "unnamed-2",
+      "id": "unnamed",
       "name": "델타 리프트 (초중급)",
       "name_i18n": {
         "en": "델타 리프트 (초중급)"
@@ -307,7 +307,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "unnamed-3",
+      "id": "unnamed",
       "name": "브라보 리프트 (중급)",
       "name_i18n": {
         "en": "브라보 리프트 (중급)"
@@ -479,12 +479,12 @@
         }
       ],
       "connected_slope_ids": [
-        "b1"
+        "delta"
       ],
       "connected_lift_ids": []
     },
     {
-      "id": "unnamed-4",
+      "id": "unnamed",
       "name": "챌린지 리프트 (상급)",
       "name_i18n": {
         "en": "챌린지 리프트 (상급)"
@@ -639,7 +639,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "unnamed-5",
+      "id": "unnamed",
       "name": "에코 리프트 (상급)",
       "name_i18n": {
         "en": "에코 리프트 (상급)"
@@ -767,7 +767,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "unnamed-6",
+      "id": "unnamed",
       "name": "곤돌라",
       "name_i18n": {
         "en": "곤돌라"
@@ -1019,7 +1019,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "unnamed-7",
+      "id": "unnamed",
       "name": "뉴알파 리프트 (초급)",
       "name_i18n": {
         "en": "뉴알파 리프트 (초급)"
@@ -1121,12 +1121,12 @@
         }
       ],
       "connected_slope_ids": [
-        "a2"
+        "new-alpha"
       ],
       "connected_lift_ids": []
     },
     {
-      "id": "unnamed-8",
+      "id": "unnamed",
       "name": "알파 리프트 (초급)",
       "name_i18n": {
         "en": "알파 리프트 (초급)"
@@ -1233,7 +1233,7 @@
         }
       ],
       "connected_slope_ids": [
-        "a2"
+        "new-alpha"
       ],
       "connected_lift_ids": []
     },
@@ -1276,7 +1276,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "a1",
+      "id": "alpha",
       "name": "Alpha",
       "name_i18n": {
         "ko": "알파",
@@ -1288,7 +1288,7 @@
       "ride_time_s": 130
     },
     {
-      "id": "a2",
+      "id": "new-alpha",
       "name": "New Alpha",
       "name_i18n": {
         "ko": "뉴알파",
@@ -1300,7 +1300,7 @@
       "ride_time_s": 125
     },
     {
-      "id": "a3",
+      "id": "bravo",
       "name": "Bravo",
       "name_i18n": {
         "ko": "브라보",
@@ -1312,7 +1312,7 @@
       "ride_time_s": 209
     },
     {
-      "id": "b1",
+      "id": "delta",
       "name": "Delta",
       "name_i18n": {
         "ko": "델타",
@@ -1324,7 +1324,7 @@
       "ride_time_s": 154
     },
     {
-      "id": "b2",
+      "id": "echo",
       "name": "Echo",
       "name_i18n": {
         "ko": "에코",
@@ -1336,7 +1336,7 @@
       "ride_time_s": 170
     },
     {
-      "id": "c1",
+      "id": "family",
       "name": "Family",
       "name_i18n": {
         "ko": "패밀리",
@@ -1348,7 +1348,7 @@
       "ride_time_s": 195
     },
     {
-      "id": "c2",
+      "id": "challenge",
       "name": "Challenge",
       "name_i18n": {
         "ko": "첼린지",
@@ -1360,7 +1360,7 @@
       "ride_time_s": 200
     },
     {
-      "id": "c3",
+      "id": "gondola",
       "name": "Gondola",
       "name_i18n": {
         "ko": "곤돌라",

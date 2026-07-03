@@ -2281,6 +2281,534 @@
       "from": "20",
       "to": "polka",
       "at": "2026-07-03"
+    },
+    {
+      "seq": 286,
+      "kind": "lift",
+      "place_slug": "alpensia",
+      "from": "echo",
+      "to": "lift-1",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 287,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "b-lift-2",
+      "to": "b-lift",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 288,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "d-lift-2",
+      "to": "d-lift",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 289,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "panda",
+      "to": "a1",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 290,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "dragon-rabbit",
+      "to": "a",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 291,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "horse-zebra",
+      "to": "b",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 292,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "horse-pegasus",
+      "to": "c",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 293,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "jaguar",
+      "to": "d",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 294,
+      "kind": "lift",
+      "place_slug": "high1",
+      "from": "high1-gondola-2",
+      "to": "high1-gondola",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 295,
+      "kind": "lift",
+      "place_slug": "high1",
+      "from": "high1-gondola-3",
+      "to": "high1-gondola",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 296,
+      "kind": "lift",
+      "place_slug": "high1",
+      "from": "zeus-1",
+      "to": "valley",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 297,
+      "kind": "lift",
+      "place_slug": "high1",
+      "from": "zeus-2",
+      "to": "mountain",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 298,
+      "kind": "lift",
+      "place_slug": "high1",
+      "from": "zeus-3",
+      "to": "palace",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 299,
+      "kind": "lift",
+      "place_slug": "o2",
+      "from": "dream1",
+      "to": "apple",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 300,
+      "kind": "lift",
+      "place_slug": "o2",
+      "from": "dream2",
+      "to": "cherry",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 301,
+      "kind": "lift",
+      "place_slug": "o2",
+      "from": "head",
+      "to": "orange",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 302,
+      "kind": "lift",
+      "place_slug": "o2",
+      "from": "happy",
+      "to": "tomato",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 303,
+      "kind": "lift",
+      "place_slug": "o2",
+      "from": "glory1",
+      "to": "sweet-shuttle",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 304,
+      "kind": "lift",
+      "place_slug": "oak-valley",
+      "from": "a",
+      "to": "flower",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 305,
+      "kind": "lift",
+      "place_slug": "oak-valley",
+      "from": "b",
+      "to": "bird",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 306,
+      "kind": "lift",
+      "place_slug": "oak-valley",
+      "from": "c",
+      "to": "mountain",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 307,
+      "kind": "lift",
+      "place_slug": "phoenix-park",
+      "from": "unnamed-2",
+      "to": "unnamed",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 308,
+      "kind": "lift",
+      "place_slug": "phoenix-park",
+      "from": "unnamed-3",
+      "to": "unnamed",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 309,
+      "kind": "lift",
+      "place_slug": "phoenix-park",
+      "from": "dodo-training-only",
+      "to": "penguin",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 310,
+      "kind": "lift",
+      "place_slug": "phoenix-park",
+      "from": "slope-style-ss-sbs",
+      "to": "sparrow",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 311,
+      "kind": "lift",
+      "place_slug": "phoenix-park",
+      "from": "champion",
+      "to": "mountain",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 312,
+      "kind": "lift",
+      "place_slug": "phoenix-park",
+      "from": "dizzy",
+      "to": "hawk",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 313,
+      "kind": "lift",
+      "place_slug": "phoenix-park",
+      "from": "extreme-park-upper",
+      "to": "dove",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 314,
+      "kind": "lift",
+      "place_slug": "phoenix-park",
+      "from": "extreme-park-lower",
+      "to": "falcon",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 315,
+      "kind": "lift",
+      "place_slug": "phoenix-park",
+      "from": "halfpipe",
+      "to": "eagle",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 316,
+      "kind": "lift",
+      "place_slug": "vivaldi-park",
+      "from": "ballad",
+      "to": "ballad-no-1",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 317,
+      "kind": "lift",
+      "place_slug": "vivaldi-park",
+      "from": "techno-1",
+      "to": "ballad-no-2",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 318,
+      "kind": "lift",
+      "place_slug": "vivaldi-park",
+      "from": "techno-2",
+      "to": "jazz",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 319,
+      "kind": "lift",
+      "place_slug": "vivaldi-park",
+      "from": "hip-hop-1",
+      "to": "hip-hop-no-1",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 320,
+      "kind": "lift",
+      "place_slug": "vivaldi-park",
+      "from": "hip-hop-2",
+      "to": "hip-hop-no-2",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 321,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "unnamed-2",
+      "to": "unnamed",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 322,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "unnamed-3",
+      "to": "unnamed",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 323,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "unnamed-4",
+      "to": "unnamed",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 324,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "unnamed-5",
+      "to": "unnamed",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 325,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "unnamed-6",
+      "to": "unnamed",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 326,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "unnamed-7",
+      "to": "unnamed",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 327,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "unnamed-8",
+      "to": "unnamed",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 328,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "a1",
+      "to": "alpha",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 329,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "a2",
+      "to": "new-alpha",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 330,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "a3",
+      "to": "bravo",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 331,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "b1",
+      "to": "delta",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 332,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "b2",
+      "to": "echo",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 333,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "c1",
+      "to": "family",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 334,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "c2",
+      "to": "challenge",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 335,
+      "kind": "lift",
+      "place_slug": "wellihilli-park",
+      "from": "c3",
+      "to": "gondola",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 336,
+      "kind": "lift",
+      "place_slug": "yongpyong",
+      "from": "rainbow-4",
+      "to": "new-red",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 337,
+      "kind": "lift",
+      "place_slug": "yongpyong",
+      "from": "rainbow-1",
+      "to": "blue",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 338,
+      "kind": "lift",
+      "place_slug": "yongpyong",
+      "from": "rainbow-2",
+      "to": "pink",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 339,
+      "kind": "lift",
+      "place_slug": "yongpyong",
+      "from": "rainbow-3",
+      "to": "yellow",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 340,
+      "kind": "lift",
+      "place_slug": "yongpyong",
+      "from": "dragon-park",
+      "to": "new-yellow",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 341,
+      "kind": "lift",
+      "place_slug": "jisan-forest",
+      "from": "1-1",
+      "to": "lemon",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 342,
+      "kind": "lift",
+      "place_slug": "jisan-forest",
+      "from": "5",
+      "to": "silver",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 343,
+      "kind": "lift",
+      "place_slug": "konjiam",
+      "from": "gram-1",
+      "to": "gram",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 344,
+      "kind": "lift",
+      "place_slug": "konjiam",
+      "from": "gram-2",
+      "to": "thinq",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 345,
+      "kind": "lift",
+      "place_slug": "konjiam",
+      "from": "thinq-1",
+      "to": "cnp",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 346,
+      "kind": "lift",
+      "place_slug": "eden-valley",
+      "from": "basic",
+      "to": "eden",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 347,
+      "kind": "lift",
+      "place_slug": "eden-valley",
+      "from": "main",
+      "to": "valley",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 348,
+      "kind": "lift",
+      "place_slug": "eden-valley",
+      "from": "jupiter",
+      "to": "adam",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 349,
+      "kind": "lift",
+      "place_slug": "muju",
+      "from": "soyokgihang",
+      "to": "jump",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 350,
+      "kind": "lift",
+      "place_slug": "muju",
+      "from": "eastern",
+      "to": "ssangssang",
+      "at": "2026-07-03"
+    },
+    {
+      "seq": 351,
+      "kind": "lift",
+      "place_slug": "muju",
+      "from": "rookie-hill",
+      "to": "echo",
+      "at": "2026-07-03"
     }
   ]
 }

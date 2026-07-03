@@ -1294,7 +1294,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "ballad",
+      "id": "ballad-no-1",
       "name": "Ballad no.1",
       "name_i18n": {
         "ko": "발라드 1호기",
@@ -1307,7 +1307,7 @@
       "cabin_count": 38
     },
     {
-      "id": "techno-1",
+      "id": "ballad-no-2",
       "name": "Ballad no.2",
       "name_i18n": {
         "ko": "발라드 2호기",
@@ -1320,7 +1320,7 @@
       "cabin_count": 41
     },
     {
-      "id": "techno-2",
+      "id": "jazz",
       "name": "Jazz",
       "name_i18n": {
         "ko": "재즈",
@@ -1333,7 +1333,7 @@
       "cabin_count": 53
     },
     {
-      "id": "hip-hop-1",
+      "id": "hip-hop-no-1",
       "name": "Hip-hop no.1",
       "name_i18n": {
         "ko": "힙합 1호기",
@@ -1346,7 +1346,7 @@
       "cabin_count": 74
     },
     {
-      "id": "hip-hop-2",
+      "id": "hip-hop-no-2",
       "name": "Hip-hop no.2",
       "name_i18n": {
         "ko": "힙합 2호기",

@@ -490,7 +490,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "basic",
+      "id": "eden",
       "name": "Eden",
       "name_i18n": {
         "ko": "에덴",
@@ -503,7 +503,7 @@
       "speed_mps": 5
     },
     {
-      "id": "main",
+      "id": "valley",
       "name": "Valley",
       "name_i18n": {
         "ko": "밸리",
@@ -516,7 +516,7 @@
       "speed_mps": 5
     },
     {
-      "id": "jupiter",
+      "id": "adam",
       "name": "Adam",
       "name_i18n": {
         "ko": "아담",

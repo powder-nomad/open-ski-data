@@ -2718,7 +2718,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "rainbow-4",
+      "id": "new-red",
       "name": "New Red",
       "name_i18n": {
         "ko": "뉴레드",
@@ -2729,14 +2729,14 @@
       "length_m": 550,
       "seats": 3,
       "connected_slope_ids": [
-        "dragon-park",
+        "new-yellow",
         "10",
         "11",
         "13"
       ]
     },
     {
-      "id": "rainbow-1",
+      "id": "blue",
       "name": "Blue",
       "name_i18n": {
         "ko": "블루",
@@ -2747,14 +2747,14 @@
       "length_m": 600,
       "seats": 2,
       "connected_slope_ids": [
-        "dragon-park",
+        "new-yellow",
         "10",
         "11",
         "13"
       ]
     },
     {
-      "id": "rainbow-2",
+      "id": "pink",
       "name": "Pink",
       "name_i18n": {
         "ko": "핑크",
@@ -2765,11 +2765,11 @@
       "length_m": 630,
       "seats": 3,
       "connected_slope_ids": [
-        "rainbow-2"
+        "pink"
       ]
     },
     {
-      "id": "rainbow-3",
+      "id": "yellow",
       "name": "Yellow",
       "name_i18n": {
         "ko": "옐로우",
@@ -2780,13 +2780,13 @@
       "length_m": 496,
       "seats": 4,
       "connected_slope_ids": [
-        "rainbow-4",
-        "rainbow-1",
-        "rainbow-2"
+        "new-red",
+        "blue",
+        "pink"
       ]
     },
     {
-      "id": "dragon-park",
+      "id": "new-yellow",
       "name": "New Yellow",
       "name_i18n": {
         "ko": "뉴옐로우",
@@ -2797,8 +2797,8 @@
       "length_m": 348,
       "seats": 4,
       "connected_slope_ids": [
-        "rainbow-4",
-        "rainbow-1"
+        "new-red",
+        "blue"
       ]
     },
     {

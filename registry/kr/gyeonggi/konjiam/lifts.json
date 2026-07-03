@@ -967,7 +967,7 @@
       "speed_mps": 5
     },
     {
-      "id": "gram-1",
+      "id": "gram",
       "name": "Gram",
       "name_i18n": {
         "ko": "그램",
@@ -982,7 +982,7 @@
       "speed_mps": 5
     },
     {
-      "id": "gram-2",
+      "id": "thinq",
       "name": "ThinQ",
       "name_i18n": {
         "ko": "씽큐",
@@ -997,7 +997,7 @@
       "speed_mps": 5
     },
     {
-      "id": "thinq-1",
+      "id": "cnp",
       "name": "CNP",
       "name_i18n": {
         "ko": "CNP",

@@ -2881,7 +2881,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "soyokgihang",
+      "id": "jump",
       "name": "Jump",
       "name_i18n": {
         "ko": "점프",
@@ -2895,7 +2895,7 @@
       "speed_mps": 2
     },
     {
-      "id": "eastern",
+      "id": "ssangssang",
       "name": "Ssangssang",
       "name_i18n": {
         "ko": "쌍쌍",
@@ -2909,7 +2909,7 @@
       "speed_mps": 5
     },
     {
-      "id": "rookie-hill",
+      "id": "echo",
       "name": "Echo",
       "name_i18n": {
         "ko": "에코",

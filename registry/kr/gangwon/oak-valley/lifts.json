@@ -178,7 +178,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "a",
+      "id": "flower",
       "name": "Flower",
       "name_i18n": {
         "ko": "플라워",
@@ -192,7 +192,7 @@
       "speed_mps": 5
     },
     {
-      "id": "b",
+      "id": "bird",
       "name": "Bird",
       "name_i18n": {
         "ko": "버드",
@@ -206,7 +206,7 @@
       "speed_mps": 5
     },
     {
-      "id": "c",
+      "id": "mountain",
       "name": "Mountain",
       "name_i18n": {
         "ko": "마운틴",

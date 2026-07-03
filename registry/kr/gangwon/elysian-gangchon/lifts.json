@@ -284,7 +284,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "b-lift-2",
+      "id": "b-lift",
       "name": "B lift",
       "name_i18n": {
         "en": "B lift"
@@ -728,7 +728,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "d-lift-2",
+      "id": "d-lift",
       "name": "D lift",
       "name_i18n": {
         "en": "D lift"
@@ -871,7 +871,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "panda",
+      "id": "a1",
       "name": "A1",
       "name_i18n": {
         "ko": "A1",
@@ -885,7 +885,7 @@
       "speed_mps": 1.2
     },
     {
-      "id": "dragon-rabbit",
+      "id": "a",
       "name": "A",
       "name_i18n": {
         "ko": "A",
@@ -899,7 +899,7 @@
       "speed_mps": 4
     },
     {
-      "id": "horse-zebra",
+      "id": "b",
       "name": "B",
       "name_i18n": {
         "ko": "B",
@@ -913,7 +913,7 @@
       "speed_mps": 4
     },
     {
-      "id": "horse-pegasus",
+      "id": "c",
       "name": "C",
       "name_i18n": {
         "ko": "C",
@@ -927,7 +927,7 @@
       "speed_mps": 4
     },
     {
-      "id": "jaguar",
+      "id": "d",
       "name": "D",
       "name_i18n": {
         "ko": "D",

@@ -2526,7 +2526,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "high1-gondola-2",
+      "id": "high1-gondola",
       "name": "High1 Gondola",
       "name_i18n": {
         "en": "High1 Gondola"
@@ -2558,7 +2558,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "high1-gondola-3",
+      "id": "high1-gondola",
       "name": "High1 Gondola",
       "name_i18n": {
         "en": "High1 Gondola"
@@ -2945,7 +2945,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "zeus-1",
+      "id": "valley",
       "name": "Valley",
       "name_i18n": {
         "ko": "밸리",
@@ -2958,7 +2958,7 @@
       "ride_time_s": 360
     },
     {
-      "id": "zeus-2",
+      "id": "mountain",
       "name": "Mountain",
       "name_i18n": {
         "ko": "마운틴",
@@ -2971,7 +2971,7 @@
       "ride_time_s": 720
     },
     {
-      "id": "zeus-3",
+      "id": "palace",
       "name": "Palace",
       "name_i18n": {
         "ko": "팰리스",

@@ -919,7 +919,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "dream1",
+      "id": "apple",
       "name": "Apple",
       "name_i18n": {
         "ko": "애플",
@@ -932,7 +932,7 @@
       "ride_time_s": 220
     },
     {
-      "id": "dream2",
+      "id": "cherry",
       "name": "Cherry",
       "name_i18n": {
         "ko": "체리",
@@ -945,7 +945,7 @@
       "ride_time_s": 360
     },
     {
-      "id": "head",
+      "id": "orange",
       "name": "Orange",
       "name_i18n": {
         "ko": "오렌지",
@@ -958,7 +958,7 @@
       "ride_time_s": 180
     },
     {
-      "id": "happy",
+      "id": "tomato",
       "name": "Tomato",
       "name_i18n": {
         "ko": "토마토",
@@ -971,7 +971,7 @@
       "ride_time_s": 300
     },
     {
-      "id": "glory1",
+      "id": "sweet-shuttle",
       "name": "Sweet Shuttle",
       "name_i18n": {
         "ko": "스위트셔틀",

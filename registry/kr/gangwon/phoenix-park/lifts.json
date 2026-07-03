@@ -698,7 +698,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "unnamed-2",
+      "id": "unnamed",
       "name": "휘닉스파크 곤돌라",
       "name_i18n": {
         "en": "휘닉스파크 곤돌라"
@@ -1068,7 +1068,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "unnamed-3",
+      "id": "unnamed",
       "name": "팔콘리프트",
       "name_i18n": {
         "en": "팔콘리프트"
@@ -1393,7 +1393,7 @@
       "connected_lift_ids": []
     },
     {
-      "id": "dodo-training-only",
+      "id": "penguin",
       "name": "Penguin",
       "name_i18n": {
         "ko": "펭귄",
@@ -1404,7 +1404,7 @@
       "seats": 4
     },
     {
-      "id": "slope-style-ss-sbs",
+      "id": "sparrow",
       "name": "Sparrow",
       "name_i18n": {
         "ko": "스패로우",
@@ -1415,7 +1415,7 @@
       "seats": 4
     },
     {
-      "id": "champion",
+      "id": "mountain",
       "name": "Mountain",
       "name_i18n": {
         "ko": "도도",
@@ -1426,7 +1426,7 @@
       "seats": 4
     },
     {
-      "id": "dizzy",
+      "id": "hawk",
       "name": "Hawk",
       "name_i18n": {
         "ko": "호크",
@@ -1437,7 +1437,7 @@
       "seats": 6
     },
     {
-      "id": "extreme-park-upper",
+      "id": "dove",
       "name": "Dove",
       "name_i18n": {
         "ko": "도브",
@@ -1448,7 +1448,7 @@
       "seats": 4
     },
     {
-      "id": "extreme-park-lower",
+      "id": "falcon",
       "name": "Falcon",
       "name_i18n": {
         "ko": "팔콘",
@@ -1459,7 +1459,7 @@
       "seats": 6
     },
     {
-      "id": "halfpipe",
+      "id": "eagle",
       "name": "Eagle",
       "name_i18n": {
         "ko": "이글",

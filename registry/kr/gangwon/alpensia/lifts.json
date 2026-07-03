@@ -5,7 +5,7 @@
   "place_slug": "alpensia",
   "lifts": [
     {
-      "id": "echo",
+      "id": "lift-1",
       "name": "Lift 1",
       "name_i18n": {
         "ko": "리프트 1",
@@ -131,7 +131,7 @@
         }
       ],
       "connected_slope_ids": [
-        "echo"
+        "lift-1"
       ]
     },
     {
