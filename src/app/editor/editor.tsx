@@ -1004,7 +1004,17 @@ export function SlopeAuthor2() {
     const source = effectiveSlopes.find((s) => s.id === sourceId);
     const tc = target?.coordinates;
     const sc = source?.coordinates;
-    if (!tc?.length || !sc?.length) return;
+    if (!sc?.length) return;
+
+    // Target has no geometry yet — just adopt source coords directly.
+    if (!tc?.length) {
+      setSlopeOverrides((prev) => ({
+        ...prev,
+        [targetId]: { ...prev[targetId], coordinates: sc },
+      }));
+      deleteSlope(sourceId);
+      return;
+    }
 
     const d = (
       a: { lat: number; lon: number },
@@ -1029,6 +1039,18 @@ export function SlopeAuthor2() {
       [targetId]: { ...prev[targetId], coordinates: best.coords },
     }));
     deleteSlope(sourceId);
+  }
+
+  function deleteEndVertex(slopeId: string, end: "first" | "last") {
+    const slope = effectiveSlopes.find((s) => s.id === slopeId);
+    const coords =
+      slopeOverrides[slopeId]?.coordinates ?? slope?.coordinates ?? [];
+    if (coords.length <= 2) return;
+    const next = end === "first" ? coords.slice(1) : coords.slice(0, -1);
+    setSlopeOverrides((prev) => ({
+      ...prev,
+      [slopeId]: { ...prev[slopeId], coordinates: next },
+    }));
   }
 
   function deleteLift(id: string) {
@@ -3219,6 +3241,9 @@ export function SlopeAuthor2() {
                 onJoinWith={(sourceId) =>
                   joinSlopeWith(selectedSlope.id, sourceId)
                 }
+                onDeleteEndVertex={(end) =>
+                  deleteEndVertex(selectedSlope.id, end)
+                }
               />
             )}
 
@@ -3505,6 +3530,7 @@ function SlopeMetaPanel({
   onDelete,
   otherSlopes,
   onJoinWith,
+  onDeleteEndVertex,
 }: {
   slope: SlopeRecord;
   override: SlopeOverride | undefined;
@@ -3516,6 +3542,7 @@ function SlopeMetaPanel({
   onDelete: () => void;
   otherSlopes?: SlopeRecord[];
   onJoinWith?: (sourceId: string) => void;
+  onDeleteEndVertex?: (end: "first" | "last") => void;
 }) {
   const locale = useLocale();
   const t = useTranslations("slopeAuthor");
@@ -3525,6 +3552,11 @@ function SlopeMetaPanel({
   const name = override?.name ?? slope.name ?? "";
   const difficulty = (override?.difficulty ?? slope.difficulty ?? "") as string;
   const lengthM = override?.length_m ?? slope.length_m ?? null;
+  const coords = override?.coordinates ?? slope.coordinates ?? [];
+  const isClosedCurve =
+    coords.length >= 2 &&
+    Math.abs(coords[0].lat - coords[coords.length - 1].lat) < 0.00001 &&
+    Math.abs(coords[0].lon - coords[coords.length - 1].lon) < 0.00001;
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
@@ -3579,9 +3611,36 @@ function SlopeMetaPanel({
             {t("editGeometry")}
           </button>
         ) : (
-          <span className="rounded-md bg-[#22d3ee]/15 px-3 py-1.5 font-semibold text-[#22d3ee]">
-            Editing — drag vertex · double-click segment to insert · right-click vertex to delete
-          </span>
+          <div className="w-full flex flex-col gap-1.5">
+            <span className="rounded-md bg-[#22d3ee]/15 px-3 py-1.5 font-semibold text-[#22d3ee]">
+              Editing — drag · double-click to insert · right-click to delete
+            </span>
+            {isClosedCurve && (
+              <p className="rounded-md bg-[#f59e0b]/15 px-3 py-1.5 text-[10px] text-[#fbbf24]">
+                Closed curve detected — first and last vertices are the same point. Delete the last vertex to fix.
+              </p>
+            )}
+            <div className="flex gap-2">
+              <button
+                type="button"
+                disabled={coords.length <= 2}
+                onClick={() => onDeleteEndVertex?.("first")}
+                className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                title="Remove the first vertex from the polyline"
+              >
+                Delete first vertex
+              </button>
+              <button
+                type="button"
+                disabled={coords.length <= 2}
+                onClick={() => onDeleteEndVertex?.("last")}
+                className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                title="Remove the last vertex from the polyline"
+              >
+                Delete last vertex
+              </button>
+            </div>
+          </div>
         )}
         {hasOverrideGeom && (
           <button
