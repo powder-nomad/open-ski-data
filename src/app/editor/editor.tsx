@@ -996,6 +996,41 @@ export function SlopeAuthor2() {
     });
     if (selectedSlopeId === id) setSelectedSlopeId(null);
   }
+  // Join two slopes: concatenate their polylines in whichever endpoint
+  // ordering minimises the gap, update the target's coordinates, and
+  // delete the source. Called from SlopeMetaPanel's "Join with" UI.
+  function joinSlopeWith(targetId: string, sourceId: string) {
+    const target = effectiveSlopes.find((s) => s.id === targetId);
+    const source = effectiveSlopes.find((s) => s.id === sourceId);
+    const tc = target?.coordinates;
+    const sc = source?.coordinates;
+    if (!tc?.length || !sc?.length) return;
+
+    const d = (
+      a: { lat: number; lon: number },
+      b: { lat: number; lon: number },
+    ) => distanceM({ lat: a.lat, lng: a.lon }, { lat: b.lat, lng: b.lon });
+
+    const tail = tc[tc.length - 1];
+    const head = tc[0];
+    const sTail = sc[sc.length - 1];
+    const sHead = sc[0];
+
+    const opts = [
+      { gap: d(tail, sHead), coords: [...tc, ...sc] },
+      { gap: d(tail, sTail), coords: [...tc, ...sc.slice().reverse()] },
+      { gap: d(sHead, head), coords: [...sc, ...tc] },
+      { gap: d(sTail, head), coords: [...sc.slice().reverse(), ...tc] },
+    ];
+    const best = opts.reduce((min, o) => (o.gap < min.gap ? o : min));
+
+    setSlopeOverrides((prev) => ({
+      ...prev,
+      [targetId]: { ...prev[targetId], coordinates: best.coords },
+    }));
+    deleteSlope(sourceId);
+  }
+
   function deleteLift(id: string) {
     if (addedLifts.some((l) => l.id === id)) {
       setAddedLifts((prev) => prev.filter((l) => l.id !== id));
@@ -2460,13 +2495,22 @@ export function SlopeAuthor2() {
     const files: Record<string, string> = {};
 
     if (slopeEdits > 0 || slopeAdded > 0 || slopeDeleted > 0) {
+      // difficulty: null fails the schema's oneOf[const] check; omit the
+      // field instead (it's not required, so absence is valid).
+      const dropNullDifficulty = (s: SlopeRecord): SlopeRecord => {
+        if (s.difficulty !== null) return s;
+        const { difficulty: _d, ...rest } = s;
+        void _d;
+        return rest as SlopeRecord;
+      };
       const deleted = new Set(deletedSlopeIds);
       const editedSlopes = loadedResort.slopes
         .filter((s) => !deleted.has(s.id))
         .map((s) =>
           slopeOverrides[s.id] ? stamp({ ...s, ...slopeOverrides[s.id] }) : s,
-        );
-      const newSlopes = addedSlopes.map(stamp);
+        )
+        .map(dropNullDifficulty);
+      const newSlopes = addedSlopes.map(stamp).map(dropNullDifficulty);
       files["slopes.json"] =
         JSON.stringify(
           {
@@ -3169,6 +3213,12 @@ export function SlopeAuthor2() {
                   Boolean(slopeOverrides[selectedSlope.id]?.coordinates)
                 }
                 onDelete={() => deleteSlope(selectedSlope.id)}
+                otherSlopes={effectiveSlopes.filter(
+                  (s) => s.id !== selectedSlope.id && (s.coordinates?.length ?? 0) >= 2,
+                )}
+                onJoinWith={(sourceId) =>
+                  joinSlopeWith(selectedSlope.id, sourceId)
+                }
               />
             )}
 
@@ -3453,6 +3503,8 @@ function SlopeMetaPanel({
   onResetGeom,
   hasOverrideGeom,
   onDelete,
+  otherSlopes,
+  onJoinWith,
 }: {
   slope: SlopeRecord;
   override: SlopeOverride | undefined;
@@ -3462,9 +3514,12 @@ function SlopeMetaPanel({
   onResetGeom: () => void;
   hasOverrideGeom: boolean;
   onDelete: () => void;
+  otherSlopes?: SlopeRecord[];
+  onJoinWith?: (sourceId: string) => void;
 }) {
   const locale = useLocale();
   const t = useTranslations("slopeAuthor");
+  const [geomSourceId, setGeomSourceId] = useState("");
   // Inputs read from baseline ⊕ override so they reflect any
   // pending edits without requiring a re-fetch.
   const name = override?.name ?? slope.name ?? "";
@@ -3482,7 +3537,7 @@ function SlopeMetaPanel({
         <p className="text-[10px] text-[var(--fg-dim)]">
           {t("idVerticesHint", {
             id: slope.id,
-            count: slope.coordinates?.length ?? 0,
+            count: (override?.coordinates ?? slope.coordinates)?.length ?? 0,
           })}
         </p>
       </header>
@@ -3525,7 +3580,7 @@ function SlopeMetaPanel({
           </button>
         ) : (
           <span className="rounded-md bg-[#22d3ee]/15 px-3 py-1.5 font-semibold text-[#22d3ee]">
-            {t("editingGeomNote")}
+            Editing — drag vertex · double-click segment to insert · right-click vertex to delete
           </span>
         )}
         {hasOverrideGeom && (
@@ -3549,6 +3604,59 @@ function SlopeMetaPanel({
           {t("deleteAction")}
         </button>
       </div>
+      {otherSlopes && otherSlopes.length > 0 && (
+        <div className="mt-3 border-t border-white/5 pt-3 grid gap-2 text-xs">
+          <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
+            Geometry from another slope
+          </p>
+          <select
+            value={geomSourceId}
+            onChange={(e) => setGeomSourceId(e.target.value)}
+            className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-xs text-[var(--fg-muted)]"
+          >
+            <option value="">— pick a slope —</option>
+            {otherSlopes.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name || s.id} ({s.coordinates?.length ?? 0}pt)
+              </option>
+            ))}
+          </select>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              disabled={!geomSourceId}
+              onClick={() => {
+                const src = otherSlopes.find((s) => s.id === geomSourceId);
+                if (src?.coordinates) {
+                  onPatch({ coordinates: src.coordinates });
+                  setGeomSourceId("");
+                }
+              }}
+              className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+              title="Replace this slope's geometry with the selected slope's coordinates"
+            >
+              Copy coords
+            </button>
+            <button
+              type="button"
+              disabled={!geomSourceId}
+              onClick={() => {
+                if (geomSourceId && onJoinWith) {
+                  onJoinWith(geomSourceId);
+                  setGeomSourceId("");
+                }
+              }}
+              className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+              title="Concatenate the selected slope's polyline onto this slope (auto-orders endpoints to minimise gap), then delete the source"
+            >
+              Join &amp; delete source
+            </button>
+          </div>
+          <p className="text-[9px] text-[var(--fg-dim)]">
+            "Copy coords" replaces geometry without deleting the source slope. "Join" concatenates polylines (closest endpoints auto-matched) and deletes the source.
+          </p>
+        </div>
+      )}
     </section>
   );
 }
