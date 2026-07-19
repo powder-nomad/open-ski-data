@@ -284,43 +284,6 @@
       "connected_lift_ids": []
     },
     {
-      "id": "b-lift",
-      "name": "B lift",
-      "name_i18n": {
-        "en": "B lift"
-      },
-      "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 58.4,
-      "vertical_m": null,
-      "coordinates": [
-        {
-          "lat": 37.814923,
-          "lon": 127.583754,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814903,
-          "lon": 127.583436,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814898,
-          "lon": 127.583338,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814887,
-          "lon": 127.583091,
-          "alt_m": null
-        }
-      ],
-      "connected_slope_ids": [
-        "dragon"
-      ],
-      "connected_lift_ids": []
-    },
-    {
       "id": "a-lift",
       "name": "A lift",
       "name_i18n": {
@@ -725,76 +688,6 @@
         "deer",
         "puma"
       ],
-      "connected_lift_ids": []
-    },
-    {
-      "id": "d-lift",
-      "name": "D lift",
-      "name_i18n": {
-        "en": "D lift"
-      },
-      "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 255.1,
-      "vertical_m": null,
-      "coordinates": [
-        {
-          "lat": 37.817206,
-          "lon": 127.584807,
-          "alt_m": null
-        },
-        {
-          "lat": 37.817009,
-          "lon": 127.584586,
-          "alt_m": null
-        },
-        {
-          "lat": 37.816813,
-          "lon": 127.584365,
-          "alt_m": null
-        },
-        {
-          "lat": 37.816617,
-          "lon": 127.584144,
-          "alt_m": null
-        },
-        {
-          "lat": 37.81644,
-          "lon": 127.583899,
-          "alt_m": null
-        },
-        {
-          "lat": 37.816264,
-          "lon": 127.583653,
-          "alt_m": null
-        },
-        {
-          "lat": 37.816088,
-          "lon": 127.583408,
-          "alt_m": null
-        },
-        {
-          "lat": 37.816022,
-          "lon": 127.583318,
-          "alt_m": null
-        },
-        {
-          "lat": 37.815866,
-          "lon": 127.583105,
-          "alt_m": null
-        },
-        {
-          "lat": 37.815709,
-          "lon": 127.582891,
-          "alt_m": null
-        },
-        {
-          "lat": 37.815601,
-          "lon": 127.582736,
-          "alt_m": null
-        }
-      ],
-      "connected_slope_ids": [],
       "connected_lift_ids": []
     },
     {
