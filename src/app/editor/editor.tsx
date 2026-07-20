@@ -1042,6 +1042,18 @@ export function SlopeAuthor2() {
   }
 
   function deleteEndVertex(slopeId: string, end: "first" | "last") {
+    // Manipulate the live editable polyline's MVCArray directly.
+    // The remove_at listener wired up in the polyline effect will call
+    // setSlopeOverrides, giving immediate visual feedback without waiting
+    // for the React state → useMemo → useEffect re-render cycle.
+    const polyline = slopeLineRefs.current.get(slopeId);
+    if (polyline) {
+      const path = polyline.getPath();
+      if (path.getLength() <= 2) return;
+      path.removeAt(end === "first" ? 0 : path.getLength() - 1);
+      return;
+    }
+    // Fallback when no live polyline exists (e.g. slope has no coords yet).
     const slope = effectiveSlopes.find((s) => s.id === slopeId);
     const coords =
       slopeOverrides[slopeId]?.coordinates ?? slope?.coordinates ?? [];
