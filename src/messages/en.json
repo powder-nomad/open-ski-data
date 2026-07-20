@@ -191,7 +191,11 @@
     "entityTabLifts": "Lifts",
     "entityTabEdges": "Edges",
     "entityTabNodes": "Nodes",
-    "entitySearchPlaceholder": "Search…"
+    "entitySearchPlaceholder": "Search…",
+    "geomFromSlope": "Copy / join from another slope",
+    "pickSlope": "pick a slope",
+    "copyCoords": "Copy coords",
+    "joinDelete": "Join & delete"
   },
   "settings": {
     "title": "Settings",

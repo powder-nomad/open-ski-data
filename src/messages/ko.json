@@ -191,7 +191,11 @@
     "entityTabLifts": "리프트",
     "entityTabEdges": "엣지",
     "entityTabNodes": "노드",
-    "entitySearchPlaceholder": "검색…"
+    "entitySearchPlaceholder": "검색…",
+    "geomFromSlope": "다른 슬로프에서 복사 / 합치기",
+    "pickSlope": "슬로프 선택",
+    "copyCoords": "좌표 복사",
+    "joinDelete": "합치고 삭제"
   },
   "settings": {
     "title": "설정",

@@ -108,6 +108,15 @@ const LIFT_TYPE_OPTIONS = [
 const I18N_LOCALES = ["ko", "en", "ja"] as const;
 type I18nLocale = (typeof I18N_LOCALES)[number];
 
+/** Returns the best display name for the current UI locale. */
+function localeName(
+  name: string | undefined,
+  name_i18n: Record<string, string> | undefined,
+  locale: string,
+): string {
+  return name_i18n?.[locale] || name_i18n?.["en"] || name || "";
+}
+
 let mapsConfigured = false;
 
 // Convert a lat/lng to map-container-relative pixel coordinates.
@@ -1076,6 +1085,60 @@ export function SlopeAuthor2() {
         ...prev,
         [slopeId]: { ...prev[slopeId], coordinates: [...coords].reverse() },
       };
+    });
+  }
+
+  function rotateSlopeStart(slopeId: string, dir: 1 | -1) {
+    setSlopeOverrides((prev) => {
+      const slope = effectiveSlopesRef.current.find((s) => s.id === slopeId);
+      const coords = prev[slopeId]?.coordinates ?? slope?.coordinates ?? [];
+      const n = coords.length;
+      if (n < 2) return prev;
+      const shift = ((dir % n) + n) % n;
+      const next = [...coords.slice(shift), ...coords.slice(0, shift)];
+      return { ...prev, [slopeId]: { ...prev[slopeId], coordinates: next } };
+    });
+  }
+
+  function deleteLiftEndVertex(liftId: string, end: "first" | "last") {
+    const polyline = liftLineRefs.current.get(liftId);
+    if (polyline) {
+      const path = polyline.getPath();
+      if (path.getLength() <= 2) return;
+      path.removeAt(end === "first" ? 0 : path.getLength() - 1);
+      return;
+    }
+    const lift = effectiveLifts.find((l) => l.id === liftId);
+    const coords = liftOverrides[liftId]?.coordinates ?? lift?.coordinates ?? [];
+    if (coords.length <= 2) return;
+    const next = end === "first" ? coords.slice(1) : coords.slice(0, -1);
+    setLiftOverrides((prev) => ({
+      ...prev,
+      [liftId]: { ...prev[liftId], coordinates: next },
+    }));
+  }
+
+  function reverseLiftDirection(liftId: string) {
+    setLiftOverrides((prev) => {
+      const lift = effectiveLifts.find((l) => l.id === liftId);
+      const coords = prev[liftId]?.coordinates ?? lift?.coordinates ?? [];
+      if (coords.length < 2) return prev;
+      return {
+        ...prev,
+        [liftId]: { ...prev[liftId], coordinates: [...coords].reverse() },
+      };
+    });
+  }
+
+  function rotateLiftStart(liftId: string, dir: 1 | -1) {
+    setLiftOverrides((prev) => {
+      const lift = effectiveLifts.find((l) => l.id === liftId);
+      const coords = prev[liftId]?.coordinates ?? lift?.coordinates ?? [];
+      const n = coords.length;
+      if (n < 2) return prev;
+      const shift = ((dir % n) + n) % n;
+      const next = [...coords.slice(shift), ...coords.slice(0, shift)];
+      return { ...prev, [liftId]: { ...prev[liftId], coordinates: next } };
     });
   }
 
@@ -3349,6 +3412,7 @@ export function SlopeAuthor2() {
                 onReverseDirection={() =>
                   reverseSlopeDirection(selectedSlope.id)
                 }
+                onRotateS={(dir) => rotateSlopeStart(selectedSlope.id, dir)}
               />
             )}
 
@@ -3382,6 +3446,11 @@ export function SlopeAuthor2() {
                   Boolean(liftOverrides[selectedLift.id]?.coordinates)
                 }
                 onDelete={() => deleteLift(selectedLift.id)}
+                onDeleteEndVertex={(end) =>
+                  deleteLiftEndVertex(selectedLift.id, end)
+                }
+                onReverseDirection={() => reverseLiftDirection(selectedLift.id)}
+                onRotateS={(dir) => rotateLiftStart(selectedLift.id, dir)}
               />
             )}
 
@@ -3563,6 +3632,7 @@ function SlopeListPanel({
   onRestoreAll: () => void;
 }) {
   const t = useTranslations("slopeAuthor");
+  const locale = useLocale();
   return (
     <section>
       <header className="mb-2 flex items-center justify-between gap-2">
@@ -3588,6 +3658,7 @@ function SlopeListPanel({
         {effectiveSlopes.map((s) => {
           const isSelected = s.id === selectedId;
           const dirty = !!overrides[s.id];
+          const label = localeName(s.name, s.name_i18n as Record<string,string>|undefined, locale) || s.id;
           return (
             <li key={s.id}>
               <button
@@ -3599,8 +3670,8 @@ function SlopeListPanel({
                     : "text-[var(--fg-muted)] hover:bg-[var(--bg-elev)]"
                 }`}
               >
-                <span className="truncate font-medium">
-                  {s.name || s.id}
+                <span className="truncate font-medium" title={s.id}>
+                  {label}
                 </span>
                 <span className="flex flex-none items-center gap-2">
                   {dirty && (
@@ -3624,6 +3695,52 @@ function SlopeListPanel({
   );
 }
 
+function GeomEditControls({
+  coords,
+  isClosedCurve,
+  onDeleteEndVertex,
+  onReverseDirection,
+  onRotateS,
+}: {
+  coords: { lat: number; lon: number }[];
+  isClosedCurve: boolean;
+  onDeleteEndVertex?: (end: "first" | "last") => void;
+  onReverseDirection?: () => void;
+  onRotateS?: (dir: 1 | -1) => void;
+}) {
+  const btnBase =
+    "flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40 text-[10px]";
+  return (
+    <div className="w-full flex flex-col gap-1">
+      <span className="rounded-md bg-[#22d3ee]/15 px-2.5 py-1 text-[10px] font-semibold text-[#22d3ee]">
+        Editing · drag · dbl-click add · right-click remove
+      </span>
+      {isClosedCurve && (
+        <p className="rounded-md bg-[#f59e0b]/15 px-2.5 py-1 text-[9px] text-[#fbbf24]">
+          Closed curve — S and E are the same point
+        </p>
+      )}
+      <div className="flex gap-1">
+        <button type="button" disabled={coords.length <= 2}
+          onClick={() => onDeleteEndVertex?.("first")} className={btnBase}
+          title="Remove vertex 0 (S)">Del S</button>
+        <button type="button" disabled={coords.length <= 2}
+          onClick={() => onDeleteEndVertex?.("last")} className={btnBase}
+          title="Remove last vertex (E)">Del E</button>
+        <button type="button" disabled={coords.length < 2}
+          onClick={() => onReverseDirection?.()} className={btnBase}
+          title="Reverse S↔E">Reverse</button>
+        <button type="button" disabled={coords.length < 2}
+          onClick={() => onRotateS?.(-1)} className={btnBase}
+          title="Move S one vertex backward">S←</button>
+        <button type="button" disabled={coords.length < 2}
+          onClick={() => onRotateS?.(1)} className={btnBase}
+          title="Move S one vertex forward">S→</button>
+      </div>
+    </div>
+  );
+}
+
 function SlopeMetaPanel({
   slope,
   override,
@@ -3637,6 +3754,7 @@ function SlopeMetaPanel({
   onJoinWith,
   onDeleteEndVertex,
   onReverseDirection,
+  onRotateS,
 }: {
   slope: SlopeRecord;
   override: SlopeOverride | undefined;
@@ -3650,186 +3768,120 @@ function SlopeMetaPanel({
   onJoinWith?: (sourceId: string) => void;
   onDeleteEndVertex?: (end: "first" | "last") => void;
   onReverseDirection?: () => void;
+  onRotateS?: (dir: 1 | -1) => void;
 }) {
   const locale = useLocale();
   const t = useTranslations("slopeAuthor");
   const [geomSourceId, setGeomSourceId] = useState("");
-  // Inputs read from baseline ⊕ override so they reflect any
-  // pending edits without requiring a re-fetch.
-  const name = override?.name ?? slope.name ?? "";
+  const [showGeomSource, setShowGeomSource] = useState(false);
+
+  const nameI18n = (override?.name_i18n ?? slope.name_i18n) as Record<string, string> | undefined;
+  const canonicalName = override?.name ?? slope.name ?? "";
+  const displayName = localeName(canonicalName, nameI18n, locale) || slope.id;
   const difficulty = (override?.difficulty ?? slope.difficulty ?? "") as string;
   const lengthM = override?.length_m ?? slope.length_m ?? null;
-  const coords = override?.coordinates ?? slope.coordinates ?? [];
+  const coords = (override?.coordinates ?? slope.coordinates ?? []) as { lat: number; lon: number }[];
+  const vertexCount = coords.length;
   const isClosedCurve =
-    coords.length >= 2 &&
-    Math.abs(coords[0].lat - coords[coords.length - 1].lat) < 0.00001 &&
-    Math.abs(coords[0].lon - coords[coords.length - 1].lon) < 0.00001;
+    vertexCount >= 2 &&
+    Math.abs(coords[0].lat - coords[vertexCount - 1].lat) < 0.00001 &&
+    Math.abs(coords[0].lon - coords[vertexCount - 1].lon) < 0.00001;
+
   return (
-    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
-      <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
-          {t("selectedSlope")}
-        </p>
-        <h3 className="mt-0.5 truncate text-sm font-semibold text-[var(--fg)]">
-          {slope.name || slope.id}
-        </h3>
-        <p className="text-[10px] text-[var(--fg-dim)]">
-          {t("idVerticesHint", {
-            id: slope.id,
-            count: (override?.coordinates ?? slope.coordinates)?.length ?? 0,
-          })}
-        </p>
-      </header>
-      <div className="grid gap-2 text-xs">
-        <LabeledInput
-          label={t("nameCanonical")}
-          value={name}
-          onChange={(v) => onPatch({ name: v })}
-        />
-        <LocalizedNameEditor
-          label={t("nameLocalized")}
-          value={
-            (override?.name_i18n ?? slope.name_i18n) as
-              | Record<string, string>
-              | undefined
-          }
-          onChange={(next) => onPatch({ name_i18n: next })}
-          currentLocale={locale}
-        />
-        <LabeledInput
-          label={t("difficulty")}
-          value={difficulty}
-          onChange={(v) => onPatch({ difficulty: v || null })}
-          placeholder="beginner / intermediate / advanced / expert / …"
-        />
-        <LabeledNumber
-          label={t("lengthM")}
-          value={lengthM ?? null}
-          onChange={(v) => onPatch({ length_m: v })}
-        />
-      </div>
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-        {!isEditingGeom ? (
-          <button
-            type="button"
-            onClick={onEditGeom}
-            className="rounded-md bg-[var(--accent)] px-3 py-1.5 font-semibold text-[var(--accent-ink)]"
-          >
-            {t("editGeometry")}
-          </button>
-        ) : (
-          <div className="w-full flex flex-col gap-1.5">
-            <span className="rounded-md bg-[#22d3ee]/15 px-3 py-1.5 font-semibold text-[#22d3ee]">
-              Editing — drag · double-click to insert · right-click to delete
-            </span>
-            {isClosedCurve && (
-              <p className="rounded-md bg-[#f59e0b]/15 px-3 py-1.5 text-[10px] text-[#fbbf24]">
-                Closed curve detected — first and last vertices are the same point. Delete the last vertex to fix.
-              </p>
-            )}
-            <div className="flex gap-2">
-              <button
-                type="button"
-                disabled={coords.length <= 2}
-                onClick={() => onDeleteEndVertex?.("first")}
-                className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-                title="Remove the first vertex (S marker) from the polyline"
-              >
-                Delete S
-              </button>
-              <button
-                type="button"
-                disabled={coords.length <= 2}
-                onClick={() => onDeleteEndVertex?.("last")}
-                className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-                title="Remove the last vertex (E marker) from the polyline"
-              >
-                Delete E
-              </button>
-              <button
-                type="button"
-                disabled={coords.length < 2}
-                onClick={() => onReverseDirection?.()}
-                className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-                title="Reverse polyline direction — S becomes E and vice versa"
-              >
-                Reverse
-              </button>
-            </div>
-          </div>
-        )}
-        {hasOverrideGeom && (
-          <button
-            type="button"
-            onClick={onResetGeom}
-            className="rounded-md border border-[var(--border)] px-3 py-1.5 text-[var(--fg-muted)] hover:text-[var(--fg)]"
-          >
-            {t("resetGeometry")}
-          </button>
-        )}
-        <button
-          type="button"
-          onClick={() => {
-            if (confirm(t("deleteSlopeConfirm", { name: slope.name || slope.id }))) {
-              onDelete();
-            }
-          }}
-          className="ml-auto rounded-md border border-[#ef4444]/40 px-3 py-1.5 font-semibold text-[#fca5a5] hover:bg-[#ef4444]/10 hover:text-[#fecaca]"
-        >
+    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3 text-xs">
+      {/* Header */}
+      <div className="mb-2 flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--accent-soft)]">
+            {t("selectedSlope")}
+          </p>
+          <h3 className="truncate text-sm font-semibold text-[var(--fg)]" title={displayName}>
+            {displayName}
+          </h3>
+          <p className="text-[9px] text-[var(--fg-dim)]" title={`id: ${slope.id} · ${vertexCount} vertices`}>
+            {slope.id} · {vertexCount}pt
+          </p>
+        </div>
+        <button type="button" onClick={() => {
+          if (confirm(t("deleteSlopeConfirm", { name: displayName }))) onDelete();
+        }} className="mt-0.5 flex-none rounded-md border border-[#ef4444]/40 px-2 py-1 text-[9px] font-semibold text-[#fca5a5] hover:bg-[#ef4444]/10">
           {t("deleteAction")}
         </button>
       </div>
+
+      {/* Fields */}
+      <div className="grid gap-2">
+        <LabeledInput label={t("nameCanonical")} value={canonicalName}
+          onChange={(v) => onPatch({ name: v })} />
+        <LocalizedNameEditor label={t("nameLocalized")} value={nameI18n}
+          onChange={(next) => onPatch({ name_i18n: next })} currentLocale={locale} />
+        <LabeledInput label={t("difficulty")} value={difficulty}
+          onChange={(v) => onPatch({ difficulty: v || null })}
+          placeholder="beginner / intermediate / advanced / expert" />
+        <LabeledNumber label={t("lengthM")} value={lengthM ?? null}
+          onChange={(v) => onPatch({ length_m: v })} />
+      </div>
+
+      {/* Geometry controls */}
+      <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        {!isEditingGeom ? (
+          <button type="button" onClick={onEditGeom}
+            className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-[10px] font-semibold text-[var(--accent-ink)]">
+            {t("editGeometry")}
+          </button>
+        ) : (
+          <GeomEditControls coords={coords} isClosedCurve={isClosedCurve}
+            onDeleteEndVertex={onDeleteEndVertex} onReverseDirection={onReverseDirection}
+            onRotateS={onRotateS} />
+        )}
+        {hasOverrideGeom && (
+          <button type="button" onClick={onResetGeom}
+            className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)]">
+            {t("resetGeometry")}
+          </button>
+        )}
+      </div>
+
+      {/* Copy / join from another slope — collapsed by default */}
       {otherSlopes && otherSlopes.length > 0 && (
-        <div className="mt-3 border-t border-white/5 pt-3 grid gap-2 text-xs">
-          <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
-            Geometry from another slope
-          </p>
-          <select
-            value={geomSourceId}
-            onChange={(e) => setGeomSourceId(e.target.value)}
-            className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-xs text-[var(--fg-muted)]"
-          >
-            <option value="">— pick a slope —</option>
-            {otherSlopes.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name || s.id} ({s.coordinates?.length ?? 0}pt)
-              </option>
-            ))}
-          </select>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              disabled={!geomSourceId}
-              onClick={() => {
-                const src = otherSlopes.find((s) => s.id === geomSourceId);
-                if (src?.coordinates) {
-                  onPatch({ coordinates: src.coordinates });
-                  setGeomSourceId("");
-                }
-              }}
-              className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-              title="Replace this slope's geometry with the selected slope's coordinates"
-            >
-              Copy coords
-            </button>
-            <button
-              type="button"
-              disabled={!geomSourceId}
-              onClick={() => {
-                if (geomSourceId && onJoinWith) {
-                  onJoinWith(geomSourceId);
-                  setGeomSourceId("");
-                }
-              }}
-              className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-              title="Concatenate the selected slope's polyline onto this slope (auto-orders endpoints to minimise gap), then delete the source"
-            >
-              Join &amp; delete source
-            </button>
-          </div>
-          <p className="text-[9px] text-[var(--fg-dim)]">
-            "Copy coords" replaces geometry without deleting the source slope. "Join" concatenates polylines (closest endpoints auto-matched) and deletes the source.
-          </p>
+        <div className="mt-2 border-t border-white/5 pt-2">
+          <button type="button" onClick={() => setShowGeomSource((v) => !v)}
+            className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
+            <span>{showGeomSource ? "▾" : "▸"}</span>
+            <span>{t("geomFromSlope")}</span>
+          </button>
+          {showGeomSource && (
+            <div className="mt-1.5 grid gap-1.5">
+              <select value={geomSourceId} onChange={(e) => setGeomSourceId(e.target.value)}
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)]">
+                <option value="">— {t("pickSlope")} —</option>
+                {otherSlopes.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {localeName(s.name, s.name_i18n as Record<string,string>|undefined, locale) || s.id} ({s.coordinates?.length ?? 0}pt)
+                  </option>
+                ))}
+              </select>
+              <div className="flex gap-1.5">
+                <button type="button" disabled={!geomSourceId}
+                  onClick={() => {
+                    const src = otherSlopes.find((s) => s.id === geomSourceId);
+                    if (src?.coordinates) { onPatch({ coordinates: src.coordinates }); setGeomSourceId(""); }
+                  }}
+                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                  title="Copy coordinates from the selected slope (source slope is kept)">
+                  {t("copyCoords")}
+                </button>
+                <button type="button" disabled={!geomSourceId}
+                  onClick={() => {
+                    if (geomSourceId && onJoinWith) { onJoinWith(geomSourceId); setGeomSourceId(""); }
+                  }}
+                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                  title="Append selected slope's polyline (closest endpoints auto-matched), then delete the source">
+                  {t("joinDelete")}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </section>
@@ -3854,6 +3906,7 @@ function LiftListPanel({
   onRestoreAll: () => void;
 }) {
   const t = useTranslations("slopeAuthor");
+  const locale = useLocale();
   return (
     <section>
       <header className="mb-2 flex items-center justify-between gap-2">
@@ -3879,6 +3932,7 @@ function LiftListPanel({
         {effectiveLifts.map((l) => {
           const isSelected = l.id === selectedId;
           const dirty = !!overrides[l.id];
+          const label = localeName(l.name, l.name_i18n as Record<string,string>|undefined, locale) || l.id;
           return (
             <li key={l.id}>
               <button
@@ -3890,7 +3944,7 @@ function LiftListPanel({
                     : "text-[var(--fg-muted)] hover:bg-[var(--bg-elev)]"
                 }`}
               >
-                <span className="truncate font-medium">{l.name || l.id}</span>
+                <span className="truncate font-medium" title={l.id}>{label}</span>
                 <span className="flex flex-none items-center gap-2">
                   {dirty && (
                     <span className="rounded-full bg-[#f59e0b]/20 px-1.5 py-0.5 text-[9px] font-semibold text-[#fbbf24]">
@@ -3919,6 +3973,9 @@ function LiftMetaPanel({
   onResetGeom,
   hasOverrideGeom,
   onDelete,
+  onDeleteEndVertex,
+  onReverseDirection,
+  onRotateS,
 }: {
   lift: LiftRecord;
   override: LiftOverride | undefined;
@@ -3928,116 +3985,94 @@ function LiftMetaPanel({
   onResetGeom: () => void;
   hasOverrideGeom: boolean;
   onDelete: () => void;
+  onDeleteEndVertex?: (end: "first" | "last") => void;
+  onReverseDirection?: () => void;
+  onRotateS?: (dir: 1 | -1) => void;
 }) {
   const locale = useLocale();
   const t = useTranslations("slopeAuthor");
-  const name = override?.name ?? lift.name ?? "";
+
+  const nameI18n = (override?.name_i18n ?? lift.name_i18n) as Record<string, string> | undefined;
+  const canonicalName = override?.name ?? lift.name ?? "";
+  const displayName = localeName(canonicalName, nameI18n, locale) || lift.id;
   const type = override?.type ?? lift.type ?? "";
   const capacity = override?.capacity_per_hour ?? lift.capacity_per_hour ?? null;
   const lengthM = override?.length_m ?? lift.length_m ?? null;
   const verticalM = override?.vertical_m ?? lift.vertical_m ?? null;
+  const coords = (override?.coordinates ?? lift.coordinates ?? []) as { lat: number; lon: number }[];
+  const vertexCount = coords.length;
+  const isClosedCurve =
+    vertexCount >= 2 &&
+    Math.abs(coords[0].lat - coords[vertexCount - 1].lat) < 0.00001 &&
+    Math.abs(coords[0].lon - coords[vertexCount - 1].lon) < 0.00001;
+
   return (
-    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
-      <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
-          {t("selectedLift")}
-        </p>
-        <h3 className="mt-0.5 truncate text-sm font-semibold text-[var(--fg)]">
-          {lift.name || lift.id}
-        </h3>
-        <p className="text-[10px] text-[var(--fg-dim)]">
-          {t("idVerticesHint", {
-            id: lift.id,
-            count: lift.coordinates?.length ?? 0,
-          })}
-        </p>
-      </header>
-      <div className="grid gap-2 text-xs">
-        <LabeledInput
-          label={t("nameCanonical")}
-          value={name}
-          onChange={(v) => onPatch({ name: v })}
-        />
-        <LocalizedNameEditor
-          label={t("nameLocalized")}
-          value={
-            (override?.name_i18n ?? lift.name_i18n) as
-              | Record<string, string>
-              | undefined
-          }
-          onChange={(next) => onPatch({ name_i18n: next })}
-          currentLocale={locale}
-        />
+    <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3 text-xs">
+      {/* Header */}
+      <div className="mb-2 flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--accent-soft)]">
+            {t("selectedLift")}
+          </p>
+          <h3 className="truncate text-sm font-semibold text-[var(--fg)]" title={displayName}>
+            {displayName}
+          </h3>
+          <p className="text-[9px] text-[var(--fg-dim)]" title={`id: ${lift.id} · ${vertexCount} vertices`}>
+            {lift.id} · {vertexCount}pt
+          </p>
+        </div>
+        <button type="button" onClick={() => {
+          if (confirm(t("deleteLiftConfirm", { name: displayName }))) onDelete();
+        }} className="mt-0.5 flex-none rounded-md border border-[#ef4444]/40 px-2 py-1 text-[9px] font-semibold text-[#fca5a5] hover:bg-[#ef4444]/10">
+          {t("deleteAction")}
+        </button>
+      </div>
+
+      {/* Fields */}
+      <div className="grid gap-2">
+        <LabeledInput label={t("nameCanonical")} value={canonicalName}
+          onChange={(v) => onPatch({ name: v })} />
+        <LocalizedNameEditor label={t("nameLocalized")} value={nameI18n}
+          onChange={(next) => onPatch({ name_i18n: next })} currentLocale={locale} />
         <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
-          <span className="font-semibold text-[var(--fg-dim)]">
-            {t("typeLabel")}
-          </span>
-          <select
-            value={type}
-            onChange={(e) => onPatch({ type: e.target.value || undefined })}
-            className="rounded-md border border-[var(--border)] bg-[var(--bg-page)] px-2 py-1 text-xs text-[var(--fg)]"
-          >
+          <span className="font-semibold text-[var(--fg-dim)]">{t("typeLabel")}</span>
+          <select value={type} onChange={(e) => onPatch({ type: e.target.value || undefined })}
+            className="rounded-md border border-[var(--border)] bg-[var(--bg-page)] px-2 py-1 text-xs text-[var(--fg)]">
             <option value="">—</option>
             {LIFT_TYPE_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
+              <option key={opt} value={opt}>{opt}</option>
             ))}
             {type && !LIFT_TYPE_OPTIONS.includes(type as (typeof LIFT_TYPE_OPTIONS)[number]) && (
               <option value={type}>{type} (custom)</option>
             )}
           </select>
         </label>
-        <LabeledNumber
-          label={t("capacityPerHour")}
-          value={capacity ?? null}
-          onChange={(v) => onPatch({ capacity_per_hour: v })}
-        />
-        <LabeledNumber
-          label={t("lengthM")}
-          value={lengthM ?? null}
-          onChange={(v) => onPatch({ length_m: v })}
-        />
-        <LabeledNumber
-          label={t("verticalM")}
-          value={verticalM ?? null}
-          onChange={(v) => onPatch({ vertical_m: v })}
-        />
+        <LabeledNumber label={t("capacityPerHour")} value={capacity ?? null}
+          onChange={(v) => onPatch({ capacity_per_hour: v })} />
+        <LabeledNumber label={t("lengthM")} value={lengthM ?? null}
+          onChange={(v) => onPatch({ length_m: v })} />
+        <LabeledNumber label={t("verticalM")} value={verticalM ?? null}
+          onChange={(v) => onPatch({ vertical_m: v })} />
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+
+      {/* Geometry controls */}
+      <div className="mt-3 flex flex-wrap items-center gap-1.5">
         {!isEditingGeom ? (
-          <button
-            type="button"
-            onClick={onEditGeom}
-            className="rounded-md bg-[var(--accent)] px-3 py-1.5 font-semibold text-[var(--accent-ink)]"
-          >
+          <button type="button" onClick={onEditGeom}
+            className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-[10px] font-semibold text-[var(--accent-ink)]">
             {t("editGeometry")}
           </button>
         ) : (
-          <span className="rounded-md bg-[#22d3ee]/15 px-3 py-1.5 font-semibold text-[#22d3ee]">
-            {t("editingGeomNote")}
-          </span>
+          <GeomEditControls coords={coords} isClosedCurve={isClosedCurve}
+            onDeleteEndVertex={onDeleteEndVertex} onReverseDirection={onReverseDirection}
+            onRotateS={onRotateS} />
         )}
         {hasOverrideGeom && (
-          <button
-            type="button"
-            onClick={onResetGeom}
-            className="rounded-md border border-[var(--border)] px-3 py-1.5 text-[var(--fg-muted)] hover:text-[var(--fg)]"
-          >
+          <button type="button" onClick={onResetGeom}
+            className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)]">
             {t("resetGeometry")}
           </button>
         )}
-        <button
-          type="button"
-          onClick={() => {
-            if (confirm(t("deleteLiftConfirm", { name: lift.name || lift.id }))) {
-              onDelete();
-            }
-          }}
-          className="ml-auto rounded-md border border-[#ef4444]/40 px-3 py-1.5 font-semibold text-[#fca5a5] hover:bg-[#ef4444]/10 hover:text-[#fecaca]"
-        >
-          {t("deleteAction")}
-        </button>
       </div>
     </section>
   );
@@ -4217,24 +4252,30 @@ function LocalizedNameEditor({
 
   return (
     <div className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
-      <span className="font-semibold text-[var(--fg-dim)]">
-        {label}
-      </span>
-      <div className="grid grid-cols-3 gap-2">
-        {I18N_LOCALES.map((locale) => (
-          <label key={locale} className="grid gap-1">
-            <span className="text-[9px] text-[var(--fg-dim)]">
-              {locale} {currentLocale === locale ? "✓" : ""}
-              <br />
-              {localeLabels[locale]}
+      <span className="font-semibold text-[var(--fg-dim)]">{label}</span>
+      <div className="grid gap-1">
+        {I18N_LOCALES.map((loc) => (
+          <div key={loc} className="flex items-center gap-2">
+            <span
+              className={`w-5 shrink-0 text-center text-[9px] font-semibold ${
+                currentLocale === loc ? "text-[var(--accent-soft)]" : "text-[var(--fg-dim)]"
+              }`}
+              title={localeLabels[loc]}
+            >
+              {loc}
             </span>
             <input
               type="text"
-              value={value?.[locale] ?? ""}
-              onChange={(e) => patchLocale(locale, e.target.value)}
-              className="rounded-md border border-[var(--border)] bg-[var(--bg-page)] px-2 py-1 text-xs text-[var(--fg)]"
+              value={value?.[loc] ?? ""}
+              onChange={(e) => patchLocale(loc, e.target.value)}
+              placeholder={localeLabels[loc]}
+              className={`flex-1 min-w-0 rounded-md border px-2 py-1 text-xs text-[var(--fg)] bg-[var(--bg-page)] ${
+                currentLocale === loc
+                  ? "border-[var(--accent-soft)]/50"
+                  : "border-[var(--border)]"
+              }`}
             />
-          </label>
+          </div>
         ))}
       </div>
     </div>
