@@ -1539,6 +1539,18 @@ export function SlopeAuthor2() {
     return [...fromBaseline, ...addedLifts];
   }, [loadedResort, liftOverrides, addedLifts, deletedLiftIds]);
 
+  const effectiveGraphEdges = useMemo(() => {
+    if (!loadedResort?.graph) return [] as GraphEdge[];
+    const deleted = new Set(deletedGraphEdgeIds);
+    const fromBaseline = (loadedResort.graph.edges ?? [])
+      .filter((e) => !deleted.has(e.id))
+      .map((e) => {
+        const ov = edgeOverrides[e.id];
+        return ov ? ({ ...e, ...ov } as GraphEdge) : e;
+      });
+    return [...fromBaseline, ...addedGraphEdges];
+  }, [loadedResort, deletedGraphEdgeIds, edgeOverrides, addedGraphEdges]);
+
   // Refs for effectiveSlopes/effectiveLifts — placed after the memos so
   // they reference the computed values, not stale closures.
   const effectiveSlopesRef = useRef(effectiveSlopes);
@@ -3447,6 +3459,7 @@ export function SlopeAuthor2() {
                 onJoinWith={(sourceId) =>
                   joinSlopeWith(selectedSlope.id, sourceId)
                 }
+                graphEdges={effectiveGraphEdges.filter((e) => e.kind === "slope")}
                 onDeleteEndVertex={(end) =>
                   deleteEndVertex(selectedSlope.id, end)
                 }
@@ -3493,6 +3506,7 @@ export function SlopeAuthor2() {
                 onJoinWith={(sourceId) =>
                   joinLiftWith(selectedLift.id, sourceId)
                 }
+                graphEdges={effectiveGraphEdges.filter((e) => e.kind === "lift")}
                 onDeleteEndVertex={(end) =>
                   deleteLiftEndVertex(selectedLift.id, end)
                 }
@@ -3799,6 +3813,7 @@ function SlopeMetaPanel({
   onDelete,
   otherSlopes,
   onJoinWith,
+  graphEdges,
   onDeleteEndVertex,
   onReverseDirection,
   onRotateS,
@@ -3813,6 +3828,7 @@ function SlopeMetaPanel({
   onDelete: () => void;
   otherSlopes?: SlopeRecord[];
   onJoinWith?: (sourceId: string) => void;
+  graphEdges?: GraphEdge[];
   onDeleteEndVertex?: (end: "first" | "last") => void;
   onReverseDirection?: () => void;
   onRotateS?: (dir: 1 | -1) => void;
@@ -3820,6 +3836,8 @@ function SlopeMetaPanel({
   const locale = useLocale();
   const t = useTranslations("slopeAuthor");
   const [geomSourceId, setGeomSourceId] = useState("");
+  const [edgeSourceId, setEdgeSourceId] = useState("");
+  const [showEdgeSource, setShowEdgeSource] = useState(false);
   const [showGeomSource, setShowGeomSource] = useState(false);
 
   const nameI18n = (override?.name_i18n ?? slope.name_i18n) as Record<string, string> | undefined;
@@ -3931,6 +3949,43 @@ function SlopeMetaPanel({
           )}
         </div>
       )}
+
+      {/* Get geometry from graph edge */}
+      {graphEdges && graphEdges.length > 0 && (
+        <div className="mt-2 border-t border-white/5 pt-2">
+          <button type="button" onClick={() => setShowEdgeSource((v) => !v)}
+            className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
+            <span>{showEdgeSource ? "▾" : "▸"}</span>
+            <span>Get geometry from graph edge</span>
+          </button>
+          {showEdgeSource && (
+            <div className="mt-1.5 grid gap-1.5">
+              <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
+                <option value="">— pick a graph edge —</option>
+                {graphEdges.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.id} ({e.geometry.length}pt)
+                  </option>
+                ))}
+              </select>
+              <button type="button" disabled={!edgeSourceId}
+                onClick={() => {
+                  const edge = graphEdges.find((e) => e.id === edgeSourceId);
+                  if (edge) {
+                    onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
+                    setEdgeSourceId("");
+                    setShowEdgeSource(false);
+                  }
+                }}
+                className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                title="Copy this edge's polyline into the slope's coordinates">
+                Copy edge geometry → slope
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 }
@@ -4022,6 +4077,7 @@ function LiftMetaPanel({
   onDelete,
   otherLifts,
   onJoinWith,
+  graphEdges,
   onDeleteEndVertex,
   onReverseDirection,
   onRotateS,
@@ -4036,6 +4092,7 @@ function LiftMetaPanel({
   onDelete: () => void;
   otherLifts?: LiftRecord[];
   onJoinWith?: (sourceId: string) => void;
+  graphEdges?: GraphEdge[];
   onDeleteEndVertex?: (end: "first" | "last") => void;
   onReverseDirection?: () => void;
   onRotateS?: (dir: 1 | -1) => void;
@@ -4044,6 +4101,8 @@ function LiftMetaPanel({
   const t = useTranslations("slopeAuthor");
   const [geomSourceId, setGeomSourceId] = useState("");
   const [showGeomSource, setShowGeomSource] = useState(false);
+  const [edgeSourceId, setEdgeSourceId] = useState("");
+  const [showEdgeSource, setShowEdgeSource] = useState(false);
 
   const nameI18n = (override?.name_i18n ?? lift.name_i18n) as Record<string, string> | undefined;
   const canonicalName = override?.name ?? lift.name ?? "";
@@ -4166,6 +4225,43 @@ function LiftMetaPanel({
                   {t("joinDelete")}
                 </button>
               </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Get geometry from graph edge */}
+      {graphEdges && graphEdges.length > 0 && (
+        <div className="mt-2 border-t border-white/5 pt-2">
+          <button type="button" onClick={() => setShowEdgeSource((v) => !v)}
+            className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
+            <span>{showEdgeSource ? "▾" : "▸"}</span>
+            <span>Get geometry from graph edge</span>
+          </button>
+          {showEdgeSource && (
+            <div className="mt-1.5 grid gap-1.5">
+              <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
+                <option value="">— pick a graph edge —</option>
+                {graphEdges.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.id} ({e.geometry.length}pt)
+                  </option>
+                ))}
+              </select>
+              <button type="button" disabled={!edgeSourceId}
+                onClick={() => {
+                  const edge = graphEdges.find((e) => e.id === edgeSourceId);
+                  if (edge) {
+                    onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
+                    setEdgeSourceId("");
+                    setShowEdgeSource(false);
+                  }
+                }}
+                className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                title="Copy this edge's polyline into the lift's coordinates">
+                Copy edge geometry → lift
+              </button>
             </div>
           )}
         </div>
