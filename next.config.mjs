@@ -9,6 +9,10 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    NEXT_PUBLIC_BUILD_SHA:
+      process.env.CF_PAGES_COMMIT_SHA?.slice(0, 7) ?? "dev",
+  },
   reactStrictMode: true,
   images: {
     // No image transforms needed — we render Google Maps tiles + a

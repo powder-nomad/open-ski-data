@@ -2970,6 +2970,9 @@ export function SlopeAuthor2() {
               {t("devEyebrow")}
             </p>
             <h1 className="truncate text-xs font-bold md:text-sm">{t("title")}</h1>
+            <p className="text-[8px] font-mono text-[var(--fg-dim)] select-all">
+              {process.env.NEXT_PUBLIC_BUILD_SHA ?? "dev"}
+            </p>
           </div>
           <div className="flex flex-none items-center gap-1.5 text-xs">
             {mapReady && (
