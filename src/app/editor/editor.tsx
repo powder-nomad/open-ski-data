@@ -605,6 +605,8 @@ export function SlopeAuthor2() {
   // flips to edit-*-geom without rebuilding the rest of the map.
   const slopeLineRefs = useRef<Map<string, google.maps.Polyline>>(new Map());
   const liftLineRefs = useRef<Map<string, google.maps.Polyline>>(new Map());
+  // Start (green) + end (red) direction markers for whichever geom is being edited.
+  const editEndpointMarkersRef = useRef<google.maps.Marker[]>([]);
 
   // "Latest value" refs — assigned each render so stable effects can
   // read current state without being re-created on every render.
@@ -1063,6 +1065,18 @@ export function SlopeAuthor2() {
       ...prev,
       [slopeId]: { ...prev[slopeId], coordinates: next },
     }));
+  }
+
+  function reverseSlopeDirection(slopeId: string) {
+    setSlopeOverrides((prev) => {
+      const slope = effectiveSlopesRef.current.find((s) => s.id === slopeId);
+      const coords = prev[slopeId]?.coordinates ?? slope?.coordinates ?? [];
+      if (coords.length < 2) return prev;
+      return {
+        ...prev,
+        [slopeId]: { ...prev[slopeId], coordinates: [...coords].reverse() },
+      };
+    });
   }
 
   function deleteLift(id: string) {
@@ -1554,9 +1568,23 @@ export function SlopeAuthor2() {
     }
   }
 
+  // Builds an SVG data-URI marker icon for start/end direction labels.
+  function makeEndpointIcon(letter: string, fill: string): google.maps.Icon {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"><circle cx="11" cy="11" r="9" fill="${fill}" stroke="white" stroke-width="2"/><text x="11" y="15.5" text-anchor="middle" font-size="11" fill="white" font-family="sans-serif" font-weight="bold">${letter}</text></svg>`;
+    return {
+      url: `data:image/svg+xml,${encodeURIComponent(svg)}`,
+      scaledSize: new google.maps.Size(22, 22),
+      anchor: new google.maps.Point(11, 11),
+    };
+  }
+
   useEffect(() => {
     const map = googleMap.current;
     if (!map) return;
+
+    // Clear direction markers from any previous edit session.
+    editEndpointMarkersRef.current.forEach((m) => m.setMap(null));
+    editEndpointMarkersRef.current = [];
 
     // Tear down previous polylines if the resort changed. We rebuild
     // every render that touches a slope — cheap given <a few hundred
@@ -1601,9 +1629,36 @@ export function SlopeAuthor2() {
       // 'set_at' / 'insert_at' / 'remove_at' covers all three vertex
       // operations the editable mode exposes.
       if (isEditing) {
-        const path = polyline.getPath();
+        const mvc = polyline.getPath();
+
+        // Start (S = green) / End (E = red) direction markers.
+        const startM = new google.maps.Marker({
+          map,
+          position: mvc.getAt(0),
+          icon: makeEndpointIcon("S", "#22c55e"),
+          clickable: false,
+          zIndex: 200,
+          title: "Start — vertex 0",
+        });
+        const endM = new google.maps.Marker({
+          map,
+          position: mvc.getAt(mvc.getLength() - 1),
+          icon: makeEndpointIcon("E", "#ef4444"),
+          clickable: false,
+          zIndex: 200,
+          title: "End — last vertex",
+        });
+        editEndpointMarkersRef.current = [startM, endM];
+
+        const updateEndpoints = () => {
+          const len = mvc.getLength();
+          if (len < 1) return;
+          startM.setPosition(mvc.getAt(0));
+          endM.setPosition(mvc.getAt(len - 1));
+        };
+
         const sync = () => {
-          const arr = path.getArray().map((p) => ({
+          const arr = mvc.getArray().map((p) => ({
             lat: p.lat(),
             lon: p.lng(),
           }));
@@ -1611,10 +1666,11 @@ export function SlopeAuthor2() {
             ...prev,
             [slope.id]: { ...prev[slope.id], coordinates: arr },
           }));
+          updateEndpoints();
         };
-        google.maps.event.addListener(path, "set_at", sync);
-        google.maps.event.addListener(path, "insert_at", sync);
-        google.maps.event.addListener(path, "remove_at", sync);
+        google.maps.event.addListener(mvc, "set_at", sync);
+        google.maps.event.addListener(mvc, "insert_at", sync);
+        google.maps.event.addListener(mvc, "remove_at", sync);
       }
       slopeLineRefs.current.set(slope.id, polyline);
     }
@@ -1625,6 +1681,10 @@ export function SlopeAuthor2() {
   useEffect(() => {
     const map = googleMap.current;
     if (!map) return;
+
+    // Clear any slope edit markers that might still be visible.
+    editEndpointMarkersRef.current.forEach((m) => m.setMap(null));
+    editEndpointMarkersRef.current = [];
 
     liftLineRefs.current.forEach((line) => line.setMap(null));
     liftLineRefs.current.clear();
@@ -1659,9 +1719,35 @@ export function SlopeAuthor2() {
         }
       });
       if (isEditing) {
-        const path = polyline.getPath();
+        const mvc = polyline.getPath();
+
+        const startM = new google.maps.Marker({
+          map,
+          position: mvc.getAt(0),
+          icon: makeEndpointIcon("S", "#22c55e"),
+          clickable: false,
+          zIndex: 200,
+          title: "Start — vertex 0",
+        });
+        const endM = new google.maps.Marker({
+          map,
+          position: mvc.getAt(mvc.getLength() - 1),
+          icon: makeEndpointIcon("E", "#ef4444"),
+          clickable: false,
+          zIndex: 200,
+          title: "End — last vertex",
+        });
+        editEndpointMarkersRef.current = [startM, endM];
+
+        const updateEndpoints = () => {
+          const len = mvc.getLength();
+          if (len < 1) return;
+          startM.setPosition(mvc.getAt(0));
+          endM.setPosition(mvc.getAt(len - 1));
+        };
+
         const sync = () => {
-          const arr = path.getArray().map((p) => ({
+          const arr = mvc.getArray().map((p) => ({
             lat: p.lat(),
             lon: p.lng(),
           }));
@@ -1669,10 +1755,11 @@ export function SlopeAuthor2() {
             ...prev,
             [lift.id]: { ...prev[lift.id], coordinates: arr },
           }));
+          updateEndpoints();
         };
-        google.maps.event.addListener(path, "set_at", sync);
-        google.maps.event.addListener(path, "insert_at", sync);
-        google.maps.event.addListener(path, "remove_at", sync);
+        google.maps.event.addListener(mvc, "set_at", sync);
+        google.maps.event.addListener(mvc, "insert_at", sync);
+        google.maps.event.addListener(mvc, "remove_at", sync);
       }
       liftLineRefs.current.set(lift.id, polyline);
     }
@@ -3259,6 +3346,9 @@ export function SlopeAuthor2() {
                 onDeleteEndVertex={(end) =>
                   deleteEndVertex(selectedSlope.id, end)
                 }
+                onReverseDirection={() =>
+                  reverseSlopeDirection(selectedSlope.id)
+                }
               />
             )}
 
@@ -3546,6 +3636,7 @@ function SlopeMetaPanel({
   otherSlopes,
   onJoinWith,
   onDeleteEndVertex,
+  onReverseDirection,
 }: {
   slope: SlopeRecord;
   override: SlopeOverride | undefined;
@@ -3558,6 +3649,7 @@ function SlopeMetaPanel({
   otherSlopes?: SlopeRecord[];
   onJoinWith?: (sourceId: string) => void;
   onDeleteEndVertex?: (end: "first" | "last") => void;
+  onReverseDirection?: () => void;
 }) {
   const locale = useLocale();
   const t = useTranslations("slopeAuthor");
@@ -3641,18 +3733,27 @@ function SlopeMetaPanel({
                 disabled={coords.length <= 2}
                 onClick={() => onDeleteEndVertex?.("first")}
                 className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-                title="Remove the first vertex from the polyline"
+                title="Remove the first vertex (S marker) from the polyline"
               >
-                Delete first vertex
+                Delete S
               </button>
               <button
                 type="button"
                 disabled={coords.length <= 2}
                 onClick={() => onDeleteEndVertex?.("last")}
                 className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-                title="Remove the last vertex from the polyline"
+                title="Remove the last vertex (E marker) from the polyline"
               >
-                Delete last vertex
+                Delete E
+              </button>
+              <button
+                type="button"
+                disabled={coords.length < 2}
+                onClick={() => onReverseDirection?.()}
+                className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                title="Reverse polyline direction — S becomes E and vice versa"
+              >
+                Reverse
               </button>
             </div>
           </div>
