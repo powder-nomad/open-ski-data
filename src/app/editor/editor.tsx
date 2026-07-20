@@ -1052,6 +1052,47 @@ export function SlopeAuthor2() {
     deleteSlope(sourceId);
   }
 
+  function joinLiftWith(targetId: string, sourceId: string) {
+    const target = effectiveLifts.find((l) => l.id === targetId);
+    const source = effectiveLifts.find((l) => l.id === sourceId);
+    const tc = target?.coordinates;
+    const sc = source?.coordinates;
+    if (!sc?.length) return;
+
+    if (!tc?.length) {
+      setLiftOverrides((prev) => ({
+        ...prev,
+        [targetId]: { ...prev[targetId], coordinates: sc },
+      }));
+      deleteLift(sourceId);
+      return;
+    }
+
+    const d = (
+      a: { lat: number; lon: number },
+      b: { lat: number; lon: number },
+    ) => distanceM({ lat: a.lat, lng: a.lon }, { lat: b.lat, lng: b.lon });
+
+    const tail = tc[tc.length - 1];
+    const head = tc[0];
+    const sTail = sc[sc.length - 1];
+    const sHead = sc[0];
+
+    const opts = [
+      { gap: d(tail, sHead), coords: [...tc, ...sc] },
+      { gap: d(tail, sTail), coords: [...tc, ...sc.slice().reverse()] },
+      { gap: d(sHead, head), coords: [...sc, ...tc] },
+      { gap: d(sTail, head), coords: [...sc.slice().reverse(), ...tc] },
+    ];
+    const best = opts.reduce((min, o) => (o.gap < min.gap ? o : min));
+
+    setLiftOverrides((prev) => ({
+      ...prev,
+      [targetId]: { ...prev[targetId], coordinates: best.coords },
+    }));
+    deleteLift(sourceId);
+  }
+
   function deleteEndVertex(slopeId: string, end: "first" | "last") {
     // Manipulate the live editable polyline's MVCArray directly.
     // The remove_at listener wired up in the polyline effect will call
@@ -3446,6 +3487,12 @@ export function SlopeAuthor2() {
                   Boolean(liftOverrides[selectedLift.id]?.coordinates)
                 }
                 onDelete={() => deleteLift(selectedLift.id)}
+                otherLifts={effectiveLifts.filter(
+                  (l) => l.id !== selectedLift.id && (l.coordinates?.length ?? 0) >= 2,
+                )}
+                onJoinWith={(sourceId) =>
+                  joinLiftWith(selectedLift.id, sourceId)
+                }
                 onDeleteEndVertex={(end) =>
                   deleteLiftEndVertex(selectedLift.id, end)
                 }
@@ -3973,6 +4020,8 @@ function LiftMetaPanel({
   onResetGeom,
   hasOverrideGeom,
   onDelete,
+  otherLifts,
+  onJoinWith,
   onDeleteEndVertex,
   onReverseDirection,
   onRotateS,
@@ -3985,12 +4034,16 @@ function LiftMetaPanel({
   onResetGeom: () => void;
   hasOverrideGeom: boolean;
   onDelete: () => void;
+  otherLifts?: LiftRecord[];
+  onJoinWith?: (sourceId: string) => void;
   onDeleteEndVertex?: (end: "first" | "last") => void;
   onReverseDirection?: () => void;
   onRotateS?: (dir: 1 | -1) => void;
 }) {
   const locale = useLocale();
   const t = useTranslations("slopeAuthor");
+  const [geomSourceId, setGeomSourceId] = useState("");
+  const [showGeomSource, setShowGeomSource] = useState(false);
 
   const nameI18n = (override?.name_i18n ?? lift.name_i18n) as Record<string, string> | undefined;
   const canonicalName = override?.name ?? lift.name ?? "";
@@ -4074,6 +4127,49 @@ function LiftMetaPanel({
           </button>
         )}
       </div>
+
+      {/* Copy / join from another lift — collapsed by default */}
+      {otherLifts && otherLifts.length > 0 && (
+        <div className="mt-2 border-t border-white/5 pt-2">
+          <button type="button" onClick={() => setShowGeomSource((v) => !v)}
+            className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
+            <span>{showGeomSource ? "▾" : "▸"}</span>
+            <span>Copy / join from another lift</span>
+          </button>
+          {showGeomSource && (
+            <div className="mt-1.5 grid gap-1.5">
+              <select value={geomSourceId} onChange={(e) => setGeomSourceId(e.target.value)}
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)]">
+                <option value="">— pick a lift —</option>
+                {otherLifts.map((l) => (
+                  <option key={l.id} value={l.id}>
+                    {localeName(l.name, l.name_i18n as Record<string,string>|undefined, locale) || l.id} ({l.coordinates?.length ?? 0}pt)
+                  </option>
+                ))}
+              </select>
+              <div className="flex gap-1.5">
+                <button type="button" disabled={!geomSourceId}
+                  onClick={() => {
+                    const src = otherLifts.find((l) => l.id === geomSourceId);
+                    if (src?.coordinates) { onPatch({ coordinates: src.coordinates }); setGeomSourceId(""); }
+                  }}
+                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                  title="Copy coordinates from the selected lift (source is kept)">
+                  {t("copyCoords")}
+                </button>
+                <button type="button" disabled={!geomSourceId}
+                  onClick={() => {
+                    if (geomSourceId && onJoinWith) { onJoinWith(geomSourceId); setGeomSourceId(""); }
+                  }}
+                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                  title="Append selected lift's polyline (closest endpoints auto-matched), then delete the source">
+                  {t("joinDelete")}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 }
@@ -4090,35 +4186,39 @@ function PlaceMetaPanel({
   hasEdits: boolean;
 }) {
   const locale = useLocale();
+  const [expanded, setExpanded] = useState(false);
   const baseM = place.elevations?.base_m ?? null;
   const summitM = place.elevations?.summit_m ?? null;
   const tagsCsv = (place.tags ?? []).join(", ");
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
-      <header className="mb-2 flex items-start justify-between gap-2">
-        <div>
-          <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
-            Place / ski area
-          </p>
-          <h3 className="mt-0.5 truncate text-sm font-semibold text-[var(--fg)]">
-            {place.name}
-          </h3>
-          <p className="text-[10px] text-[var(--fg-dim)]">
-            {place.country_code}/{place.region_slug}/{place.place_slug}
-            {hasEdits ? " · edited" : ""}
-          </p>
-        </div>
+      <header className="flex items-center justify-between gap-2">
+        <button type="button" onClick={() => setExpanded((v) => !v)}
+          className="flex min-w-0 flex-1 items-center gap-1.5 text-left">
+          <span className="text-[9px] text-[var(--fg-dim)]">{expanded ? "▾" : "▸"}</span>
+          <div className="min-w-0">
+            <p className="text-[10px] font-semibold text-[var(--accent-soft)]">Place / ski area</p>
+            <h3 className="truncate text-sm font-semibold text-[var(--fg)]">{place.name}</h3>
+            {!expanded && (
+              <p className="text-[9px] text-[var(--fg-dim)]">
+                {place.country_code}/{place.region_slug}/{place.place_slug}
+                {hasEdits ? " · edited" : ""}
+              </p>
+            )}
+          </div>
+        </button>
         {hasEdits && (
           <button
             type="button"
             onClick={onReset}
-            className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)]"
+            className="flex-none rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)]"
           >
             Reset
           </button>
         )}
       </header>
-      <div className="grid gap-2 text-xs">
+      {!expanded ? null : (
+      <div className="mt-2 grid gap-2 text-xs">
         <LabeledInput
           label="Name (canonical)"
           value={place.name}
@@ -4178,11 +4278,12 @@ function PlaceMetaPanel({
           }
           placeholder="e.g. resort, day_use, has_terrain_park"
         />
-      </div>
-      <p className="mt-2 text-[10px] text-[var(--fg-dim)]">
+      <p className="mt-1 text-[10px] text-[var(--fg-dim)]">
         Slug + region/country code are locked — changing them would
         relocate the file in the registry tree.
       </p>
+      </div>
+      )}
     </section>
   );
 }
