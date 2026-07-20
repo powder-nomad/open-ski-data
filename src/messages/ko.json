@@ -5,9 +5,9 @@
     "interpolationSyntax": "{name}"
   },
   "slopeAuthor": {
-    "pageTitle": "리조트 편집기 v2",
+    "pageTitle": "리조트 편집기",
     "devEyebrow": "open-ski-data",
-    "title": "리조트 편집기 — v2",
+    "title": "리조트 편집기",
     "mode": "모드",
     "loadingMap": "지도 로딩 중…",
     "mapFailed": "지도 로딩 실패",
