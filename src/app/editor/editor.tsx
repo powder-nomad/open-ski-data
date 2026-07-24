@@ -3385,7 +3385,7 @@ export function SlopeAuthor2() {
             )}
 
             {/* ── Entity browser: tabs + search + contained list ── */}
-            {loadedResort && (
+            {loadedResort && !selectedSlope && !selectedLift && (
               <EntityBrowserPanel
                 activeTab={activeEntityTab}
                 onTabChange={setActiveEntityTab}
@@ -3467,6 +3467,7 @@ export function SlopeAuthor2() {
                   reverseSlopeDirection(selectedSlope.id)
                 }
                 onRotateS={(dir) => rotateSlopeStart(selectedSlope.id, dir)}
+                onBack={() => selectSlope(null)}
               />
             )}
 
@@ -3512,6 +3513,7 @@ export function SlopeAuthor2() {
                 }
                 onReverseDirection={() => reverseLiftDirection(selectedLift.id)}
                 onRotateS={(dir) => rotateLiftStart(selectedLift.id, dir)}
+                onBack={() => selectLift(null)}
               />
             )}
 
@@ -3817,6 +3819,7 @@ function SlopeMetaPanel({
   onDeleteEndVertex,
   onReverseDirection,
   onRotateS,
+  onBack,
 }: {
   slope: SlopeRecord;
   override: SlopeOverride | undefined;
@@ -3832,6 +3835,7 @@ function SlopeMetaPanel({
   onDeleteEndVertex?: (end: "first" | "last") => void;
   onReverseDirection?: () => void;
   onRotateS?: (dir: 1 | -1) => void;
+  onBack: () => void;
 }) {
   const locale = useLocale();
   const t = useTranslations("slopeAuthor");
@@ -3839,6 +3843,7 @@ function SlopeMetaPanel({
   const [edgeSourceId, setEdgeSourceId] = useState("");
   const [showEdgeSource, setShowEdgeSource] = useState(false);
   const [showGeomSource, setShowGeomSource] = useState(false);
+  const [showMeta, setShowMeta] = useState(false);
 
   const nameI18n = (override?.name_i18n ?? slope.name_i18n) as Record<string, string> | undefined;
   const canonicalName = override?.name ?? slope.name ?? "";
@@ -3847,6 +3852,7 @@ function SlopeMetaPanel({
   const lengthM = override?.length_m ?? slope.length_m ?? null;
   const coords = (override?.coordinates ?? slope.coordinates ?? []) as { lat: number; lon: number }[];
   const vertexCount = coords.length;
+  const has0pt = vertexCount === 0;
   const isClosedCurve =
     vertexCount >= 2 &&
     Math.abs(coords[0].lat - coords[vertexCount - 1].lat) < 0.00001 &&
@@ -3854,9 +3860,14 @@ function SlopeMetaPanel({
 
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3 text-xs">
-      {/* Header */}
-      <div className="mb-2 flex items-start justify-between gap-2">
-        <div className="min-w-0">
+      {/* Header with back arrow */}
+      <div className="mb-2 flex items-start gap-2">
+        <button type="button" onClick={onBack}
+          className="mt-0.5 flex-none rounded-md border border-[var(--border)] px-2 py-1 text-[11px] leading-none text-[var(--fg-muted)] hover:text-[var(--fg)]"
+          title="Back to list">
+          ←
+        </button>
+        <div className="min-w-0 flex-1">
           <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--accent-soft)]">
             {t("selectedSlope")}
           </p>
@@ -3874,25 +3885,85 @@ function SlopeMetaPanel({
         </button>
       </div>
 
-      {/* Fields */}
-      <div className="grid gap-2">
-        <LabeledInput label={t("nameCanonical")} value={canonicalName}
-          onChange={(v) => onPatch({ name: v })} />
-        <LocalizedNameEditor label={t("nameLocalized")} value={nameI18n}
-          onChange={(next) => onPatch({ name_i18n: next })} currentLocale={locale} />
-        <LabeledInput label={t("difficulty")} value={difficulty}
-          onChange={(v) => onPatch({ difficulty: v || null })}
-          placeholder="beginner / intermediate / advanced / expert" />
-        <LabeledNumber label={t("lengthM")} value={lengthM ?? null}
-          onChange={(v) => onPatch({ length_m: v })} />
-      </div>
+      {/* 0pt warning */}
+      {has0pt && (
+        <div className="mb-3 rounded-md border border-amber-400/30 bg-amber-400/10 px-3 py-2">
+          <p className="text-[10px] font-semibold text-amber-300">No geometry</p>
+          <p className="text-[9px] text-[var(--fg-muted)]">Assign a graph edge or draw new geometry to make this slope visible on the map.</p>
+        </div>
+      )}
+
+      {/* Assign from graph edge — prominent when 0pt, collapsed when has geometry */}
+      {graphEdges && graphEdges.length > 0 && (
+        <div className={has0pt ? "mb-3" : "mb-2 border-t border-white/5 pt-2"}>
+          {has0pt ? (
+            <div className="grid gap-1.5">
+              <p className="text-[9px] font-semibold text-[var(--fg-dim)]">Assign geometry from graph edge</p>
+              <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
+                <option value="">— pick a graph edge —</option>
+                {graphEdges.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.id} ({e.geometry.length}pt)
+                  </option>
+                ))}
+              </select>
+              <button type="button" disabled={!edgeSourceId}
+                onClick={() => {
+                  const edge = graphEdges.find((e) => e.id === edgeSourceId);
+                  if (edge) {
+                    onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
+                    setEdgeSourceId("");
+                  }
+                }}
+                className="w-full rounded-md bg-[var(--accent)] px-3 py-1.5 text-[10px] font-semibold text-[var(--accent-ink)] disabled:opacity-40">
+                Assign edge geometry
+              </button>
+            </div>
+          ) : (
+            <>
+              <button type="button" onClick={() => setShowEdgeSource((v) => !v)}
+                className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
+                <span>{showEdgeSource ? "▾" : "▸"}</span>
+                <span>Get geometry from graph edge</span>
+              </button>
+              {showEdgeSource && (
+                <div className="mt-1.5 grid gap-1.5">
+                  <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
+                    className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
+                    <option value="">— pick a graph edge —</option>
+                    {graphEdges.map((e) => (
+                      <option key={e.id} value={e.id}>
+                        {e.id} ({e.geometry.length}pt)
+                      </option>
+                    ))}
+                  </select>
+                  <button type="button" disabled={!edgeSourceId}
+                    onClick={() => {
+                      const edge = graphEdges.find((e) => e.id === edgeSourceId);
+                      if (edge) {
+                        onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
+                        setEdgeSourceId("");
+                        setShowEdgeSource(false);
+                      }
+                    }}
+                    className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                    title="Copy this edge's polyline into the slope's coordinates">
+                    Copy edge geometry → slope
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
 
       {/* Geometry controls */}
-      <div className="mt-3 flex flex-wrap items-center gap-1.5">
+      <div className="mb-2 flex flex-wrap items-center gap-1.5">
         {!isEditingGeom ? (
           <button type="button" onClick={onEditGeom}
             className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-[10px] font-semibold text-[var(--accent-ink)]">
-            {t("editGeometry")}
+            {has0pt ? "Draw new geometry" : t("editGeometry")}
           </button>
         ) : (
           <GeomEditControls coords={coords} isClosedCurve={isClosedCurve}
@@ -3907,9 +3978,9 @@ function SlopeMetaPanel({
         )}
       </div>
 
-      {/* Copy / join from another slope — collapsed by default */}
+      {/* Copy / join from another slope — collapsed */}
       {otherSlopes && otherSlopes.length > 0 && (
-        <div className="mt-2 border-t border-white/5 pt-2">
+        <div className="border-t border-white/5 pt-2 mb-2">
           <button type="button" onClick={() => setShowGeomSource((v) => !v)}
             className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
             <span>{showGeomSource ? "▾" : "▸"}</span>
@@ -3950,42 +4021,27 @@ function SlopeMetaPanel({
         </div>
       )}
 
-      {/* Get geometry from graph edge */}
-      {graphEdges && graphEdges.length > 0 && (
-        <div className="mt-2 border-t border-white/5 pt-2">
-          <button type="button" onClick={() => setShowEdgeSource((v) => !v)}
-            className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
-            <span>{showEdgeSource ? "▾" : "▸"}</span>
-            <span>Get geometry from graph edge</span>
-          </button>
-          {showEdgeSource && (
-            <div className="mt-1.5 grid gap-1.5">
-              <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
-                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
-                <option value="">— pick a graph edge —</option>
-                {graphEdges.map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {e.id} ({e.geometry.length}pt)
-                  </option>
-                ))}
-              </select>
-              <button type="button" disabled={!edgeSourceId}
-                onClick={() => {
-                  const edge = graphEdges.find((e) => e.id === edgeSourceId);
-                  if (edge) {
-                    onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
-                    setEdgeSourceId("");
-                    setShowEdgeSource(false);
-                  }
-                }}
-                className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-                title="Copy this edge's polyline into the slope's coordinates">
-                Copy edge geometry → slope
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+      {/* Metadata — collapsed by default */}
+      <div className="border-t border-white/5 pt-2">
+        <button type="button" onClick={() => setShowMeta((v) => !v)}
+          className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
+          <span>{showMeta ? "▾" : "▸"}</span>
+          <span>Name &amp; details</span>
+        </button>
+        {showMeta && (
+          <div className="mt-2 grid gap-2">
+            <LabeledInput label={t("nameCanonical")} value={canonicalName}
+              onChange={(v) => onPatch({ name: v })} />
+            <LocalizedNameEditor label={t("nameLocalized")} value={nameI18n}
+              onChange={(next) => onPatch({ name_i18n: next })} currentLocale={locale} />
+            <LabeledInput label={t("difficulty")} value={difficulty}
+              onChange={(v) => onPatch({ difficulty: v || null })}
+              placeholder="beginner / intermediate / advanced / expert" />
+            <LabeledNumber label={t("lengthM")} value={lengthM ?? null}
+              onChange={(v) => onPatch({ length_m: v })} />
+          </div>
+        )}
+      </div>
     </section>
   );
 }
@@ -4081,6 +4137,7 @@ function LiftMetaPanel({
   onDeleteEndVertex,
   onReverseDirection,
   onRotateS,
+  onBack,
 }: {
   lift: LiftRecord;
   override: LiftOverride | undefined;
@@ -4096,6 +4153,7 @@ function LiftMetaPanel({
   onDeleteEndVertex?: (end: "first" | "last") => void;
   onReverseDirection?: () => void;
   onRotateS?: (dir: 1 | -1) => void;
+  onBack: () => void;
 }) {
   const locale = useLocale();
   const t = useTranslations("slopeAuthor");
@@ -4103,6 +4161,7 @@ function LiftMetaPanel({
   const [showGeomSource, setShowGeomSource] = useState(false);
   const [edgeSourceId, setEdgeSourceId] = useState("");
   const [showEdgeSource, setShowEdgeSource] = useState(false);
+  const [showMeta, setShowMeta] = useState(false);
 
   const nameI18n = (override?.name_i18n ?? lift.name_i18n) as Record<string, string> | undefined;
   const canonicalName = override?.name ?? lift.name ?? "";
@@ -4113,6 +4172,7 @@ function LiftMetaPanel({
   const verticalM = override?.vertical_m ?? lift.vertical_m ?? null;
   const coords = (override?.coordinates ?? lift.coordinates ?? []) as { lat: number; lon: number }[];
   const vertexCount = coords.length;
+  const has0pt = vertexCount === 0;
   const isClosedCurve =
     vertexCount >= 2 &&
     Math.abs(coords[0].lat - coords[vertexCount - 1].lat) < 0.00001 &&
@@ -4120,9 +4180,14 @@ function LiftMetaPanel({
 
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3 text-xs">
-      {/* Header */}
-      <div className="mb-2 flex items-start justify-between gap-2">
-        <div className="min-w-0">
+      {/* Header with back arrow */}
+      <div className="mb-2 flex items-start gap-2">
+        <button type="button" onClick={onBack}
+          className="mt-0.5 flex-none rounded-md border border-[var(--border)] px-2 py-1 text-[11px] leading-none text-[var(--fg-muted)] hover:text-[var(--fg)]"
+          title="Back to list">
+          ←
+        </button>
+        <div className="min-w-0 flex-1">
           <p className="text-[9px] font-semibold uppercase tracking-wide text-[var(--accent-soft)]">
             {t("selectedLift")}
           </p>
@@ -4140,39 +4205,85 @@ function LiftMetaPanel({
         </button>
       </div>
 
-      {/* Fields */}
-      <div className="grid gap-2">
-        <LabeledInput label={t("nameCanonical")} value={canonicalName}
-          onChange={(v) => onPatch({ name: v })} />
-        <LocalizedNameEditor label={t("nameLocalized")} value={nameI18n}
-          onChange={(next) => onPatch({ name_i18n: next })} currentLocale={locale} />
-        <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
-          <span className="font-semibold text-[var(--fg-dim)]">{t("typeLabel")}</span>
-          <select value={type} onChange={(e) => onPatch({ type: e.target.value || undefined })}
-            className="rounded-md border border-[var(--border)] bg-[var(--bg-page)] px-2 py-1 text-xs text-[var(--fg)]">
-            <option value="">—</option>
-            {LIFT_TYPE_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
-            ))}
-            {type && !LIFT_TYPE_OPTIONS.includes(type as (typeof LIFT_TYPE_OPTIONS)[number]) && (
-              <option value={type}>{type} (custom)</option>
-            )}
-          </select>
-        </label>
-        <LabeledNumber label={t("capacityPerHour")} value={capacity ?? null}
-          onChange={(v) => onPatch({ capacity_per_hour: v })} />
-        <LabeledNumber label={t("lengthM")} value={lengthM ?? null}
-          onChange={(v) => onPatch({ length_m: v })} />
-        <LabeledNumber label={t("verticalM")} value={verticalM ?? null}
-          onChange={(v) => onPatch({ vertical_m: v })} />
-      </div>
+      {/* 0pt warning */}
+      {has0pt && (
+        <div className="mb-3 rounded-md border border-amber-400/30 bg-amber-400/10 px-3 py-2">
+          <p className="text-[10px] font-semibold text-amber-300">No geometry</p>
+          <p className="text-[9px] text-[var(--fg-muted)]">Assign a graph edge or draw new geometry to make this lift visible on the map.</p>
+        </div>
+      )}
+
+      {/* Assign from graph edge — prominent when 0pt, collapsed when has geometry */}
+      {graphEdges && graphEdges.length > 0 && (
+        <div className={has0pt ? "mb-3" : "mb-2 border-t border-white/5 pt-2"}>
+          {has0pt ? (
+            <div className="grid gap-1.5">
+              <p className="text-[9px] font-semibold text-[var(--fg-dim)]">Assign geometry from graph edge</p>
+              <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
+                <option value="">— pick a graph edge —</option>
+                {graphEdges.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.id} ({e.geometry.length}pt)
+                  </option>
+                ))}
+              </select>
+              <button type="button" disabled={!edgeSourceId}
+                onClick={() => {
+                  const edge = graphEdges.find((e) => e.id === edgeSourceId);
+                  if (edge) {
+                    onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
+                    setEdgeSourceId("");
+                  }
+                }}
+                className="w-full rounded-md bg-[var(--accent)] px-3 py-1.5 text-[10px] font-semibold text-[var(--accent-ink)] disabled:opacity-40">
+                Assign edge geometry
+              </button>
+            </div>
+          ) : (
+            <>
+              <button type="button" onClick={() => setShowEdgeSource((v) => !v)}
+                className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
+                <span>{showEdgeSource ? "▾" : "▸"}</span>
+                <span>Get geometry from graph edge</span>
+              </button>
+              {showEdgeSource && (
+                <div className="mt-1.5 grid gap-1.5">
+                  <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
+                    className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
+                    <option value="">— pick a graph edge —</option>
+                    {graphEdges.map((e) => (
+                      <option key={e.id} value={e.id}>
+                        {e.id} ({e.geometry.length}pt)
+                      </option>
+                    ))}
+                  </select>
+                  <button type="button" disabled={!edgeSourceId}
+                    onClick={() => {
+                      const edge = graphEdges.find((e) => e.id === edgeSourceId);
+                      if (edge) {
+                        onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
+                        setEdgeSourceId("");
+                        setShowEdgeSource(false);
+                      }
+                    }}
+                    className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                    title="Copy this edge's polyline into the lift's coordinates">
+                    Copy edge geometry → lift
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
 
       {/* Geometry controls */}
-      <div className="mt-3 flex flex-wrap items-center gap-1.5">
+      <div className="mb-2 flex flex-wrap items-center gap-1.5">
         {!isEditingGeom ? (
           <button type="button" onClick={onEditGeom}
             className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-[10px] font-semibold text-[var(--accent-ink)]">
-            {t("editGeometry")}
+            {has0pt ? "Draw new geometry" : t("editGeometry")}
           </button>
         ) : (
           <GeomEditControls coords={coords} isClosedCurve={isClosedCurve}
@@ -4187,9 +4298,9 @@ function LiftMetaPanel({
         )}
       </div>
 
-      {/* Copy / join from another lift — collapsed by default */}
+      {/* Copy / join from another lift — collapsed */}
       {otherLifts && otherLifts.length > 0 && (
-        <div className="mt-2 border-t border-white/5 pt-2">
+        <div className="border-t border-white/5 pt-2 mb-2">
           <button type="button" onClick={() => setShowGeomSource((v) => !v)}
             className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
             <span>{showGeomSource ? "▾" : "▸"}</span>
@@ -4230,42 +4341,41 @@ function LiftMetaPanel({
         </div>
       )}
 
-      {/* Get geometry from graph edge */}
-      {graphEdges && graphEdges.length > 0 && (
-        <div className="mt-2 border-t border-white/5 pt-2">
-          <button type="button" onClick={() => setShowEdgeSource((v) => !v)}
-            className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
-            <span>{showEdgeSource ? "▾" : "▸"}</span>
-            <span>Get geometry from graph edge</span>
-          </button>
-          {showEdgeSource && (
-            <div className="mt-1.5 grid gap-1.5">
-              <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
-                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
-                <option value="">— pick a graph edge —</option>
-                {graphEdges.map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {e.id} ({e.geometry.length}pt)
-                  </option>
+      {/* Metadata — collapsed by default */}
+      <div className="border-t border-white/5 pt-2">
+        <button type="button" onClick={() => setShowMeta((v) => !v)}
+          className="flex w-full items-center gap-1 text-[9px] font-semibold text-[var(--fg-dim)] hover:text-[var(--fg-muted)]">
+          <span>{showMeta ? "▾" : "▸"}</span>
+          <span>Name &amp; details</span>
+        </button>
+        {showMeta && (
+          <div className="mt-2 grid gap-2">
+            <LabeledInput label={t("nameCanonical")} value={canonicalName}
+              onChange={(v) => onPatch({ name: v })} />
+            <LocalizedNameEditor label={t("nameLocalized")} value={nameI18n}
+              onChange={(next) => onPatch({ name_i18n: next })} currentLocale={locale} />
+            <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
+              <span className="font-semibold text-[var(--fg-dim)]">{t("typeLabel")}</span>
+              <select value={type} onChange={(e) => onPatch({ type: e.target.value || undefined })}
+                className="rounded-md border border-[var(--border)] bg-[var(--bg-page)] px-2 py-1 text-xs text-[var(--fg)]">
+                <option value="">—</option>
+                {LIFT_TYPE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
                 ))}
+                {type && !LIFT_TYPE_OPTIONS.includes(type as (typeof LIFT_TYPE_OPTIONS)[number]) && (
+                  <option value={type}>{type} (custom)</option>
+                )}
               </select>
-              <button type="button" disabled={!edgeSourceId}
-                onClick={() => {
-                  const edge = graphEdges.find((e) => e.id === edgeSourceId);
-                  if (edge) {
-                    onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
-                    setEdgeSourceId("");
-                    setShowEdgeSource(false);
-                  }
-                }}
-                className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-                title="Copy this edge's polyline into the lift's coordinates">
-                Copy edge geometry → lift
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+            </label>
+            <LabeledNumber label={t("capacityPerHour")} value={capacity ?? null}
+              onChange={(v) => onPatch({ capacity_per_hour: v })} />
+            <LabeledNumber label={t("lengthM")} value={lengthM ?? null}
+              onChange={(v) => onPatch({ length_m: v })} />
+            <LabeledNumber label={t("verticalM")} value={verticalM ?? null}
+              onChange={(v) => onPatch({ vertical_m: v })} />
+          </div>
+        )}
+      </div>
     </section>
   );
 }
