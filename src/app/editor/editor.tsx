@@ -7,6 +7,7 @@ import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import { webRuntimeConfig } from "@/lib/runtime-config";
 import {
   ResortLoader,
+  stitchEdges,
   type LoadedResort,
   type SlopeRecord,
   type LiftRecord,
@@ -1013,6 +1014,19 @@ export function SlopeAuthor2() {
   function joinSlopeWith(targetId: string, sourceId: string) {
     const target = effectiveSlopes.find((s) => s.id === targetId);
     const source = effectiveSlopes.find((s) => s.id === sourceId);
+    if (!target || !source) return;
+
+    // Prefer edge_ids merge when both slopes use the graph-reference model.
+    if (source.edge_ids?.length) {
+      const merged = [...new Set([...(target.edge_ids ?? []), ...source.edge_ids])];
+      setSlopeOverrides((prev) => ({
+        ...prev,
+        [targetId]: { ...prev[targetId], edge_ids: merged },
+      }));
+      deleteSlope(sourceId);
+      return;
+    }
+
     const tc = target?.coordinates;
     const sc = source?.coordinates;
     if (!sc?.length) return;
@@ -1055,6 +1069,19 @@ export function SlopeAuthor2() {
   function joinLiftWith(targetId: string, sourceId: string) {
     const target = effectiveLifts.find((l) => l.id === targetId);
     const source = effectiveLifts.find((l) => l.id === sourceId);
+    if (!target || !source) return;
+
+    // Prefer edge_ids merge when both lifts use the graph-reference model.
+    if (source.edge_ids?.length) {
+      const merged = [...new Set([...(target.edge_ids ?? []), ...source.edge_ids])];
+      setLiftOverrides((prev) => ({
+        ...prev,
+        [targetId]: { ...prev[targetId], edge_ids: merged },
+      }));
+      deleteLift(sourceId);
+      return;
+    }
+
     const tc = target?.coordinates;
     const sc = source?.coordinates;
     if (!sc?.length) return;
@@ -1513,32 +1540,6 @@ export function SlopeAuthor2() {
   // newly-drawn slopes the user has finalized this session. Drawn
   // slopes always render with their authored polyline since they're
   // not in the baseline yet.
-  const effectiveSlopes = useMemo(() => {
-    if (!loadedResort) return [] as SlopeRecord[];
-    const deleted = new Set(deletedSlopeIds);
-    const fromBaseline = loadedResort.slopes
-      .filter((s) => !deleted.has(s.id))
-      .map((s) => {
-        const override = slopeOverrides[s.id];
-        if (!override) return s;
-        return { ...s, ...override };
-      });
-    return [...fromBaseline, ...addedSlopes];
-  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds]);
-
-  const effectiveLifts = useMemo(() => {
-    if (!loadedResort) return [] as LiftRecord[];
-    const deleted = new Set(deletedLiftIds);
-    const fromBaseline = loadedResort.lifts
-      .filter((l) => !deleted.has(l.id))
-      .map((l) => {
-        const override = liftOverrides[l.id];
-        if (!override) return l;
-        return { ...l, ...override };
-      });
-    return [...fromBaseline, ...addedLifts];
-  }, [loadedResort, liftOverrides, addedLifts, deletedLiftIds]);
-
   const effectiveGraphEdges = useMemo(() => {
     if (!loadedResort?.graph) return [] as GraphEdge[];
     const deleted = new Set(deletedGraphEdgeIds);
@@ -1550,6 +1551,42 @@ export function SlopeAuthor2() {
       });
     return [...fromBaseline, ...addedGraphEdges];
   }, [loadedResort, deletedGraphEdgeIds, edgeOverrides, addedGraphEdges]);
+
+  const effectiveSlopes = useMemo(() => {
+    if (!loadedResort) return [] as SlopeRecord[];
+    const deleted = new Set(deletedSlopeIds);
+    const eById = new Map(effectiveGraphEdges.map((e) => [e.id, e]));
+    const resolve = (s: SlopeRecord): SlopeRecord => {
+      if (!s.edge_ids?.length) return s;
+      const coords = stitchEdges(s.edge_ids, eById);
+      return coords.length ? { ...s, coordinates: coords } : s;
+    };
+    const fromBaseline = loadedResort.slopes
+      .filter((s) => !deleted.has(s.id))
+      .map((s) => {
+        const override = slopeOverrides[s.id];
+        return resolve(override ? { ...s, ...override } : s);
+      });
+    return [...fromBaseline, ...addedSlopes.map(resolve)];
+  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, effectiveGraphEdges]);
+
+  const effectiveLifts = useMemo(() => {
+    if (!loadedResort) return [] as LiftRecord[];
+    const deleted = new Set(deletedLiftIds);
+    const eById = new Map(effectiveGraphEdges.map((e) => [e.id, e]));
+    const resolve = (l: LiftRecord): LiftRecord => {
+      if (!l.edge_ids?.length) return l;
+      const coords = stitchEdges(l.edge_ids, eById);
+      return coords.length ? { ...l, coordinates: coords } : l;
+    };
+    const fromBaseline = loadedResort.lifts
+      .filter((l) => !deleted.has(l.id))
+      .map((l) => {
+        const override = liftOverrides[l.id];
+        return resolve(override ? { ...l, ...override } : l);
+      });
+    return [...fromBaseline, ...addedLifts.map(resolve)];
+  }, [loadedResort, liftOverrides, addedLifts, deletedLiftIds, effectiveGraphEdges]);
 
   // Refs for effectiveSlopes/effectiveLifts — placed after the memos so
   // they reference the computed values, not stale closures.
@@ -3912,7 +3949,7 @@ function SlopeMetaPanel({
                 onClick={() => {
                   const edge = graphEdges.find((e) => e.id === edgeSourceId);
                   if (edge) {
-                    onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
+                    onPatch({ edge_ids: [edgeSourceId] });
                     setEdgeSourceId("");
                   }
                 }}
@@ -3940,16 +3977,15 @@ function SlopeMetaPanel({
                   </select>
                   <button type="button" disabled={!edgeSourceId}
                     onClick={() => {
-                      const edge = graphEdges.find((e) => e.id === edgeSourceId);
-                      if (edge) {
-                        onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
+                      if (edgeSourceId) {
+                        onPatch({ edge_ids: [...(slope.edge_ids ?? []), edgeSourceId] });
                         setEdgeSourceId("");
                         setShowEdgeSource(false);
                       }
                     }}
                     className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-                    title="Copy this edge's polyline into the slope's coordinates">
-                    Copy edge geometry → slope
+                    title="Add this graph edge to the slope's path">
+                    Add edge to path
                   </button>
                 </div>
               )}
@@ -4232,7 +4268,7 @@ function LiftMetaPanel({
                 onClick={() => {
                   const edge = graphEdges.find((e) => e.id === edgeSourceId);
                   if (edge) {
-                    onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
+                    onPatch({ edge_ids: [edgeSourceId] });
                     setEdgeSourceId("");
                   }
                 }}
@@ -4260,16 +4296,15 @@ function LiftMetaPanel({
                   </select>
                   <button type="button" disabled={!edgeSourceId}
                     onClick={() => {
-                      const edge = graphEdges.find((e) => e.id === edgeSourceId);
-                      if (edge) {
-                        onPatch({ coordinates: edge.geometry.map(({lat, lng}) => ({lat, lon: lng})) });
+                      if (edgeSourceId) {
+                        onPatch({ edge_ids: [...(lift.edge_ids ?? []), edgeSourceId] });
                         setEdgeSourceId("");
                         setShowEdgeSource(false);
                       }
                     }}
                     className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
-                    title="Copy this edge's polyline into the lift's coordinates">
-                    Copy edge geometry → lift
+                    title="Add this graph edge to the lift's path">
+                    Add edge to path
                   </button>
                 </div>
               )}
