@@ -9,6 +9,10 @@
 # Goal: catch typecheck and CF Pages build breakage before deploy.
 # Cloudflare Pages handles the actual production deploy from this
 # same branch — this workflow is a pre-deploy gate, not a deploy.
+#
+# TODO: migrate from @cloudflare/next-on-pages to @opennextjs/cloudflare.
+# Requires: wrangler@^4, rclone.js, and updating CF Pages dashboard
+# output directory from .vercel/output/static to .open-next/assets.
 
 name: pages-build
 
@@ -35,10 +39,10 @@ jobs:
       - name: Checkout pages branch
         uses: actions/checkout@v4
 
-      - name: Set up Node 20
+      - name: Set up Node 22
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: npm
 
       - name: Install
