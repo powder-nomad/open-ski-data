@@ -60,8 +60,14 @@
             "type": "array",
             "items": { "type": ["string", "integer"] }
           },
+          "edge_ids": {
+            "type": "array",
+            "description": "Ordered set of graph edge IDs (from graph.json) whose union forms this slope's path. The graph topology (each edge's from/to nodes) defines how edges connect — forks and merges fall out automatically. When present, this is the canonical geometry; coordinates is a denormalized cache kept for backwards-compatible readers.",
+            "items": { "type": "string" }
+          },
           "coordinates": {
             "type": "array",
+            "description": "Deprecated display cache. Prefer edge_ids + graph.json for new data. Kept for backwards-compatible readers that don't yet understand edge_ids.",
             "items": {
               "type": "object",
               "properties": {

@@ -71,6 +71,8 @@ export type LiftRecord = {
   capacity_per_hour?: number | null;
   length_m?: number | null;
   vertical_m?: number | null;
+  /** Canonical geometry reference — preferred over coordinates when present. */
+  edge_ids?: string[];
   coordinates: { lat: number; lon: number; alt_m?: number | null }[];
   provenance?: Provenance;
 };
@@ -155,6 +157,77 @@ export type SlopeGraphRecord = {
   /** Optional snap configuration — preserved on round-trip but not modelled here. */
   snap_config?: unknown;
 };
+
+/**
+ * Derive a {lat,lon} coordinate array from a set of graph edge IDs.
+ *
+ * The edges are walked in topological order: the entry edge is the one
+ * whose `from` node has no incoming owned edge. At each step the next
+ * edge is the one whose `from` node equals the current edge's `to`
+ * (natural direction) or whose `to` node equals the current edge's `to`
+ * (reversed). Duplicate junction points between consecutive edges are
+ * deduplicated. Returns [] if edgeIds is empty or edgeById is missing
+ * any referenced ID.
+ */
+export function stitchEdges(
+  edgeIds: string[],
+  edgeById: Map<string, GraphEdge>,
+): { lat: number; lon: number }[] {
+  if (!edgeIds.length) return [];
+
+  const edges = edgeIds.map((id) => edgeById.get(id)).filter(Boolean) as GraphEdge[];
+  if (!edges.length) return [];
+  if (edges.length === 1) {
+    return edges[0].geometry.map(({ lat, lng }) => ({ lat, lon: lng }));
+  }
+
+  // Build adjacency: for each node that is a `from` or `to` of an owned
+  // edge, track which edges connect there.
+  const fromIndex = new Map<string, GraphEdge[]>();
+  const toIndex = new Map<string, GraphEdge[]>();
+  for (const e of edges) {
+    fromIndex.set(e.from, [...(fromIndex.get(e.from) ?? []), e]);
+    toIndex.set(e.to, [...(toIndex.get(e.to) ?? []), e]);
+  }
+
+  // Entry edge: `from` node has no incoming owned edge (i.e. not in toIndex).
+  const entry = edges.find((e) => !toIndex.has(e.from)) ?? edges[0];
+
+  const visited = new Set<string>();
+  const ordered: { geom: typeof entry.geometry; reversed: boolean }[] = [];
+  let cur: GraphEdge | undefined = entry;
+  let curReversed = false;
+
+  while (cur && !visited.has(cur.id)) {
+    visited.add(cur.id);
+    ordered.push({ geom: cur.geometry, reversed: curReversed });
+
+    // The exit node of the current edge (accounting for traversal direction).
+    const exitNode: string = curReversed ? cur.from : cur.to;
+
+    // Find next unvisited edge whose entry node matches exitNode.
+    const candidates: { e: GraphEdge; rev: boolean }[] = [
+      ...(fromIndex.get(exitNode) ?? []).map((e) => ({ e, rev: false })),
+      ...(toIndex.get(exitNode) ?? []).map((e) => ({ e, rev: true })),
+    ].filter(({ e }) => !visited.has(e.id));
+
+    if (!candidates.length) break;
+    const { e: next, rev } = candidates[0];
+    cur = next;
+    curReversed = rev;
+  }
+
+  const coords: { lat: number; lon: number }[] = [];
+  for (const { geom, reversed } of ordered) {
+    const pts = reversed ? [...geom].reverse() : geom;
+    for (let i = 0; i < pts.length; i++) {
+      // Skip first point of subsequent segments — it duplicates the junction.
+      if (i === 0 && coords.length > 0) continue;
+      coords.push({ lat: pts[i].lat, lon: pts[i].lng });
+    }
+  }
+  return coords;
+}
 
 export type LoadedResort = {
   ref: ResortRef;

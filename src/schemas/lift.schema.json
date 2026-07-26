@@ -47,9 +47,14 @@
             "type": "array",
             "items": { "type": ["string", "integer"] }
           },
+          "edge_ids": {
+            "type": "array",
+            "description": "Ordered set of graph edge IDs (from graph.json) whose union forms this lift's path. When present, this is the canonical geometry; coordinates is a denormalized cache kept for backwards-compatible readers.",
+            "items": { "type": "string" }
+          },
           "coordinates": {
             "type": "array",
-            "description": "Cable polyline from the lift's bottom station to its top, inclusive. Densified + DEM-sampled like slopes. Optional — older lifts.json files from before 2026-04 don't carry geometry; consumers should fall back to drawing nothing rather than erroring.",
+            "description": "Deprecated display cache. Prefer edge_ids + graph.json for new data.",
             "minItems": 2,
             "items": {
               "type": "object",
