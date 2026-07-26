@@ -2778,13 +2778,17 @@ export function SlopeAuthor2() {
         return rest as SlopeRecord;
       };
       const deleted = new Set(deletedSlopeIds);
+      // Use effectiveSlopes so coordinates reflects derived geometry when edge_ids is set.
+      const effSlopeById = new Map(effectiveSlopes.map((s) => [s.id, s]));
       const editedSlopes = loadedResort.slopes
         .filter((s) => !deleted.has(s.id))
-        .map((s) =>
-          slopeOverrides[s.id] ? stamp({ ...s, ...slopeOverrides[s.id] }) : s,
-        )
+        .map((s) => {
+          if (!slopeOverrides[s.id]) return s;
+          const eff = effSlopeById.get(s.id) ?? s;
+          return stamp(eff);
+        })
         .map(dropNullDifficulty);
-      const newSlopes = addedSlopes.map(stamp).map(dropNullDifficulty);
+      const newSlopes = addedSlopes.map((s) => stamp(effSlopeById.get(s.id) ?? s)).map(dropNullDifficulty);
       files["slopes.json"] =
         JSON.stringify(
           {
@@ -2800,12 +2804,15 @@ export function SlopeAuthor2() {
     }
     if (liftEdits > 0 || liftAdded > 0 || liftDeleted > 0) {
       const deleted = new Set(deletedLiftIds);
+      const effLiftById = new Map(effectiveLifts.map((l) => [l.id, l]));
       const editedLifts = loadedResort.lifts
         .filter((l) => !deleted.has(l.id))
-        .map((l) =>
-          liftOverrides[l.id] ? stamp({ ...l, ...liftOverrides[l.id] }) : l,
-        );
-      const newLifts = addedLifts.map(stamp);
+        .map((l) => {
+          if (!liftOverrides[l.id]) return l;
+          const eff = effLiftById.get(l.id) ?? l;
+          return stamp(eff);
+        });
+      const newLifts = addedLifts.map((l) => stamp(effLiftById.get(l.id) ?? l));
       files["lifts.json"] =
         JSON.stringify(
           {
@@ -2898,7 +2905,7 @@ export function SlopeAuthor2() {
       files,
       message: `slope-author-2: ${parts.join(" + ")}`,
     };
-  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes, addedGraphEdges, edgeOverrides, deletedGraphNodeIds, deletedGraphEdgeIds, nodeOverrides]);
+  }, [loadedResort, slopeOverrides, addedSlopes, deletedSlopeIds, liftOverrides, addedLifts, deletedLiftIds, placeOverride, effectivePlace, sessionUser?.login, addedGraphNodes, addedGraphEdges, edgeOverrides, deletedGraphNodeIds, deletedGraphEdgeIds, nodeOverrides, effectiveSlopes, effectiveLifts]);
 
   // ── Undo stack ────────────────────────────────────────────────
   //
@@ -3930,6 +3937,24 @@ function SlopeMetaPanel({
         </div>
       )}
 
+      {/* Current edge_ids list — shown when slope references graph edges */}
+      {(slope.edge_ids?.length ?? 0) > 0 && (
+        <div className="mb-2 border-t border-white/5 pt-2">
+          <p className="mb-1 text-[9px] font-semibold text-[var(--fg-dim)]">Path edges</p>
+          <div className="flex flex-wrap gap-1">
+            {slope.edge_ids!.map((eid) => (
+              <span key={eid} className="flex items-center gap-0.5 rounded border border-[var(--border)] bg-[var(--bg-elev)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--fg-muted)]">
+                {eid}
+                <button type="button"
+                  onClick={() => onPatch({ edge_ids: slope.edge_ids!.filter((id) => id !== eid) })}
+                  className="ml-0.5 text-[var(--fg-dim)] hover:text-red-400"
+                  title={`Remove ${eid} from path`}>×</button>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Assign from graph edge — prominent when 0pt, collapsed when has geometry */}
       {graphEdges && graphEdges.length > 0 && (
         <div className={has0pt ? "mb-3" : "mb-2 border-t border-white/5 pt-2"}>
@@ -4246,6 +4271,24 @@ function LiftMetaPanel({
         <div className="mb-3 rounded-md border border-amber-400/30 bg-amber-400/10 px-3 py-2">
           <p className="text-[10px] font-semibold text-amber-300">No geometry</p>
           <p className="text-[9px] text-[var(--fg-muted)]">Assign a graph edge or draw new geometry to make this lift visible on the map.</p>
+        </div>
+      )}
+
+      {/* Current edge_ids list */}
+      {(lift.edge_ids?.length ?? 0) > 0 && (
+        <div className="mb-2 border-t border-white/5 pt-2">
+          <p className="mb-1 text-[9px] font-semibold text-[var(--fg-dim)]">Path edges</p>
+          <div className="flex flex-wrap gap-1">
+            {lift.edge_ids!.map((eid) => (
+              <span key={eid} className="flex items-center gap-0.5 rounded border border-[var(--border)] bg-[var(--bg-elev)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--fg-muted)]">
+                {eid}
+                <button type="button"
+                  onClick={() => onPatch({ edge_ids: lift.edge_ids!.filter((id) => id !== eid) })}
+                  className="ml-0.5 text-[var(--fg-dim)] hover:text-red-400"
+                  title={`Remove ${eid} from path`}>×</button>
+              </span>
+            ))}
+          </div>
         </div>
       )}
 
