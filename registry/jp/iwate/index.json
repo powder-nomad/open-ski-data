@@ -1,0 +1,26 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "jp",
+    "name": "Japan"
+  },
+  "region": {
+    "region_slug": "iwate",
+    "name": "Iwate"
+  },
+  "places": [
+    {
+      "place_slug": "geto-kogen",
+      "name": "Geto Kogen",
+      "path": "registry/jp/iwate/geto-kogen/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "appi-kogen",
+      "name": "Appi Kogen",
+      "path": "registry/jp/iwate/appi-kogen/place.json",
+      "kind": "resort"
+    }
+  ]
+}

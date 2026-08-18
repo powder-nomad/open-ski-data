@@ -1,0 +1,45 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "aomori",
+  "place_slug": "hakkoda",
+  "name": "Hakkoda Ropeway",
+  "region": "Aomori",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 40.678382,
+    "longitude": 140.845338
+  },
+  "elevations": {
+    "base_m": 668,
+    "summit_m": 1272
+  },
+  "tags": [
+    "aomori",
+    "tohoku",
+    "backcountry",
+    "ropeway"
+  ],
+  "name_i18n": {
+    "ko": "핫코다 로프웨이",
+    "en": "Hakkoda Ropeway",
+    "ja": "八甲田ロープウェー"
+  },
+  "region_i18n": {
+    "ko": "아오모리",
+    "en": "Aomori",
+    "ja": "青森"
+  },
+  "country_i18n": {
+    "ko": "일본",
+    "en": "Japan",
+    "ja": "日本"
+  },
+  "provenance": {
+    "source": "osm",
+    "osm_way_id": 233387602,
+    "osm_version": 5,
+    "contributor": "powder-nomad",
+    "last_verified": "2026-08-18"
+  }
+}
