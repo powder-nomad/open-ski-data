@@ -1,0 +1,45 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "iwate",
+  "place_slug": "appi-kogen",
+  "name": "Appi Kogen",
+  "region": "Iwate",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 39.987201,
+    "longitude": 140.967336
+  },
+  "elevations": {
+    "base_m": 505,
+    "summit_m": 1319
+  },
+  "tags": [
+    "iwate",
+    "tohoku",
+    "resort",
+    "destination"
+  ],
+  "name_i18n": {
+    "ko": "아피 고원",
+    "en": "Appi Kogen",
+    "ja": "安比高原スキー場"
+  },
+  "region_i18n": {
+    "ko": "이와테",
+    "en": "Iwate",
+    "ja": "岩手"
+  },
+  "country_i18n": {
+    "ko": "일본",
+    "en": "Japan",
+    "ja": "日本"
+  },
+  "provenance": {
+    "source": "osm",
+    "osm_way_id": 1087368359,
+    "osm_version": 1,
+    "contributor": "powder-nomad",
+    "last_verified": "2026-08-18"
+  }
+}

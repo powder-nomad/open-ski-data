@@ -11,6 +11,21 @@
       "region_slug": "hokkaido",
       "name": "Hokkaido",
       "path": "registry/jp/hokkaido/index.json"
+    },
+    {
+      "region_slug": "yamagata",
+      "name": "Yamagata",
+      "path": "registry/jp/yamagata/index.json"
+    },
+    {
+      "region_slug": "iwate",
+      "name": "Iwate",
+      "path": "registry/jp/iwate/index.json"
+    },
+    {
+      "region_slug": "aomori",
+      "name": "Aomori",
+      "path": "registry/jp/aomori/index.json"
     }
   ]
 }

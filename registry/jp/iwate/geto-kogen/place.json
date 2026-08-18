@@ -1,0 +1,46 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "iwate",
+  "place_slug": "geto-kogen",
+  "name": "Geto Kogen",
+  "region": "Iwate",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 39.236527,
+    "longitude": 140.905903
+  },
+  "elevations": {
+    "base_m": 641,
+    "summit_m": 1068
+  },
+  "tags": [
+    "iwate",
+    "tohoku",
+    "resort",
+    "powder"
+  ],
+  "name_i18n": {
+    "ko": "게토 고원",
+    "en": "Geto Kogen",
+    "ja": "夏油高原スキー場"
+  },
+  "region_i18n": {
+    "ko": "이와테",
+    "en": "Iwate",
+    "ja": "岩手"
+  },
+  "country_i18n": {
+    "ko": "일본",
+    "en": "Japan",
+    "ja": "日本"
+  },
+  "homepage": "https://geto8.com/",
+  "provenance": {
+    "source": "osm",
+    "osm_way_id": 82725412,
+    "osm_version": 7,
+    "contributor": "powder-nomad",
+    "last_verified": "2026-08-18"
+  }
+}
