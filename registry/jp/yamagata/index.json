@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "jp",
+    "name": "Japan"
+  },
+  "region": {
+    "region_slug": "yamagata",
+    "name": "Yamagata"
+  },
+  "places": [
+    {
+      "place_slug": "zao-onsen",
+      "name": "Zao Onsen",
+      "path": "registry/jp/yamagata/zao-onsen/place.json",
+      "kind": "resort"
+    }
+  ]
+}

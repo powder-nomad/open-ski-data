@@ -1,0 +1,26 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "jp",
+    "name": "Japan"
+  },
+  "region": {
+    "region_slug": "aomori",
+    "name": "Aomori"
+  },
+  "places": [
+    {
+      "place_slug": "hakkoda",
+      "name": "Hakkoda Ropeway",
+      "path": "registry/jp/aomori/hakkoda/place.json",
+      "kind": "backcountry"
+    },
+    {
+      "place_slug": "aomori-spring",
+      "name": "Aomori Spring Resort",
+      "path": "registry/jp/aomori/aomori-spring/place.json",
+      "kind": "resort"
+    }
+  ]
+}

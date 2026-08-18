@@ -1,0 +1,46 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "yamagata",
+  "place_slug": "zao-onsen",
+  "name": "Zao Onsen",
+  "region": "Yamagata",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 38.161271,
+    "longitude": 140.40627
+  },
+  "elevations": {
+    "base_m": 770,
+    "summit_m": 1666
+  },
+  "tags": [
+    "yamagata",
+    "tohoku",
+    "resort",
+    "destination"
+  ],
+  "name_i18n": {
+    "ko": "자오 온천",
+    "en": "Zao Onsen",
+    "ja": "蔵王温泉スキー場"
+  },
+  "region_i18n": {
+    "ko": "야마가타",
+    "en": "Yamagata",
+    "ja": "山形"
+  },
+  "country_i18n": {
+    "ko": "일본",
+    "en": "Japan",
+    "ja": "日本"
+  },
+  "homepage": "https://www.zao-ski.or.jp/",
+  "provenance": {
+    "source": "osm",
+    "osm_way_id": 488305112,
+    "osm_version": 6,
+    "contributor": "powder-nomad",
+    "last_verified": "2026-08-18"
+  }
+}
