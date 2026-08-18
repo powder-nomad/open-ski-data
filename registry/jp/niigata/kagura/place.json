@@ -1,0 +1,44 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "niigata",
+  "place_slug": "kagura",
+  "name": "Kagura",
+  "region": "Niigata",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 36.869505,
+    "longitude": 138.742637
+  },
+  "elevations": {
+    "base_m": 630,
+    "summit_m": 1863
+  },
+  "tags": [
+    "niigata",
+    "resort",
+    "powder"
+  ],
+  "name_i18n": {
+    "ko": "가구라",
+    "en": "Kagura",
+    "ja": "かぐらスキー場"
+  },
+  "region_i18n": {
+    "ko": "니가타",
+    "en": "Niigata",
+    "ja": "新潟"
+  },
+  "country_i18n": {
+    "ko": "일본",
+    "en": "Japan",
+    "ja": "日本"
+  },
+  "homepage": "https://www.princehotels.co.jp/ski/kagura/winter/",
+  "provenance": {
+    "source": "osm",
+    "osm_version": 1,
+    "contributor": "powder-nomad",
+    "last_verified": "2026-08-18"
+  }
+}

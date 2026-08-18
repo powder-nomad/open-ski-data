@@ -1,0 +1,46 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "niigata",
+  "place_slug": "arai-snow-resort",
+  "name": "Arai Snow Resort",
+  "region": "Niigata",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 36.989481,
+    "longitude": 138.157045
+  },
+  "elevations": {
+    "base_m": 334,
+    "summit_m": 1420
+  },
+  "tags": [
+    "niigata",
+    "resort",
+    "powder",
+    "destination"
+  ],
+  "name_i18n": {
+    "ko": "아라이 스노우 리조트",
+    "en": "Arai Snow Resort",
+    "ja": "アライスノーリゾート"
+  },
+  "region_i18n": {
+    "ko": "니가타",
+    "en": "Niigata",
+    "ja": "新潟"
+  },
+  "country_i18n": {
+    "ko": "일본",
+    "en": "Japan",
+    "ja": "日本"
+  },
+  "homepage": "https://www.lottehotel.com/arai-resort/ja.html",
+  "provenance": {
+    "source": "osm",
+    "osm_way_id": 937101624,
+    "osm_version": 4,
+    "contributor": "powder-nomad",
+    "last_verified": "2026-08-18"
+  }
+}

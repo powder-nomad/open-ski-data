@@ -26,6 +26,11 @@
       "region_slug": "aomori",
       "name": "Aomori",
       "path": "registry/jp/aomori/index.json"
+    },
+    {
+      "region_slug": "niigata",
+      "name": "Niigata",
+      "path": "registry/jp/niigata/index.json"
     }
   ]
 }

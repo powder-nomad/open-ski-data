@@ -1,0 +1,56 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "jp",
+    "name": "Japan"
+  },
+  "region": {
+    "region_slug": "niigata",
+    "name": "Niigata"
+  },
+  "places": [
+    {
+      "place_slug": "arai-snow-resort",
+      "name": "Arai Snow Resort",
+      "path": "registry/jp/niigata/arai-snow-resort/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "akakura-onsen",
+      "name": "Akakura Onsen",
+      "path": "registry/jp/niigata/akakura-onsen/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "akakura-kanko",
+      "name": "Akakura Kanko Resort",
+      "path": "registry/jp/niigata/akakura-kanko/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "myoko-suginohara",
+      "name": "Myoko Suginohara",
+      "path": "registry/jp/niigata/myoko-suginohara/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "ikenotaira-onsen",
+      "name": "Ikenotaira Onsen Alpen Blick",
+      "path": "registry/jp/niigata/ikenotaira-onsen/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "seki-onsen",
+      "name": "Seki Onsen",
+      "path": "registry/jp/niigata/seki-onsen/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "kagura",
+      "name": "Kagura",
+      "path": "registry/jp/niigata/kagura/place.json",
+      "kind": "resort"
+    }
+  ]
+}
