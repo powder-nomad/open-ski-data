@@ -1,0 +1,45 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "nagano",
+  "place_slug": "madarao-kogen",
+  "name": "Madarao Kogen Mountain Resort",
+  "region": "Nagano",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 36.848434,
+    "longitude": 138.28038
+  },
+  "elevations": {
+    "base_m": 915,
+    "summit_m": 1327
+  },
+  "tags": [
+    "nagano",
+    "resort",
+    "powder"
+  ],
+  "name_i18n": {
+    "ko": "마다라오",
+    "en": "Madarao Kogen Mountain Resort",
+    "ja": "斑尾高原スキー場"
+  },
+  "region_i18n": {
+    "ko": "나가노",
+    "en": "Nagano",
+    "ja": "長野"
+  },
+  "country_i18n": {
+    "ko": "일본",
+    "en": "Japan",
+    "ja": "日本"
+  },
+  "homepage": "https://www.madarao.jp/",
+  "provenance": {
+    "source": "osm",
+    "osm_way_id": 997044732,
+    "osm_version": 5,
+    "contributor": "powder-nomad",
+    "last_verified": "2026-08-18"
+  }
+}
