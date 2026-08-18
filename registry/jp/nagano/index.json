@@ -1,0 +1,44 @@
+{
+  "$schema": "../../../schemas/region-index.schema.json",
+  "version": 1,
+  "country": {
+    "country_code": "jp",
+    "name": "Japan"
+  },
+  "region": {
+    "region_slug": "nagano",
+    "name": "Nagano"
+  },
+  "places": [
+    {
+      "place_slug": "madarao-kogen",
+      "name": "Madarao Kogen Mountain Resort",
+      "path": "registry/jp/nagano/madarao-kogen/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "tangram",
+      "name": "Tangram Madarao Ski Circus",
+      "path": "registry/jp/nagano/tangram/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "nozawa-onsen",
+      "name": "Nozawa Onsen",
+      "path": "registry/jp/nagano/nozawa-onsen/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "hakuba-cortina",
+      "name": "Hakuba Cortina",
+      "path": "registry/jp/nagano/hakuba-cortina/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "shiga-kogen",
+      "name": "Shiga Kogen",
+      "path": "registry/jp/nagano/shiga-kogen/place.json",
+      "kind": "resort"
+    }
+  ]
+}
