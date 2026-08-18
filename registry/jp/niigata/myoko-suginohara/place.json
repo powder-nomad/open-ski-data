@@ -1,0 +1,45 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "niigata",
+  "place_slug": "myoko-suginohara",
+  "name": "Myoko Suginohara",
+  "region": "Niigata",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 36.863463,
+    "longitude": 138.137148
+  },
+  "elevations": {
+    "base_m": 742,
+    "summit_m": 1883
+  },
+  "tags": [
+    "niigata",
+    "myoko",
+    "resort"
+  ],
+  "name_i18n": {
+    "ko": "스기노하라",
+    "en": "Myoko Suginohara",
+    "ja": "妙高杉ノ原スキー場"
+  },
+  "region_i18n": {
+    "ko": "니가타",
+    "en": "Niigata",
+    "ja": "新潟"
+  },
+  "country_i18n": {
+    "ko": "일본",
+    "en": "Japan",
+    "ja": "日本"
+  },
+  "homepage": "https://www.princehotels.co.jp/ski/myoko/winter/",
+  "provenance": {
+    "source": "osm",
+    "osm_way_id": 937086872,
+    "osm_version": 4,
+    "contributor": "powder-nomad",
+    "last_verified": "2026-08-18"
+  }
+}
