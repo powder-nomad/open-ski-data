@@ -21,6 +21,18 @@
       "name": "Appi Kogen",
       "path": "registry/jp/iwate/appi-kogen/place.json",
       "kind": "resort"
+    },
+    {
+      "place_slug": "hachimantai-panorama",
+      "name": "Hachimantai Panorama",
+      "path": "registry/jp/iwate/hachimantai-panorama/place.json",
+      "kind": "resort"
+    },
+    {
+      "place_slug": "hachimantai-shimokura",
+      "name": "Hachimantai Shimokura",
+      "path": "registry/jp/iwate/hachimantai-shimokura/place.json",
+      "kind": "resort"
     }
   ]
 }
