@@ -1,17 +1,18 @@
 """
-The writing half of build_slope_graph.py: zones, human corrections, the
+The writing half of build_slope_graph.py: human corrections, the
 slope-graph document, and the list of things a person should look at.
 
 Corrections live beside the graph in `slope-graph.corrections.json`:
 
   {"place_slug": "yongpyong", "corrections": [
-    {"op": "reject", "id": "e-link-123-456"},             a link or a zone that isn't real
+    {"op": "reject", "id": "e-link-123-456"},             a link that isn't real
     {"op": "accept", "id": "e-link-123-456"},             a suggested link that is real
-    {"op": "direction", "osm_way": 533261715, "starts_at": "n-5173762041"},
-    {"op": "zone", "nodes": ["n-1", "n-2", "n-3"]}        these ends are one flat area
+    {"op": "direction", "osm_way": 533261715, "starts_at": "n-5173762041"}
   ]}
 
-They are re-applied on every build, so a decision is made once.
+They are re-applied on every build, so a decision is made once. A graph
+that has been edited by hand in the editor (any `user-edit` edge) is not
+rebuilt at all unless asked: see `human_owned`.
 """
 
 from __future__ import annotations
@@ -34,12 +35,6 @@ CATALOG_DIFFICULTY = {
 
 SUGGEST_LIFT_M = 120
 SUGGEST_SLOPE_M = 60
-# A zone is flat and small: links longer or steeper than this stay links,
-# and a zone never grows past this size.
-ZONE_LINK_M = 150
-ZONE_LINK_RISE_M = 12
-ZONE_SPAN_M = 350
-ZONE_RISE_M = 20
 # An observed link seen fewer times than this is worth a human look.
 WEAK_LINK = 3
 
@@ -60,44 +55,6 @@ def label(e) -> str:
     t = e.way["tags"]
     name = t.get("name:ko") or t.get("name") or t.get("name:en") or f"unnamed {e.way['id']}"
     return f"{name} (lift)" if e.kind == "lift" else name
-
-
-class Zones:
-    """Groups of nodes grown link by link, each kept flat and small."""
-
-    def __init__(self, pos, alt, plane):
-        self.pos, self.alt, self.plane = pos, alt, plane
-        self.of: dict[int, int] = {}
-        self.members: dict[int, list[int]] = {}
-        self.count: collections.Counter = collections.Counter()
-
-    def fits(self, nodes: list[int]) -> bool:
-        alts = [self.alt[n] for n in nodes]
-        if max(alts) - min(alts) > ZONE_RISE_M:
-            return False
-        return all(self.plane.dist(self.pos[a], self.pos[b]) <= ZONE_SPAN_M for i, a in enumerate(nodes) for b in nodes[i + 1:])
-
-    def join(self, a: int, b: int, count: int, force: bool = False) -> bool:
-        ga = self.members.get(self.of.get(a, -1), [a])
-        gb = self.members.get(self.of.get(b, -1), [b])
-        if ga is gb or self.of.get(a, a) == self.of.get(b, b) and a in self.of:
-            self.count[self.of[a]] += count
-            return True
-        merged = ga + [n for n in gb if n not in ga]
-        if not force and not self.fits(merged):
-            return False
-        root = min(merged)
-        total = self.count.pop(self.of.get(a, -1), 0) + self.count.pop(self.of.get(b, -2), 0) + count
-        for old in {self.of.get(a), self.of.get(b)} - {None}:
-            self.members.pop(old, None)
-        self.members[root] = merged
-        self.count[root] = total
-        for n in merged:
-            self.of[n] = root
-        return True
-
-    def same(self, a: int, b: int) -> bool:
-        return a in self.of and self.of.get(a) == self.of.get(b)
 
 
 def emit(cfg: dict, g: dict, corrections: list[dict]) -> tuple[dict, str, list[dict]]:
@@ -150,35 +107,10 @@ def emit(cfg: dict, g: dict, corrections: list[dict]) -> tuple[dict, str, list[d
     graph_nodes = {n for e in g["edges"] for n in (e.nodes[0], e.nodes[-1])}
     link_id = lambda a, b: f"e-link-{a}-{b}"  # noqa: E731
 
-    # Zones first: observed links that are short and flat pull their ends
-    # into one zone, most-ridden first. What doesn't fit stays a link.
-    zones = Zones(pos, alt, plane)
-    links = {}
-    for (a, b), count in sorted(g["links"].items(), key=lambda x: -x[1]):
-        if link_id(a, b) in rejected:
-            continue
-        flat = plane.dist(pos[a], pos[b]) <= ZONE_LINK_M and abs(alt[a] - alt[b]) <= ZONE_LINK_RISE_M
-        if not (flat and zones.join(a, b, count)):
-            links[(a, b)] = {"source": "observed", "observed_count": count}
-    user_zones = set()
-    for c in corrections:
-        if c.get("op") != "zone":
-            continue
-        nodes = [int(n[2:]) for n in c["nodes"]]
-        missing = [n for n in nodes if n not in graph_nodes]
-        if missing or len(nodes) < 2:
-            notes.append(f"correction skipped: zone {c['nodes']} names nodes the graph no longer has")
-            continue
-        for n in nodes[1:]:
-            zones.join(nodes[0], n, 0, force=True)
-        user_zones.add(zones.of[nodes[0]])
-    for root in [r for r in zones.members if f"z-{r}" in rejected and r not in user_zones]:
-        members = zones.members.pop(root)
-        for n in members:
-            zones.of.pop(n, None)
-        for (a, b), count in g["links"].items():
-            if a in members and b in members and link_id(a, b) not in rejected:
-                links[(a, b)] = {"source": "observed", "observed_count": count}
+    links = {
+        (a, b): {"source": "observed", "observed_count": count}
+        for (a, b), count in g["links"].items() if link_id(a, b) not in rejected
+    }
 
     # Suggestions: ends that are close and nobody has ridden between yet.
     # A lift's top to the slopes that start beside it, and a slope's end to
@@ -186,7 +118,7 @@ def emit(cfg: dict, g: dict, corrections: list[dict]) -> tuple[dict, str, list[d
     joined = {(int(r["from"][2:]), int(r["to"][2:])) for r in out_edges} | set(links)
 
     def suggest(a: int, b: int):
-        if (a, b) in joined or zones.same(a, b) or link_id(a, b) in rejected:
+        if (a, b) in joined or link_id(a, b) in rejected:
             return
         joined.add((a, b))
         links[(a, b)] = {"source": "suggested"}
@@ -219,12 +151,10 @@ def emit(cfg: dict, g: dict, corrections: list[dict]) -> tuple[dict, str, list[d
             continue
         if a not in graph_nodes or b not in graph_nodes:
             notes.append(f"correction skipped: {lid} names nodes the graph no longer has")
-        elif not zones.same(a, b) and links.get((a, b), {}).get("source") != "observed":
+        elif links.get((a, b), {}).get("source") != "observed":
             links[(a, b)] = {"source": "user-edit"}
 
     for (a, b), provenance in sorted(links.items()):
-        if zones.same(a, b):
-            continue
         out_edges.append({
             "id": link_id(a, b), "slope_id": None, "kind": "traverse",
             "from": f"n-{a}", "to": f"n-{b}",
@@ -242,11 +172,6 @@ def emit(cfg: dict, g: dict, corrections: list[dict]) -> tuple[dict, str, list[d
         kind = lift_ends.get(n) or ("fork" if out_deg[nid] > 1 else "merge" if in_deg[nid] > 1 else "waypoint")
         nodes.append({"id": nid, **vertex(n), "kind": kind})
 
-    out_zones = []
-    for root, members in sorted(zones.members.items()):
-        provenance = {"source": "user-edit"} if root in user_zones else {"source": "observed", "observed_count": zones.count[root]}
-        out_zones.append({"id": f"z-{root}", "nodes": [f"n-{n}" for n in sorted(members)], "provenance": provenance})
-
     doc = {
         "$schema": "../../../../schemas/slope-graph.schema.json",
         "place_slug": cfg["slug"],
@@ -254,8 +179,6 @@ def emit(cfg: dict, g: dict, corrections: list[dict]) -> tuple[dict, str, list[d
         "nodes": nodes,
         "edges": out_edges,
     }
-    if out_zones:
-        doc["zones"] = out_zones
 
     # What a person should look at, numbered for the review picture.
     items = []
@@ -266,10 +189,6 @@ def emit(cfg: dict, g: dict, corrections: list[dict]) -> tuple[dict, str, list[d
     def names(n: int, rows) -> str:
         return "+".join(sorted({r.get("slope_id") or r.get("lift_id") or "unnamed" for r in rows[n]})) or "?"
 
-    for z in out_zones:
-        if z["provenance"]["source"] == "observed":
-            members = [int(n[2:]) for n in z["nodes"]]
-            item("zone", z["id"], f"zone of {len(members)} ends, {z['provenance']['observed_count']} crossings", members[0])
     for r in out_edges:
         if r["kind"] != "traverse":
             continue
@@ -289,7 +208,7 @@ def emit(cfg: dict, g: dict, corrections: list[dict]) -> tuple[dict, str, list[d
     lines = [
         f"# {cfg['slug']} slope graph", "",
         f"- {by_kind['slope']} slope edges, {by_kind['lift']} lift edges, {len(nodes)} nodes",
-        f"- {len(out_zones)} zones, {by_source['observed']} observed links, {by_source['user-edit']} confirmed by a person, "
+        f"- {by_source['observed']} observed links, {by_source['user-edit']} confirmed by a person, "
         f"{by_source['suggested']} suggested",
         f"- track days used: {g['days']}; corrections applied: {len(corrections)}",
         "- routable today: {} of {} slope and lift edges are in one loop a rider can be routed around".format(*routable(doc)),
@@ -309,18 +228,13 @@ def emit(cfg: dict, g: dict, corrections: list[dict]) -> tuple[dict, str, list[d
 
 
 def connections(doc: dict):
-    """Every directed hop routing may take: edges that aren't merely suggested, both ways through a gondola, and any two ends of a zone."""
+    """Every directed hop routing may take: edges that aren't merely suggested, and both ways through a gondola."""
     for e in doc["edges"]:
         if e["provenance"]["source"] == "suggested":
             continue
         yield e["from"], e["to"]
         if e["kind"] == "lift" and "gondola" in (e.get("lift_id") or ""):
             yield e["to"], e["from"]
-    for z in doc.get("zones", []):
-        for a in z["nodes"]:
-            for b in z["nodes"]:
-                if a != b:
-                    yield a, b
 
 
 def routable(doc: dict) -> tuple[int, int]:
@@ -354,3 +268,11 @@ def routable(doc: dict) -> tuple[int, int]:
             best = loop
     real = [e for e in doc["edges"] if e["kind"] != "traverse"]
     return sum(1 for e in real if e["from"] in best and e["to"] in best), len(real)
+
+
+def human_owned(path: Path) -> bool:
+    """True when the published graph carries a person's edits, which a rebuild would throw away."""
+    if not path.exists():
+        return False
+    doc = json.loads(path.read_text())
+    return any((e.get("provenance") or {}).get("source") == "user-edit" for e in doc.get("edges", []))

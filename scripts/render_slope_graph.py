@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Draw a slope graph as an SVG for review: slopes with their direction,
-lifts, zones, links, and a numbered badge on everything the build flagged
+lifts, links, and a numbered badge on everything the build flagged
 for a person to look at (scripts/review/<slug>-graph-items.json).
 
 Usage:
@@ -33,8 +33,7 @@ LIFT = "#ffffff"
 OBSERVED = "#4ade80"
 SUGGESTED = "#fbbf24"
 UNSURE = "#f472b6"
-ZONE = "#4ade80"
-BADGE = {"suggested-link": SUGGESTED, "weak-link": OBSERVED, "direction": UNSURE, "zone": ZONE}
+BADGE = {"suggested-link": SUGGESTED, "weak-link": OBSERVED, "direction": UNSURE}
 
 
 def names(place_dir: Path) -> dict[str, str]:
@@ -82,12 +81,6 @@ def render(doc: dict, items: list[dict], label: dict[str, str]) -> str:
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{height}" '
         'style="background:#0f2229;font-family:NanumSquareRound,Pretendard,sans-serif">',
     ]
-    for z in doc.get("zones", []):
-        at = [xy(node[n]["lat"], node[n]["lng"]) for n in z["nodes"]]
-        cx, cy = sum(p[0] for p in at) / len(at), sum(p[1] for p in at) / len(at)
-        r = max(math.hypot(p[0] - cx, p[1] - cy) for p in at) + 16
-        dash = "" if z["provenance"]["source"] == "user-edit" else ' stroke-dasharray="5 4"'
-        o.append(f'<circle cx="{cx:.0f}" cy="{cy:.0f}" r="{r:.0f}" fill="{ZONE}" fill-opacity="0.16" stroke="{ZONE}" stroke-width="1.5"{dash}/>')
     for e in doc["edges"]:
         source = e["provenance"]["source"]
         if e["kind"] == "slope":
@@ -137,7 +130,7 @@ def render(doc: dict, items: list[dict], label: dict[str, str]) -> str:
                  f'<text x="{x:.0f}" y="{y + 5:.0f}" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f2229">{i["n"]}</text>')
     legend = [
         (SLOPE, "slope, arrow = the way it is ridden"), (UNRIDDEN, "slope never ridden in the tracks"), (LIFT, "lift (dashed)"),
-        (ZONE, "zone: every end inside reaches every other"), (OBSERVED, "link riders made"),
+(OBSERVED, "link riders made"),
         (SUGGESTED, "suggested link, never ridden"), (UNSURE, "direction is a guess"),
     ]
     o.append(f'<text x="{PAD}" y="48" fill="#fff" font-size="30" font-weight="bold">{html.escape(doc["place_slug"])}</text>')

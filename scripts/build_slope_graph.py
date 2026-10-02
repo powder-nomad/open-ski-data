@@ -26,12 +26,9 @@ Pipeline:
                 the recording app's labels), count rides and edge-to-edge
                 transitions, and turn transitions between edges that
                 don't touch into `traverse` edges.
-  7. Zone     — ends that riders move between on the flat (a summit
-                plateau, a base area) become one zone: every end in it
-                reaches every other (slope_graph_emit.py).
-  8. Correct  — re-apply the resort's slope-graph.corrections.json, so a
-                human's accept / reject / direction / zone outlives rebuilds.
-  9. Write    — registry/<cc>/<region>/<slug>/slope-graph.json (version 2),
+  7. Correct  — re-apply the resort's slope-graph.corrections.json, so a
+                human's accept / reject / direction outlives rebuilds.
+  8. Write    — registry/<cc>/<region>/<slug>/slope-graph.json (version 2),
                 scripts/review/<slug>-graph.md and the numbered review items
                 that render_slope_graph.py draws.
 
@@ -610,6 +607,7 @@ def main():
     ap.add_argument("slug")
     ap.add_argument("--tracks", nargs="*", default=[], help="track files, globs or directories (.slopes, .gpx)")
     ap.add_argument("--refresh", action="store_true", help="refetch OSM instead of using the cache")
+    ap.add_argument("--force", action="store_true", help="overwrite a graph that a person has edited")
     ap.add_argument("--dry-run", action="store_true", help="print the summary, write nothing to the registry")
     args = ap.parse_args()
 
@@ -628,6 +626,9 @@ def main():
         (REVIEW_DIR / f"{args.slug}-graph.json").write_text(json.dumps(doc, ensure_ascii=False))
         return
     out = place_dir / "slope-graph.json"
+    if slope_graph_emit.human_owned(out) and not args.force:
+        sys.exit(f"{out.relative_to(REPO_ROOT)} has been edited by hand; not overwriting it. "
+                 "Use --dry-run to compare, or --force to replace it.")
     out.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n")
     print(f"wrote {out.relative_to(REPO_ROOT)}")
 
