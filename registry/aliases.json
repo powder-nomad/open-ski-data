@@ -2809,6 +2809,14 @@
       "from": "rookie-hill",
       "to": "echo",
       "at": "2026-07-03"
+    },
+    {
+      "seq": 352,
+      "kind": "lift",
+      "place_slug": "yongpyong",
+      "from": "unnamed",
+      "to": "blue",
+      "at": "2026-10-02"
     }
   ]
 }
