@@ -197,7 +197,7 @@
     "copyCoords": "좌표 복사",
     "joinDelete": "합치고 삭제",
     "reviewTitle": "검토 목록 ({count})",
-    "reviewKeys": "F 뒤집기 · T 양방향 · A 확인 · D 삭제 · N 다음",
+    "reviewKeys": "F 뒤집기 · T 양방향 · A 확인 · D 삭제 · S 자르기 · J 다시 잇기 · N 다음",
     "reviewEmpty": "검토할 것이 없어요.",
     "reviewReasonSuggested": "타 본 기록 없음",
     "reviewReasonWeak": "한두 번만 탐",
@@ -212,7 +212,11 @@
     "reviewOriginOsm": "OpenStreetMap, {count}번 탐",
     "reviewOriginUser": "{who} 확인",
     "reviewOriginUnknown": "출처 없음",
-    "reviewOriginUserAnon": "직접 확인함"
+    "reviewOriginUserAnon": "직접 확인함",
+    "reviewCut": "자르기",
+    "reviewRejoin": "다시 잇기",
+    "reviewCutHint": "자를 곳을 지도의 선 위에서 클릭하세요.",
+    "reviewJoinHint": "끝점을 이으려면: 노드를 선택해 다른 노드 위로, 또는 슬로프 중간으로 끌어다 놓으세요."
   },
   "settings": {
     "title": "설정",

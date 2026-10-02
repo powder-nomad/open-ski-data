@@ -197,7 +197,7 @@
     "copyCoords": "Copy coords",
     "joinDelete": "Join & delete",
     "reviewTitle": "To review ({count})",
-    "reviewKeys": "F flip · T two-way · A confirm · D delete · N next",
+    "reviewKeys": "F flip · T two-way · A confirm · D delete · S cut · J rejoin · N next",
     "reviewEmpty": "Nothing left to review.",
     "reviewReasonSuggested": "never ridden",
     "reviewReasonWeak": "ridden once or twice",
@@ -212,7 +212,11 @@
     "reviewOriginOsm": "OpenStreetMap, ridden {count}×",
     "reviewOriginUser": "confirmed by {who}",
     "reviewOriginUnknown": "origin unknown",
-    "reviewOriginUserAnon": "confirmed by hand"
+    "reviewOriginUserAnon": "confirmed by hand",
+    "reviewCut": "Cut",
+    "reviewRejoin": "Rejoin",
+    "reviewCutHint": "Click the line where it should be cut.",
+    "reviewJoinHint": "To join ends: select a node and drag it onto another node, or onto the middle of a slope."
   },
   "settings": {
     "title": "Settings",

@@ -23,6 +23,10 @@ export function EdgePanel({
   onTwoWay,
   onConfirm,
   onDelete,
+  cutArmed,
+  onCut,
+  canRejoin,
+  onRejoin,
   onClose,
 }: {
   edge: GraphEdge;
@@ -33,6 +37,10 @@ export function EdgePanel({
   onTwoWay: () => void;
   onConfirm: () => void;
   onDelete: () => void;
+  cutArmed: boolean;
+  onCut: () => void;
+  canRejoin: boolean;
+  onRejoin: () => void;
   onClose: () => void;
 }) {
   const t = useTranslations("slopeAuthor");
@@ -71,7 +79,20 @@ export function EdgePanel({
         <button type="button" onClick={onDelete} className={`${button} border-red-600 text-red-600 hover:bg-red-500/10`}>
           {t("reviewDelete")} <kbd className="ml-1 text-xs opacity-60">D</kbd>
         </button>
+        <button
+          type="button"
+          onClick={onCut}
+          disabled={edge.kind === "traverse"}
+          aria-pressed={cutArmed}
+          className={`${button} ${cutArmed ? "border-amber-500 bg-amber-400/20" : "border-[var(--border)]"} text-[var(--fg)] hover:bg-[var(--fg)]/10`}
+        >
+          {t("reviewCut")} <kbd className="ml-1 text-xs opacity-60">S</kbd>
+        </button>
+        <button type="button" onClick={onRejoin} disabled={!canRejoin} className={`${button} border-[var(--border)] text-[var(--fg)] hover:bg-[var(--fg)]/10`}>
+          {t("reviewRejoin")} <kbd className="ml-1 text-xs opacity-60">J</kbd>
+        </button>
       </div>
+      <p className="mt-2 text-sm text-[var(--fg-muted)]">{cutArmed ? t("reviewCutHint") : t("reviewJoinHint")}</p>
     </section>
   );
 }

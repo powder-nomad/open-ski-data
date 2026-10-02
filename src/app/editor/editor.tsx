@@ -34,6 +34,7 @@ import {
 import { type EditorMode, ModeToolbar, modeDescriptor, MODE_I18N } from "./mode-toolbar";
 import { EdgePanel, ReviewListPanel } from "./graph-review-panel";
 import { edgeColour, edgeLabel, flipped, linkAll, reverseLink, reviewItems, userEdit } from "@/lib/graph-review";
+import { continuation, dropNode, joinEdges, splitEdge, type Graph } from "@/lib/graph-ops";
 
 /**
  * Slope Author v2 — see ./page.tsx for the rationale.
@@ -1668,6 +1669,60 @@ export function SlopeAuthor2() {
       selectEdge(reviewList[(at + 1) % reviewList.length].edgeId);
     },
   };
+  // Structural edits (cut, weld, rejoin) are computed on the whole live
+  // graph and stored back as the difference from what was loaded.
+  function commitGraph(next: Graph) {
+    const base = loadedResort?.graph;
+    if (!base) return;
+    const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+    const baseNodes = new Map(base.nodes.map((n) => [n.id, n]));
+    const baseEdges = new Map(base.edges.map((e) => [e.id, e]));
+    const nextNodeIds = new Set(next.nodes.map((n) => n.id));
+    const nextEdgeIds = new Set(next.edges.map((e) => e.id));
+    const nodeOv: Record<string, Partial<GraphNode>> = {};
+    const edgeOv: Record<string, EdgeOverride> = {};
+    for (const n of next.nodes) if (baseNodes.has(n.id) && !same(baseNodes.get(n.id), n)) nodeOv[n.id] = n;
+    for (const e of next.edges) if (baseEdges.has(e.id) && !same(baseEdges.get(e.id), e)) edgeOv[e.id] = e;
+    setDeletedGraphNodeIds(base.nodes.filter((n) => !nextNodeIds.has(n.id)).map((n) => n.id));
+    setDeletedGraphEdgeIds(base.edges.filter((e) => !nextEdgeIds.has(e.id)).map((e) => e.id));
+    setNodeOverrides(nodeOv);
+    setEdgeOverrides(edgeOv);
+    setAddedGraphNodes(next.nodes.filter((n) => !baseNodes.has(n.id)));
+    setAddedGraphEdges(next.edges.filter((e) => !baseEdges.has(e.id)));
+  }
+  const liveGraph = (): Graph => ({ nodes: [...liveGraphNodes.values()], edges: liveGraphEdges });
+  // Letting go of a dragged node welds it to a node it lands on, or cuts
+  // the slope it lands on and welds it there; otherwise it just moves.
+  const dropNodeAt = (nodeId: string, lat: number, lng: number) => {
+    const dropped = dropNode(liveGraph(), nodeId, lat, lng, sessionUser?.login);
+    commitGraph(dropped.graph);
+    if (dropped.intoId) selectNode(dropped.intoId);
+  };
+  const dropNodeAtRef = useRef(dropNodeAt);
+  dropNodeAtRef.current = dropNodeAt;
+  // "Cut" waits for a click on the line: that is where the edge is cut.
+  const [cutArmed, setCutArmed] = useState(false);
+  const cutArmedRef = useRef(cutArmed);
+  cutArmedRef.current = cutArmed;
+  const cutEdgeAt = (edgeId: string, lat: number, lng: number) => {
+    const cut = splitEdge(liveGraph(), edgeId, lat, lng, sessionUser?.login);
+    setCutArmed(false);
+    if (!cut) return;
+    commitGraph(cut.graph);
+    setSelectedEdgeId(null);
+    selectNode(cut.nodeId);
+  };
+  const cutEdgeAtRef = useRef(cutEdgeAt);
+  cutEdgeAtRef.current = cutEdgeAt;
+  const rejoinSelectedEdge = () => {
+    if (!selectedEdgeId) return;
+    const joined = joinEdges(liveGraph(), selectedEdgeId, sessionUser?.login);
+    if (!joined) return;
+    commitGraph(joined.graph);
+    setSelectedEdgeId(joined.edgeId);
+  };
+  const structureRef = useRef({ armCut: () => setCutArmed((on) => !on), rejoin: rejoinSelectedEdge });
+  structureRef.current = { armCut: () => setCutArmed((on) => !on), rejoin: rejoinSelectedEdge };
   const reviewActionsRef = useRef(reviewActions);
   reviewActionsRef.current = reviewActions;
   // F / T / A / D / N act on the selected edge, as the review panel says.
@@ -1684,6 +1739,8 @@ export function SlopeAuthor2() {
       else if (key === "t") a.twoWay();
       else if (key === "a") a.confirm();
       else if (key === "d") a.remove();
+      else if (key === "s") structureRef.current.armCut();
+      else if (key === "j") structureRef.current.rejoin();
       else return;
       e.preventDefault();
     }
@@ -2307,7 +2364,8 @@ export function SlopeAuthor2() {
       const isPending = anchorNodeId === n.id;
       const isSelectedNode = selectedNodeId === n.id;
       const isMultiSelNode = multiSelectedIds.has(n.id);
-      const draggable = isEditNode && isSelectedNode;
+      // A selected node can be dragged straight away: onto a node to weld, onto a slope to cut in.
+      const draggable = (isEditNode || isSelectMode) && isSelectedNode;
       const baseColor = isPending
         ? "#facc15"
         : isSelectedNode
@@ -2338,14 +2396,7 @@ export function SlopeAuthor2() {
       if (draggable) {
         marker.addListener("dragend", (ev: google.maps.MapMouseEvent) => {
           if (!ev.latLng) return;
-          const lat = ev.latLng.lat();
-          const lng = ev.latLng.lng();
-          const alt = n.alt_m;
-          setNodeOverrides((prev) => ({
-            ...prev,
-            [n.id]: { ...prev[n.id], lat, lng },
-          }));
-          applyNodeMove(n.id, lat, lng, alt);
+          dropNodeAtRef.current(n.id, ev.latLng.lat(), ev.latLng.lng());
         });
       }
       graphNodeMarkersRef.current.push(marker);
@@ -2354,7 +2405,8 @@ export function SlopeAuthor2() {
     for (const n of addedGraphNodes) {
       const isPending = anchorNodeId === n.id;
       const isSelectedNode = selectedNodeId === n.id;
-      const draggable = isEditNode && isSelectedNode;
+      // A selected node can be dragged straight away: onto a node to weld, onto a slope to cut in.
+      const draggable = (isEditNode || isSelectMode) && isSelectedNode;
       const marker = new google.maps.Marker({
         position: { lat: n.lat, lng: n.lng },
         map,
@@ -2392,13 +2444,7 @@ export function SlopeAuthor2() {
       if (draggable) {
         marker.addListener("dragend", (ev: google.maps.MapMouseEvent) => {
           if (!ev.latLng) return;
-          const lat = ev.latLng.lat();
-          const lng = ev.latLng.lng();
-          const alt = n.alt_m;
-          setAddedGraphNodes((prev) =>
-            prev.map((x) => (x.id === n.id ? { ...x, lat, lng } : x)),
-          );
-          applyNodeMove(n.id, lat, lng, alt);
+          dropNodeAtRef.current(n.id, ev.latLng.lat(), ev.latLng.lng());
         });
       }
       graphNodeMarkersRef.current.push(marker);
@@ -2488,8 +2534,12 @@ export function SlopeAuthor2() {
         editable: isEditing,
         zIndex: isEditing ? 30 : isMultiSel ? 25 : isAdded ? 20 : 10,
       });
-      line.addListener("click", () => {
+      line.addListener("click", (ev: google.maps.MapMouseEvent) => {
         const m = modeRef.current;
+        if (cutArmedRef.current && ev.latLng) {
+          cutEdgeAtRef.current(e.id, ev.latLng.lat(), ev.latLng.lng());
+          return;
+        }
         if (m === "select" || m === "edit-edge") {
           selectEdge(e.id);
         }
@@ -3573,6 +3623,10 @@ export function SlopeAuthor2() {
                   onTwoWay={reviewActions.twoWay}
                   onConfirm={reviewActions.confirm}
                   onDelete={reviewActions.remove}
+                  cutArmed={cutArmed}
+                  onCut={() => setCutArmed((on) => !on)}
+                  canRejoin={!!continuation(liveGraph(), edge)}
+                  onRejoin={rejoinSelectedEdge}
                   onClose={() => selectEdge(null)}
                 />
               );
