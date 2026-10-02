@@ -79,6 +79,19 @@ Re-running is idempotent — stable IDs + diff-friendly ordering — so you
 can safely regenerate after upstream OSM edits or override tweaks and
 review the diff.
 
+## Building a slope-graph
+
+```bash
+python scripts/build_slope_graph.py yongpyong --tracks ~/tracks   # .slopes exports or .gpx
+python scripts/build_slope_graph.py --dry-run high1               # OSM only, write nothing
+```
+
+Writes `registry/<cc>/<region>/<slug>/slope-graph.json` (version 2) and
+`scripts/review/<slug>-graph.md`. The review lists edges no track rode,
+OSM ways with no catalog record, and transitions riders made that the
+map has no line for. Tracks stay on your machine; only counts are
+written. The header of the script explains each step.
+
 ## Debugging slope-graphs
 
 Two authoring aids for reviewing a `<slug>.slope-graph.json`:
