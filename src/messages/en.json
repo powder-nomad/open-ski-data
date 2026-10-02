@@ -222,7 +222,17 @@
     "reviewOrientFailed": "Couldn't get elevations. Try again.",
     "reviewOrientDone": "Altitudes refilled, {count} turned round.",
     "reviewNearTitle": "Probably the same place ({count})",
-    "reviewWeld": "Weld"
+    "reviewWeld": "Weld",
+    "reviewBelongsSlope": "Slope this piece belongs to",
+    "reviewBelongsLift": "Lift this piece belongs to",
+    "reviewBelongsNone": "— none —",
+    "drawTitle": "Draw a line between nodes",
+    "drawHintStart": "Click the node the line starts at.",
+    "drawHintBend": "Click open map to bend the line ({count} so far), then click the node it ends at.",
+    "drawUndoBend": "Remove last bend",
+    "joinToggle": "Join where I drop it",
+    "joinToggleOffHint": "Dragging only moves this node and the ends of its own lines. Hold Shift while dragging to join once.",
+    "joinToggleOnHint": "Dropped on a node, the two become one. Dropped on the middle of a slope, the slope is cut there."
   },
   "settings": {
     "title": "Settings",

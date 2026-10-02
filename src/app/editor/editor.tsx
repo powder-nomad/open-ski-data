@@ -32,9 +32,9 @@ import {
   type LatLng,
 } from "@/lib/geo";
 import { type EditorMode, ModeToolbar, modeDescriptor, MODE_I18N } from "./mode-toolbar";
-import { EdgePanel, ReviewListPanel } from "./graph-review-panel";
+import { ConnectDraftPanel, EdgePanel, NodeJoinToggle, ReviewListPanel, type ConnectDraft } from "./graph-review-panel";
 import { edgeColour, edgeLabel, flipped, linkAll, nearPairs, reverseLink, reviewItems, userEdit } from "@/lib/graph-review";
-import { continuation, dropNode, joinEdges, mergeNode, orientByElevation, positionKey, positions, splitEdge, type Graph } from "@/lib/graph-ops";
+import { continuation, dropNode, joinEdges, mergeNode, moveNode, orientByElevation, positionKey, positions, splitEdge, type Graph } from "@/lib/graph-ops";
 
 /**
  * Slope Author v2 — see ./page.tsx for the rationale.
@@ -431,28 +431,37 @@ export function SlopeAuthor2() {
       ...addedGraphEdgesRef.current,
     ];
     // Edges are one-way: A→B existing doesn't stop you adding B→A.
-    const dup = existingEdges.some(
-      (e) => e.from === fromN.id && e.to === toN.id,
-    );
+    const dup =
+      connectDraftRef.current.waypoints.length === 0 &&
+      existingEdges.some((e) => e.from === fromN.id && e.to === toN.id && e.kind === connectDraftRef.current.kind);
     if (!dup) {
       const id = `e-u-${Date.now().toString(36)}-${Math.random()
         .toString(36)
         .slice(2, 6)}`;
       setAddedGraphEdges((prev) => [
         ...prev,
-        {
-          id,
-          from: fromN.id,
-          to: toN.id,
-          kind: "traverse",
-          geometry: [
+        (() => {
+          const draft = connectDraftRef.current;
+          const via = draft.waypoints;
+          // Bends get a straight-line altitude for now; "directions from elevation" measures them.
+          const geometry = [
             { lat: fromN.lat, lng: fromN.lng, alt_m: fromN.alt_m },
+            ...via.map((p, i) => ({ ...p, alt_m: Math.round(fromN.alt_m + ((toN.alt_m - fromN.alt_m) * (i + 1)) / (via.length + 1)) })),
             { lat: toN.lat, lng: toN.lng, alt_m: toN.alt_m },
-          ],
-          provenance: userEdit(sessionUser?.login),
-        },
+          ];
+          return {
+            id,
+            ...(draft.kind === "slope" ? { slope_id: draft.lineId || null } : draft.kind === "lift" ? { lift_id: draft.lineId || null } : { slope_id: null }),
+            from: fromN.id,
+            to: toN.id,
+            kind: draft.kind,
+            geometry,
+            provenance: userEdit(sessionUser?.login),
+          };
+        })(),
       ]);
     }
+    setConnectDraft((d) => ({ ...d, waypoints: [] }));
     // Chain: advance the anchor to the just-clicked node. The dup-check
     // above still ran with the previous anchor, so even when the edge
     // wasn't created (dedup hit), advancing the anchor is the right
@@ -514,6 +523,13 @@ export function SlopeAuthor2() {
   // anchor advances to the clicked node. Cleared on Esc, resort change,
   // mode change away from connect-nodes, and on anchor self-click.
   const [anchorNodeId, setAnchorNodeId] = useState<string | null>(null);
+  // What the next connection will be: a plain link, or a piece of a slope
+  // or lift, and the points it bends through on its way to the next node.
+  const [connectDraft, setConnectDraft] = useState<ConnectDraft>({ kind: "traverse", lineId: "", waypoints: [] });
+  const connectDraftRef = useRef(connectDraft);
+  connectDraftRef.current = connectDraft;
+  const anchorForDraftRef = useRef(anchorNodeId);
+  anchorForDraftRef.current = anchorNodeId;
 
   // edit-edge mode: which edge is being edited and per-baseline-edge
   // geometry overrides. Selection drives the editable polyline
@@ -1295,6 +1311,11 @@ export function SlopeAuthor2() {
 
   const handleMapClick = useCallback(async (latLng: { lat: number; lng: number }) => {
     const m = modeRef.current;
+    if (m === "connect-nodes" && anchorForDraftRef.current) {
+      // Between two nodes, a click on open map is a bend in the line being drawn.
+      setConnectDraft((d) => ({ ...d, waypoints: [...d.waypoints, { lat: latLng.lat, lng: latLng.lng }] }));
+      return;
+    }
     if (m === "pick") {
       const id = `pick-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
       const draft: PickedPoint = {
@@ -1705,7 +1726,24 @@ export function SlopeAuthor2() {
   const liveGraph = (): Graph => ({ nodes: [...liveGraphNodes.values()], edges: liveGraphEdges });
   // Letting go of a dragged node welds it to a node it lands on, or cuts
   // the slope it lands on and welds it there; otherwise it just moves.
+  // Joining is asked for (the toggle, or Shift held while dragging): a plain
+  // drag only ever moves the node and the ends of its own edges.
+  const [joinOnDrop, setJoinOnDrop] = useState(false);
+  const shiftHeldRef = useRef(false);
+  useEffect(() => {
+    const set = (e: KeyboardEvent) => { shiftHeldRef.current = e.shiftKey; };
+    window.addEventListener("keydown", set, true);
+    window.addEventListener("keyup", set, true);
+    return () => {
+      window.removeEventListener("keydown", set, true);
+      window.removeEventListener("keyup", set, true);
+    };
+  }, []);
   const dropNodeAt = (nodeId: string, lat: number, lng: number) => {
+    if (!joinOnDrop && !shiftHeldRef.current) {
+      commitGraph(moveNode(liveGraph(), nodeId, lat, lng));
+      return;
+    }
     const dropped = dropNode(liveGraph(), nodeId, lat, lng, sessionUser?.login);
     commitGraph(dropped.graph);
     if (dropped.intoId) selectNode(dropped.intoId);
@@ -2669,6 +2707,30 @@ export function SlopeAuthor2() {
     multiSelectedIds,
   ]);
 
+  // Dropping the start node (Esc, leaving the mode) drops the bends drawn from it.
+  useEffect(() => {
+    if (anchorNodeId === null) setConnectDraft((d) => (d.waypoints.length ? { ...d, waypoints: [] } : d));
+  }, [anchorNodeId]);
+
+  // The line being drawn in connect mode: from the first node through its bends so far.
+  const connectPreviewRef = useRef<google.maps.Polyline | null>(null);
+  useEffect(() => {
+    connectPreviewRef.current?.setMap(null);
+    connectPreviewRef.current = null;
+    const map = googleMap.current;
+    const from = anchorNodeId ? liveGraphNodes.get(anchorNodeId) : undefined;
+    if (!map || mode !== "connect-nodes" || !from || connectDraft.waypoints.length === 0) return;
+    connectPreviewRef.current = new google.maps.Polyline({
+      map,
+      path: [{ lat: from.lat, lng: from.lng }, ...connectDraft.waypoints],
+      strokeColor: "#facc15",
+      strokeOpacity: 1,
+      strokeWeight: 3,
+      clickable: false,
+      zIndex: 60,
+    });
+  }, [mode, mapReady, anchorNodeId, connectDraft.waypoints, liveGraphNodes]);
+
   // Esc cancels the pending "from" node in connect-nodes mode, OR
   // drops the edge selection in edit-edge mode (which also flips the
   // toolbar back to a state where edit-edge is disabled). Cleared
@@ -3608,11 +3670,26 @@ export function SlopeAuthor2() {
                 hasGraph={!!loadedResort?.graph}
                 anchorNodeId={anchorNodeId}
                 addedEdgesCount={addedGraphEdges.length}
-                onCancelPending={() => setAnchorNodeId(null)}
+                onCancelPending={() => {
+                  setAnchorNodeId(null);
+                  setConnectDraft((d) => ({ ...d, waypoints: [] }));
+                }}
                 onUndoLastEdge={() =>
                   setAddedGraphEdges((prev) => prev.slice(0, -1))
                 }
               />
+            )}
+            {mode === "connect-nodes" && loadedResort?.graph && (
+              <ConnectDraftPanel
+                draft={connectDraft}
+                drawing={anchorNodeId !== null}
+                slopes={effectiveSlopes.map((x) => ({ id: x.id, name: lineNames.get(x.id) ?? x.id }))}
+                lifts={effectiveLifts.map((x) => ({ id: x.id, name: lineNames.get(x.id) ?? x.id }))}
+                onChange={(patch) => setConnectDraft((d) => ({ ...d, ...patch }))}
+              />
+            )}
+            {selectedNodeId !== null && loadedResort?.graph && (
+              <NodeJoinToggle on={joinOnDrop} onChange={setJoinOnDrop} />
             )}
 
             {mode === "draw-lift" && (
@@ -3665,6 +3742,13 @@ export function SlopeAuthor2() {
                   onTwoWay={reviewActions.twoWay}
                   onConfirm={reviewActions.confirm}
                   onDelete={reviewActions.remove}
+                  lines={(edge.kind === "lift" ? effectiveLifts : effectiveSlopes).map((x) => ({ id: x.id, name: lineNames.get(x.id) ?? x.id }))}
+                  onAssign={(id) =>
+                    patchEdge(edge.id, {
+                      ...(edge.kind === "lift" ? { lift_id: id || null } : { slope_id: id || null }),
+                      provenance: { ...(edge.provenance ?? {}), ...userEdit(sessionUser?.login) },
+                    })
+                  }
                   cutArmed={cutArmed}
                   onCut={() => setCutArmed((on) => !on)}
                   canRejoin={!!continuation(liveGraph(), edge)}

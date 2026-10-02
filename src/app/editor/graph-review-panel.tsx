@@ -23,6 +23,8 @@ export function EdgePanel({
   onTwoWay,
   onConfirm,
   onDelete,
+  lines,
+  onAssign,
   cutArmed,
   onCut,
   canRejoin,
@@ -37,6 +39,9 @@ export function EdgePanel({
   onTwoWay: () => void;
   onConfirm: () => void;
   onDelete: () => void;
+  /** The slopes (or lifts) this piece could belong to. */
+  lines: { id: string; name: string }[];
+  onAssign: (id: string) => void;
   cutArmed: boolean;
   onCut: () => void;
   canRejoin: boolean;
@@ -66,6 +71,21 @@ export function EdgePanel({
           ✕
         </button>
       </header>
+      {edge.kind !== "traverse" && (
+        <label className="mb-3 block text-sm text-[var(--fg-muted)]">
+          {edge.kind === "lift" ? t("reviewBelongsLift") : t("reviewBelongsSlope")}
+          <select
+            value={(edge.kind === "lift" ? edge.lift_id : edge.slope_id) ?? ""}
+            onChange={(e) => onAssign(e.target.value)}
+            className="mt-1 block min-h-11 w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 text-sm text-[var(--fg)]"
+          >
+            <option value="">{t("reviewBelongsNone")}</option>
+            {lines.map((l) => (
+              <option key={l.id} value={l.id}>{l.name}</option>
+            ))}
+          </select>
+        </label>
+      )}
       <div className="grid grid-cols-2 gap-2">
         <button type="button" onClick={onFlip} className={`${button} border-[var(--border)] text-[var(--fg)] hover:bg-[var(--fg)]/10`}>
           {t("reviewFlip")} <kbd className="ml-1 text-xs opacity-60">F</kbd>
@@ -92,7 +112,7 @@ export function EdgePanel({
           {t("reviewRejoin")} <kbd className="ml-1 text-xs opacity-60">J</kbd>
         </button>
       </div>
-      <p className="mt-2 text-sm text-[var(--fg-muted)]">{cutArmed ? t("reviewCutHint") : t("reviewJoinHint")}</p>
+      {cutArmed && <p className="mt-2 text-sm text-[var(--fg-muted)]">{t("reviewCutHint")}</p>}
     </section>
   );
 }
@@ -189,6 +209,89 @@ export function ReviewListPanel({
           </ul>
         </>
       )}
+    </section>
+  );
+}
+
+export type ConnectDraft = {
+  kind: "traverse" | "slope" | "lift";
+  /** The slope or lift the new piece belongs to; empty for none. */
+  lineId: string;
+  waypoints: { lat: number; lng: number }[];
+};
+
+/** Connect mode's settings: what the line you are about to draw is, and how to bend it. */
+export function ConnectDraftPanel({
+  draft,
+  drawing,
+  slopes,
+  lifts,
+  onChange,
+}: {
+  draft: ConnectDraft;
+  drawing: boolean;
+  slopes: { id: string; name: string }[];
+  lifts: { id: string; name: string }[];
+  onChange: (patch: Partial<ConnectDraft>) => void;
+}) {
+  const t = useTranslations("slopeAuthor");
+  const kinds: ConnectDraft["kind"][] = ["traverse", "slope", "lift"];
+  const label = (k: ConnectDraft["kind"]) => (k === "slope" ? t("edgesPanelKindSlope") : k === "lift" ? t("edgesPanelKindLift") : t("edgesPanelKindTraverse"));
+  const lines = draft.kind === "slope" ? slopes : draft.kind === "lift" ? lifts : [];
+  return (
+    <section className="rounded-lg border border-[var(--border)] p-3">
+      <h2 className="mb-2 text-sm font-bold text-[var(--fg)]">{t("drawTitle")}</h2>
+      <div role="group" aria-label={t("drawTitle")} className="mb-2 flex gap-1">
+        {kinds.map((k) => (
+          <button
+            key={k}
+            type="button"
+            aria-pressed={draft.kind === k}
+            onClick={() => onChange({ kind: k, lineId: "" })}
+            className={`min-h-11 flex-1 rounded-md border px-2 text-sm font-semibold ${
+              draft.kind === k ? "border-[#22d3ee] bg-[#22d3ee]/20 text-[var(--fg)]" : "border-[var(--border)] text-[var(--fg-muted)]"
+            }`}
+          >
+            {label(k)}
+          </button>
+        ))}
+      </div>
+      {draft.kind !== "traverse" && (
+        <select
+          value={draft.lineId}
+          onChange={(e) => onChange({ lineId: e.target.value })}
+          className="mb-2 block min-h-11 w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 text-sm text-[var(--fg)]"
+        >
+          <option value="">{t("reviewBelongsNone")}</option>
+          {lines.map((l) => (
+            <option key={l.id} value={l.id}>{l.name}</option>
+          ))}
+        </select>
+      )}
+      <p className="text-sm text-[var(--fg-muted)]">{drawing ? t("drawHintBend", { count: draft.waypoints.length }) : t("drawHintStart")}</p>
+      {draft.waypoints.length > 0 && (
+        <button
+          type="button"
+          onClick={() => onChange({ waypoints: draft.waypoints.slice(0, -1) })}
+          className="mt-2 min-h-11 rounded-md border border-[var(--border)] px-3 text-sm font-semibold text-[var(--fg)] hover:bg-[var(--fg)]/10"
+        >
+          {t("drawUndoBend")}
+        </button>
+      )}
+    </section>
+  );
+}
+
+/** Shown with a selected node: whether letting go of it joins it to what it lands on. */
+export function NodeJoinToggle({ on, onChange }: { on: boolean; onChange: (on: boolean) => void }) {
+  const t = useTranslations("slopeAuthor");
+  return (
+    <section className="rounded-lg border border-[var(--border)] p-3">
+      <label className="flex min-h-11 items-center gap-3 text-sm font-semibold text-[var(--fg)]">
+        <input type="checkbox" checked={on} onChange={(e) => onChange(e.target.checked)} className="h-5 w-5" />
+        {t("joinToggle")}
+      </label>
+      <p className="mt-1 text-sm text-[var(--fg-muted)]">{on ? t("joinToggleOnHint") : t("joinToggleOffHint")}</p>
     </section>
   );
 }

@@ -222,7 +222,17 @@
     "reviewOrientFailed": "고도를 가져오지 못했어요. 다시 시도해 주세요.",
     "reviewOrientDone": "고도를 다시 채웠고, {count}개를 뒤집었어요.",
     "reviewNearTitle": "같은 지점으로 보이는 노드 ({count})",
-    "reviewWeld": "합치기"
+    "reviewWeld": "합치기",
+    "reviewBelongsSlope": "이 구간이 속한 슬로프",
+    "reviewBelongsLift": "이 구간이 속한 리프트",
+    "reviewBelongsNone": "— 없음 —",
+    "drawTitle": "노드 사이에 선 그리기",
+    "drawHintStart": "선이 시작되는 노드를 클릭하세요.",
+    "drawHintBend": "지도 빈 곳을 클릭하면 선이 꺾여요 (지금 {count}개). 끝나는 노드를 클릭하면 완성돼요.",
+    "drawUndoBend": "마지막 꺾는 점 지우기",
+    "joinToggle": "놓는 곳에 붙이기",
+    "joinToggleOffHint": "끌면 이 노드와 여기에 닿은 선의 끝만 움직여요. Shift를 누른 채 끌면 한 번만 붙여요.",
+    "joinToggleOnHint": "다른 노드 위에 놓으면 하나로 합쳐지고, 슬로프 중간에 놓으면 그 자리에서 슬로프가 잘려요."
   },
   "settings": {
     "title": "설정",
