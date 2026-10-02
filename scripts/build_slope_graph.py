@@ -71,6 +71,7 @@ OVERPASS_URLS = [
     "https://overpass.kumi.systems/api/interpreter",
 ]
 ELEVATION_URL = "https://api.open-meteo.com/v1/elevation"
+EDITOR_ELEVATION_URL = "https://osd-edit.pages.dev/api/elevation"
 USER_AGENT = "open-ski-data build_slope_graph (https://github.com/powder-nomad/open-ski-data)"
 
 # aerialway values that carry riders. `yes`, `station`, `pylon`, `goods`
@@ -210,18 +211,32 @@ def fetch_elevations(slug: str, points: dict[int, tuple[float, float]]) -> dict[
             "latitude": ",".join(f"{points[i][0]:.6f}" for i in batch),
             "longitude": ",".join(f"{points[i][1]:.6f}" for i in batch),
         }
-        # The free endpoint answers 429 when asked too fast; wait and go on.
-        for wait in (0, 15, 60, 120):
+        # The free endpoint answers 429 when asked too fast, and for the rest
+        # of the day once its quota is spent; then the editor's own
+        # elevation service (Google's data) answers instead.
+        values = None
+        for wait in () if fetch_elevations.quota_spent else (0, 15, 60):
             time.sleep(wait)
             resp = requests.get(ELEVATION_URL, params=params, timeout=30)
-            if resp.status_code != 429:
+            if resp.status_code == 200:
+                values = resp.json()["elevation"]
                 break
-        resp.raise_for_status()
-        for i, alt in zip(batch, resp.json()["elevation"]):
+            if resp.status_code != 429:
+                resp.raise_for_status()
+        if values is None:
+            fetch_elevations.quota_spent = True
+            resp = requests.post(EDITOR_ELEVATION_URL, json={"points": [[points[i][0], points[i][1]] for i in batch]},
+                                 headers={"User-Agent": USER_AGENT}, timeout=60)
+            resp.raise_for_status()
+            values = resp.json()["elevations"]
+        for i, alt in zip(batch, values):
             known[str(i)] = alt
         CACHE_DIR.mkdir(exist_ok=True)
         cache.write_text(json.dumps(known))
     return {i: known[str(i)] for i in points}
+
+
+fetch_elevations.quota_spent = False
 
 
 def norm(name: str | None) -> str:
