@@ -877,7 +877,7 @@
       }
     },
     {
-      "id": "e-477491147-4708345313",
+      "id": "e-477491147-4708345312",
       "lift_id": "gold",
       "kind": "lift",
       "from": "n-4708345313",
@@ -977,7 +977,7 @@
       }
     },
     {
-      "id": "e-477491151-4708345333",
+      "id": "e-477491151-4708345326",
       "lift_id": "mega-green",
       "kind": "lift",
       "from": "n-4708345333",
@@ -5241,7 +5241,7 @@
       }
     },
     {
-      "id": "e-533413168-5175026764",
+      "id": "e-533413168-14225418379",
       "lift_id": "rainbow",
       "kind": "lift",
       "from": "n-5175026764",
@@ -5346,7 +5346,7 @@
       }
     },
     {
-      "id": "e-533419417-5175076430",
+      "id": "e-533419417-5175076431",
       "lift_id": "red",
       "kind": "lift",
       "from": "n-5175076430",
@@ -5441,7 +5441,7 @@
       }
     },
     {
-      "id": "e-533419419-5175076436",
+      "id": "e-533419419-5175076437",
       "lift_id": "new-gold",
       "kind": "lift",
       "from": "n-5175076436",
@@ -5506,7 +5506,7 @@
       }
     },
     {
-      "id": "e-533426025-5175129662",
+      "id": "e-533426025-5175129663",
       "lift_id": "silver",
       "kind": "lift",
       "from": "n-5175129662",
@@ -5663,7 +5663,7 @@
       }
     },
     {
-      "id": "e-996685258-9203028529-rev",
+      "id": "e-996685258-5173256939-rev",
       "slope_id": "unnamed-996685258",
       "kind": "slope",
       "from": "n-9203028529",
@@ -5718,7 +5718,7 @@
       }
     },
     {
-      "id": "e-996685258-9203028530-rev",
+      "id": "e-996685258-9203028529-rev",
       "slope_id": "unnamed-996685258",
       "kind": "slope",
       "from": "n-9203028530",
@@ -6178,7 +6178,7 @@
       }
     },
     {
-      "id": "e-1457094309-13363244033",
+      "id": "e-1457094309-13363244034",
       "lift_id": "green",
       "kind": "lift",
       "from": "n-13363244033",
@@ -6233,7 +6233,7 @@
       }
     },
     {
-      "id": "e-1457094310-13363244036",
+      "id": "e-1457094310-13363244035",
       "lift_id": "unnamed",
       "kind": "lift",
       "from": "n-13363244036",
@@ -6377,7 +6377,7 @@
       }
     },
     {
-      "id": "e-1562973114-14225418366",
+      "id": "e-1562973114-14225418365",
       "lift_id": "new-red",
       "kind": "lift",
       "from": "n-14225418366",
@@ -6522,6 +6522,52 @@
       }
     },
     {
+      "id": "e-link-4708345326-5174928953",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-4708345326",
+      "to": "n-5174928953",
+      "length_m": 93.9,
+      "geometry": [
+        {
+          "lat": 37.6366907,
+          "lng": 128.673461,
+          "alt_m": 860.0
+        },
+        {
+          "lat": 37.6375341,
+          "lng": 128.6734544,
+          "alt_m": 844.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-4708345326-5174928958",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-4708345326",
+      "to": "n-5174928958",
+      "length_m": 112.4,
+      "geometry": [
+        {
+          "lat": 37.6366907,
+          "lng": 128.673461,
+          "alt_m": 860.0
+        },
+        {
+          "lat": 37.6375476,
+          "lng": 128.6727859,
+          "alt_m": 864.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-4708345326-5174928960",
       "slope_id": null,
       "kind": "traverse",
@@ -6567,6 +6613,29 @@
       "provenance": {
         "source": "observed",
         "observed_count": 30
+      }
+    },
+    {
+      "id": "e-link-5173194925-5175076436",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5173194925",
+      "to": "n-5175076436",
+      "length_m": 60.4,
+      "geometry": [
+        {
+          "lat": 37.6380255,
+          "lng": 128.6871357,
+          "alt_m": 805.0
+        },
+        {
+          "lat": 37.6384223,
+          "lng": 128.6866682,
+          "alt_m": 807.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -6690,6 +6759,30 @@
       }
     },
     {
+      "id": "e-link-5173256931-5173221242",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5173256931",
+      "to": "n-5173221242",
+      "length_m": 39.6,
+      "geometry": [
+        {
+          "lat": 37.6372701,
+          "lng": 128.6837335,
+          "alt_m": 919.0
+        },
+        {
+          "lat": 37.6376241,
+          "lng": 128.6836923,
+          "alt_m": 891.0
+        }
+      ],
+      "provenance": {
+        "source": "observed",
+        "observed_count": 13
+      }
+    },
+    {
       "id": "e-link-5173256931-5173256932",
       "slope_id": null,
       "kind": "traverse",
@@ -6783,6 +6876,29 @@
       "provenance": {
         "source": "observed",
         "observed_count": 46
+      }
+    },
+    {
+      "id": "e-link-5173311786-14225418366",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5173311786",
+      "to": "n-14225418366",
+      "length_m": 71.0,
+      "geometry": [
+        {
+          "lat": 37.6411043,
+          "lng": 128.6812271,
+          "alt_m": 792.0
+        },
+        {
+          "lat": 37.6416386,
+          "lng": 128.681666,
+          "alt_m": 782.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -6882,6 +6998,29 @@
       }
     },
     {
+      "id": "e-link-5173609283-5175129662",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5173609283",
+      "to": "n-5175129662",
+      "length_m": 36.3,
+      "geometry": [
+        {
+          "lat": 37.6388758,
+          "lng": 128.6782132,
+          "alt_m": 804.0
+        },
+        {
+          "lat": 37.6391795,
+          "lng": 128.6780629,
+          "alt_m": 784.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-5173609284-5173609283",
       "slope_id": null,
       "kind": "traverse",
@@ -6927,6 +7066,29 @@
       "provenance": {
         "source": "observed",
         "observed_count": 14
+      }
+    },
+    {
+      "id": "e-link-5173609284-5175129662",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5173609284",
+      "to": "n-5175129662",
+      "length_m": 41.8,
+      "geometry": [
+        {
+          "lat": 37.6388706,
+          "lng": 128.6783334,
+          "alt_m": 789.0
+        },
+        {
+          "lat": 37.6391795,
+          "lng": 128.6780629,
+          "alt_m": 784.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -7218,6 +7380,52 @@
       }
     },
     {
+      "id": "e-link-5173762040-5175026764",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5173762040",
+      "to": "n-5175026764",
+      "length_m": 93.8,
+      "geometry": [
+        {
+          "lat": 37.6216865,
+          "lng": 128.663315,
+          "alt_m": 948.0
+        },
+        {
+          "lat": 37.6225243,
+          "lng": 128.6632024,
+          "alt_m": 997.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-5174928957-4708345333",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174928957",
+      "to": "n-4708345333",
+      "length_m": 74.8,
+      "geometry": [
+        {
+          "lat": 37.6409506,
+          "lng": 128.6775313,
+          "alt_m": 778.0
+        },
+        {
+          "lat": 37.6402818,
+          "lng": 128.6776125,
+          "alt_m": 777.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-5174928957-5174928959",
       "slope_id": null,
       "kind": "traverse",
@@ -7266,6 +7474,29 @@
       }
     },
     {
+      "id": "e-link-5174928957-13363244036",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174928957",
+      "to": "n-13363244036",
+      "length_m": 98.0,
+      "geometry": [
+        {
+          "lat": 37.6409506,
+          "lng": 128.6775313,
+          "alt_m": 778.0
+        },
+        {
+          "lat": 37.6401617,
+          "lng": 128.6780238,
+          "alt_m": 777.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-5174928959-4708345333",
       "slope_id": null,
       "kind": "traverse",
@@ -7287,6 +7518,29 @@
       "provenance": {
         "source": "observed",
         "observed_count": 29
+      }
+    },
+    {
+      "id": "e-link-5174928959-13363244033",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174928959",
+      "to": "n-13363244033",
+      "length_m": 74.3,
+      "geometry": [
+        {
+          "lat": 37.6407708,
+          "lng": 128.6776738,
+          "alt_m": 777.0
+        },
+        {
+          "lat": 37.6413925,
+          "lng": 128.6773674,
+          "alt_m": 818.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -7386,6 +7640,30 @@
       }
     },
     {
+      "id": "e-link-5174961817-5174966438",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174961817",
+      "to": "n-5174966438",
+      "length_m": 44.8,
+      "geometry": [
+        {
+          "lat": 37.6400805,
+          "lng": 128.6799255,
+          "alt_m": 798.0
+        },
+        {
+          "lat": 37.6402449,
+          "lng": 128.6794621,
+          "alt_m": 798.0
+        }
+      ],
+      "provenance": {
+        "source": "observed",
+        "observed_count": 7
+      }
+    },
+    {
       "id": "e-link-5174961820-5173200934",
       "slope_id": null,
       "kind": "traverse",
@@ -7455,6 +7733,29 @@
       "provenance": {
         "source": "observed",
         "observed_count": 4
+      }
+    },
+    {
+      "id": "e-link-5174966421-5175076436",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966421",
+      "to": "n-5175076436",
+      "length_m": 64.7,
+      "geometry": [
+        {
+          "lat": 37.6378848,
+          "lng": 128.6869472,
+          "alt_m": 805.0
+        },
+        {
+          "lat": 37.6384223,
+          "lng": 128.6866682,
+          "alt_m": 807.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -7530,6 +7831,29 @@
       }
     },
     {
+      "id": "e-link-5174966424-5175076436",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966424",
+      "to": "n-5175076436",
+      "length_m": 60.3,
+      "geometry": [
+        {
+          "lat": 37.6379615,
+          "lng": 128.6870286,
+          "alt_m": 805.0
+        },
+        {
+          "lat": 37.6384223,
+          "lng": 128.6866682,
+          "alt_m": 807.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-5174966424-13433727771",
       "slope_id": null,
       "kind": "traverse",
@@ -7551,6 +7875,29 @@
       "provenance": {
         "source": "observed",
         "observed_count": 7
+      }
+    },
+    {
+      "id": "e-link-5174966427-14225418366",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966427",
+      "to": "n-14225418366",
+      "length_m": 91.8,
+      "geometry": [
+        {
+          "lat": 37.6410658,
+          "lng": 128.6824148,
+          "alt_m": 782.0
+        },
+        {
+          "lat": 37.6416386,
+          "lng": 128.681666,
+          "alt_m": 782.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -7599,6 +7946,29 @@
       "provenance": {
         "source": "observed",
         "observed_count": 44
+      }
+    },
+    {
+      "id": "e-link-5174966429-14225418366",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966429",
+      "to": "n-14225418366",
+      "length_m": 55.3,
+      "geometry": [
+        {
+          "lat": 37.6415559,
+          "lng": 128.6822846,
+          "alt_m": 782.0
+        },
+        {
+          "lat": 37.6416386,
+          "lng": 128.681666,
+          "alt_m": 782.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -7674,6 +8044,29 @@
       }
     },
     {
+      "id": "e-link-5174966432-14225418366",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966432",
+      "to": "n-14225418366",
+      "length_m": 113.5,
+      "geometry": [
+        {
+          "lat": 37.6426383,
+          "lng": 128.6814149,
+          "alt_m": 763.0
+        },
+        {
+          "lat": 37.6416386,
+          "lng": 128.681666,
+          "alt_m": 782.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-5174966433-3798009736",
       "slope_id": null,
       "kind": "traverse",
@@ -7746,6 +8139,75 @@
       }
     },
     {
+      "id": "e-link-5174966442-5175129662",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966442",
+      "to": "n-5175129662",
+      "length_m": 89.9,
+      "geometry": [
+        {
+          "lat": 37.6397031,
+          "lng": 128.6788391,
+          "alt_m": 784.0
+        },
+        {
+          "lat": 37.6391795,
+          "lng": 128.6780629,
+          "alt_m": 784.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-5174966442-13363244036",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966442",
+      "to": "n-13363244036",
+      "length_m": 88.2,
+      "geometry": [
+        {
+          "lat": 37.6397031,
+          "lng": 128.6788391,
+          "alt_m": 784.0
+        },
+        {
+          "lat": 37.6401617,
+          "lng": 128.6780238,
+          "alt_m": 777.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-5174966443-4708345333",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966443",
+      "to": "n-4708345333",
+      "length_m": 91.0,
+      "geometry": [
+        {
+          "lat": 37.6399186,
+          "lng": 128.6785376,
+          "alt_m": 784.0
+        },
+        {
+          "lat": 37.6402818,
+          "lng": 128.6776125,
+          "alt_m": 777.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-5174966443-5174928959",
       "slope_id": null,
       "kind": "traverse",
@@ -7767,6 +8229,52 @@
       "provenance": {
         "source": "observed",
         "observed_count": 22
+      }
+    },
+    {
+      "id": "e-link-5174966443-5174966442",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966443",
+      "to": "n-5174966442",
+      "length_m": 35.8,
+      "geometry": [
+        {
+          "lat": 37.6399186,
+          "lng": 128.6785376,
+          "alt_m": 784.0
+        },
+        {
+          "lat": 37.6397031,
+          "lng": 128.6788391,
+          "alt_m": 784.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-5174966443-5175129662",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966443",
+      "to": "n-5175129662",
+      "length_m": 92.3,
+      "geometry": [
+        {
+          "lat": 37.6399186,
+          "lng": 128.6785376,
+          "alt_m": 784.0
+        },
+        {
+          "lat": 37.6391795,
+          "lng": 128.6780629,
+          "alt_m": 784.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -7914,6 +8422,29 @@
       }
     },
     {
+      "id": "e-link-5174966448-14225418345",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966448",
+      "to": "n-14225418345",
+      "length_m": 102.8,
+      "geometry": [
+        {
+          "lat": 37.6436104,
+          "lng": 128.6799984,
+          "alt_m": 757.0
+        },
+        {
+          "lat": 37.6443863,
+          "lng": 128.6806301,
+          "alt_m": 756.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-5175076431-5173256932",
       "slope_id": null,
       "kind": "traverse",
@@ -7935,6 +8466,29 @@
       "provenance": {
         "source": "observed",
         "observed_count": 4
+      }
+    },
+    {
+      "id": "e-link-5175076431-5173256937",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5175076431",
+      "to": "n-5173256937",
+      "length_m": 92.0,
+      "geometry": [
+        {
+          "lat": 37.6361655,
+          "lng": 128.6832046,
+          "alt_m": 941.0
+        },
+        {
+          "lat": 37.6369641,
+          "lng": 128.6829354,
+          "alt_m": 919.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -7986,6 +8540,52 @@
       }
     },
     {
+      "id": "e-link-5175076431-9203028529",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5175076431",
+      "to": "n-9203028529",
+      "length_m": 59.8,
+      "geometry": [
+        {
+          "lat": 37.6361655,
+          "lng": 128.6832046,
+          "alt_m": 941.0
+        },
+        {
+          "lat": 37.6356526,
+          "lng": 128.683408,
+          "alt_m": 951.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-5175076431-9203028530",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5175076431",
+      "to": "n-9203028530",
+      "length_m": 84.3,
+      "geometry": [
+        {
+          "lat": 37.6361655,
+          "lng": 128.6832046,
+          "alt_m": 941.0
+        },
+        {
+          "lat": 37.6354522,
+          "lng": 128.6835258,
+          "alt_m": 951.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-5175076431-9203028531",
       "slope_id": null,
       "kind": "traverse",
@@ -8010,6 +8610,29 @@
       }
     },
     {
+      "id": "e-link-5175076437-5173233674",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5175076437",
+      "to": "n-5173233674",
+      "length_m": 93.4,
+      "geometry": [
+        {
+          "lat": 37.6321399,
+          "lng": 128.6855076,
+          "alt_m": 973.0
+        },
+        {
+          "lat": 37.6318301,
+          "lng": 128.6845235,
+          "alt_m": 964.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-5175129663-5173609306",
       "slope_id": null,
       "kind": "traverse",
@@ -8031,6 +8654,76 @@
       "provenance": {
         "source": "observed",
         "observed_count": 2
+      }
+    },
+    {
+      "id": "e-link-5175129663-5173609313",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5175129663",
+      "to": "n-5173609313",
+      "length_m": 24.3,
+      "geometry": [
+        {
+          "lat": 37.6332641,
+          "lng": 128.6751623,
+          "alt_m": 1045.0
+        },
+        {
+          "lat": 37.6334,
+          "lng": 128.6749459,
+          "alt_m": 1000.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-5175129663-5173610941",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5175129663",
+      "to": "n-5173610941",
+      "length_m": 111.3,
+      "geometry": [
+        {
+          "lat": 37.6332641,
+          "lng": 128.6751623,
+          "alt_m": 1045.0
+        },
+        {
+          "lat": 37.6323909,
+          "lng": 128.6757775,
+          "alt_m": 1050.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-9203028525-9202958761",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-9203028525",
+      "to": "n-9202958761",
+      "length_m": 19.0,
+      "geometry": [
+        {
+          "lat": 37.6187916,
+          "lng": 128.6668746,
+          "alt_m": 1089.0
+        },
+        {
+          "lat": 37.6189022,
+          "lng": 128.6667111,
+          "alt_m": 1089.0
+        }
+      ],
+      "provenance": {
+        "source": "observed",
+        "observed_count": 7
       }
     },
     {
@@ -8130,6 +8823,77 @@
       }
     },
     {
+      "id": "e-link-9203028530-9203028529",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-9203028530",
+      "to": "n-9203028529",
+      "length_m": 24.6,
+      "geometry": [
+        {
+          "lat": 37.6354522,
+          "lng": 128.6835258,
+          "alt_m": 951.0
+        },
+        {
+          "lat": 37.6356526,
+          "lng": 128.683408,
+          "alt_m": 951.0
+        }
+      ],
+      "provenance": {
+        "source": "observed",
+        "observed_count": 7
+      }
+    },
+    {
+      "id": "e-link-9203028530-9203028531",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-9203028530",
+      "to": "n-9203028531",
+      "length_m": 4.2,
+      "geometry": [
+        {
+          "lat": 37.6354522,
+          "lng": 128.6835258,
+          "alt_m": 951.0
+        },
+        {
+          "lat": 37.6354851,
+          "lng": 128.6835488,
+          "alt_m": 951.0
+        }
+      ],
+      "provenance": {
+        "source": "observed",
+        "observed_count": 14
+      }
+    },
+    {
+      "id": "e-link-13363244034-5174928953",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-13363244034",
+      "to": "n-5174928953",
+      "length_m": 99.8,
+      "geometry": [
+        {
+          "lat": 37.6378837,
+          "lng": 128.6724125,
+          "alt_m": 862.0
+        },
+        {
+          "lat": 37.6375341,
+          "lng": 128.6734544,
+          "alt_m": 844.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-13363244034-5174928958",
       "slope_id": null,
       "kind": "traverse",
@@ -8151,6 +8915,52 @@
       "provenance": {
         "source": "observed",
         "observed_count": 7
+      }
+    },
+    {
+      "id": "e-link-13363244035-5173256932",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-13363244035",
+      "to": "n-5173256932",
+      "length_m": 98.4,
+      "geometry": [
+        {
+          "lat": 37.6364078,
+          "lng": 128.6825514,
+          "alt_m": 941.0
+        },
+        {
+          "lat": 37.6372508,
+          "lng": 128.6828888,
+          "alt_m": 919.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-13363244035-5173256937",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-13363244035",
+      "to": "n-5173256937",
+      "length_m": 70.6,
+      "geometry": [
+        {
+          "lat": 37.6364078,
+          "lng": 128.6825514,
+          "alt_m": 941.0
+        },
+        {
+          "lat": 37.6369641,
+          "lng": 128.6829354,
+          "alt_m": 919.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -8202,6 +9012,29 @@
       }
     },
     {
+      "id": "e-link-13363244035-9203028529",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-13363244035",
+      "to": "n-9203028529",
+      "length_m": 113.0,
+      "geometry": [
+        {
+          "lat": 37.6364078,
+          "lng": 128.6825514,
+          "alt_m": 941.0
+        },
+        {
+          "lat": 37.6356526,
+          "lng": 128.683408,
+          "alt_m": 951.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-13433727772-5173221223",
       "slope_id": null,
       "kind": "traverse",
@@ -8223,6 +9056,52 @@
       "provenance": {
         "source": "observed",
         "observed_count": 14
+      }
+    },
+    {
+      "id": "e-link-13433727772-5173256933",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-13433727772",
+      "to": "n-5173256933",
+      "length_m": 110.3,
+      "geometry": [
+        {
+          "lat": 37.6404936,
+          "lng": 128.6831964,
+          "alt_m": 794.0
+        },
+        {
+          "lat": 37.6409946,
+          "lng": 128.6821172,
+          "alt_m": 782.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-13433727772-5174966427",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-13433727772",
+      "to": "n-5174966427",
+      "length_m": 93.8,
+      "geometry": [
+        {
+          "lat": 37.6404936,
+          "lng": 128.6831964,
+          "alt_m": 794.0
+        },
+        {
+          "lat": 37.6410658,
+          "lng": 128.6824148,
+          "alt_m": 782.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -8274,6 +9153,75 @@
       }
     },
     {
+      "id": "e-link-14225418346-5174961814",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-14225418346",
+      "to": "n-5174961814",
+      "length_m": 40.3,
+      "geometry": [
+        {
+          "lat": 37.639981,
+          "lng": 128.6802298,
+          "alt_m": 816.0
+        },
+        {
+          "lat": 37.6396977,
+          "lng": 128.6805144,
+          "alt_m": 816.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-14225418346-5174961817",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-14225418346",
+      "to": "n-5174961817",
+      "length_m": 29.0,
+      "geometry": [
+        {
+          "lat": 37.639981,
+          "lng": 128.6802298,
+          "alt_m": 816.0
+        },
+        {
+          "lat": 37.6400805,
+          "lng": 128.6799255,
+          "alt_m": 798.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-14225418346-5174966438",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-14225418346",
+      "to": "n-5174966438",
+      "length_m": 73.8,
+      "geometry": [
+        {
+          "lat": 37.639981,
+          "lng": 128.6802298,
+          "alt_m": 816.0
+        },
+        {
+          "lat": 37.6402449,
+          "lng": 128.6794621,
+          "alt_m": 798.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-14225418346-13363244036",
       "slope_id": null,
       "kind": "traverse",
@@ -8298,6 +9246,52 @@
       }
     },
     {
+      "id": "e-link-14225418365-5173221242",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-14225418365",
+      "to": "n-5173221242",
+      "length_m": 108.3,
+      "geometry": [
+        {
+          "lat": 37.637213,
+          "lng": 128.6825787,
+          "alt_m": 919.0
+        },
+        {
+          "lat": 37.6376241,
+          "lng": 128.6836923,
+          "alt_m": 891.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-14225418365-5173256931",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-14225418365",
+      "to": "n-5173256931",
+      "length_m": 102.0,
+      "geometry": [
+        {
+          "lat": 37.637213,
+          "lng": 128.6825787,
+          "alt_m": 919.0
+        },
+        {
+          "lat": 37.6372701,
+          "lng": 128.6837335,
+          "alt_m": 919.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
       "id": "e-link-14225418365-5173256932",
       "slope_id": null,
       "kind": "traverse",
@@ -8319,6 +9313,52 @@
       "provenance": {
         "source": "observed",
         "observed_count": 28
+      }
+    },
+    {
+      "id": "e-link-14225418365-5173256937",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-14225418365",
+      "to": "n-5173256937",
+      "length_m": 41.9,
+      "geometry": [
+        {
+          "lat": 37.637213,
+          "lng": 128.6825787,
+          "alt_m": 919.0
+        },
+        {
+          "lat": 37.6369641,
+          "lng": 128.6829354,
+          "alt_m": 919.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
+      }
+    },
+    {
+      "id": "e-link-14225418365-5173256939",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-14225418365",
+      "to": "n-5173256939",
+      "length_m": 119.8,
+      "geometry": [
+        {
+          "lat": 37.637213,
+          "lng": 128.6825787,
+          "alt_m": 919.0
+        },
+        {
+          "lat": 37.6362028,
+          "lng": 128.6830457,
+          "alt_m": 941.0
+        }
+      ],
+      "provenance": {
+        "source": "suggested"
       }
     },
     {
@@ -8391,926 +9431,6 @@
       "provenance": {
         "source": "observed",
         "observed_count": 159
-      }
-    },
-    {
-      "id": "e-link-5174966443-4708345333",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966443",
-      "to": "n-4708345333",
-      "length_m": 91.0,
-      "geometry": [
-        {
-          "lat": 37.6399186,
-          "lng": 128.6785376,
-          "alt_m": 784.0
-        },
-        {
-          "lat": 37.6402818,
-          "lng": 128.6776125,
-          "alt_m": 777.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174928957-4708345333",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174928957",
-      "to": "n-4708345333",
-      "length_m": 74.8,
-      "geometry": [
-        {
-          "lat": 37.6409506,
-          "lng": 128.6775313,
-          "alt_m": 778.0
-        },
-        {
-          "lat": 37.6402818,
-          "lng": 128.6776125,
-          "alt_m": 777.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-4708345326-5174928958",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-4708345326",
-      "to": "n-5174928958",
-      "length_m": 112.4,
-      "geometry": [
-        {
-          "lat": 37.6366907,
-          "lng": 128.673461,
-          "alt_m": 860.0
-        },
-        {
-          "lat": 37.6375476,
-          "lng": 128.6727859,
-          "alt_m": 864.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-4708345326-5174928953",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-4708345326",
-      "to": "n-5174928953",
-      "length_m": 93.9,
-      "geometry": [
-        {
-          "lat": 37.6366907,
-          "lng": 128.673461,
-          "alt_m": 860.0
-        },
-        {
-          "lat": 37.6375341,
-          "lng": 128.6734544,
-          "alt_m": 844.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5173762040-5175026764",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5173762040",
-      "to": "n-5175026764",
-      "length_m": 93.8,
-      "geometry": [
-        {
-          "lat": 37.6216865,
-          "lng": 128.663315,
-          "alt_m": 948.0
-        },
-        {
-          "lat": 37.6225243,
-          "lng": 128.6632024,
-          "alt_m": 997.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5175076431-9203028530",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5175076431",
-      "to": "n-9203028530",
-      "length_m": 84.3,
-      "geometry": [
-        {
-          "lat": 37.6361655,
-          "lng": 128.6832046,
-          "alt_m": 941.0
-        },
-        {
-          "lat": 37.6354522,
-          "lng": 128.6835258,
-          "alt_m": 951.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5175076431-5173256937",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5175076431",
-      "to": "n-5173256937",
-      "length_m": 92.0,
-      "geometry": [
-        {
-          "lat": 37.6361655,
-          "lng": 128.6832046,
-          "alt_m": 941.0
-        },
-        {
-          "lat": 37.6369641,
-          "lng": 128.6829354,
-          "alt_m": 919.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5175076431-9203028529",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5175076431",
-      "to": "n-9203028529",
-      "length_m": 59.8,
-      "geometry": [
-        {
-          "lat": 37.6361655,
-          "lng": 128.6832046,
-          "alt_m": 941.0
-        },
-        {
-          "lat": 37.6356526,
-          "lng": 128.683408,
-          "alt_m": 951.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5173194925-5175076436",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5173194925",
-      "to": "n-5175076436",
-      "length_m": 60.4,
-      "geometry": [
-        {
-          "lat": 37.6380255,
-          "lng": 128.6871357,
-          "alt_m": 805.0
-        },
-        {
-          "lat": 37.6384223,
-          "lng": 128.6866682,
-          "alt_m": 807.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174966424-5175076436",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966424",
-      "to": "n-5175076436",
-      "length_m": 60.3,
-      "geometry": [
-        {
-          "lat": 37.6379615,
-          "lng": 128.6870286,
-          "alt_m": 805.0
-        },
-        {
-          "lat": 37.6384223,
-          "lng": 128.6866682,
-          "alt_m": 807.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174966421-5175076436",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966421",
-      "to": "n-5175076436",
-      "length_m": 64.7,
-      "geometry": [
-        {
-          "lat": 37.6378848,
-          "lng": 128.6869472,
-          "alt_m": 805.0
-        },
-        {
-          "lat": 37.6384223,
-          "lng": 128.6866682,
-          "alt_m": 807.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5175076437-5173233674",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5175076437",
-      "to": "n-5173233674",
-      "length_m": 93.4,
-      "geometry": [
-        {
-          "lat": 37.6321399,
-          "lng": 128.6855076,
-          "alt_m": 973.0
-        },
-        {
-          "lat": 37.6318301,
-          "lng": 128.6845235,
-          "alt_m": 964.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174966442-5175129662",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966442",
-      "to": "n-5175129662",
-      "length_m": 89.9,
-      "geometry": [
-        {
-          "lat": 37.6397031,
-          "lng": 128.6788391,
-          "alt_m": 784.0
-        },
-        {
-          "lat": 37.6391795,
-          "lng": 128.6780629,
-          "alt_m": 784.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174966443-5175129662",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966443",
-      "to": "n-5175129662",
-      "length_m": 92.3,
-      "geometry": [
-        {
-          "lat": 37.6399186,
-          "lng": 128.6785376,
-          "alt_m": 784.0
-        },
-        {
-          "lat": 37.6391795,
-          "lng": 128.6780629,
-          "alt_m": 784.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5173609284-5175129662",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5173609284",
-      "to": "n-5175129662",
-      "length_m": 41.8,
-      "geometry": [
-        {
-          "lat": 37.6388706,
-          "lng": 128.6783334,
-          "alt_m": 789.0
-        },
-        {
-          "lat": 37.6391795,
-          "lng": 128.6780629,
-          "alt_m": 784.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5173609283-5175129662",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5173609283",
-      "to": "n-5175129662",
-      "length_m": 36.3,
-      "geometry": [
-        {
-          "lat": 37.6388758,
-          "lng": 128.6782132,
-          "alt_m": 804.0
-        },
-        {
-          "lat": 37.6391795,
-          "lng": 128.6780629,
-          "alt_m": 784.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5175129663-5173609313",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5175129663",
-      "to": "n-5173609313",
-      "length_m": 24.3,
-      "geometry": [
-        {
-          "lat": 37.6332641,
-          "lng": 128.6751623,
-          "alt_m": 1045.0
-        },
-        {
-          "lat": 37.6334,
-          "lng": 128.6749459,
-          "alt_m": 1000.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5175129663-5173610941",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5175129663",
-      "to": "n-5173610941",
-      "length_m": 111.3,
-      "geometry": [
-        {
-          "lat": 37.6332641,
-          "lng": 128.6751623,
-          "alt_m": 1045.0
-        },
-        {
-          "lat": 37.6323909,
-          "lng": 128.6757775,
-          "alt_m": 1050.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174928959-13363244033",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174928959",
-      "to": "n-13363244033",
-      "length_m": 74.3,
-      "geometry": [
-        {
-          "lat": 37.6407708,
-          "lng": 128.6776738,
-          "alt_m": 777.0
-        },
-        {
-          "lat": 37.6413925,
-          "lng": 128.6773674,
-          "alt_m": 818.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-13363244034-5174928953",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-13363244034",
-      "to": "n-5174928953",
-      "length_m": 99.8,
-      "geometry": [
-        {
-          "lat": 37.6378837,
-          "lng": 128.6724125,
-          "alt_m": 862.0
-        },
-        {
-          "lat": 37.6375341,
-          "lng": 128.6734544,
-          "alt_m": 844.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174966442-13363244036",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966442",
-      "to": "n-13363244036",
-      "length_m": 88.2,
-      "geometry": [
-        {
-          "lat": 37.6397031,
-          "lng": 128.6788391,
-          "alt_m": 784.0
-        },
-        {
-          "lat": 37.6401617,
-          "lng": 128.6780238,
-          "alt_m": 777.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174928957-13363244036",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174928957",
-      "to": "n-13363244036",
-      "length_m": 98.0,
-      "geometry": [
-        {
-          "lat": 37.6409506,
-          "lng": 128.6775313,
-          "alt_m": 778.0
-        },
-        {
-          "lat": 37.6401617,
-          "lng": 128.6780238,
-          "alt_m": 777.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-13363244035-5173256932",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-13363244035",
-      "to": "n-5173256932",
-      "length_m": 98.4,
-      "geometry": [
-        {
-          "lat": 37.6364078,
-          "lng": 128.6825514,
-          "alt_m": 941.0
-        },
-        {
-          "lat": 37.6372508,
-          "lng": 128.6828888,
-          "alt_m": 919.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-13363244035-5173256937",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-13363244035",
-      "to": "n-5173256937",
-      "length_m": 70.6,
-      "geometry": [
-        {
-          "lat": 37.6364078,
-          "lng": 128.6825514,
-          "alt_m": 941.0
-        },
-        {
-          "lat": 37.6369641,
-          "lng": 128.6829354,
-          "alt_m": 919.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-13363244035-9203028529",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-13363244035",
-      "to": "n-9203028529",
-      "length_m": 113.0,
-      "geometry": [
-        {
-          "lat": 37.6364078,
-          "lng": 128.6825514,
-          "alt_m": 941.0
-        },
-        {
-          "lat": 37.6356526,
-          "lng": 128.683408,
-          "alt_m": 951.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-13433727772-5173256933",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-13433727772",
-      "to": "n-5173256933",
-      "length_m": 110.3,
-      "geometry": [
-        {
-          "lat": 37.6404936,
-          "lng": 128.6831964,
-          "alt_m": 794.0
-        },
-        {
-          "lat": 37.6409946,
-          "lng": 128.6821172,
-          "alt_m": 782.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-13433727772-5174966427",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-13433727772",
-      "to": "n-5174966427",
-      "length_m": 93.8,
-      "geometry": [
-        {
-          "lat": 37.6404936,
-          "lng": 128.6831964,
-          "alt_m": 794.0
-        },
-        {
-          "lat": 37.6410658,
-          "lng": 128.6824148,
-          "alt_m": 782.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174966448-14225418345",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966448",
-      "to": "n-14225418345",
-      "length_m": 102.8,
-      "geometry": [
-        {
-          "lat": 37.6436104,
-          "lng": 128.6799984,
-          "alt_m": 757.0
-        },
-        {
-          "lat": 37.6443863,
-          "lng": 128.6806301,
-          "alt_m": 756.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-14225418346-5174966438",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-14225418346",
-      "to": "n-5174966438",
-      "length_m": 73.8,
-      "geometry": [
-        {
-          "lat": 37.639981,
-          "lng": 128.6802298,
-          "alt_m": 816.0
-        },
-        {
-          "lat": 37.6402449,
-          "lng": 128.6794621,
-          "alt_m": 798.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-14225418346-5174961817",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-14225418346",
-      "to": "n-5174961817",
-      "length_m": 29.0,
-      "geometry": [
-        {
-          "lat": 37.639981,
-          "lng": 128.6802298,
-          "alt_m": 816.0
-        },
-        {
-          "lat": 37.6400805,
-          "lng": 128.6799255,
-          "alt_m": 798.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-14225418346-5174961814",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-14225418346",
-      "to": "n-5174961814",
-      "length_m": 40.3,
-      "geometry": [
-        {
-          "lat": 37.639981,
-          "lng": 128.6802298,
-          "alt_m": 816.0
-        },
-        {
-          "lat": 37.6396977,
-          "lng": 128.6805144,
-          "alt_m": 816.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5173311786-14225418366",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5173311786",
-      "to": "n-14225418366",
-      "length_m": 71.0,
-      "geometry": [
-        {
-          "lat": 37.6411043,
-          "lng": 128.6812271,
-          "alt_m": 792.0
-        },
-        {
-          "lat": 37.6416386,
-          "lng": 128.681666,
-          "alt_m": 782.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174966432-14225418366",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966432",
-      "to": "n-14225418366",
-      "length_m": 113.5,
-      "geometry": [
-        {
-          "lat": 37.6426383,
-          "lng": 128.6814149,
-          "alt_m": 763.0
-        },
-        {
-          "lat": 37.6416386,
-          "lng": 128.681666,
-          "alt_m": 782.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174966427-14225418366",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966427",
-      "to": "n-14225418366",
-      "length_m": 91.8,
-      "geometry": [
-        {
-          "lat": 37.6410658,
-          "lng": 128.6824148,
-          "alt_m": 782.0
-        },
-        {
-          "lat": 37.6416386,
-          "lng": 128.681666,
-          "alt_m": 782.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174966429-14225418366",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966429",
-      "to": "n-14225418366",
-      "length_m": 55.3,
-      "geometry": [
-        {
-          "lat": 37.6415559,
-          "lng": 128.6822846,
-          "alt_m": 782.0
-        },
-        {
-          "lat": 37.6416386,
-          "lng": 128.681666,
-          "alt_m": 782.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-14225418365-5173221242",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-14225418365",
-      "to": "n-5173221242",
-      "length_m": 108.3,
-      "geometry": [
-        {
-          "lat": 37.637213,
-          "lng": 128.6825787,
-          "alt_m": 919.0
-        },
-        {
-          "lat": 37.6376241,
-          "lng": 128.6836923,
-          "alt_m": 891.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-14225418365-5173256937",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-14225418365",
-      "to": "n-5173256937",
-      "length_m": 41.9,
-      "geometry": [
-        {
-          "lat": 37.637213,
-          "lng": 128.6825787,
-          "alt_m": 919.0
-        },
-        {
-          "lat": 37.6369641,
-          "lng": 128.6829354,
-          "alt_m": 919.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-14225418365-5173256939",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-14225418365",
-      "to": "n-5173256939",
-      "length_m": 119.8,
-      "geometry": [
-        {
-          "lat": 37.637213,
-          "lng": 128.6825787,
-          "alt_m": 919.0
-        },
-        {
-          "lat": 37.6362028,
-          "lng": 128.6830457,
-          "alt_m": 941.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-14225418365-5173256931",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-14225418365",
-      "to": "n-5173256931",
-      "length_m": 102.0,
-      "geometry": [
-        {
-          "lat": 37.637213,
-          "lng": 128.6825787,
-          "alt_m": 919.0
-        },
-        {
-          "lat": 37.6372701,
-          "lng": 128.6837335,
-          "alt_m": 919.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
-      }
-    },
-    {
-      "id": "e-link-5174966443-5174966442",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966443",
-      "to": "n-5174966442",
-      "length_m": 35.8,
-      "geometry": [
-        {
-          "lat": 37.6399186,
-          "lng": 128.6785376,
-          "alt_m": 784.0
-        },
-        {
-          "lat": 37.6397031,
-          "lng": 128.6788391,
-          "alt_m": 784.0
-        }
-      ],
-      "provenance": {
-        "source": "suggested"
       }
     }
   ]

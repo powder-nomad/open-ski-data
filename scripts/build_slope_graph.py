@@ -26,8 +26,11 @@ Pipeline:
                 the recording app's labels), count rides and edge-to-edge
                 transitions, and turn transitions between edges that
                 don't touch into `traverse` edges.
-  7. Write    — registry/<cc>/<region>/<slug>/slope-graph.json (version 2)
-                and scripts/review/<slug>-graph.md.
+  7. Correct  — re-apply the resort's slope-graph.corrections.json, so a
+                human's accept / reject / direction outlives rebuilds.
+  8. Write    — registry/<cc>/<region>/<slug>/slope-graph.json (version 2),
+                scripts/review/<slug>-graph.md and the numbered review items
+                that render_slope_graph.py draws.
 
 Tracks are optional and never leave your machine: only ride counts are
 written. Supported: Slopes exports (`.slopes`, a zip with GPS.csv) and GPX.
@@ -56,13 +59,19 @@ from pathlib import Path
 import requests
 import yaml
 
+import slope_graph_emit
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RESORT_DIR = Path(__file__).resolve().parent / "resorts"
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
 REVIEW_DIR = Path(__file__).resolve().parent / "review"
 
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+OVERPASS_URLS = [
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+]
 ELEVATION_URL = "https://api.open-meteo.com/v1/elevation"
+USER_AGENT = "open-ski-data build_slope_graph (https://github.com/powder-nomad/open-ski-data)"
 
 # aerialway values that carry riders. `yes`, `station`, `pylon`, `goods`
 # and the like are not lifts you can route over.
@@ -70,18 +79,6 @@ LIFT_TYPES = {
     "gondola", "cable_car", "chair_lift", "mixed_lift", "drag_lift",
     "t-bar", "j-bar", "platter", "rope_tow", "magic_carpet",
 }
-OSM_DIFFICULTY = {
-    "novice": "beginner", "easy": "beginner", "intermediate": "intermediate",
-    "advanced": "advanced", "expert": "expert", "extreme": "expert", "freeride": "expert",
-}
-# slopes.json spells some levels differently from the graph schema's enum.
-CATALOG_DIFFICULTY = {
-    "beginner": "beginner", "beginner_intermediate": "be_in", "be_in": "be_in",
-    "intermediate": "intermediate", "intermediate_advanced": "in_ad", "in_ad": "in_ad",
-    "advanced": "advanced", "expert": "expert", "pro": "pro",
-    "terrain_park": "park", "park": "park",
-}
-
 # Track matching. A day is cut into climbs (lifts) and descents (slopes) on
 # altitude smoothed over +-SMOOTH_S seconds; a leg turns after LEG_TURN_M
 # the other way.
@@ -95,6 +92,8 @@ RIDE_MIN_POINTS = 4
 # something the map doesn't have in between.
 TRANSITION_GAP_M = 250
 TRACK_MARGIN_M = 300
+# Half the side of the box searched around a resort that has no yaml.
+DEFAULT_BOX_M = 5000
 # Leaving a slope this close to its end counts as leaving at the end.
 END_SLACK_M = 60
 # How often a transition must be seen to be written at all, and before it
@@ -103,10 +102,10 @@ LINK_MIN = 2
 SPLIT_MIN_SLOPE_TO_SLOPE = 3
 SPLIT_MIN_WITH_LIFT = 2
 DIRECTION_MIN_RIDES = 3
+# Below this fall, and without enough rides to say, a slope's direction is a guess.
+SURE_DROP_M = 15
 NEIGHBOUR_MATCH_M = 40
 CATALOG_MATCH_M = 30
-SUGGEST_LIFT_M = 120
-SUGGEST_SLOPE_M = 60
 
 ROMAN = {"i": "1", "ii": "2", "iii": "3", "iv": "4", "v": "5", "vi": "6"}
 
@@ -150,14 +149,28 @@ class Plane:
 # ── inputs ────────────────────────────────────────────────────────────
 
 def load_config(slug: str) -> dict:
+    """The resort's yaml when it has one; otherwise a box around its place.json coordinates."""
     path = RESORT_DIR / f"{slug}.yaml"
-    if not path.exists():
-        sys.exit(f"no resort config at {path}")
-    cfg = yaml.safe_load(path.read_text())
-    for key in ("slug", "country", "region", "bbox"):
-        if key not in cfg:
-            sys.exit(f"{path}: missing `{key}`")
-    return cfg
+    if path.exists():
+        cfg = yaml.safe_load(path.read_text())
+        for key in ("slug", "country", "region", "bbox"):
+            if key not in cfg:
+                sys.exit(f"{path}: missing `{key}`")
+        return cfg
+    found = sorted((REPO_ROOT / "registry").glob(f"*/*/{slug}/place.json"))
+    if not found:
+        sys.exit(f"no resort config at {path} and no registry/*/*/{slug}/place.json")
+    place = json.loads(found[0].read_text())
+    at = place.get("coordinates") or {}
+    if "latitude" not in at or "longitude" not in at:
+        sys.exit(f"{found[0]}: no coordinates to centre a bbox on; add {path}")
+    lat, lng = at["latitude"], at["longitude"]
+    dlat = DEFAULT_BOX_M / 111_320
+    dlng = dlat / math.cos(math.radians(lat))
+    return {
+        "slug": slug, "country": found[0].parts[-4], "region": found[0].parts[-3],
+        "bbox": [round(lat - dlat, 4), round(lng - dlng, 4), round(lat + dlat, 4), round(lng + dlng, 4)],
+    }
 
 
 def fetch_osm(cfg: dict, refresh: bool) -> list[dict]:
@@ -168,7 +181,19 @@ def fetch_osm(cfg: dict, refresh: bool) -> list[dict]:
     query = f"""[out:json][timeout:60];
 (way["piste:type"="downhill"]({s},{w},{n},{e});way["aerialway"]({s},{w},{n},{e}););
 (._;>;);out body;"""
-    resp = requests.post(OVERPASS_URL, data={"data": query}, timeout=90)
+    # Overpass turns away clients that don't say who they are, and the
+    # public servers time out under load: try each, twice.
+    resp = None
+    for url in OVERPASS_URLS * 2:
+        try:
+            resp = requests.post(url, data={"data": query}, headers={"User-Agent": USER_AGENT}, timeout=90)
+        except requests.RequestException:
+            continue
+        if resp.status_code == 200:
+            break
+        time.sleep(5)
+    if resp is None:
+        sys.exit("Overpass is unreachable")
     resp.raise_for_status()
     CACHE_DIR.mkdir(exist_ok=True)
     cache.write_text(resp.text)
@@ -434,7 +459,7 @@ def along(edge: Edge, v: int, pos, plane: Plane, from_end: bool) -> float:
     return plane.length(pts) if len(pts) > 1 else 0.0
 
 
-def build(cfg: dict, tracks: list[list], refresh: bool):
+def build(cfg: dict, tracks: list[list], refresh: bool, directed: dict[int, int] | None = None):
     elements = fetch_osm(cfg, refresh)
     pos = {e["id"]: (e["lat"], e["lon"]) for e in elements if e["type"] == "node"}
     plane = Plane(sum(p[0] for p in pos.values()) / len(pos))
@@ -491,6 +516,7 @@ def build(cfg: dict, tracks: list[list], refresh: bool):
         way_votes[e.way["id"]] += votes[i]
         way_rides[e.way["id"]] += rides[i]
     flipped_ways = set()
+    unsure_ways = set()
     two_way = set()
     for x in ways:
         w = x["way"]
@@ -503,6 +529,10 @@ def build(cfg: dict, tracks: list[list], refresh: bool):
                 notes.append(f"OSM way {w['id']} ({w['tags'].get('name', 'unnamed')}): tracks ride it against the DEM's fall "
                              f"({abs(drop):.0f} m by elevation); kept the ridden direction")
             want_forward = seen_forward
+        elif abs(drop) < SURE_DROP_M:
+            unsure_ways.add(w["id"])
+        if directed and w["id"] in directed:
+            want_forward = directed[w["id"]] == w["nodes"][0]
         if not want_forward:
             flipped_ways.add(w["id"])
         if w["tags"].get("oneway") == "no" and x["kind"] == "slope":
@@ -552,6 +582,9 @@ def build(cfg: dict, tracks: list[list], refresh: bool):
         for a, b in zip(at, at[1:]):
             part = Edge(e.way, e.kind, e.nodes[a:b + 1])
             part.rec = e.rec
+            # The id is taken before orienting, so correcting a direction never renames the edge.
+            part.id = f"e-{e.way['id']}-{e.nodes[a]}"
+            part.unsure = e.way["id"] in unsure_ways
             final.append(part)
     for e in final:
         if e.way["id"] in flipped_ways:
@@ -569,172 +602,33 @@ def build(cfg: dict, tracks: list[list], refresh: bool):
     }
 
 
-# ── output ────────────────────────────────────────────────────────────
-
-def label(e: Edge) -> str:
-    t = e.way["tags"]
-    name = t.get("name:ko") or t.get("name") or t.get("name:en") or f"unnamed {e.way['id']}"
-    return f"{name} (lift)" if e.kind == "lift" else name
-
-
-def emit(cfg: dict, g: dict) -> tuple[dict, str]:
-    pos, alt, plane = g["pos"], g["alt"], g["plane"]
-    more_alt = fetch_elevations(cfg["slug"], {n: pos[n] for e in g["edges"] for n in e.nodes})
-    alt = {**alt, **more_alt}
-
-    def vertex(n):
-        return {"lat": round(pos[n][0], 7), "lng": round(pos[n][1], 7), "alt_m": round(alt[n], 1)}
-
-    out_edges = []
-    starts = collections.defaultdict(list)   # node -> edges leaving it
-    ends = collections.defaultdict(list)
-    lift_ends = {}
-
-    def add(e: Edge, nodes: list[int], suffix: str = ""):
-        row = {"id": f"e-{e.way['id']}-{nodes[0]}{suffix}"}
-        if e.kind == "slope":
-            row["slope_id"] = e.rec["id"] if e.rec else None
-        elif e.rec:
-            row["lift_id"] = e.rec["id"]
-        row["kind"] = e.kind
-        if e.kind == "slope":
-            diff = CATALOG_DIFFICULTY.get((e.rec or {}).get("difficulty") or "") or OSM_DIFFICULTY.get(e.way["tags"].get("piste:difficulty", ""))
-            if diff:
-                row["difficulty"] = diff
-        row["from"], row["to"] = f"n-{nodes[0]}", f"n-{nodes[-1]}"
-        row["length_m"] = round(plane.length([pos[n] for n in nodes]), 1)
-        row["geometry"] = [vertex(n) for n in nodes]
-        row["provenance"] = {"source": "osm", "osm_way_id": e.way["id"]}
-        if g["have_tracks"]:
-            row["provenance"]["observed_count"] = e.rides
-        out_edges.append(row)
-        starts[nodes[0]].append(row)
-        ends[nodes[-1]].append(row)
-        if e.kind == "lift":
-            lift_ends[nodes[0]] = "lift_bottom"
-            lift_ends[nodes[-1]] = "lift_top"
-
-    for e in g["edges"]:
-        add(e, e.nodes)
-        if e.way["id"] in g["two_way"]:
-            add(e, e.nodes[::-1], "-rev")
-
-    joined = {(r["from"], r["to"]) for r in out_edges}
-
-    def traverse(a: int, b: int, provenance: dict):
-        if (f"n-{a}", f"n-{b}") in joined:
-            return
-        joined.add((f"n-{a}", f"n-{b}"))
-        out_edges.append({
-            "id": f"e-link-{a}-{b}", "slope_id": None, "kind": "traverse",
-            "from": f"n-{a}", "to": f"n-{b}",
-            "length_m": round(plane.dist(pos[a], pos[b]), 1),
-            "geometry": [vertex(a), vertex(b)],
-            "provenance": provenance,
-        })
-
-    for (a, b), count in sorted(g["links"].items()):
-        traverse(a, b, {"source": "observed", "observed_count": count})
-
-    # Suggestions: ends that are close and nobody has ridden between yet.
-    # A lift's top to the slopes that start beside it, and a slope's end to
-    # the lift bases beside it. Never mid-slope.
-    suggested = 0
-    slope_starts = [n for n, rows in starts.items() if any(r["kind"] == "slope" for r in rows)]
-    slope_ends = [n for n, rows in ends.items() if any(r["kind"] == "slope" for r in rows)]
-    for n, kind in lift_ends.items():
-        if kind == "lift_top":
-            for s in slope_starts:
-                if s != n and plane.dist(pos[n], pos[s]) <= SUGGEST_LIFT_M and (f"n-{n}", f"n-{s}") not in joined:
-                    traverse(n, s, {"source": "suggested"})
-                    suggested += 1
-        else:
-            for s in slope_ends:
-                if s != n and plane.dist(pos[n], pos[s]) <= SUGGEST_LIFT_M and (f"n-{s}", f"n-{n}") not in joined:
-                    traverse(s, n, {"source": "suggested"})
-                    suggested += 1
-    for s in slope_ends:
-        if starts[s]:
-            continue  # the slope already goes on from here
-        for t in slope_starts:
-            if t != s and plane.dist(pos[s], pos[t]) <= SUGGEST_SLOPE_M and alt[t] <= alt[s] + 5 and (f"n-{s}", f"n-{t}") not in joined:
-                traverse(s, t, {"source": "suggested"})
-                suggested += 1
-
-    node_ids = sorted({int(r[k][2:]) for r in out_edges for k in ("from", "to")})
-    out_deg = collections.Counter(r["from"] for r in out_edges if r["kind"] != "traverse")
-    in_deg = collections.Counter(r["to"] for r in out_edges if r["kind"] != "traverse")
-    nodes = []
-    for n in node_ids:
-        nid = f"n-{n}"
-        kind = lift_ends.get(n) or ("fork" if out_deg[nid] > 1 else "merge" if in_deg[nid] > 1 else "waypoint")
-        nodes.append({"id": nid, **vertex(n), "kind": kind})
-
-    doc = {
-        "$schema": "../../../../schemas/slope-graph.schema.json",
-        "place_slug": cfg["slug"],
-        "version": 2,
-        "nodes": nodes,
-        "edges": out_edges,
-    }
-
-    # Review.
-    by_kind = collections.Counter(r["kind"] for r in out_edges)
-    observed = [r for r in out_edges if r["provenance"]["source"] == "observed"]
-    unridden = [r for r in out_edges if r["provenance"]["source"] == "osm" and r["provenance"].get("observed_count") == 0]
-    no_id = sorted({str(e.way["id"]) + " " + label(e) for e in g["edges"] if not e.rec})
-    lines = [
-        f"# {cfg['slug']} slope graph", "",
-        f"- {by_kind['slope']} slope edges, {by_kind['lift']} lift edges, {by_kind['traverse']} links "
-        f"({len(observed)} observed, {suggested} suggested), {len(nodes)} nodes, {islands(doc)} island(s) without the suggested links",
-        f"- track days used: {g['days']}",
-        "",
-    ]
-    if g["have_tracks"]:
-        lines += ["## Never ridden in the tracks", ""] + [f"- {r['id']} ({r.get('slope_id') or r.get('lift_id') or 'no catalog id'})" for r in unridden] + [""]
-    lines += ["## OSM ways with no catalog record", ""] + [f"- {x}" for x in no_id] + [""]
-    lines += ["## Transitions seen but not written", "",
-              "Seen once, too few sightings to split a slope for, or the two ends are too far",
-              "apart to join with a straight link: a line the map is missing.", ""]
-    lines += [f"- {c}× {label(a)} → {label(b)} ({gap:.0f} m apart)" for c, a, b, gap in sorted(g["dropped"], key=lambda x: -x[0])] + [""]
-    lines += ["## Notes", ""] + [f"- {n}" for n in g["notes"]] + [""]
-    return doc, "\n".join(lines)
-
-
-def islands(doc: dict) -> int:
-    """Connected groups, ignoring direction and suggested links."""
-    parent = {n["id"]: n["id"] for n in doc["nodes"]}
-
-    def find(x):
-        while parent[x] != x:
-            parent[x] = parent[parent[x]]
-            x = parent[x]
-        return x
-
-    for e in doc["edges"]:
-        if e["provenance"]["source"] != "suggested":
-            parent[find(e["from"])] = find(e["to"])
-    return len({find(n) for n in parent})
-
-
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("slug")
     ap.add_argument("--tracks", nargs="*", default=[], help="track files, globs or directories (.slopes, .gpx)")
     ap.add_argument("--refresh", action="store_true", help="refetch OSM instead of using the cache")
+    ap.add_argument("--force", action="store_true", help="overwrite a graph that a person has edited")
     ap.add_argument("--dry-run", action="store_true", help="print the summary, write nothing to the registry")
     args = ap.parse_args()
 
     cfg = load_config(args.slug)
     tracks = [t for t in (read_track(f) for f in track_files(args.tracks)) if t]
-    g = build(cfg, tracks, args.refresh)
-    doc, review = emit(cfg, g)
+    place_dir = REPO_ROOT / "registry" / cfg["country"] / cfg["region"] / cfg["slug"]
+    corrections = slope_graph_emit.load_corrections(place_dir)
+    g = build(cfg, tracks, args.refresh, slope_graph_emit.forced_directions(corrections))
+    g["alt"].update(fetch_elevations(cfg["slug"], {n: g["pos"][n] for e in g["edges"] for n in e.nodes}))
+    doc, review, items = slope_graph_emit.emit(cfg, g, corrections)
     print(review.split("\n## ")[0])
     REVIEW_DIR.mkdir(exist_ok=True)
     (REVIEW_DIR / f"{args.slug}-graph.md").write_text(review)
+    (REVIEW_DIR / f"{args.slug}-graph-items.json").write_text(json.dumps(items, ensure_ascii=False, indent=1))
     if args.dry_run:
+        (REVIEW_DIR / f"{args.slug}-graph.json").write_text(json.dumps(doc, ensure_ascii=False))
         return
-    out = REPO_ROOT / "registry" / cfg["country"] / cfg["region"] / cfg["slug"] / "slope-graph.json"
+    out = place_dir / "slope-graph.json"
+    if slope_graph_emit.human_owned(out) and not args.force:
+        sys.exit(f"{out.relative_to(REPO_ROOT)} has been edited by hand; not overwriting it. "
+                 "Use --dry-run to compare, or --force to replace it.")
     out.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n")
     print(f"wrote {out.relative_to(REPO_ROOT)}")
 
