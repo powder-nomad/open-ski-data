@@ -187,3 +187,40 @@ export function joinEdges(g: Graph, edgeId: string, contributor?: string): { gra
   const stillUsed = edges.some((e) => e.from === edge.to || e.to === edge.to);
   return { edgeId: joined.id, graph: { nodes: stillUsed ? g.nodes : g.nodes.filter((n) => n.id !== edge.to), edges } };
 }
+
+const key = (p: { lat: number; lng: number }) => `${p.lat.toFixed(6)},${p.lng.toFixed(6)}`;
+
+/** Every distinct position in the graph, to ask an elevation source about. */
+export function positions(g: Graph): [number, number][] {
+  const seen = new Map<string, [number, number]>();
+  for (const n of g.nodes) seen.set(key(n), [n.lat, n.lng]);
+  for (const e of g.edges) for (const v of e.geometry) seen.set(key(v), [v.lat, v.lng]);
+  return [...seen.values()];
+}
+
+/** How much higher an edge's end must be than its start before it counts as pointing the wrong way. */
+export const WRONG_WAY_M = 3;
+
+/**
+ * Refill every altitude from measured elevations, then point each slope
+ * downhill and each lift uphill. Links are left alone: a traverse can
+ * run either way. Returns how many edges were turned round.
+ */
+export function orientByElevation(g: Graph, elevations: Map<string, number>, contributor?: string): { graph: Graph; flipped: number } {
+  const alt = <T extends { lat: number; lng: number; alt_m: number }>(p: T): T => {
+    const m = elevations.get(key(p));
+    return m === undefined ? p : { ...p, alt_m: m };
+  };
+  let flipped = 0;
+  const edges = g.edges.map((e) => {
+    const geometry = e.geometry.map(alt);
+    const rise = geometry[geometry.length - 1].alt_m - geometry[0].alt_m;
+    const wrong = e.kind === "slope" ? rise > WRONG_WAY_M : e.kind === "lift" ? rise < -WRONG_WAY_M : false;
+    if (!wrong) return { ...e, geometry };
+    flipped += 1;
+    return { ...e, from: e.to, to: e.from, geometry: geometry.reverse(), provenance: { ...(e.provenance ?? {}), ...userEdit(contributor) } };
+  });
+  return { graph: { nodes: g.nodes.map(alt), edges }, flipped };
+}
+
+export const positionKey = key;

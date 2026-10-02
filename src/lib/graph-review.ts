@@ -13,6 +13,25 @@ export const SURE_DROP_M = 15;
 
 export type ReviewReason = "suggested" | "weak" | "direction";
 export type ReviewItem = { edgeId: string; reason: ReviewReason };
+/** Two nodes close enough that they are probably one place drawn twice. */
+export type NearPair = { a: string; b: string; distM: number };
+/** Nodes nearer than this, and not already joined by an edge, are offered for welding. */
+export const NEAR_M = 15;
+
+export function nearPairs(nodes: GraphNode[], edges: GraphEdge[]): NearPair[] {
+  const joined = new Set(edges.flatMap((e) => [`${e.from}>${e.to}`, `${e.to}>${e.from}`]));
+  const out: NearPair[] = [];
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i];
+      const b = nodes[j];
+      if (Math.abs(a.lat - b.lat) > 0.0003) continue; // ~33 m: cheap reject before the real distance
+      const d = metres(a, b);
+      if (d <= NEAR_M && !joined.has(`${a.id}>${b.id}`)) out.push({ a: a.id, b: b.id, distM: Math.round(d) });
+    }
+  }
+  return out.sort((x, y) => x.distM - y.distM);
+}
 
 export function userEdit(contributor?: string): EdgeProvenance {
   return {

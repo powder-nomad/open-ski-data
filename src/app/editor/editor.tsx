@@ -33,8 +33,8 @@ import {
 } from "@/lib/geo";
 import { type EditorMode, ModeToolbar, modeDescriptor, MODE_I18N } from "./mode-toolbar";
 import { EdgePanel, ReviewListPanel } from "./graph-review-panel";
-import { edgeColour, edgeLabel, flipped, linkAll, reverseLink, reviewItems, userEdit } from "@/lib/graph-review";
-import { continuation, dropNode, joinEdges, splitEdge, type Graph } from "@/lib/graph-ops";
+import { edgeColour, edgeLabel, flipped, linkAll, nearPairs, reverseLink, reviewItems, userEdit } from "@/lib/graph-review";
+import { continuation, dropNode, joinEdges, mergeNode, orientByElevation, positionKey, positions, splitEdge, type Graph } from "@/lib/graph-ops";
 
 /**
  * Slope Author v2 — see ./page.tsx for the rationale.
@@ -1631,6 +1631,18 @@ export function SlopeAuthor2() {
     for (const e of liveGraphEdges) map.set(e.id, edgeLabel(e, lineNames, liveGraphEdges));
     return map;
   }, [liveGraphEdges, lineNames]);
+  const nearNodePairs = useMemo(() => nearPairs([...liveGraphNodes.values()], liveGraphEdges), [liveGraphNodes, liveGraphEdges]);
+  // A node is named by what ends and starts there: "골드 리프트 · 골드 파라다이스".
+  const nodeLabels = useMemo(() => {
+    const at = new Map<string, Set<string>>();
+    for (const e of liveGraphEdges) {
+      if (e.kind === "traverse") continue;
+      const name = edgeLabels.get(e.id);
+      if (!name) continue;
+      for (const id of [e.from, e.to]) at.set(id, (at.get(id) ?? new Set()).add(name));
+    }
+    return new Map([...at].map(([id, names]) => [id, [...names].join(" · ")]));
+  }, [liveGraphEdges, edgeLabels]);
   // Only generated graphs carry provenance; hand-authored ones have nothing to review.
   const graphHasProvenance = liveGraphEdges.some((e) => e.provenance);
 
@@ -1720,6 +1732,28 @@ export function SlopeAuthor2() {
     if (!joined) return;
     commitGraph(joined.graph);
     setSelectedEdgeId(joined.edgeId);
+  };
+  // Altitudes from the elevation service, then slopes downhill and lifts uphill.
+  const [orienting, setOrienting] = useState<"idle" | "busy" | "failed" | { flipped: number }>("idle");
+  const orientGraph = async () => {
+    const graph = liveGraph();
+    const points = positions(graph);
+    setOrienting("busy");
+    try {
+      const measured = new Map<string, number>();
+      for (let at = 0; at < points.length; at += 400) {
+        const chunk = points.slice(at, at + 400);
+        const res = await fetch("/api/elevation", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ points: chunk }) });
+        if (!res.ok) throw new Error(`elevation ${res.status}`);
+        const body = (await res.json()) as { elevations: number[] };
+        chunk.forEach(([lat, lng], i) => measured.set(positionKey({ lat, lng }), body.elevations[i]));
+      }
+      const oriented = orientByElevation(graph, measured, sessionUser?.login);
+      commitGraph(oriented.graph);
+      setOrienting({ flipped: oriented.flipped });
+    } catch {
+      setOrienting("failed");
+    }
   };
   const structureRef = useRef({ armCut: () => setCutArmed((on) => !on), rejoin: rejoinSelectedEdge });
   structureRef.current = { armCut: () => setCutArmed((on) => !on), rejoin: rejoinSelectedEdge };
@@ -3027,7 +3061,15 @@ export function SlopeAuthor2() {
         .map((e) => {
           const ov = edgeOverrides[e.id];
           // An edge a person touched is theirs: the generator leaves user edits alone.
-          return ov ? { ...e, ...ov, provenance: { ...(e.provenance ?? {}), ...(ov.provenance ?? {}), ...userEdit(contributor) } } : e;
+          if (!ov) return e;
+          const next = { ...e, ...ov };
+          // Refilled altitudes alone don't make an edge a person's decision.
+          const line = (g: GraphEdge["geometry"]) => g.map((v) => `${v.lat},${v.lng}`).join(" ");
+          const byHand =
+            next.provenance?.source === "user-edit" ||
+            next.from !== e.from || next.to !== e.to || next.kind !== e.kind ||
+            line(next.geometry) !== line(e.geometry);
+          return byHand ? { ...next, provenance: { ...(next.provenance ?? {}), ...userEdit(contributor) } } : next;
         });
       const merged: SlopeGraphRecord = {
         ...loadedResort.graph,
@@ -3638,6 +3680,19 @@ export function SlopeAuthor2() {
                 labels={edgeLabels}
                 selectedEdgeId={selectedEdgeId}
                 onPick={(id) => selectEdge(id)}
+                orienting={orienting}
+                onOrient={orientGraph}
+                near={nearNodePairs}
+                nodeLabels={nodeLabels}
+                onShowNode={(id) => {
+                  selectNode(id);
+                  const n = liveGraphNodes.get(id);
+                  if (n) googleMap.current?.panTo({ lat: n.lat, lng: n.lng });
+                }}
+                onWeld={(removeId, keepId) => {
+                  commitGraph(mergeNode(liveGraph(), removeId, keepId));
+                  selectNode(keepId);
+                }}
               />
             )}
 

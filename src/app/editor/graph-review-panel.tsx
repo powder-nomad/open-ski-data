@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import type { GraphEdge } from "@/lib/resort-loader";
-import type { ReviewItem } from "@/lib/graph-review";
+import type { NearPair, ReviewItem } from "@/lib/graph-review";
 
 /**
  * The reviewer's two panels: the edge that is selected (who it is, where
@@ -102,11 +102,23 @@ export function ReviewListPanel({
   labels,
   selectedEdgeId,
   onPick,
+  orienting,
+  onOrient,
+  near,
+  nodeLabels,
+  onShowNode,
+  onWeld,
 }: {
   items: ReviewItem[];
   labels: Map<string, string>;
   selectedEdgeId: string | null;
   onPick: (edgeId: string) => void;
+  orienting: "idle" | "busy" | "failed" | { flipped: number };
+  onOrient: () => void;
+  near: NearPair[];
+  nodeLabels: Map<string, string>;
+  onShowNode: (nodeId: string) => void;
+  onWeld: (removeId: string, keepId: string) => void;
 }) {
   const t = useTranslations("slopeAuthor");
   const reason = (r: ReviewItem["reason"]) =>
@@ -117,6 +129,19 @@ export function ReviewListPanel({
         <h2 className="text-sm font-bold text-[var(--fg)]">{t("reviewTitle", { count: items.length })}</h2>
         <p className="text-xs text-[var(--fg-muted)]">{t("reviewKeys")}</p>
       </header>
+      <div className="mb-2 flex items-center gap-2">
+        <button
+          type="button"
+          onClick={onOrient}
+          disabled={orienting === "busy"}
+          className="min-h-11 rounded-md border border-[var(--border)] px-3 text-sm font-semibold text-[var(--fg)] hover:bg-[var(--fg)]/10 disabled:opacity-40"
+        >
+          {orienting === "busy" ? t("reviewOrientBusy") : t("reviewOrient")}
+        </button>
+        <p role="status" className="text-sm text-[var(--fg-muted)]">
+          {orienting === "failed" ? t("reviewOrientFailed") : typeof orienting === "object" ? t("reviewOrientDone", { count: orienting.flipped }) : ""}
+        </p>
+      </div>
       {items.length === 0 ? (
         <p className="text-sm text-[var(--fg-muted)]">{t("reviewEmpty")}</p>
       ) : (
@@ -141,6 +166,28 @@ export function ReviewListPanel({
             );
           })}
         </ol>
+      )}
+      {near.length > 0 && (
+        <>
+          <h3 className="mb-1 mt-3 text-sm font-bold text-[var(--fg)]">{t("reviewNearTitle", { count: near.length })}</h3>
+          <ul className="max-h-48 space-y-1 overflow-y-auto">
+            {near.map((pair) => (
+              <li key={`${pair.a}-${pair.b}`} className="flex min-h-11 items-center gap-2 px-2 text-sm text-[var(--fg-muted)]">
+                <button type="button" onClick={() => onShowNode(pair.a)} className="min-h-11 min-w-0 flex-1 truncate text-left hover:text-[var(--fg)]">
+                  {nodeLabels.get(pair.a) ?? pair.a} ↔ {nodeLabels.get(pair.b) ?? pair.b}
+                </button>
+                <span className="flex-none text-xs tabular-nums">{pair.distM} m</span>
+                <button
+                  type="button"
+                  onClick={() => onWeld(pair.a, pair.b)}
+                  className="min-h-9 flex-none rounded-md border border-[var(--border)] px-2 text-sm font-semibold text-[var(--fg)] hover:bg-[var(--fg)]/10"
+                >
+                  {t("reviewWeld")}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </section>
   );

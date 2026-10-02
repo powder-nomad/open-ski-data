@@ -216,7 +216,13 @@
     "reviewCut": "Cut",
     "reviewRejoin": "Rejoin",
     "reviewCutHint": "Click the line where it should be cut.",
-    "reviewJoinHint": "To join ends: select a node and drag it onto another node, or onto the middle of a slope."
+    "reviewJoinHint": "To join ends: select a node and drag it onto another node, or onto the middle of a slope.",
+    "reviewOrient": "Set directions from elevation",
+    "reviewOrientBusy": "Measuring…",
+    "reviewOrientFailed": "Couldn't get elevations. Try again.",
+    "reviewOrientDone": "Altitudes refilled, {count} turned round.",
+    "reviewNearTitle": "Probably the same place ({count})",
+    "reviewWeld": "Weld"
   },
   "settings": {
     "title": "Settings",

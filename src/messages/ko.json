@@ -216,7 +216,13 @@
     "reviewCut": "자르기",
     "reviewRejoin": "다시 잇기",
     "reviewCutHint": "자를 곳을 지도의 선 위에서 클릭하세요.",
-    "reviewJoinHint": "끝점을 이으려면: 노드를 선택해 다른 노드 위로, 또는 슬로프 중간으로 끌어다 놓으세요."
+    "reviewJoinHint": "끝점을 이으려면: 노드를 선택해 다른 노드 위로, 또는 슬로프 중간으로 끌어다 놓으세요.",
+    "reviewOrient": "고도로 방향 맞추기",
+    "reviewOrientBusy": "고도 확인 중…",
+    "reviewOrientFailed": "고도를 가져오지 못했어요. 다시 시도해 주세요.",
+    "reviewOrientDone": "고도를 다시 채웠고, {count}개를 뒤집었어요.",
+    "reviewNearTitle": "같은 지점으로 보이는 노드 ({count})",
+    "reviewWeld": "합치기"
   },
   "settings": {
     "title": "설정",
