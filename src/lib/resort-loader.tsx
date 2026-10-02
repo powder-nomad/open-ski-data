@@ -141,12 +141,32 @@ export type GraphNode = {
 
 export type GraphEdgeKind = "slope" | "lift" | "traverse";
 
+/**
+ * Why a graph edge exists (slope-graph schema, version 2). `osm` and
+ * `observed` come from scripts/build_slope_graph.py; `suggested` is a
+ * guess nobody has ridden; `user-edit` is a person's decision, which the
+ * generator never overwrites.
+ */
+export type EdgeProvenance = {
+  source: "osm" | "observed" | "suggested" | "user-edit";
+  osm_way_id?: number;
+  observed_count?: number;
+  contributor?: string;
+  last_verified?: string;
+};
+
 export type GraphEdge = {
   id: string; // e-NNNN
   from: string;
   to: string;
   kind: GraphEdgeKind;
   geometry: { lat: number; lng: number; alt_m: number }[];
+  slope_id?: string | null;
+  lift_id?: string | null;
+  difficulty?: string;
+  length_m?: number;
+  notes?: string;
+  provenance?: EdgeProvenance;
 };
 
 export type SlopeGraphRecord = {

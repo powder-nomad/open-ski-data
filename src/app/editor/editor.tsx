@@ -32,6 +32,8 @@ import {
   type LatLng,
 } from "@/lib/geo";
 import { type EditorMode, ModeToolbar, modeDescriptor, MODE_I18N } from "./mode-toolbar";
+import { EdgePanel, ReviewListPanel } from "./graph-review-panel";
+import { edgeColour, edgeLabel, flipped, linkAll, reverseLink, reviewItems, userEdit } from "@/lib/graph-review";
 
 /**
  * Slope Author v2 — see ./page.tsx for the rationale.
@@ -427,10 +429,9 @@ export function SlopeAuthor2() {
       ...(resort.graph.edges ?? []),
       ...addedGraphEdgesRef.current,
     ];
+    // Edges are one-way: A→B existing doesn't stop you adding B→A.
     const dup = existingEdges.some(
-      (e) =>
-        (e.from === fromN.id && e.to === toN.id) ||
-        (e.from === toN.id && e.to === fromN.id),
+      (e) => e.from === fromN.id && e.to === toN.id,
     );
     if (!dup) {
       const id = `e-u-${Date.now().toString(36)}-${Math.random()
@@ -447,6 +448,7 @@ export function SlopeAuthor2() {
             { lat: fromN.lat, lng: fromN.lng, alt_m: fromN.alt_m },
             { lat: toN.lat, lng: toN.lng, alt_m: toN.alt_m },
           ],
+          provenance: userEdit(sessionUser?.login),
         },
       ]);
     }
@@ -1595,6 +1597,108 @@ export function SlopeAuthor2() {
   const effectiveLiftsRef = useRef(effectiveLifts);
   effectiveLiftsRef.current = effectiveLifts;
 
+  // ── graph review ────────────────────────────────────────────────
+  // The graph as it stands with this session's edits, for the review
+  // list, the edge panel and their actions.
+  const liveGraphNodes = useMemo(() => {
+    const gone = new Set(deletedGraphNodeIds);
+    const map = new Map<string, GraphNode>();
+    for (const n of loadedResort?.graph?.nodes ?? []) {
+      if (!gone.has(n.id)) map.set(n.id, nodeOverrides[n.id] ? { ...n, ...nodeOverrides[n.id] } : n);
+    }
+    for (const n of addedGraphNodes) map.set(n.id, n);
+    return map;
+  }, [loadedResort, deletedGraphNodeIds, nodeOverrides, addedGraphNodes]);
+  const liveGraphEdges = useMemo(() => {
+    const gone = new Set(deletedGraphEdgeIds);
+    const base = (loadedResort?.graph?.edges ?? [])
+      .filter((e) => !gone.has(e.id))
+      .map((e) => (edgeOverrides[e.id] ? { ...e, ...edgeOverrides[e.id] } : e));
+    return [...base, ...addedGraphEdges];
+  }, [loadedResort, deletedGraphEdgeIds, edgeOverrides, addedGraphEdges]);
+  const lineNames = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const x of [...effectiveSlopes, ...effectiveLifts]) {
+      const name = localeName(x.name, x.name_i18n, locale);
+      if (name && !name.startsWith("unnamed")) map.set(x.id, name);
+    }
+    return map;
+  }, [effectiveSlopes, effectiveLifts, locale]);
+  const reviewList = useMemo(() => reviewItems(liveGraphEdges, liveGraphNodes), [liveGraphEdges, liveGraphNodes]);
+  const edgeLabels = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const e of liveGraphEdges) map.set(e.id, edgeLabel(e, lineNames, liveGraphEdges));
+    return map;
+  }, [liveGraphEdges, lineNames]);
+  // Only generated graphs carry provenance; hand-authored ones have nothing to review.
+  const graphHasProvenance = liveGraphEdges.some((e) => e.provenance);
+
+  function patchEdge(id: string, patch: Partial<GraphEdge>) {
+    if (loadedResort?.graph?.edges.some((e) => e.id === id)) {
+      setEdgeOverrides((prev) => ({ ...prev, [id]: { ...prev[id], ...patch } }));
+    } else {
+      setAddedGraphEdges((prev) => prev.map((e) => (e.id === id ? { ...e, ...patch } : e)));
+    }
+  }
+  const reviewActions = {
+    flip() {
+      const e = liveGraphEdges.find((x) => x.id === selectedEdgeId);
+      if (e) patchEdge(e.id, flipped(e, sessionUser?.login));
+    },
+    confirm() {
+      const e = liveGraphEdges.find((x) => x.id === selectedEdgeId);
+      if (e) patchEdge(e.id, { provenance: { ...(e.provenance ?? {}), ...userEdit(sessionUser?.login) } });
+    },
+    twoWay() {
+      const e = liveGraphEdges.find((x) => x.id === selectedEdgeId);
+      const back = e && reverseLink(e, liveGraphNodes, liveGraphEdges, sessionUser?.login);
+      if (back) setAddedGraphEdges((prev) => [...prev, back]);
+    },
+    remove() {
+      if (!selectedEdgeId) return;
+      // Step to the next item first, so deleting keeps the reviewer moving.
+      const at = reviewList.findIndex((r) => r.edgeId === selectedEdgeId);
+      const after = at >= 0 ? reviewList[at + 1]?.edgeId ?? null : null;
+      deleteEdge(selectedEdgeId);
+      if (after) selectEdge(after);
+    },
+    next() {
+      if (reviewList.length === 0) return;
+      const at = reviewList.findIndex((r) => r.edgeId === selectedEdgeId);
+      selectEdge(reviewList[(at + 1) % reviewList.length].edgeId);
+    },
+  };
+  const reviewActionsRef = useRef(reviewActions);
+  reviewActionsRef.current = reviewActions;
+  // F / T / A / D / N act on the selected edge, as the review panel says.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const target = e.target as HTMLElement;
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const key = e.key.toLowerCase();
+      const a = reviewActionsRef.current;
+      if (key === "n") a.next();
+      else if (selectedEdgeIdRef.current === null) return;
+      else if (key === "f") a.flip();
+      else if (key === "t") a.twoWay();
+      else if (key === "a") a.confirm();
+      else if (key === "d") a.remove();
+      else return;
+      e.preventDefault();
+    }
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, []);
+  /** Join every selected end to every other, both ways: one flat area. */
+  function linkSelectedEnds() {
+    const ends = [...multiSelectedIds].map((id) => liveGraphNodes.get(id)).filter((n): n is GraphNode => !!n);
+    if (ends.length < 2) return;
+    setAddedGraphEdges((prev) => [...prev, ...linkAll(ends, [...liveGraphEdges], sessionUser?.login)]);
+    setMultiSelectedIds(new Set());
+  }
+  const selectedEndCount = [...multiSelectedIds].filter((id) => liveGraphNodes.has(id)).length;
+
   // deleteByIdRef: re-assigned each render so the keyboard handler
   // (registered once with [] deps) always invokes deletion functions
   // whose closures capture CURRENT state — not the initial-render values.
@@ -2353,18 +2457,33 @@ export function SlopeAuthor2() {
       const isEditing = isSelected && mode === "edit-edge";
       const isMultiSel = multiSelectedIds.has(e.id);
       const path = e.geometry.map((p) => ({ lat: p.lat, lng: p.lng }));
+      // Generated graphs are coloured by where each edge came from and
+      // carry an arrow for the way it is ridden; a suggestion is dashed.
+      const origin = e.provenance ? edgeColour(e) : null;
+      const colour = isEditing
+        ? EDGE_EDIT_COLOR
+        : isMultiSel
+          ? MULTI_SELECT_COLOR
+          : isSelected
+            ? EDGE_EDIT_COLOR
+            : origin
+              ? origin.colour
+              : isAdded
+                ? EDGE_ADDED_COLOR
+                : EDGE_BASELINE_COLOR;
+      const weight = isEditing ? 4 : isSelected ? 5 : isMultiSel ? 3 : isAdded || origin ? 3 : 2;
+      const dashed = !!origin?.dashed && !isEditing;
+      const arrow = { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW, scale: isSelected ? 4 : 2.5, strokeColor: colour, fillColor: colour, fillOpacity: 1, strokeOpacity: 1 };
       const line = new google.maps.Polyline({
         map,
         path,
-        strokeColor: isEditing
-          ? EDGE_EDIT_COLOR
-          : isMultiSel
-            ? MULTI_SELECT_COLOR
-            : isAdded
-              ? EDGE_ADDED_COLOR
-              : EDGE_BASELINE_COLOR,
-        strokeOpacity: isEditing ? 1 : isMultiSel ? 1 : isAdded ? 0.95 : isSelected ? 0.9 : 0.55,
-        strokeWeight: isEditing ? 4 : isMultiSel ? 3 : isSelected ? 3 : isAdded ? 3 : 2,
+        strokeColor: colour,
+        strokeOpacity: dashed ? 0 : isEditing ? 1 : isMultiSel ? 1 : isAdded || origin ? 0.95 : isSelected ? 0.9 : 0.55,
+        strokeWeight: weight,
+        icons: [
+          ...(dashed ? [{ icon: { path: "M 0,-1 0,1", strokeOpacity: 1, strokeColor: colour, scale: weight }, offset: "0", repeat: "12px" }] : []),
+          { icon: arrow, offset: "55%" },
+        ],
         clickable: true,
         editable: isEditing,
         zIndex: isEditing ? 30 : isMultiSel ? 25 : isAdded ? 20 : 10,
@@ -2857,12 +2976,16 @@ export function SlopeAuthor2() {
         .filter((e) => !deletedEdgeSet.has(e.id))
         .map((e) => {
           const ov = edgeOverrides[e.id];
-          return ov ? { ...e, ...ov } : e;
+          // An edge a person touched is theirs: the generator leaves user edits alone.
+          return ov ? { ...e, ...ov, provenance: { ...(e.provenance ?? {}), ...(ov.provenance ?? {}), ...userEdit(contributor) } } : e;
         });
       const merged: SlopeGraphRecord = {
         ...loadedResort.graph,
         nodes: [...keptBaselineNodes, ...addedGraphNodes],
-        edges: [...editedBaselineEdges, ...addedGraphEdges],
+        edges: [
+          ...editedBaselineEdges,
+          ...addedGraphEdges.map((e) => ({ ...e, provenance: { ...(e.provenance ?? {}), ...userEdit(contributor) } })),
+        ],
       };
       files["slope-graph.json"] =
         JSON.stringify(
@@ -3233,7 +3356,7 @@ export function SlopeAuthor2() {
                     ? "Switch to satellite view"
                     : "Switch to terrain view"
                 }
-                className="flex h-6 items-center rounded-full bg-white/10 px-2 text-[10px] font-semibold text-[var(--fg-muted)] transition hover:bg-white/20 hover:text-[var(--fg)]"
+                className="flex h-6 items-center rounded-full bg-white/10 px-2 text-[13px] font-semibold text-[var(--fg-muted)] transition hover:bg-white/20 hover:text-[var(--fg)]"
               >
                 {mapTypeId === "terrain" ? "🛰 Sat" : "🗺 Map"}
               </button>
@@ -3244,7 +3367,7 @@ export function SlopeAuthor2() {
               onClick={reopenWelcome}
               aria-label={t("welcomeHelpLabel")}
               title={t("welcomeHelpLabel")}
-              className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-white/10 text-[11px] font-bold text-[var(--fg-muted)] transition hover:bg-white/20 hover:text-[var(--fg)]"
+              className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-white/10 text-[13px] font-bold text-[var(--fg-muted)] transition hover:bg-white/20 hover:text-[var(--fg)]"
             >
               ?
             </button>
@@ -3286,6 +3409,15 @@ export function SlopeAuthor2() {
               {multiSelectedIds.size} selected
             </span>
             <span className="text-[var(--fg-dim)]">— Delete to remove</span>
+            {selectedEndCount >= 2 && (
+              <button
+                type="button"
+                onClick={linkSelectedEnds}
+                className="ml-1 min-h-9 rounded-full border border-emerald-400/60 px-3 text-sm font-semibold text-emerald-300 hover:bg-emerald-400/10"
+              >
+                {t("reviewLinkAll", { count: selectedEndCount })}
+              </button>
+            )}
             <button
               type="button"
               onClick={() => setMultiSelectedIds(new Set())}
@@ -3315,7 +3447,7 @@ export function SlopeAuthor2() {
             className="flex w-full flex-none flex-col items-center gap-1 border-b border-[var(--border)] bg-[var(--bg-elev)] px-3 py-2 transition hover:bg-[var(--bg-elev-strong)] md:hidden"
           >
             <span aria-hidden className="block h-1 w-10 rounded-full bg-[var(--fg-dim)]" />
-            <span className="line-clamp-1 text-[11px] text-[var(--fg-muted)]">
+            <span className="line-clamp-1 text-[13px] text-[var(--fg-muted)]">
               <span aria-hidden className="mr-1">{desc.icon}</span>
               <span className="font-semibold text-[var(--fg)]">{descLabel}</span>
               <span className="mx-1">·</span>
@@ -3425,6 +3557,33 @@ export function SlopeAuthor2() {
                 onCancel={() => {
                   setPendingDrawLift(null);
                 }}
+              />
+            )}
+
+            {(() => {
+              const edge = selectedEdgeId ? liveGraphEdges.find((e) => e.id === selectedEdgeId) : undefined;
+              if (!edge) return null;
+              return (
+                <EdgePanel
+                  edge={edge}
+                  label={edgeLabels.get(edge.id) ?? edge.id}
+                  canConfirm={edge.provenance?.source !== "user-edit"}
+                  canTwoWay={!liveGraphEdges.some((e) => e.from === edge.to && e.to === edge.from)}
+                  onFlip={reviewActions.flip}
+                  onTwoWay={reviewActions.twoWay}
+                  onConfirm={reviewActions.confirm}
+                  onDelete={reviewActions.remove}
+                  onClose={() => selectEdge(null)}
+                />
+              );
+            })()}
+
+            {graphHasProvenance && !selectedSlope && !selectedLift && (
+              <ReviewListPanel
+                items={reviewList}
+                labels={edgeLabels}
+                selectedEdgeId={selectedEdgeId}
+                onPick={(id) => selectEdge(id)}
               />
             )}
 
@@ -3558,27 +3717,6 @@ export function SlopeAuthor2() {
                 onReverseDirection={() => reverseLiftDirection(selectedLift.id)}
                 onRotateS={(dir) => rotateLiftStart(selectedLift.id, dir)}
                 onBack={() => selectLift(null)}
-              />
-            )}
-
-            {selectedEdgeId !== null && (
-              <EditEdgeStatusPanel
-                selectedEdgeId={selectedEdgeId}
-                selectedEdge={
-                  selectedEdgeId
-                    ? [
-                        ...(loadedResort?.graph?.edges ?? []).map((e) => {
-                          const ov = edgeOverrides[e.id];
-                          return ov ? { ...e, ...ov } : e;
-                        }),
-                        ...addedGraphEdges,
-                      ].find((e) => e.id === selectedEdgeId) ?? null
-                    : null
-                }
-                onClearSelection={() => selectEdge(null)}
-                onDelete={() => {
-                  if (selectedEdgeId) deleteEdge(selectedEdgeId);
-                }}
               />
             )}
 
@@ -3743,10 +3881,10 @@ function SlopeListPanel({
   return (
     <section>
       <header className="mb-2 flex items-center justify-between gap-2">
-        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
+        <p className="text-[13px] font-semibold text-[var(--accent-soft)]">
           {t("slopeCountHeader", { count: effectiveSlopes.length })}
         </p>
-        <span className="flex items-center gap-2 text-[10px] text-[var(--fg-dim)]">
+        <span className="flex items-center gap-2 text-[13px] text-[var(--fg-dim)]">
           {deletedCount > 0 && (
             <button
               type="button"
@@ -3760,7 +3898,7 @@ function SlopeListPanel({
           <span>{t("editedCount", { count: Object.keys(overrides).length })}</span>
         </span>
       </header>
-      <p className="mb-2 text-[10px] text-[var(--fg-dim)]">{hint}</p>
+      <p className="mb-2 text-[13px] text-[var(--fg-dim)]">{hint}</p>
       <ul className="grid gap-1 text-xs">
         {effectiveSlopes.map((s) => {
           const isSelected = s.id === selectedId;
@@ -3786,7 +3924,7 @@ function SlopeListPanel({
                       edited
                     </span>
                   )}
-                  <span className="text-[10px] text-[var(--fg-dim)]">
+                  <span className="text-[13px] text-[var(--fg-dim)]">
                     {s.coordinates?.length ?? 0}pt
                   </span>
                 </span>
@@ -3795,7 +3933,7 @@ function SlopeListPanel({
           );
         })}
       </ul>
-      <p className="mt-2 text-[10px] text-[var(--fg-dim)]">
+      <p className="mt-2 text-[13px] text-[var(--fg-dim)]">
         Resort: {resort.ref.label}
       </p>
     </section>
@@ -3816,10 +3954,10 @@ function GeomEditControls({
   onRotateS?: (dir: 1 | -1) => void;
 }) {
   const btnBase =
-    "flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40 text-[10px]";
+    "flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40 text-[13px]";
   return (
     <div className="w-full flex flex-col gap-1">
-      <span className="rounded-md bg-[#22d3ee]/15 px-2.5 py-1 text-[10px] font-semibold text-[#22d3ee]">
+      <span className="rounded-md bg-[#22d3ee]/15 px-2.5 py-1 text-[13px] font-semibold text-[#22d3ee]">
         Editing · drag · dbl-click add · right-click remove
       </span>
       {isClosedCurve && (
@@ -3907,7 +4045,7 @@ function SlopeMetaPanel({
       {/* Header with back arrow */}
       <div className="mb-2 flex items-start gap-2">
         <button type="button" onClick={onBack}
-          className="mt-0.5 flex-none rounded-md border border-[var(--border)] px-2 py-1 text-[11px] leading-none text-[var(--fg-muted)] hover:text-[var(--fg)]"
+          className="mt-0.5 flex-none rounded-md border border-[var(--border)] px-2 py-1 text-[13px] leading-none text-[var(--fg-muted)] hover:text-[var(--fg)]"
           title="Back to list">
           ←
         </button>
@@ -3932,7 +4070,7 @@ function SlopeMetaPanel({
       {/* 0pt warning */}
       {has0pt && (
         <div className="mb-3 rounded-md border border-amber-400/30 bg-amber-400/10 px-3 py-2">
-          <p className="text-[10px] font-semibold text-amber-300">No geometry</p>
+          <p className="text-[13px] font-semibold text-amber-300">No geometry</p>
           <p className="text-[9px] text-[var(--fg-muted)]">Assign a graph edge or draw new geometry to make this slope visible on the map.</p>
         </div>
       )}
@@ -3962,7 +4100,7 @@ function SlopeMetaPanel({
             <div className="grid gap-1.5">
               <p className="text-[9px] font-semibold text-[var(--fg-dim)]">Assign geometry from graph edge</p>
               <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
-                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[13px] text-[var(--fg-muted)] font-mono">
                 <option value="">— pick a graph edge —</option>
                 {graphEdges.map((e) => (
                   <option key={e.id} value={e.id}>
@@ -3978,7 +4116,7 @@ function SlopeMetaPanel({
                     setEdgeSourceId("");
                   }
                 }}
-                className="w-full rounded-md bg-[var(--accent)] px-3 py-1.5 text-[10px] font-semibold text-[var(--accent-ink)] disabled:opacity-40">
+                className="w-full rounded-md bg-[var(--accent)] px-3 py-1.5 text-[13px] font-semibold text-[var(--accent-ink)] disabled:opacity-40">
                 Assign edge geometry
               </button>
             </div>
@@ -3992,7 +4130,7 @@ function SlopeMetaPanel({
               {showEdgeSource && (
                 <div className="mt-1.5 grid gap-1.5">
                   <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
-                    className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
+                    className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[13px] text-[var(--fg-muted)] font-mono">
                     <option value="">— pick a graph edge —</option>
                     {graphEdges.map((e) => (
                       <option key={e.id} value={e.id}>
@@ -4008,7 +4146,7 @@ function SlopeMetaPanel({
                         setShowEdgeSource(false);
                       }
                     }}
-                    className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                    className="rounded-md border border-[var(--border)] px-2 py-1 text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
                     title="Add this graph edge to the slope's path">
                     Add edge to path
                   </button>
@@ -4023,7 +4161,7 @@ function SlopeMetaPanel({
       <div className="mb-2 flex flex-wrap items-center gap-1.5">
         {!isEditingGeom ? (
           <button type="button" onClick={onEditGeom}
-            className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-[10px] font-semibold text-[var(--accent-ink)]">
+            className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-[13px] font-semibold text-[var(--accent-ink)]">
             {has0pt ? "Draw new geometry" : t("editGeometry")}
           </button>
         ) : (
@@ -4033,7 +4171,7 @@ function SlopeMetaPanel({
         )}
         {hasOverrideGeom && (
           <button type="button" onClick={onResetGeom}
-            className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)]">
+            className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)]">
             {t("resetGeometry")}
           </button>
         )}
@@ -4050,7 +4188,7 @@ function SlopeMetaPanel({
           {showGeomSource && (
             <div className="mt-1.5 grid gap-1.5">
               <select value={geomSourceId} onChange={(e) => setGeomSourceId(e.target.value)}
-                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)]">
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[13px] text-[var(--fg-muted)]">
                 <option value="">— {t("pickSlope")} —</option>
                 {otherSlopes.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -4064,7 +4202,7 @@ function SlopeMetaPanel({
                     const src = otherSlopes.find((s) => s.id === geomSourceId);
                     if (src?.coordinates) { onPatch({ coordinates: src.coordinates }); setGeomSourceId(""); }
                   }}
-                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
                   title="Copy coordinates from the selected slope (source slope is kept)">
                   {t("copyCoords")}
                 </button>
@@ -4072,7 +4210,7 @@ function SlopeMetaPanel({
                   onClick={() => {
                     if (geomSourceId && onJoinWith) { onJoinWith(geomSourceId); setGeomSourceId(""); }
                   }}
-                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
                   title="Append selected slope's polyline (closest endpoints auto-matched), then delete the source">
                   {t("joinDelete")}
                 </button>
@@ -4129,10 +4267,10 @@ function LiftListPanel({
   return (
     <section>
       <header className="mb-2 flex items-center justify-between gap-2">
-        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
+        <p className="text-[13px] font-semibold text-[var(--accent-soft)]">
           {t("liftCountHeader", { count: effectiveLifts.length })}
         </p>
-        <span className="flex items-center gap-2 text-[10px] text-[var(--fg-dim)]">
+        <span className="flex items-center gap-2 text-[13px] text-[var(--fg-dim)]">
           {deletedCount > 0 && (
             <button
               type="button"
@@ -4146,7 +4284,7 @@ function LiftListPanel({
           <span>{t("editedCount", { count: Object.keys(overrides).length })}</span>
         </span>
       </header>
-      <p className="mb-2 text-[10px] text-[var(--fg-dim)]">{hint}</p>
+      <p className="mb-2 text-[13px] text-[var(--fg-dim)]">{hint}</p>
       <ul className="grid gap-1 text-xs">
         {effectiveLifts.map((l) => {
           const isSelected = l.id === selectedId;
@@ -4170,7 +4308,7 @@ function LiftListPanel({
                       edited
                     </span>
                   )}
-                  <span className="text-[10px] text-[var(--fg-dim)]">
+                  <span className="text-[13px] text-[var(--fg-dim)]">
                     {l.coordinates?.length ?? 0}pt · {l.type ?? "—"}
                   </span>
                 </span>
@@ -4244,7 +4382,7 @@ function LiftMetaPanel({
       {/* Header with back arrow */}
       <div className="mb-2 flex items-start gap-2">
         <button type="button" onClick={onBack}
-          className="mt-0.5 flex-none rounded-md border border-[var(--border)] px-2 py-1 text-[11px] leading-none text-[var(--fg-muted)] hover:text-[var(--fg)]"
+          className="mt-0.5 flex-none rounded-md border border-[var(--border)] px-2 py-1 text-[13px] leading-none text-[var(--fg-muted)] hover:text-[var(--fg)]"
           title="Back to list">
           ←
         </button>
@@ -4269,7 +4407,7 @@ function LiftMetaPanel({
       {/* 0pt warning */}
       {has0pt && (
         <div className="mb-3 rounded-md border border-amber-400/30 bg-amber-400/10 px-3 py-2">
-          <p className="text-[10px] font-semibold text-amber-300">No geometry</p>
+          <p className="text-[13px] font-semibold text-amber-300">No geometry</p>
           <p className="text-[9px] text-[var(--fg-muted)]">Assign a graph edge or draw new geometry to make this lift visible on the map.</p>
         </div>
       )}
@@ -4299,7 +4437,7 @@ function LiftMetaPanel({
             <div className="grid gap-1.5">
               <p className="text-[9px] font-semibold text-[var(--fg-dim)]">Assign geometry from graph edge</p>
               <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
-                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[13px] text-[var(--fg-muted)] font-mono">
                 <option value="">— pick a graph edge —</option>
                 {graphEdges.map((e) => (
                   <option key={e.id} value={e.id}>
@@ -4315,7 +4453,7 @@ function LiftMetaPanel({
                     setEdgeSourceId("");
                   }
                 }}
-                className="w-full rounded-md bg-[var(--accent)] px-3 py-1.5 text-[10px] font-semibold text-[var(--accent-ink)] disabled:opacity-40">
+                className="w-full rounded-md bg-[var(--accent)] px-3 py-1.5 text-[13px] font-semibold text-[var(--accent-ink)] disabled:opacity-40">
                 Assign edge geometry
               </button>
             </div>
@@ -4329,7 +4467,7 @@ function LiftMetaPanel({
               {showEdgeSource && (
                 <div className="mt-1.5 grid gap-1.5">
                   <select value={edgeSourceId} onChange={(e) => setEdgeSourceId(e.target.value)}
-                    className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)] font-mono">
+                    className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[13px] text-[var(--fg-muted)] font-mono">
                     <option value="">— pick a graph edge —</option>
                     {graphEdges.map((e) => (
                       <option key={e.id} value={e.id}>
@@ -4345,7 +4483,7 @@ function LiftMetaPanel({
                         setShowEdgeSource(false);
                       }
                     }}
-                    className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                    className="rounded-md border border-[var(--border)] px-2 py-1 text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
                     title="Add this graph edge to the lift's path">
                     Add edge to path
                   </button>
@@ -4360,7 +4498,7 @@ function LiftMetaPanel({
       <div className="mb-2 flex flex-wrap items-center gap-1.5">
         {!isEditingGeom ? (
           <button type="button" onClick={onEditGeom}
-            className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-[10px] font-semibold text-[var(--accent-ink)]">
+            className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-[13px] font-semibold text-[var(--accent-ink)]">
             {has0pt ? "Draw new geometry" : t("editGeometry")}
           </button>
         ) : (
@@ -4370,7 +4508,7 @@ function LiftMetaPanel({
         )}
         {hasOverrideGeom && (
           <button type="button" onClick={onResetGeom}
-            className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)]">
+            className="rounded-md border border-[var(--border)] px-2.5 py-1 text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)]">
             {t("resetGeometry")}
           </button>
         )}
@@ -4387,7 +4525,7 @@ function LiftMetaPanel({
           {showGeomSource && (
             <div className="mt-1.5 grid gap-1.5">
               <select value={geomSourceId} onChange={(e) => setGeomSourceId(e.target.value)}
-                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[10px] text-[var(--fg-muted)]">
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg-elev)] px-2 py-1 text-[13px] text-[var(--fg-muted)]">
                 <option value="">— pick a lift —</option>
                 {otherLifts.map((l) => (
                   <option key={l.id} value={l.id}>
@@ -4401,7 +4539,7 @@ function LiftMetaPanel({
                     const src = otherLifts.find((l) => l.id === geomSourceId);
                     if (src?.coordinates) { onPatch({ coordinates: src.coordinates }); setGeomSourceId(""); }
                   }}
-                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
                   title="Copy coordinates from the selected lift (source is kept)">
                   {t("copyCoords")}
                 </button>
@@ -4409,7 +4547,7 @@ function LiftMetaPanel({
                   onClick={() => {
                     if (geomSourceId && onJoinWith) { onJoinWith(geomSourceId); setGeomSourceId(""); }
                   }}
-                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
+                  className="flex-1 rounded-md border border-[var(--border)] px-2 py-1 text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
                   title="Append selected lift's polyline (closest endpoints auto-matched), then delete the source">
                   {t("joinDelete")}
                 </button>
@@ -4432,7 +4570,7 @@ function LiftMetaPanel({
               onChange={(v) => onPatch({ name: v })} />
             <LocalizedNameEditor label={t("nameLocalized")} value={nameI18n}
               onChange={(next) => onPatch({ name_i18n: next })} currentLocale={locale} />
-            <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
+            <label className="grid gap-1 text-[13px] text-[var(--fg-muted)]">
               <span className="font-semibold text-[var(--fg-dim)]">{t("typeLabel")}</span>
               <select value={type} onChange={(e) => onPatch({ type: e.target.value || undefined })}
                 className="rounded-md border border-[var(--border)] bg-[var(--bg-page)] px-2 py-1 text-xs text-[var(--fg)]">
@@ -4481,7 +4619,7 @@ function PlaceMetaPanel({
           className="flex min-w-0 flex-1 items-center gap-1.5 text-left">
           <span className="text-[9px] text-[var(--fg-dim)]">{expanded ? "▾" : "▸"}</span>
           <div className="min-w-0">
-            <p className="text-[10px] font-semibold text-[var(--accent-soft)]">Place / ski area</p>
+            <p className="text-[13px] font-semibold text-[var(--accent-soft)]">Place / ski area</p>
             <h3 className="truncate text-sm font-semibold text-[var(--fg)]">{place.name}</h3>
             {!expanded && (
               <p className="text-[9px] text-[var(--fg-dim)]">
@@ -4495,7 +4633,7 @@ function PlaceMetaPanel({
           <button
             type="button"
             onClick={onReset}
-            className="flex-none rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)]"
+            className="flex-none rounded-md border border-[var(--border)] px-2 py-1 text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)]"
           >
             Reset
           </button>
@@ -4562,7 +4700,7 @@ function PlaceMetaPanel({
           }
           placeholder="e.g. resort, day_use, has_terrain_park"
         />
-      <p className="mt-1 text-[10px] text-[var(--fg-dim)]">
+      <p className="mt-1 text-[13px] text-[var(--fg-dim)]">
         Slug + region/country code are locked — changing them would
         relocate the file in the registry tree.
       </p>
@@ -4586,7 +4724,7 @@ function LabeledInput({
   placeholder?: string;
 }) {
   return (
-    <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
+    <label className="grid gap-1 text-[13px] text-[var(--fg-muted)]">
       <span className="font-semibold text-[var(--fg-dim)]">
         {label}
       </span>
@@ -4636,7 +4774,7 @@ function LocalizedNameEditor({
   };
 
   return (
-    <div className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
+    <div className="grid gap-1 text-[13px] text-[var(--fg-muted)]">
       <span className="font-semibold text-[var(--fg-dim)]">{label}</span>
       <div className="grid gap-1">
         {I18N_LOCALES.map((loc) => (
@@ -4677,7 +4815,7 @@ function LabeledNumber({
   onChange: (v: number | null) => void;
 }) {
   return (
-    <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
+    <label className="grid gap-1 text-[13px] text-[var(--fg-muted)]">
       <span className="font-semibold text-[var(--fg-dim)]">
         {label}
       </span>
@@ -4721,10 +4859,10 @@ function ConnectNodesStatusPanel({
   if (!hasGraph) {
     return (
       <section className="rounded-lg border border-amber-400/40 bg-amber-400/10 p-3">
-        <p className="text-[10px] font-semibold text-amber-300">
+        <p className="text-[13px] font-semibold text-amber-300">
           {t("connectNodesMode")}
         </p>
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           {t("connectNodesNeedGraph")}
         </p>
       </section>
@@ -4733,18 +4871,18 @@ function ConnectNodesStatusPanel({
   return (
     <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[#22d3ee]">
+        <p className="text-[13px] font-semibold text-[#22d3ee]">
           {t("connectNodesMode")} ·{" "}
           {anchorNodeId
             ? t("connectNodesPickSecond")
             : t("connectNodesPickFirst")}
         </p>
         {anchorNodeId && (
-          <p className="mt-1 break-all text-[10px] text-[var(--fg-muted)]">
+          <p className="mt-1 break-all text-[13px] text-[var(--fg-muted)]">
             {t("connectNodesFromLabel")}: <code>{anchorNodeId}</code>
           </p>
         )}
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           {t("connectNodesAddedCount", { count: addedEdgesCount })}
         </p>
       </header>
@@ -4764,82 +4902,6 @@ function ConnectNodesStatusPanel({
           className="rounded-md border border-[var(--border)] px-3 py-1.5 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-40"
         >
           {t("connectNodesUndoLast")}
-        </button>
-      </div>
-    </section>
-  );
-}
-
-function EditEdgeStatusPanel({
-  selectedEdgeId,
-  selectedEdge,
-  onClearSelection,
-  onDelete,
-}: {
-  selectedEdgeId: string | null;
-  selectedEdge: GraphEdge | null;
-  onClearSelection: () => void;
-  onDelete: () => void;
-}) {
-  const t = useTranslations("slopeAuthor");
-  const kindKey =
-    selectedEdge?.kind === "slope"
-      ? "edgesPanelKindSlope"
-      : selectedEdge?.kind === "lift"
-        ? "edgesPanelKindLift"
-        : selectedEdge?.kind === "traverse"
-          ? "edgesPanelKindTraverse"
-          : "edgesPanelKindOther";
-  return (
-    <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
-      <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[#22d3ee]">
-          {t("editEdgePanelTitle")}
-        </p>
-        {selectedEdge ? (
-          <>
-            <p className="mt-1 break-all text-[10px] text-[var(--fg-muted)]">
-              {t("editEdgeSelectedLabel")}:{" "}
-              <code>{selectedEdgeId}</code>
-            </p>
-            <p className="mt-0.5 break-all text-[10px] text-[var(--fg-muted)]">
-              {t("editEdgeFromTo", {
-                fromId: selectedEdge.from,
-                toId: selectedEdge.to,
-              })}
-            </p>
-            <p className="mt-0.5 text-[10px] text-[var(--fg-muted)]">
-              {t("editEdgeVertexCount", {
-                count: selectedEdge.geometry.length,
-                kind: t(kindKey),
-              })}
-            </p>
-            <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
-              {t("editEdgeDragHint")}
-            </p>
-          </>
-        ) : (
-          <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
-            {t("editEdgeNoSelection")}
-          </p>
-        )}
-      </header>
-      <div className="flex flex-wrap gap-2 text-xs">
-        <button
-          type="button"
-          onClick={onClearSelection}
-          disabled={!selectedEdge}
-          className="rounded-md border border-[var(--border)] px-3 py-1.5 text-red-300 hover:text-red-200 disabled:opacity-40"
-        >
-          {t("editEdgeStopEditing")}
-        </button>
-        <button
-          type="button"
-          onClick={onDelete}
-          disabled={!selectedEdge}
-          className="rounded-md border border-red-500/60 bg-red-500/10 px-3 py-1.5 text-red-200 hover:bg-red-500/20 disabled:opacity-40"
-        >
-          {t("editEdgeDeleteButton")}
         </button>
       </div>
     </section>
@@ -4866,11 +4928,11 @@ function EdgesListPanel({
     return (
       <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
         <header className="mb-1">
-          <p className="text-[10px] font-semibold text-[var(--fg-muted)]">
+          <p className="text-[13px] font-semibold text-[var(--fg-muted)]">
             {t("edgesPanelTitle", { count: 0 })}
           </p>
         </header>
-        <p className="text-[10px] text-[var(--fg-muted)]">
+        <p className="text-[13px] text-[var(--fg-muted)]">
           {t("edgesPanelEmpty")}
         </p>
       </section>
@@ -4889,7 +4951,7 @@ function EdgesListPanel({
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[var(--fg-muted)]">
+        <p className="text-[13px] font-semibold text-[var(--fg-muted)]">
           {t("edgesPanelTitle", { count: total })}
           {editedCount > 0 ? (
             <span className="ml-2 text-[#22d3ee]">
@@ -4897,11 +4959,11 @@ function EdgesListPanel({
             </span>
           ) : null}
         </p>
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           {t("edgesPanelHint")}
         </p>
       </header>
-      <ul className="space-y-1 text-[11px]">
+      <ul className="space-y-1 text-[13px]">
         {effective.map(({ e, isAdded, isEdited }) => {
           const isSel = e.id === selectedId;
           const kindKey =
@@ -4925,8 +4987,8 @@ function EdgesListPanel({
                 aria-pressed={isSel}
               >
                 <span className="flex w-full items-center justify-between gap-2">
-                  <code className="break-all text-[10px]">{e.id}</code>
-                  <span className="flex flex-none items-center gap-1 text-[10px]">
+                  <code className="break-all text-[13px]">{e.id}</code>
+                  <span className="flex flex-none items-center gap-1 text-[13px]">
                     {isAdded && (
                       <span className="rounded bg-emerald-500/20 px-1 py-0.5 text-emerald-300">
                         new
@@ -4944,7 +5006,7 @@ function EdgesListPanel({
                     )}
                   </span>
                 </span>
-                <span className="break-all text-[10px] text-[var(--fg-dim)]">
+                <span className="break-all text-[13px] text-[var(--fg-dim)]">
                   {e.from} → {e.to} · {e.geometry.length}v · {t(kindKey)}
                 </span>
               </button>
@@ -4989,12 +5051,12 @@ function EditNodeStatusPanel({
   return (
     <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[#22d3ee]">
+        <p className="text-[13px] font-semibold text-[#22d3ee]">
           {t("editNodePanelTitle")}
         </p>
         {selectedNode ? (
           <>
-            <p className="mt-1 break-all text-[10px] text-[var(--fg-muted)]">
+            <p className="mt-1 break-all text-[13px] text-[var(--fg-muted)]">
               {t("editNodeSelectedLabel")}: <code>{selectedNodeId}</code>
               {hasOverride && (
                 <span className="ml-2 rounded bg-cyan-500/20 px-1 py-0.5 text-[9px] text-cyan-300">
@@ -5002,18 +5064,18 @@ function EditNodeStatusPanel({
                 </span>
               )}
             </p>
-            <p className="mt-0.5 text-[10px] text-[var(--fg-muted)]">
+            <p className="mt-0.5 text-[13px] text-[var(--fg-muted)]">
               {t("editNodeCoords", {
                 lat: selectedNode.lat.toFixed(6),
                 lng: selectedNode.lng.toFixed(6),
               })}
             </p>
-            <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+            <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
               {t("editNodeDragHint")}
             </p>
           </>
         ) : (
-          <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
             {t("editNodeNoSelection")}
           </p>
         )}
@@ -5021,7 +5083,7 @@ function EditNodeStatusPanel({
       {selectedNode && (
         <div className="space-y-2">
           <label className="block">
-            <span className="text-[10px] font-semibold text-[var(--fg-muted)]">
+            <span className="text-[13px] font-semibold text-[var(--fg-muted)]">
               {t("editNodeKindLabel")}
             </span>
             <select
@@ -5041,7 +5103,7 @@ function EditNodeStatusPanel({
             </select>
           </label>
           <label className="block">
-            <span className="text-[10px] font-semibold text-[var(--fg-muted)]">
+            <span className="text-[13px] font-semibold text-[var(--fg-muted)]">
               {t("editNodeAltLabel")}
             </span>
             <input
@@ -5099,11 +5161,11 @@ function NodesListPanel({
     return (
       <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
         <header className="mb-1">
-          <p className="text-[10px] font-semibold text-[var(--fg-muted)]">
+          <p className="text-[13px] font-semibold text-[var(--fg-muted)]">
             {t("nodesPanelTitle", { count: 0 })}
           </p>
         </header>
-        <p className="text-[10px] text-[var(--fg-muted)]">
+        <p className="text-[13px] text-[var(--fg-muted)]">
           {t("nodesPanelEmpty")}
         </p>
       </section>
@@ -5120,7 +5182,7 @@ function NodesListPanel({
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[var(--fg-muted)]">
+        <p className="text-[13px] font-semibold text-[var(--fg-muted)]">
           {t("nodesPanelTitle", { count: total })}
           {editedCount > 0 ? (
             <span className="ml-2 text-[#22d3ee]">
@@ -5128,11 +5190,11 @@ function NodesListPanel({
             </span>
           ) : null}
         </p>
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           {t("nodesPanelHint")}
         </p>
       </header>
-      <ul className="space-y-1 text-[11px]">
+      <ul className="space-y-1 text-[13px]">
         {effective.map(({ n, isAdded, isEdited }) => {
           const isSel = n.id === selectedId;
           return (
@@ -5148,8 +5210,8 @@ function NodesListPanel({
                 aria-pressed={isSel}
               >
                 <span className="flex w-full items-center justify-between gap-2">
-                  <code className="break-all text-[10px]">{n.id}</code>
-                  <span className="flex flex-none items-center gap-1 text-[10px]">
+                  <code className="break-all text-[13px]">{n.id}</code>
+                  <span className="flex flex-none items-center gap-1 text-[13px]">
                     {isAdded && (
                       <span className="rounded bg-emerald-500/20 px-1 py-0.5 text-emerald-300">
                         new
@@ -5167,7 +5229,7 @@ function NodesListPanel({
                     )}
                   </span>
                 </span>
-                <span className="break-all text-[10px] text-[var(--fg-dim)]">
+                <span className="break-all text-[13px] text-[var(--fg-dim)]">
                   {n.kind ?? t("editNodeKindUnset")} · {n.alt_m.toFixed(0)}m
                 </span>
               </button>
@@ -5201,10 +5263,10 @@ function LintPanel({
     return (
       <section className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3">
         <header>
-          <p className="text-[10px] font-semibold text-emerald-300">
+          <p className="text-[13px] font-semibold text-emerald-300">
             {t("lintPanelTitle", { count: 0 })}
           </p>
-          <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+          <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
             {t("lintPanelEmpty")}
           </p>
         </header>
@@ -5227,10 +5289,10 @@ function LintPanel({
   return (
     <section className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-amber-300">
+        <p className="text-[13px] font-semibold text-amber-300">
           {t("lintPanelTitle", { count: total })}
         </p>
-        <p className="mt-1 flex flex-wrap gap-2 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 flex flex-wrap gap-2 text-[13px] text-[var(--fg-muted)]">
           {counts["node-no-kind"] > 0 && (
             <span className="text-amber-300">
               {t("lintTallyNoKind", { count: counts["node-no-kind"] })}
@@ -5252,11 +5314,11 @@ function LintPanel({
             </span>
           )}
         </p>
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           {t("lintPanelHint")}
         </p>
       </header>
-      <ul className="max-h-48 space-y-1 overflow-y-auto text-[11px]">
+      <ul className="max-h-48 space-y-1 overflow-y-auto text-[13px]">
         {issues.map((issue, i) => (
           <li key={`${issue.kind}-${i}`}>
             <button
@@ -5264,7 +5326,7 @@ function LintPanel({
               onClick={() => onJump(issue)}
               className="flex w-full items-center justify-between gap-2 rounded-md border border-[var(--border)] bg-transparent px-2 py-1.5 text-left text-[var(--fg-muted)] transition hover:bg-[var(--bg-elev)] hover:text-[var(--fg)]"
             >
-              <span className={`break-all text-[10px] ${accentFor(issue.kind)}`}>
+              <span className={`break-all text-[13px] ${accentFor(issue.kind)}`}>
                 {labelFor(issue)}
               </span>
               <span aria-hidden className="text-[9px] text-[var(--fg-dim)]">
@@ -5293,33 +5355,33 @@ function WelcomeIntro({
       className="rounded-lg border border-sky-500/40 bg-sky-500/5 p-3"
     >
       <header className="mb-2 flex items-center justify-between gap-2">
-        <p className="text-[10px] font-semibold text-sky-300">
+        <p className="text-[13px] font-semibold text-sky-300">
           {t("welcomeTitle")}
         </p>
         <button
           type="button"
           data-testid="welcome-dismiss"
           onClick={onDismiss}
-          className="rounded-md border border-sky-500/40 bg-sky-500/10 px-2 py-1 text-[11px] font-semibold text-sky-100 transition hover:bg-sky-500/20"
+          className="rounded-md border border-sky-500/40 bg-sky-500/10 px-2 py-1 text-[13px] font-semibold text-sky-100 transition hover:bg-sky-500/20"
         >
           {t("welcomeDismiss")}
         </button>
       </header>
-      <ol className="space-y-2 text-[11px] text-[var(--fg-muted)]">
+      <ol className="space-y-2 text-[13px] text-[var(--fg-muted)]">
         <li className="flex items-start gap-2">
-          <span className="mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-sky-500/20 text-[10px] font-semibold leading-none text-sky-200">
+          <span className="mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-sky-500/20 text-[13px] font-semibold leading-none text-sky-200">
             1
           </span>
           <span>{t("welcomeStep1")}</span>
         </li>
         <li className="flex items-start gap-2">
-          <span className="mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-sky-500/20 text-[10px] font-semibold leading-none text-sky-200">
+          <span className="mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-sky-500/20 text-[13px] font-semibold leading-none text-sky-200">
             2
           </span>
           <span>{t("welcomeStep2")}</span>
         </li>
         <li className="flex items-start gap-2">
-          <span className="mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-sky-500/20 text-[10px] font-semibold leading-none text-sky-200">
+          <span className="mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-sky-500/20 text-[13px] font-semibold leading-none text-sky-200">
             3
           </span>
           <span>{t("welcomeStep3")}</span>
@@ -5338,21 +5400,21 @@ function ConflictBadge({ conflicts }: { conflicts: ConflictInfo[] }) {
       className="rounded-lg border border-orange-500/40 bg-orange-500/5 p-3"
     >
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-orange-300">
+        <p className="text-[13px] font-semibold text-orange-300">
           {t("conflictsTitle", { count: conflicts.length })}
         </p>
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           {t("conflictsHint")}
         </p>
       </header>
       <ul
         data-testid="conflict-list"
-        className="space-y-1 text-[11px]"
+        className="space-y-1 text-[13px]"
       >
         {conflicts.map((c) => (
           <li
             key={c.number}
-            className="rounded-md border border-[var(--border)] bg-transparent px-2 py-1 text-[10px]"
+            className="rounded-md border border-[var(--border)] bg-transparent px-2 py-1 text-[13px]"
           >
             <a
               href={c.url}
@@ -5389,10 +5451,10 @@ function RestoreBanner({
       className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-3"
     >
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-amber-300">
+        <p className="text-[13px] font-semibold text-amber-300">
           {t("restoreDraftTitle")}
         </p>
-        <p className="mt-1 text-[11px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           {t("restoreDraftBody", { when })}
         </p>
       </header>
@@ -5401,7 +5463,7 @@ function RestoreBanner({
           type="button"
           data-testid="restore-draft-button"
           onClick={onRestore}
-          className="flex-1 rounded-md border border-amber-500/40 bg-amber-500/15 px-2 py-1.5 text-[11px] font-semibold text-amber-100 transition hover:bg-amber-500/25"
+          className="flex-1 rounded-md border border-amber-500/40 bg-amber-500/15 px-2 py-1.5 text-[13px] font-semibold text-amber-100 transition hover:bg-amber-500/25"
         >
           {t("restoreDraftButton")}
         </button>
@@ -5409,7 +5471,7 @@ function RestoreBanner({
           type="button"
           data-testid="discard-draft-button"
           onClick={onDiscard}
-          className="flex-1 rounded-md border border-[var(--border)] bg-transparent px-2 py-1.5 text-[11px] font-semibold text-[var(--fg-muted)] transition hover:text-[var(--fg)]"
+          className="flex-1 rounded-md border border-[var(--border)] bg-transparent px-2 py-1.5 text-[13px] font-semibold text-[var(--fg-muted)] transition hover:text-[var(--fg)]"
         >
           {t("discardDraftButton")}
         </button>
@@ -5432,14 +5494,14 @@ function UndoBar({
       data-testid="undo-bar"
       className="flex items-center justify-between gap-2 rounded-lg border border-violet-500/40 bg-violet-500/5 px-3 py-2"
     >
-      <span className="text-[10px] font-semibold text-violet-300">
+      <span className="text-[13px] font-semibold text-violet-300">
         {t("undoBarLabel", { count: depth })}
       </span>
       <button
         type="button"
         data-testid="undo-button"
         onClick={onUndo}
-        className="rounded-md border border-violet-500/40 bg-violet-500/10 px-2 py-1 text-[11px] font-semibold text-violet-100 transition hover:bg-violet-500/20"
+        className="rounded-md border border-violet-500/40 bg-violet-500/10 px-2 py-1 text-[13px] font-semibold text-violet-100 transition hover:bg-violet-500/20"
       >
         {t("undoBarButton")}
       </button>
@@ -5467,21 +5529,21 @@ function PatchPreviewPanel({ bundle }: { bundle: PatchBundle }) {
       className="rounded-lg border border-sky-500/40 bg-sky-500/5 p-3"
     >
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-sky-300">
+        <p className="text-[13px] font-semibold text-sky-300">
           {t("patchPreviewTitle", { count: parts.length })}
         </p>
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           {t("patchPreviewHint")}
         </p>
       </header>
       <ul
         data-testid="patch-preview-parts"
-        className="space-y-1 text-[11px]"
+        className="space-y-1 text-[13px]"
       >
         {parts.map((p) => (
           <li
             key={p}
-            className="rounded-md border border-[var(--border)] bg-transparent px-2 py-1 text-[10px] text-[var(--fg)]"
+            className="rounded-md border border-[var(--border)] bg-transparent px-2 py-1 text-[13px] text-[var(--fg)]"
           >
             {p}
           </li>
@@ -5493,7 +5555,7 @@ function PatchPreviewPanel({ bundle }: { bundle: PatchBundle }) {
         </p>
         <ul
           data-testid="patch-preview-files"
-          className="mt-1 space-y-0.5 text-[10px] text-[var(--fg-muted)]"
+          className="mt-1 space-y-0.5 text-[13px] text-[var(--fg-muted)]"
         >
           {files.map(([path, content]) => (
             <li
@@ -5531,10 +5593,10 @@ function MergeCloseNodesPanel({
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[var(--fg-muted)]">
+        <p className="text-[13px] font-semibold text-[var(--fg-muted)]">
           {t("mergeCloseNodesPanelTitle")}
         </p>
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           {t("mergeCloseNodesHint")}
         </p>
       </header>
@@ -5550,7 +5612,7 @@ function MergeCloseNodesPanel({
       {(lastRewired !== null ||
         deletedNodeCount > 0 ||
         deletedEdgeCount > 0) && (
-        <div className="mt-2 space-y-0.5 text-[10px] text-[var(--fg-muted)]">
+        <div className="mt-2 space-y-0.5 text-[13px] text-[var(--fg-muted)]">
           {noneFound && lastRewired === 0 && (
             <p>{t("mergeCloseNodesNoneFound")}</p>
           )}
@@ -5593,14 +5655,14 @@ function MergeNodePromptPanel({
   return (
     <section className="rounded-lg border border-amber-400/40 bg-amber-400/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-amber-300">
+        <p className="text-[13px] font-semibold text-amber-300">
           {t("mergeNodesPromptTitle")}
         </p>
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           {t("mergeNodesPromptBody", { distM: distLabel })}
         </p>
       </header>
-      <div className="mb-2 grid grid-cols-1 gap-1 text-[10px] text-[var(--fg-muted)]">
+      <div className="mb-2 grid grid-cols-1 gap-1 text-[13px] text-[var(--fg-muted)]">
         <p>
           <span className="font-semibold text-emerald-300">
             {t("mergeNodesKeepLabel")}:
@@ -5650,10 +5712,10 @@ function DrawSlopeStatusPanel({
   return (
     <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[#22d3ee]">
+        <p className="text-[13px] font-semibold text-[#22d3ee]">
           Drawing slope · {points.length} vertex{points.length === 1 ? "" : "es"}
         </p>
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           Click on the map to add vertices. Press <kbd className="rounded bg-[var(--bg-elev)] px-1">Enter</kbd> when done, <kbd className="rounded bg-[var(--bg-elev)] px-1">Esc</kbd> to cancel.
         </p>
       </header>
@@ -5730,10 +5792,10 @@ function FinalizeSlopePanel({
   return (
     <section className="rounded-lg border border-[var(--accent)]/40 bg-[var(--accent)]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
+        <p className="text-[13px] font-semibold text-[var(--accent-soft)]">
           Finalize new slope
         </p>
-        <p className="text-[10px] text-[var(--fg-dim)]">
+        <p className="text-[13px] text-[var(--fg-dim)]">
           {points.length} vertices · click Save to add this slope to the patch.
         </p>
       </header>
@@ -5745,12 +5807,12 @@ function FinalizeSlopePanel({
           placeholder="e.g. blue-line"
         />
         {idClash && (
-          <p className="text-[10px] text-red-300">
+          <p className="text-[13px] text-red-300">
             ID already in use; pick a different one.
           </p>
         )}
         {!idClash && idTrimmed && !idValid && (
-          <p className="text-[10px] text-red-300">
+          <p className="text-[13px] text-red-300">
             ID must be lowercase letters / digits / hyphens, starting with a letter or digit.
           </p>
         )}
@@ -5833,10 +5895,10 @@ function DrawLiftStatusPanel({
   return (
     <section className="rounded-lg border border-[#22d3ee]/40 bg-[#22d3ee]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[#22d3ee]">
+        <p className="text-[13px] font-semibold text-[#22d3ee]">
           Drawing lift · {points.length} vertex{points.length === 1 ? "" : "es"}
         </p>
-        <p className="mt-1 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-1 text-[13px] text-[var(--fg-muted)]">
           Click on the map to add vertices. Press <kbd className="rounded bg-[var(--bg-elev)] px-1">Enter</kbd> when done, <kbd className="rounded bg-[var(--bg-elev)] px-1">Esc</kbd> to cancel.
         </p>
       </header>
@@ -5905,10 +5967,10 @@ function FinalizeLiftPanel({
   return (
     <section className="rounded-lg border border-[var(--accent)]/40 bg-[var(--accent)]/10 p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
+        <p className="text-[13px] font-semibold text-[var(--accent-soft)]">
           Finalize new lift
         </p>
-        <p className="text-[10px] text-[var(--fg-dim)]">
+        <p className="text-[13px] text-[var(--fg-dim)]">
           {points.length} vertices · click Save to add this lift to the patch.
         </p>
       </header>
@@ -5920,17 +5982,17 @@ function FinalizeLiftPanel({
           placeholder="e.g. emerald-quad"
         />
         {idClash && (
-          <p className="text-[10px] text-red-300">
+          <p className="text-[13px] text-red-300">
             ID already in use; pick a different one.
           </p>
         )}
         {!idClash && idTrimmed && !idValid && (
-          <p className="text-[10px] text-red-300">
+          <p className="text-[13px] text-red-300">
             ID must be lowercase letters / digits / hyphens, starting with a letter or digit.
           </p>
         )}
         <LabeledInput label="Name" value={name} onChange={setName} />
-        <label className="grid gap-1 text-[10px] text-[var(--fg-muted)]">
+        <label className="grid gap-1 text-[13px] text-[var(--fg-muted)]">
           <span className="font-semibold text-[var(--fg-dim)]">
             Type
           </span>
@@ -6126,17 +6188,17 @@ function NewPlaceForm() {
     <section className="rounded-lg border border-[var(--accent)]/40 bg-[var(--accent)]/10 p-3">
       <header className="mb-2 flex items-start justify-between gap-2">
         <div>
-          <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
+          <p className="text-[13px] font-semibold text-[var(--accent-soft)]">
             {t("newPlaceTitle")}
           </p>
-          <p className="text-[10px] text-[var(--fg-dim)]">
+          <p className="text-[13px] text-[var(--fg-dim)]">
             Creates the registry directory + empty slopes / lifts / webcams.
           </p>
         </div>
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="rounded-md border border-[var(--border)] px-2 py-1 text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)]"
+          className="rounded-md border border-[var(--border)] px-2 py-1 text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)]"
         >
           Close
         </button>
@@ -6163,17 +6225,17 @@ function NewPlaceForm() {
           />
         </div>
         {!ccOk && countryCode.length > 0 && (
-          <p className="text-[10px] text-red-300">
+          <p className="text-[13px] text-red-300">
             Country code: 2–3 lowercase letters.
           </p>
         )}
         {!rsOk && regionSlug.length > 0 && (
-          <p className="text-[10px] text-red-300">
+          <p className="text-[13px] text-red-300">
             Region slug must be kebab-case (a-z0-9 + hyphens).
           </p>
         )}
         {!psOk && placeSlug.length > 0 && (
-          <p className="text-[10px] text-red-300">
+          <p className="text-[13px] text-red-300">
             Place slug must be kebab-case (a-z0-9 + hyphens).
           </p>
         )}
@@ -6197,7 +6259,7 @@ function NewPlaceForm() {
           <LabeledNumber label="Longitude" value={lng} onChange={setLng} />
         </div>
         {(!latOk || !lngOk) && (lat != null || lng != null) && (
-          <p className="text-[10px] text-red-300">
+          <p className="text-[13px] text-red-300">
             Lat must be -90..90 and lng -180..180.
           </p>
         )}
@@ -6231,10 +6293,10 @@ function NewPlaceForm() {
         </button>
       </div>
       {result.kind === "error" && (
-        <p className="mt-2 text-[10px] text-red-300">Error: {result.message}</p>
+        <p className="mt-2 text-[13px] text-red-300">Error: {result.message}</p>
       )}
       {result.kind === "ok" && (
-        <div className="mt-2 grid gap-1 text-[10px] text-[var(--fg-muted)]">
+        <div className="mt-2 grid gap-1 text-[13px] text-[var(--fg-muted)]">
           <p>
             Branch <span className="font-mono">{result.branchName}</span>{" "}
             pushed.
@@ -6296,10 +6358,10 @@ function OsmImportPanel({
   return (
     <section className="rounded-2xl border border-white/5 bg-[var(--bg-glass)] backdrop-blur-md shadow-[var(--shadow-glass)] p-3">
       <header className="mb-2">
-        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
+        <p className="text-[13px] font-semibold text-[var(--accent-soft)]">
           Import from OpenStreetMap
         </p>
-        <p className="mt-0.5 text-[10px] text-[var(--fg-dim)]">
+        <p className="mt-0.5 text-[13px] text-[var(--fg-dim)]">
           Pulls <code>piste:type=downhill</code> ways from Overpass
           within 5km of the resort centre. Dedupes against existing
           slope endpoints (~10m tolerance); the rest land as added
@@ -6315,13 +6377,13 @@ function OsmImportPanel({
         {status.kind === "fetching" ? "Fetching OSM…" : "🌐 Fetch from OSM"}
       </button>
       {status.kind === "done" && (
-        <p className="mt-2 text-[10px] text-[var(--fg-muted)]">
+        <p className="mt-2 text-[13px] text-[var(--fg-muted)]">
           ✓ added {status.added} OSM piste{status.added !== 1 ? "s" : ""} as
           drafted slopes. Scroll the slope list to review.
         </p>
       )}
       {status.kind === "error" && (
-        <p className="mt-2 text-[10px] text-red-300">
+        <p className="mt-2 text-[13px] text-red-300">
           OSM import failed: {status.message}
         </p>
       )}
@@ -6339,18 +6401,18 @@ function PickListPanel({
   return (
     <section>
       <header className="mb-1 flex items-center justify-between">
-        <p className="text-[10px] font-semibold text-[var(--accent-soft)]">
+        <p className="text-[13px] font-semibold text-[var(--accent-soft)]">
           Picks ({picks.length})
         </p>
         <button
           type="button"
           onClick={onClear}
-          className="text-[10px] text-[var(--fg-muted)] hover:text-[var(--fg)]"
+          className="text-[13px] text-[var(--fg-muted)] hover:text-[var(--fg)]"
         >
           Clear
         </button>
       </header>
-      <ul className="grid gap-1 font-mono text-[10px] text-[var(--fg-muted)]">
+      <ul className="grid gap-1 font-mono text-[13px] text-[var(--fg-muted)]">
         {picks.map((p) => (
           <li key={p.id} className="rounded bg-[var(--bg-elev)] px-2 py-1">
             {p.lat.toFixed(5)}, {p.lng.toFixed(5)} ·{" "}
@@ -6456,7 +6518,7 @@ function EntityBrowserPanel({
             key={tab.key}
             type="button"
             onClick={() => onTabChange(tab.key)}
-            className={`flex-1 px-1 py-2 text-[10px] font-semibold transition ${
+            className={`flex-1 px-1 py-2 text-[13px] font-semibold transition ${
               activeTab === tab.key
                 ? "border-b-2 border-[var(--accent)] text-[var(--fg)]"
                 : "text-[var(--fg-dim)] hover:text-[var(--fg-muted)]"
@@ -6479,7 +6541,7 @@ function EntityBrowserPanel({
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder={t("entitySearchPlaceholder")}
-          className="w-full rounded-md bg-[var(--bg-elev)] px-2 py-1 text-[11px] text-[var(--fg)] placeholder:text-[var(--fg-dim)] outline-none"
+          className="w-full rounded-md bg-[var(--bg-elev)] px-2 py-1 text-[13px] text-[var(--fg)] placeholder:text-[var(--fg-dim)] outline-none"
         />
       </div>
 
@@ -6507,7 +6569,7 @@ function EntityBrowserPanel({
                     }`}
                   >
                     <span className="truncate font-medium">{s.name || s.id}</span>
-                    <span className="flex flex-none items-center gap-1 text-[10px] text-[var(--fg-dim)]">
+                    <span className="flex flex-none items-center gap-1 text-[13px] text-[var(--fg-dim)]">
                       {dirty && (
                         <span className="rounded bg-amber-500/20 px-1 py-0.5 text-[9px] font-semibold text-amber-300">
                           &#x270E;
@@ -6539,7 +6601,7 @@ function EntityBrowserPanel({
                     }`}
                   >
                     <span className="truncate font-medium">{l.name || l.id}</span>
-                    <span className="flex flex-none items-center gap-1 text-[10px] text-[var(--fg-dim)]">
+                    <span className="flex flex-none items-center gap-1 text-[13px] text-[var(--fg-dim)]">
                       {dirty && (
                         <span className="rounded bg-amber-500/20 px-1 py-0.5 text-[9px] font-semibold text-amber-300">
                           &#x270E;
@@ -6580,7 +6642,7 @@ function EntityBrowserPanel({
                     aria-pressed={isSel}
                   >
                     <span className="flex w-full items-center justify-between gap-1">
-                      <code className="text-[10px]">{e.id}</code>
+                      <code className="text-[13px]">{e.id}</code>
                       <span className="flex items-center gap-1 text-[9px]">
                         {isAdded && (
                           <span className="rounded bg-emerald-500/20 px-1 text-emerald-300">new</span>
@@ -6590,7 +6652,7 @@ function EntityBrowserPanel({
                         )}
                       </span>
                     </span>
-                    <span className="text-[10px] text-[var(--fg-dim)]">
+                    <span className="text-[13px] text-[var(--fg-dim)]">
                       {e.from} → {e.to} · {e.geometry.length}v · {e.kind}
                     </span>
                   </button>
@@ -6624,7 +6686,7 @@ function EntityBrowserPanel({
                     aria-pressed={isSel}
                   >
                     <span className="flex w-full items-center justify-between gap-1">
-                      <code className="text-[10px]">{n.id}</code>
+                      <code className="text-[13px]">{n.id}</code>
                       <span className="flex items-center gap-1 text-[9px]">
                         {isAdded && (
                           <span className="rounded bg-emerald-500/20 px-1 text-emerald-300">new</span>
@@ -6634,7 +6696,7 @@ function EntityBrowserPanel({
                         )}
                       </span>
                     </span>
-                    <span className="text-[10px] text-[var(--fg-dim)]">
+                    <span className="text-[13px] text-[var(--fg-dim)]">
                       {n.kind ?? "waypoint"} · {n.alt_m}m
                     </span>
                   </button>

@@ -70,6 +70,10 @@
           "type": ["string", "null"],
           "description": "The catalog slope ID this edge belongs to (matches an id in sibling `.slopes.json`). Null for lift + traverse edges."
         },
+        "lift_id": {
+          "type": ["string", "null"],
+          "description": "The catalog lift ID this edge belongs to (matches an id in sibling `lifts.json`). Lift edges only."
+        },
         "kind": {
           "enum": ["slope", "lift", "traverse"],
           "description": "slope = downhill terrain counting as a run; lift = uphill transport (cuts runs); traverse = access road / cat track, part of the graph but not a run."
@@ -101,7 +105,28 @@
         "notes": {
           "type": "string",
           "description": "Optional author commentary."
-        }
+        },
+        "provenance": { "$ref": "#/$defs/edgeProvenance" }
+      }
+    },
+    "edgeProvenance": {
+      "type": "object",
+      "required": ["source"],
+      "additionalProperties": false,
+      "description": "Why this edge exists. Version 2 files (built by scripts/build_slope_graph.py) carry it on every edge. Routing should use `osm`, `observed` and `user-edit` edges and leave `suggested` ones out until an editor confirms them.",
+      "properties": {
+        "source": {
+          "enum": ["osm", "observed", "suggested", "user-edit"],
+          "description": "osm = the geometry is an OpenStreetMap way, or the part of one between two junctions. observed = recorded tracks went from the edges ending at `from` to the edges starting at `to`; only the count is kept, never the tracks. suggested = the two ends are close and nobody has been recorded riding between them yet. user-edit = drawn or confirmed by a contributor."
+        },
+        "osm_way_id": { "type": "integer", "description": "When source = osm." },
+        "observed_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "How many recorded rides used this edge (osm) or made this connection (observed). 0 on an osm edge means the tracks that were available never rode it: closed, or just not visited."
+        },
+        "contributor": { "type": "string" },
+        "last_verified": { "type": "string", "format": "date" }
       }
     },
     "vertex": {
