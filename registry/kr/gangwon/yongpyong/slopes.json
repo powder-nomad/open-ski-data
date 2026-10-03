@@ -687,6 +687,10 @@
         {
           "lat": 37.6354522,
           "lon": 128.6835258
+        },
+        {
+          "lat": 37.6354851,
+          "lon": 128.6835488
         }
       ],
       "elevation_m": 222,
@@ -1142,6 +1146,10 @@
         {
           "lat": 37.6369641,
           "lon": 128.6829354
+        },
+        {
+          "lat": 37.6372508,
+          "lon": 128.6828888
         }
       ],
       "connected_slope_ids": [
@@ -2665,45 +2673,6 @@
       "connected_slope_ids": [
         "unnamed-53340624700",
         "unnamed-996685260"
-      ],
-      "connected_lift_ids": []
-    },
-    {
-      "id": "unnamed-996685258",
-      "name": "unnamed-996685258",
-      "name_i18n": {},
-      "type": "run",
-      "length_m": 94.5,
-      "coordinates": [
-        {
-          "lat": 37.636203,
-          "lon": 128.683046
-        },
-        {
-          "lat": 37.636048,
-          "lon": 128.683111
-        },
-        {
-          "lat": 37.635894,
-          "lon": 128.683177
-        },
-        {
-          "lat": 37.635773,
-          "lon": 128.683292
-        },
-        {
-          "lat": 37.635653,
-          "lon": 128.683408
-        },
-        {
-          "lat": 37.635452,
-          "lon": 128.683526
-        }
-      ],
-      "connected_slope_ids": [
-        "gold-paradise",
-        "red-paradise",
-        "unnamed-533199663"
       ],
       "connected_lift_ids": []
     },

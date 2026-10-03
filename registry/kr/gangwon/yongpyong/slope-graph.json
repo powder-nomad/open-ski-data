@@ -7563,30 +7563,6 @@
       }
     },
     {
-      "id": "e-link-9203028527-5173256932",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-9203028527",
-      "to": "n-5173256932",
-      "length_m": 32.2,
-      "geometry": [
-        {
-          "lat": 37.6369641,
-          "lng": 128.6829354,
-          "alt_m": 930.8
-        },
-        {
-          "lat": 37.6372508,
-          "lng": 128.6828888,
-          "alt_m": 924.4
-        }
-      ],
-      "provenance": {
-        "source": "observed",
-        "observed_count": 125
-      }
-    },
-    {
       "id": "e-link-9203028527-5173256937",
       "slope_id": null,
       "kind": "traverse",
@@ -7608,30 +7584,6 @@
       "provenance": {
         "source": "observed",
         "observed_count": 7
-      }
-    },
-    {
-      "id": "e-link-9203028530-9203028531",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-9203028530",
-      "to": "n-9203028531",
-      "length_m": 4.2,
-      "geometry": [
-        {
-          "lat": 37.6354522,
-          "lng": 128.6835258,
-          "alt_m": 946.1
-        },
-        {
-          "lat": 37.6354851,
-          "lng": 128.6835488,
-          "alt_m": 946.3
-        }
-      ],
-      "provenance": {
-        "source": "observed",
-        "observed_count": 14
       }
     },
     {
@@ -8530,6 +8482,156 @@
           "lat": 37.6439797,
           "lng": 128.6787661,
           "alt_m": 765
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-muslf6dv-0jso",
+      "slope_id": "osm-533196094",
+      "kind": "slope",
+      "from": "n-9203028529",
+      "to": "n-9203028531",
+      "length_m": 22.3,
+      "geometry": [
+        {
+          "lat": 37.6356526,
+          "lng": 128.683408,
+          "alt_m": 946.5
+        },
+        {
+          "lat": 37.6354851,
+          "lng": 128.6835488,
+          "alt_m": 946.3
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-muslgcdr-98l3",
+      "slope_id": "gold-paradise",
+      "kind": "slope",
+      "from": "n-9203028530",
+      "to": "n-9203028531",
+      "length_m": 4.2,
+      "geometry": [
+        {
+          "lat": 37.6354522,
+          "lng": 128.6835258,
+          "alt_m": 946.1
+        },
+        {
+          "lat": 37.6354851,
+          "lng": 128.6835488,
+          "alt_m": 946.3
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-muslhjx9-f3um",
+      "slope_id": "unnamed-533199663",
+      "kind": "slope",
+      "from": "n-9203028527",
+      "to": "n-5173256932",
+      "length_m": 32.1,
+      "geometry": [
+        {
+          "lat": 37.6369641,
+          "lng": 128.6829354,
+          "alt_m": 930.8
+        },
+        {
+          "lat": 37.6372508,
+          "lng": 128.6828888,
+          "alt_m": 924.4
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-muslr38e-vbkt",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-4708345326",
+      "to": "n-u-musl4rmq-pfti",
+      "length_m": 16.6,
+      "geometry": [
+        {
+          "lat": 37.6366907,
+          "lng": 128.673461,
+          "alt_m": 887
+        },
+        {
+          "lat": 37.63654128364015,
+          "lng": 128.67345017131413,
+          "alt_m": 0
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-muslrbzt-asp6",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966433",
+      "to": "n-u-musl8jyq-qari",
+      "length_m": 34.1,
+      "geometry": [
+        {
+          "lat": 37.6435995,
+          "lng": 128.6795856,
+          "alt_m": 767
+        },
+        {
+          "lat": 37.643855723541385,
+          "lng": 128.67937095712358,
+          "alt_m": 0
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-muslrjah-wtba",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174966448",
+      "to": "n-u-musl8jyq-qari",
+      "length_m": 61.5,
+      "geometry": [
+        {
+          "lat": 37.6436104,
+          "lng": 128.6799984,
+          "alt_m": 766.7
+        },
+        {
+          "lat": 37.643855723541385,
+          "lng": 128.67937095712358,
+          "alt_m": 0
         }
       ],
       "provenance": {
