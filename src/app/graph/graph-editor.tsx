@@ -10,7 +10,7 @@ import {
   positionKey, positions, redundantLinks, removeEdges, removeNode, reshapeEdge, splitEdge, type Graph,
 } from "@/lib/graph-ops";
 import { flipped, nearPairs, reverseLink, reviewItems, strandedEdges, userEdit } from "@/lib/graph-review";
-import { ResortLoader, stitchEdges, type GraphEdge, type GraphNode, type LiftRecord, type LoadedResort, type SlopeRecord } from "@/lib/resort-loader";
+import { fetchManifest, loadResort, stitchEdges, type ResortRef, type GraphEdge, type GraphNode, type LiftRecord, type LoadedResort, type SlopeRecord } from "@/lib/resort-loader";
 import { webRuntimeConfig } from "@/lib/runtime-config";
 import { useSession } from "@/lib/use-session";
 
@@ -37,17 +37,10 @@ const UNDO_DEPTH = 40;
 let mapsConfigured = false;
 
 const SELECTED = "#06b6d4";
+/** Every slope is one colour: the grade is in the sidebar, not on the map. */
+const SLOPE = "#2563eb";
 const LIFT = "#e11d48";
 const LINK = { observed: "#16a34a", suggested: "#d97706", "user-edit": "#2563eb", osm: "#64748b" } as const;
-
-function slopeColour(difficulty?: string | null): string {
-  switch (difficulty) {
-    case "beginner": case "novice": case "easy": case "beginner_intermediate": case "be_in": return "#15803d";
-    case "advanced": case "expert": case "freeride": case "pro": return "#111827";
-    case "terrain_park": case "park": return "#ea580c";
-    default: return "#1d4ed8";
-  }
-}
 
 function recordKey(kind: "slope" | "lift", id: string) {
   return `${kind}:${id}`;
@@ -74,6 +67,9 @@ export function GraphEditor() {
   const [addedLifts, setAddedLifts] = useState<LiftRecord[]>([]);
   const [recordEdits, setRecordEdits] = useState<Record<string, { name?: string; difficulty?: string; type?: string }>>({});
   const [adding, setAdding] = useState<"slope" | "lift" | null>(null);
+  /** Slopes and lifts taken out of the catalog here ("slope:id"). */
+  const [removedRecords, setRemovedRecords] = useState<string[]>([]);
+  const [collapsed, setCollapsed] = useState(false);
 
   const mapEl = useRef<HTMLDivElement>(null);
   const map = useRef<google.maps.Map | null>(null);
@@ -94,6 +90,7 @@ export function GraphEditor() {
     setAddedLifts([]);
     setRecordEdits({});
     setAdding(null);
+    setRemovedRecords([]);
   }, [resort]);
 
   /** Every edit goes through here, so every edit can be undone. */
@@ -115,11 +112,12 @@ export function GraphEditor() {
   const records: Record_[] = useMemo(() => {
     if (!resort) return [];
     const name = (kind: string, r: SlopeRecord | LiftRecord) => recordEdits[`${kind}:${r.id}`]?.name || r.name_i18n?.[locale] || r.name_i18n?.en || r.name || r.id;
+    const gone = new Set(removedRecords);
     return [
-      ...[...resort.slopes, ...addedSlopes].map((s) => ({ kind: "slope" as const, id: s.id, name: name("slope", s), difficulty: recordEdits[`slope:${s.id}`]?.difficulty ?? s.difficulty, coords: (s.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) })),
-      ...[...resort.lifts, ...addedLifts].map((l) => ({ kind: "lift" as const, id: l.id, name: name("lift", l), coords: (l.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) })),
+      ...[...resort.slopes, ...addedSlopes].filter((s) => !gone.has(`slope:${s.id}`)).map((s) => ({ kind: "slope" as const, id: s.id, name: name("slope", s), difficulty: recordEdits[`slope:${s.id}`]?.difficulty ?? s.difficulty, coords: (s.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) })),
+      ...[...resort.lifts, ...addedLifts].filter((l) => !gone.has(`lift:${l.id}`)).map((l) => ({ kind: "lift" as const, id: l.id, name: name("lift", l), coords: (l.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) })),
     ];
-  }, [resort, locale, addedSlopes, addedLifts, recordEdits]);
+  }, [resort, locale, addedSlopes, addedLifts, recordEdits, removedRecords]);
   const recordByKey = useMemo(() => new Map(records.map((r) => [recordKey(r.kind, r.id), r])), [records]);
   const nodeById = useMemo(() => new Map(graph.nodes.map((n) => [n.id, n])), [graph.nodes]);
   const pieceCount = useMemo(() => {
@@ -150,6 +148,13 @@ export function GraphEditor() {
   const redundant = useMemo(() => redundantLinks(graph), [graph]);
   const stranded = useMemo(() => strandedEdges(graph.nodes, graph.edges), [graph]);
 
+  /** Take a slope or lift out of the catalog, with every piece of it. */
+  const removeRecord = (r: Record_) => {
+    commit(removeEdges(graph, piecesOf(graph, r.kind, r.id).map((e) => e.id)));
+    setRemovedRecords((list) => [...list, recordKey(r.kind, r.id)]);
+    setSelection(null);
+  };
+
   /** A new slope or lift: a name in the list, ready to have its line drawn. */
   const addRecord = (kind: "slope" | "lift", name: string, grade: string) => {
     const taken = new Set(records.filter((r) => r.kind === kind).map((r) => r.id));
@@ -170,7 +175,7 @@ export function GraphEditor() {
     if (!map.current || points.length === 0) return;
     const bounds = new google.maps.LatLngBounds();
     points.forEach((p) => bounds.extend(p));
-    map.current.fitBounds(bounds, { top: 60, bottom: 60, left: 60, right: 440 });
+    map.current.fitBounds(bounds, { top: 60, bottom: 60, left: 60, right: collapsed ? 60 : 440 });
   };
 
   const selectRecord = (r: Record_) => {
@@ -404,7 +409,7 @@ export function GraphEditor() {
       const selected = selection?.type === "edge" && selection.id === e.id;
       const inRecord = rec != null && highlighted === recordKey(rec.kind, rec.id);
       const source = e.provenance?.source ?? "osm";
-      const colour = selected ? SELECTED : e.kind === "lift" ? LIFT : e.kind === "traverse" ? LINK[source] : slopeColour(rec?.difficulty ?? e.difficulty);
+      const colour = selected ? SELECTED : e.kind === "lift" ? LIFT : e.kind === "traverse" ? LINK[source] : SLOPE;
       const weight = selected ? 6 : inRecord ? 5 : e.kind === "traverse" ? 2.5 : 3.5;
       const dashed = !selected && (e.kind === "lift" || (e.kind === "traverse" && source === "suggested"));
       const arrow = { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW, scale: selected ? 4 : 2.6, strokeColor: colour, fillColor: colour, fillOpacity: 1, strokeOpacity: 1 };
@@ -503,7 +508,7 @@ export function GraphEditor() {
     const unchanged =
       base != null && base.nodes.length === graph.nodes.length && base.edges.length === graph.edges.length &&
       graph.edges.every((e) => same(baseEdges.get(e.id), e)) && same(base.nodes, graph.nodes);
-    const recordsTouched = addedSlopes.length + addedLifts.length + Object.keys(recordEdits).length > 0;
+    const recordsTouched = addedSlopes.length + addedLifts.length + Object.keys(recordEdits).length + removedRecords.length > 0;
     if ((unchanged && !recordsTouched) || graph.edges.length === 0 || graph.nodes.length < 2) return null;
 
     // An edge a person moved is theirs, even if only its points were dragged.
@@ -526,7 +531,9 @@ export function GraphEditor() {
     // A slope's or lift's own line in the catalog follows its pieces, so nothing is left "without geometry".
     const edgeById = new Map(edges.map((e) => [e.id, e]));
     const derive = <T extends SlopeRecord | LiftRecord>(kind: "slope" | "lift", list: T[], added: number): { list: T[]; changed: boolean } => {
-      let changed = added > 0;
+      const before = list.length;
+      list = list.filter((r) => !removedRecords.includes(`${kind}:${r.id}`));
+      let changed = added > 0 || list.length !== before;
       const next = list.map((given) => {
         const edit = recordEdits[`${kind}:${given.id}`];
         const r: T = edit
@@ -558,17 +565,17 @@ export function GraphEditor() {
     if (lifts.changed) files["lifts.json"] = JSON.stringify({ $schema: "../../../schemas/lift.schema.json", ...head, lifts: lifts.list }, null, 2) + "\n";
 
     return { slug: resort.ref.slug, countryCode: resort.ref.countryCode, regionSlug: resort.ref.regionSlug, files, message: `graph-editor: ${resort.ref.slug}` };
-  }, [resort, graph, login, addedSlopes, addedLifts, recordEdits, locale]);
+  }, [resort, graph, login, addedSlopes, addedLifts, recordEdits, removedRecords, locale]);
 
   // ── view ────────────────────────────────────────────────────────────
 
   const shown = records.filter((r) => !search.trim() || r.name.toLowerCase().includes(search.trim().toLowerCase()));
-  const button = "min-h-11 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-100 disabled:opacity-40";
-  const primary = "min-h-11 rounded-md bg-sky-700 px-3 text-sm font-bold text-white hover:bg-sky-800 disabled:opacity-40";
+  const button = "min-h-11 rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev-strong)] px-3 text-sm font-semibold text-[var(--fg)] hover:bg-[var(--border-strong)] disabled:opacity-40";
+  const primary = "min-h-11 rounded-md bg-[var(--accent)] px-3 text-sm font-bold text-[var(--accent-ink)] hover:opacity-90 disabled:opacity-40";
   const linesFor = selectedEdge && selectedEdge.kind !== "traverse" ? records.filter((r) => r.kind === selectedEdge.kind) : [];
 
   return (
-    <section className="relative h-[100dvh] w-full overflow-hidden bg-slate-200 text-slate-900">
+    <section className="relative h-[100dvh] w-full overflow-hidden bg-[var(--bg-page)] text-[var(--fg)]">
       <div className="absolute inset-0">
         {mapError ? (
           <p className="grid h-full place-items-center p-6 text-center text-sm">{t("mapFailed")}: {mapError}</p>
@@ -578,32 +585,40 @@ export function GraphEditor() {
       </div>
 
       {(drawing || cutArmed) && (
-        <p role="status" className="pointer-events-none absolute left-1/2 top-3 z-20 max-w-[min(34rem,60vw)] -translate-x-1/2 rounded-md bg-amber-300 px-4 py-2 text-center text-sm font-bold text-slate-900 shadow">
+        <p role="status" className="pointer-events-none absolute left-1/2 top-3 z-20 max-w-[min(34rem,60vw)] -translate-x-1/2 rounded-md bg-amber-300 px-4 py-2 text-center text-sm font-bold text-black shadow">
           {cutArmed ? t("hintCut") : drawing?.anchor ? t("hintDrawing", { count: drawing.bends.length }) : t("hintDrawStart")}
           <span className="ml-2 font-normal">{t("hintEsc")}</span>
         </p>
       )}
 
-      <aside className="absolute inset-x-2 bottom-2 top-[45%] z-10 flex flex-col gap-3 overflow-y-auto rounded-lg bg-white/95 p-3 shadow-xl md:bottom-2 md:left-auto md:right-2 md:top-14 md:w-[26rem]">
+      <button
+        type="button"
+        onClick={() => setCollapsed((c) => !c)}
+        aria-expanded={!collapsed}
+        className={`absolute z-20 grid min-h-11 min-w-11 place-items-center rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev)] px-3 text-sm font-bold text-[var(--fg)] shadow-lg ${collapsed ? "bottom-2 right-2 md:bottom-auto md:top-14" : "bottom-[55%] right-3 md:bottom-auto md:right-[27.5rem] md:top-14"}`}
+      >
+        {collapsed ? t("showPanel") : t("hidePanel")}
+      </button>
+      <aside className={`${collapsed ? "hidden" : "flex"} absolute inset-x-2 bottom-2 top-[45%] z-10 flex-col gap-3 overflow-y-auto rounded-lg bg-[var(--bg-elev)] p-3 shadow-xl md:bottom-2 md:left-auto md:right-2 md:top-14 md:w-[26rem]`}>
         <header className="flex items-center justify-between gap-2">
           <h1 className="text-base font-bold">{t("title")}</h1>
           <div className="flex items-center gap-2">
             <button type="button" className={button} onClick={() => setSatellite((s) => !s)}>{satellite ? t("terrain") : t("satellite")}</button>
-            <Link href="/editor" className="text-sm font-semibold text-sky-800 underline">{t("oldEditor")}</Link>
+            <Link href="/editor" className="text-sm font-semibold text-[var(--accent)] underline">{t("oldEditor")}</Link>
           </div>
         </header>
 
-        <ResortLoader onLoad={setResort} />
+        <ResortPicker current={resort} onLoad={setResort} t={t} />
 
         {resort && (
           <>
             {/* What is selected, and what you can do to it. */}
             {selectedEdge && (
-              <section className="rounded-md border-2 border-cyan-500 bg-cyan-50 p-3">
+              <section className="rounded-md border-2 border-cyan-500 bg-cyan-500/10 p-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="truncate text-base font-bold">{edgeName(selectedEdge)}</p>
-                    <p className="text-sm text-slate-700">
+                    <p className="text-sm text-[var(--fg-muted)]">
                       {t(selectedEdge.kind === "slope" ? "slopePiece" : selectedEdge.kind === "lift" ? "liftPiece" : "link")}
                       {selectedEdge.length_m ? ` · ${Math.round(selectedEdge.length_m)} m` : ""} · {originText(t, selectedEdge)}
                     </p>
@@ -611,12 +626,12 @@ export function GraphEditor() {
                   <button type="button" onClick={() => setSelection(null)} aria-label={t("close")} className="min-h-11 px-2 text-lg">✕</button>
                 </div>
                 {selectedEdge.kind !== "traverse" && (
-                  <label className="mt-2 block text-sm text-slate-700">
+                  <label className="mt-2 block text-sm text-[var(--fg-muted)]">
                     {t(selectedEdge.kind === "lift" ? "belongsLift" : "belongsSlope")}
                     <select
                       value={(selectedEdge.kind === "lift" ? selectedEdge.lift_id : selectedEdge.slope_id) ?? ""}
                       onChange={(e) => act.assign(e.target.value)}
-                      className="mt-1 block min-h-11 w-full rounded-md border border-slate-300 bg-white px-2 text-sm"
+                      className="mt-1 block min-h-11 w-full rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev-strong)] px-2 text-sm"
                     >
                       <option value="">{t("none")}</option>
                       {linesFor.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
@@ -627,54 +642,64 @@ export function GraphEditor() {
                   <button type="button" className={button} onClick={act.flip}>{t("flip")} <kbd className="opacity-60">F</kbd></button>
                   <button type="button" className={button} onClick={act.cut} disabled={selectedEdge.kind === "traverse"}>{t("cut")} <kbd className="opacity-60">S</kbd></button>
                   <button type="button" className={button} onClick={act.rejoin} disabled={!continuation(graph, selectedEdge)}>{t("rejoin")} <kbd className="opacity-60">J</kbd></button>
-                  <button type="button" className={button} onClick={act.twoWay} disabled={selectedEdge.kind !== "traverse" || graph.edges.some((e) => e.from === selectedEdge.to && e.to === selectedEdge.from)}>{t("twoWay")} <kbd className="opacity-60">T</kbd></button>
+                  <button type="button" className={button} onClick={act.twoWay} disabled={selectedEdge.kind === "lift" || graph.edges.some((e) => e.from === selectedEdge.to && e.to === selectedEdge.from && e.kind === selectedEdge.kind)}>{t("twoWay")} <kbd className="opacity-60">T</kbd></button>
                   <button type="button" className={button} onClick={act.confirm} disabled={selectedEdge.provenance?.source === "user-edit"}>{t("confirm")} <kbd className="opacity-60">A</kbd></button>
-                  <button type="button" className="min-h-11 rounded-md border border-red-600 bg-white px-3 text-sm font-semibold text-red-700 hover:bg-red-50" onClick={act.remove}>{t("delete")} <kbd className="opacity-60">D</kbd></button>
+                  <button type="button" className="min-h-11 rounded-md border border-red-500 bg-[var(--bg-elev-strong)] px-3 text-sm font-semibold text-red-500 hover:bg-red-500/10" onClick={act.remove}>{t("delete")} <kbd className="opacity-60">D</kbd></button>
                 </div>
-                <p className="mt-2 text-sm text-slate-700">{t("edgeHint")}</p>
+                <p className="mt-2 text-sm text-[var(--fg-muted)]">{t("edgeHint")}</p>
               </section>
             )}
             {selectedNode && (
-              <section className="rounded-md border-2 border-cyan-500 bg-cyan-50 p-3">
+              <section className="rounded-md border-2 border-cyan-500 bg-cyan-500/10 p-3">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="text-base font-bold">{t("node")}</p>
-                    <p className="text-sm text-slate-700">{Math.round(selectedNode.alt_m)} m · {nodeNames(graph, selectedNode.id, edgeName) || t("nodeUnused")}</p>
+                    <p className="text-sm text-[var(--fg-muted)]">{Math.round(selectedNode.alt_m)} m · {nodeNames(graph, selectedNode.id, edgeName) || t("nodeUnused")}</p>
                   </div>
                   <button type="button" onClick={() => setSelection(null)} aria-label={t("close")} className="min-h-11 px-2 text-lg">✕</button>
                 </div>
+                <label className="mt-2 block text-sm text-[var(--fg-muted)]">
+                  {t("nodeKind")}
+                  <select
+                    value={selectedNode.kind ?? "waypoint"}
+                    onChange={(e) => commit({ ...graph, nodes: graph.nodes.map((n) => (n.id === selectedNode.id ? { ...n, kind: e.target.value as GraphNode["kind"] } : n)) })}
+                    className="mt-1 block min-h-11 w-full rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev-strong)] px-2 text-sm text-[var(--fg)]"
+                  >
+                    {NODE_KINDS.map((k) => <option key={k} value={k}>{t(`nodeKind_${k}`)}</option>)}
+                  </select>
+                </label>
                 <label className="mt-2 flex min-h-11 items-center gap-3 text-sm font-semibold">
                   <input type="checkbox" checked={joinOnDrop} onChange={(e) => setJoinOnDrop(e.target.checked)} className="h-5 w-5" />
                   {t("joinToggle")}
                 </label>
-                <p className="text-sm text-slate-700">{joinOnDrop ? t("joinOn") : t("joinOff")}</p>
-                <button type="button" className="mt-2 min-h-11 rounded-md border border-red-600 bg-white px-3 text-sm font-semibold text-red-700 hover:bg-red-50" onClick={act.remove}>{t("deleteNode")}</button>
+                <p className="text-sm text-[var(--fg-muted)]">{joinOnDrop ? t("joinOn") : t("joinOff")}</p>
+                <button type="button" className="mt-2 min-h-11 rounded-md border border-red-500 bg-[var(--bg-elev-strong)] px-3 text-sm font-semibold text-red-500 hover:bg-red-500/10" onClick={act.remove}>{t("deleteNode")}</button>
               </section>
             )}
             {selectedRecord && !selectedNode && (
-              <section className="rounded-md border border-slate-300 p-3">
+              <section className="rounded-md border border-[var(--border-strong)] p-3">
                 <p className="text-base font-bold">{selectedRecord.name}</p>
-                <p className="text-sm text-slate-700">
+                <p className="text-sm text-[var(--fg-muted)]">
                   {t(selectedRecord.kind === "lift" ? "lift" : "slope")} · {pieceCount.get(recordKey(selectedRecord.kind, selectedRecord.id))
                     ? t("pieces", { count: pieceCount.get(recordKey(selectedRecord.kind, selectedRecord.id)) ?? 0 })
                     : t("noLine")}
                 </p>
                 <div className="mt-2 grid grid-cols-2 gap-2">
-                  <label className="text-sm text-slate-700">
+                  <label className="text-sm text-[var(--fg-muted)]">
                     {t("name")}
                     <input
                       value={selectedRecord.name}
                       onChange={(e) => setRecordEdits((m) => ({ ...m, [recordKey(selectedRecord.kind, selectedRecord.id)]: { ...m[recordKey(selectedRecord.kind, selectedRecord.id)], name: e.target.value } }))}
-                      className="mt-1 block min-h-11 w-full rounded-md border border-slate-300 px-2 text-sm text-slate-900"
+                      className="mt-1 block min-h-11 w-full rounded-md border border-[var(--border-strong)] px-2 text-sm text-[var(--fg)]"
                     />
                   </label>
                   {selectedRecord.kind === "slope" && (
-                    <label className="text-sm text-slate-700">
+                    <label className="text-sm text-[var(--fg-muted)]">
                       {t("grade")}
                       <select
                         value={selectedRecord.difficulty ?? ""}
                         onChange={(e) => setRecordEdits((m) => ({ ...m, [recordKey("slope", selectedRecord.id)]: { ...m[recordKey("slope", selectedRecord.id)], difficulty: e.target.value } }))}
-                        className="mt-1 block min-h-11 w-full rounded-md border border-slate-300 bg-white px-2 text-sm text-slate-900"
+                        className="mt-1 block min-h-11 w-full rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev-strong)] px-2 text-sm text-[var(--fg)]"
                       >
                         <option value="">{t("none")}</option>
                         {GRADES.map((g) => <option key={g} value={g}>{t(`grade_${g}`)}</option>)}
@@ -696,6 +721,9 @@ export function GraphEditor() {
                       {t("useCatalogLine")}
                     </button>
                   )}
+                  <button type="button" className="min-h-11 rounded-md border border-red-500 bg-[var(--bg-elev-strong)] px-3 text-sm font-semibold text-red-500 hover:bg-red-500/10" onClick={() => removeRecord(selectedRecord)}>
+                    {t(selectedRecord.kind === "lift" ? "deleteLift" : "deleteSlope")}
+                  </button>
                 </div>
               </section>
             )}
@@ -714,7 +742,7 @@ export function GraphEditor() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t("search")}
-                className="mb-2 block min-h-11 w-full rounded-md border border-slate-300 px-3 text-sm"
+                className="mb-2 block min-h-11 w-full rounded-md border border-[var(--border-strong)] px-3 text-sm"
               />
               <ul className="max-h-72 space-y-1 overflow-y-auto">
                 {shown.map((r) => {
@@ -727,42 +755,42 @@ export function GraphEditor() {
                         type="button"
                         onClick={() => selectRecord(r)}
                         aria-current={on}
-                        className={`flex min-h-11 w-full items-center gap-2 rounded-md px-2 text-left text-sm ${on ? "bg-cyan-100 font-bold" : "hover:bg-slate-100"}`}
+                        className={`flex min-h-11 w-full items-center gap-2 rounded-md px-2 text-left text-sm ${on ? "bg-cyan-500/25 font-bold" : "hover:bg-[var(--border-strong)]"}`}
                       >
-                        <span aria-hidden="true" className="h-3 w-3 flex-none rounded-full" style={{ background: r.kind === "lift" ? LIFT : slopeColour(r.difficulty) }} />
+                        <span aria-hidden="true" className="h-3 w-3 flex-none rounded-full" style={{ background: r.kind === "lift" ? LIFT : SLOPE }} />
                         <span className="min-w-0 flex-1 truncate">{r.name}</span>
-                        <span className="flex-none text-xs text-slate-600">{t(r.kind === "lift" ? "lift" : "slope")}</span>
-                        <span className={`flex-none text-xs ${count ? "text-slate-600" : "font-bold text-amber-700"}`}>{count ? t("pieces", { count }) : t("noLine")}</span>
+                        <span className="flex-none text-xs text-[var(--fg-muted)]">{t(r.kind === "lift" ? "lift" : "slope")}</span>
+                        <span className={`flex-none text-xs ${count ? "text-[var(--fg-muted)]" : "font-bold text-amber-500"}`}>{count ? t("pieces", { count }) : t("noLine")}</span>
                       </button>
                     </li>
                   );
                 })}
-                {shown.length === 0 && <li className="px-2 text-sm text-slate-600">{t("nothingFound")}</li>}
+                {shown.length === 0 && <li className="px-2 text-sm text-[var(--fg-muted)]">{t("nothingFound")}</li>}
               </ul>
             </section>
 
             {/* Things worth a look, and the two clean-ups. */}
-            <details className="rounded-md border border-slate-300 p-3">
+            <details className="rounded-md border border-[var(--border-strong)] p-3">
               <summary className="min-h-11 cursor-pointer text-sm font-bold leading-[2.75rem]">{t("checks", { count: review.length + near.length + redundant.length + stranded.length })}</summary>
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <button type="button" className={button} onClick={measure} disabled={measuring === "busy" || graph.edges.length === 0}>
                     {measuring === "busy" ? t("measuring") : t("measure")}
                   </button>
-                  <span role="status" className="text-sm text-slate-700">
+                  <span role="status" className="text-sm text-[var(--fg-muted)]">
                     {measuring === "failed" ? t("measureFailed") : typeof measuring === "object" ? t("measured", { count: measuring.flipped }) : ""}
                   </span>
                 </div>
                 {redundant.length > 0 && (
                   <div className="flex flex-wrap items-center gap-2">
                     <button type="button" className={button} onClick={() => commit(removeEdges(graph, redundant))}>{t("removeRedundant", { count: redundant.length })}</button>
-                    <span className="text-sm text-slate-700">{t("redundantWhy")}</span>
+                    <span className="text-sm text-[var(--fg-muted)]">{t("redundantWhy")}</span>
                   </div>
                 )}
                 {stranded.length > 0 && (
                   <div>
                     <p className="text-sm font-bold">{t("stranded", { count: stranded.length })}</p>
-                    <p className="text-sm text-slate-700">{t("strandedWhy")}</p>
+                    <p className="text-sm text-[var(--fg-muted)]">{t("strandedWhy")}</p>
                     <ul className="max-h-40 overflow-y-auto">
                       {stranded.map((e) => (
                         <li key={e.id}>
@@ -786,7 +814,7 @@ export function GraphEditor() {
                     if (!e) return null;
                     return (
                       <li key={item.edgeId}>
-                        <button type="button" onClick={() => selectEdge(item.edgeId, true)} className={`flex min-h-11 w-full items-center gap-2 rounded-md px-2 text-left text-sm ${selectedEdge?.id === item.edgeId ? "bg-cyan-100" : "hover:bg-slate-100"}`}>
+                        <button type="button" onClick={() => selectEdge(item.edgeId, true)} className={`flex min-h-11 w-full items-center gap-2 rounded-md px-2 text-left text-sm ${selectedEdge?.id === item.edgeId ? "bg-cyan-500/25" : "hover:bg-[var(--border-strong)]"}`}>
                           <span className="w-6 flex-none text-right tabular-nums">{i + 1}</span>
                           <span className="min-w-0 flex-1 truncate">{edgeName(e)}</span>
                           <span className="flex-none text-xs">{t(item.reason === "suggested" ? "reasonSuggested" : item.reason === "weak" ? "reasonWeak" : "reasonDirection")}</span>
@@ -806,6 +834,7 @@ export function GraphEditor() {
   );
 }
 
+const NODE_KINDS = ["waypoint", "fork", "merge", "lift_bottom", "lift_station", "lift_top", "summit", "base"] as const;
 const GRADES = ["beginner", "beginner_intermediate", "intermediate", "intermediate_advanced", "advanced", "expert", "terrain_park"] as const;
 const LIFT_TYPES = ["chair_lift", "gondola", "magic_carpet", "drag_lift", "cable_car"] as const;
 
@@ -815,26 +844,26 @@ function NewRecordForm({ kind, t, onAdd, onCancel }: { kind: "slope" | "lift"; t
   const [grade, setGrade] = useState<string>(kind === "slope" ? "intermediate" : "chair_lift");
   return (
     <form
-      className="rounded-md border border-slate-300 p-3"
+      className="rounded-md border border-[var(--border-strong)] p-3"
       onSubmit={(e) => {
         e.preventDefault();
         if (name.trim()) onAdd(name.trim(), grade);
       }}
     >
       <p className="text-base font-bold">{t(kind === "slope" ? "addSlope" : "addLift")}</p>
-      <label className="mt-2 block text-sm text-slate-700">
+      <label className="mt-2 block text-sm text-[var(--fg-muted)]">
         {t("name")}
-        <input autoFocus value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block min-h-11 w-full rounded-md border border-slate-300 px-2 text-sm text-slate-900" />
+        <input autoFocus value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block min-h-11 w-full rounded-md border border-[var(--border-strong)] px-2 text-sm text-[var(--fg)]" />
       </label>
-      <label className="mt-2 block text-sm text-slate-700">
+      <label className="mt-2 block text-sm text-[var(--fg-muted)]">
         {t(kind === "slope" ? "grade" : "liftType")}
-        <select value={grade} onChange={(e) => setGrade(e.target.value)} className="mt-1 block min-h-11 w-full rounded-md border border-slate-300 bg-white px-2 text-sm text-slate-900">
+        <select value={grade} onChange={(e) => setGrade(e.target.value)} className="mt-1 block min-h-11 w-full rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev-strong)] px-2 text-sm text-[var(--fg)]">
           {(kind === "slope" ? GRADES : LIFT_TYPES).map((g) => <option key={g} value={g}>{t(kind === "slope" ? `grade_${g}` : `liftType_${g}`)}</option>)}
         </select>
       </label>
       <div className="mt-3 flex gap-2">
-        <button type="submit" disabled={!name.trim()} className="min-h-11 rounded-md bg-sky-700 px-3 text-sm font-bold text-white hover:bg-sky-800 disabled:opacity-40">{t("addAndDraw")}</button>
-        <button type="button" onClick={onCancel} className="min-h-11 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-100">{t("cancel")}</button>
+        <button type="submit" disabled={!name.trim()} className="min-h-11 rounded-md bg-[var(--accent)] px-3 text-sm font-bold text-[var(--accent-ink)] hover:opacity-90 disabled:opacity-40">{t("addAndDraw")}</button>
+        <button type="button" onClick={onCancel} className="min-h-11 rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev-strong)] px-3 text-sm font-semibold text-[var(--fg)] hover:bg-[var(--border-strong)]">{t("cancel")}</button>
       </div>
     </form>
   );
@@ -854,4 +883,61 @@ function nodeNames(g: Graph, nodeId: string, name: (e: GraphEdge) => string): st
   const names = new Set<string>();
   for (const e of g.edges) if (e.kind !== "traverse" && (e.from === nodeId || e.to === nodeId)) names.add(name(e));
   return [...names].join(" · ");
+}
+
+/** Find a resort by typing: there are too many for a dropdown. */
+function ResortPicker({ current, onLoad, t }: { current: LoadedResort | null; onLoad: (r: LoadedResort | null) => void; t: ReturnType<typeof useTranslations> }) {
+  const [refs, setRefs] = useState<ResortRef[] | null>(null);
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(true);
+  const [state, setState] = useState<"idle" | "loading" | "failed">("idle");
+
+  useEffect(() => {
+    fetchManifest().then(setRefs).catch(() => setRefs([]));
+  }, []);
+
+  const pick = async (ref: ResortRef) => {
+    setState("loading");
+    try {
+      const loaded = await loadResort(ref);
+      onLoad(loaded);
+      setState(loaded ? "idle" : "failed");
+      if (loaded) { setOpen(false); setQuery(""); }
+    } catch {
+      setState("failed");
+    }
+  };
+
+  if (current && !open) {
+    return (
+      <div className="flex items-center justify-between gap-2 rounded-md border border-[var(--border-strong)] p-3">
+        <p className="min-w-0 truncate text-base font-bold">{current.place.name} <span className="text-sm font-normal text-[var(--fg-muted)]">{current.ref.countryCode}/{current.ref.regionSlug}</span></p>
+        <button type="button" onClick={() => setOpen(true)} className="min-h-11 flex-none rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev-strong)] px-3 text-sm font-semibold">{t("changeResort")}</button>
+      </div>
+    );
+  }
+  const q = query.trim().toLowerCase();
+  const matches = (refs ?? []).filter((r) => !q || r.label.toLowerCase().includes(q));
+  return (
+    <div className="rounded-md border border-[var(--border-strong)] p-3">
+      <input
+        autoFocus
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder={t("findResort")}
+        aria-label={t("findResort")}
+        className="block min-h-11 w-full rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev-strong)] px-3 text-sm text-[var(--fg)]"
+      />
+      <p role="status" className="mt-1 text-sm text-[var(--fg-muted)]">
+        {refs === null ? t("loadingResorts") : state === "loading" ? t("openingResort") : state === "failed" ? t("resortFailed") : t("resortCount", { count: matches.length })}
+      </p>
+      <ul className="mt-1 max-h-56 overflow-y-auto">
+        {matches.map((r) => (
+          <li key={`${r.countryCode}/${r.regionSlug}/${r.slug}`}>
+            <button type="button" onClick={() => void pick(r)} className="min-h-11 w-full truncate rounded-md px-2 text-left text-sm hover:bg-[var(--border-strong)]">{r.label}</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }

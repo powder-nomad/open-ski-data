@@ -269,7 +269,7 @@ async function fetchJson<T>(url: string): Promise<T | null> {
  * slug list. Done once on component mount; the result is small (26
  * resorts at the moment) so we hold it in component state.
  */
-async function fetchManifest(): Promise<ResortRef[]> {
+export async function fetchManifest(): Promise<ResortRef[]> {
   type GlobalIndex = { countries: { country_code: string; path: string }[] };
   type CountryIndex = {
     country: { country_code: string; name: string };
@@ -307,7 +307,7 @@ async function fetchManifest(): Promise<ResortRef[]> {
   return refs;
 }
 
-async function loadResort(ref: ResortRef): Promise<LoadedResort | null> {
+export async function loadResort(ref: ResortRef): Promise<LoadedResort | null> {
   const base = `${RAW}/registry/${ref.countryCode}/${ref.regionSlug}/${ref.slug}`;
   const place = await fetchJson<PlaceRecord>(`${base}/place.json`);
   if (!place) return null;

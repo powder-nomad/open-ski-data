@@ -114,12 +114,22 @@ function link(from: GraphNode, to: GraphNode, contributor?: string): GraphEdge {
   };
 }
 
-/** The reverse of a link, for ground you can cross both ways. Null when it already exists. */
+/**
+ * The same edge the other way, for ground you can cross both ways: a link
+ * across a flat, or a cat-track skied in either direction. It stays part
+ * of the same slope or lift. Null when the way back already exists.
+ */
 export function reverseLink(edge: GraphEdge, nodes: Map<string, GraphNode>, existing: GraphEdge[], contributor?: string): GraphEdge | null {
-  const from = nodes.get(edge.to);
-  const to = nodes.get(edge.from);
-  if (!from || !to || existing.some((e) => e.from === from.id && e.to === to.id)) return null;
-  return link(from, to, contributor);
+  if (!nodes.has(edge.from) || !nodes.has(edge.to)) return null;
+  if (existing.some((e) => e.from === edge.to && e.to === edge.from && e.kind === edge.kind)) return null;
+  return {
+    ...edge,
+    id: `e-u-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
+    from: edge.to,
+    to: edge.from,
+    geometry: [...edge.geometry].reverse(),
+    provenance: userEdit(contributor),
+  };
 }
 
 /**

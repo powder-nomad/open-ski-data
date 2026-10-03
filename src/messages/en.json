@@ -331,6 +331,25 @@
     "liftType_drag_lift": "Drag lift",
     "liftType_cable_car": "Cable car",
     "stranded": "{count} pieces you can't be routed to and back from",
-    "strandedWhy": "Nothing leads onto them, or nothing leads off. Usually a missing link at a lift top or base."
+    "strandedWhy": "Nothing leads onto them, or nothing leads off. Usually a missing link at a lift top or base.",
+    "deleteSlope": "Delete this slope",
+    "deleteLift": "Delete this lift",
+    "nodeKind": "What this point is",
+    "nodeKind_waypoint": "Plain point",
+    "nodeKind_fork": "Fork",
+    "nodeKind_merge": "Merge",
+    "nodeKind_lift_bottom": "Lift base",
+    "nodeKind_lift_station": "Lift mid-station",
+    "nodeKind_lift_top": "Lift top",
+    "nodeKind_summit": "Summit",
+    "nodeKind_base": "Base",
+    "showPanel": "Show panel",
+    "hidePanel": "Hide panel",
+    "changeResort": "Change",
+    "findResort": "Find a resort",
+    "loadingResorts": "Getting the list…",
+    "openingResort": "Opening…",
+    "resortFailed": "Couldn't open that resort.",
+    "resortCount": "{count} resorts"
   }
 }

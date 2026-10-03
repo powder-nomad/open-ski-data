@@ -331,6 +331,25 @@
     "liftType_drag_lift": "티바·견인",
     "liftType_cable_car": "케이블카",
     "stranded": "{count}구간은 갔다가 돌아오는 길이 없어요",
-    "strandedWhy": "들어가는 길이나 나오는 길이 없어요. 대개 리프트 위나 아래의 연결이 빠진 경우예요."
+    "strandedWhy": "들어가는 길이나 나오는 길이 없어요. 대개 리프트 위나 아래의 연결이 빠진 경우예요.",
+    "deleteSlope": "이 슬로프 삭제",
+    "deleteLift": "이 리프트 삭제",
+    "nodeKind": "이 지점의 종류",
+    "nodeKind_waypoint": "일반 지점",
+    "nodeKind_fork": "갈림길",
+    "nodeKind_merge": "합류",
+    "nodeKind_lift_bottom": "리프트 탑승장",
+    "nodeKind_lift_station": "리프트 중간 정류장",
+    "nodeKind_lift_top": "리프트 하차장",
+    "nodeKind_summit": "정상",
+    "nodeKind_base": "베이스",
+    "showPanel": "패널 열기",
+    "hidePanel": "패널 닫기",
+    "changeResort": "바꾸기",
+    "findResort": "리조트 찾기",
+    "loadingResorts": "목록을 가져오는 중…",
+    "openingResort": "여는 중…",
+    "resortFailed": "그 리조트를 열지 못했어요.",
+    "resortCount": "리조트 {count}곳"
   }
 }
