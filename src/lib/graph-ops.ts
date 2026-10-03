@@ -215,7 +215,8 @@ export function orientByElevation(g: Graph, elevations: Map<string, number>, con
   const edges = g.edges.map((e) => {
     const geometry = e.geometry.map(alt);
     const rise = geometry[geometry.length - 1].alt_m - geometry[0].alt_m;
-    const wrong = e.kind === "slope" ? rise > WRONG_WAY_M : e.kind === "lift" ? rise < -WRONG_WAY_M : false;
+    // A two-way line has no wrong way.
+    const wrong = twinOf(g, e) ? false : e.kind === "slope" ? rise > WRONG_WAY_M : e.kind === "lift" ? rise < -WRONG_WAY_M : false;
     if (!wrong) return { ...e, geometry };
     flipped += 1;
     return { ...e, from: e.to, to: e.from, geometry: geometry.reverse(), provenance: { ...(e.provenance ?? {}), ...userEdit(contributor) } };
@@ -325,4 +326,37 @@ export function reshapeEdge(g: Graph, edgeId: string, path: { lat: number; lng: 
   ];
   const next = { ...edge, geometry, length_m: lengthM(geometry), provenance: { ...(edge.provenance ?? {}), ...userEdit(contributor) } };
   return { ...g, edges: g.edges.map((e) => (e.id === edgeId ? next : e)) };
+}
+
+const recordOfEdge = (e: GraphEdge) => (e.kind === "slope" ? e.slope_id : e.kind === "lift" ? e.lift_id : null) ?? null;
+
+/** The same line the other way: same kind, same slope or lift, ends swapped. A two-way line is such a pair. */
+export function twinOf(g: Graph, edge: GraphEdge): GraphEdge | undefined {
+  return g.edges.find((e) => e.id !== edge.id && e.kind === edge.kind && e.from === edge.to && e.to === edge.from && recordOfEdge(e) === recordOfEdge(edge));
+}
+
+/** Of a two-way pair, the one that is drawn and selected; the other follows it. An edge with no twin is its own. */
+export function primaryOf(g: Graph, edge: GraphEdge): GraphEdge {
+  const twin = twinOf(g, edge);
+  return twin && twin.id < edge.id ? twin : edge;
+}
+
+/**
+ * Edit one direction of a two-way line and rebuild the other from what
+ * comes out, so the pair never drifts apart: reshaped, cut, renamed or
+ * deleted, both directions get the same treatment. On a one-way line it
+ * is just the edit.
+ */
+export function editPair(g: Graph, edgeId: string, op: (g: Graph) => Graph): Graph {
+  const edge = g.edges.find((e) => e.id === edgeId);
+  const twin = edge && twinOf(g, edge);
+  if (!edge || !twin) return op(g);
+  const without: Graph = { nodes: g.nodes, edges: g.edges.filter((e) => e.id !== twin.id) };
+  const before = new Map(without.edges.map((e) => [e.id, e]));
+  const after = op(without);
+  // What the edit produced from this line: the line itself if it changed, and any new pieces.
+  const fresh = after.edges.filter((e) => (e.id === edge.id && before.get(e.id) !== e) || !before.has(e.id));
+  const unchanged = after.edges.find((e) => e.id === edge.id && before.get(e.id) === e);
+  const mirrored = [...fresh, ...(unchanged ? [unchanged] : [])].map((e) => ({ ...e, id: uid("e"), from: e.to, to: e.from, geometry: [...e.geometry].reverse() }));
+  return { nodes: after.nodes, edges: [...after.edges, ...mirrored] };
 }

@@ -6,8 +6,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { importLibrary, setOptions } from "@googlemaps/js-api-loader";
 import { PatchSaver, type PatchBundle } from "@/lib/ci-status";
 import {
-  addEdge, addNode, continuation, dropNode, importLine, joinEdges, mergeNode, moveNode, orientByElevation, piecesOf,
-  positionKey, positions, redundantLinks, removeEdges, removeNode, reshapeEdge, splitEdge, type Graph,
+  addEdge, addNode, continuation, dropNode, editPair, importLine, joinEdges, mergeNode, moveNode, orientByElevation, piecesOf,
+  positionKey, positions, primaryOf, redundantLinks, removeEdges, removeNode, reshapeEdge, splitEdge, twinOf, type Graph,
 } from "@/lib/graph-ops";
 import { flipped, nearPairs, reverseLink, reviewItems, strandedEdges, userEdit } from "@/lib/graph-review";
 import { fetchManifest, loadResort, stitchEdges, type ResortRef, type GraphEdge, type GraphNode, type LiftRecord, type LoadedResort, type SlopeRecord } from "@/lib/resort-loader";
@@ -143,7 +143,15 @@ export function GraphEditor() {
   const selectedRecord = selection?.type === "record" ? recordByKey.get(selection.id) ?? null : selectedEdge ? recordOf(selectedEdge) ?? null : null;
   const highlighted = selectedRecord ? recordKey(selectedRecord.kind, selectedRecord.id) : null;
 
-  const review = useMemo(() => reviewItems(graph.edges, nodeById), [graph.edges, nodeById]);
+  // One entry per line: the second direction of a two-way line is not a second thing to review.
+  const review = useMemo(
+    () => reviewItems(graph.edges, nodeById).filter((item) => {
+      const e = graph.edges.find((x) => x.id === item.edgeId);
+      return e != null && primaryOf(graph, e).id === e.id;
+    }),
+    [graph, nodeById],
+  );
+  const selectedTwin = selectedEdge ? twinOf(graph, selectedEdge) : undefined;
   const near = useMemo(() => nearPairs(graph.nodes, graph.edges), [graph]);
   const redundant = useMemo(() => redundantLinks(graph), [graph]);
   const stranded = useMemo(() => strandedEdges(graph.nodes, graph.edges), [graph]);
@@ -184,8 +192,10 @@ export function GraphEditor() {
     fit(pieces.length ? pieces.flatMap((e) => e.geometry) : r.coords);
   };
   const selectEdge = (id: string, pan = false) => {
-    setSelection({ type: "edge", id });
-    const e = graph.edges.find((x) => x.id === id);
+    // A two-way line is one thing on the map: whichever direction was asked for, its drawn one is selected.
+    const asked = graph.edges.find((x) => x.id === id);
+    const e = asked ? primaryOf(graph, asked) : undefined;
+    setSelection({ type: "edge", id: e?.id ?? id });
     if (pan && e) fit(e.geometry);
   };
 
@@ -210,8 +220,14 @@ export function GraphEditor() {
   };
   /** A click while drawing that lands on a line: cut it there, and use the cut. */
   const drawToLine = (edgeId: string, lat: number, lng: number) => {
-    const cut = splitEdge(graph, edgeId, lat, lng, login);
-    if (!cut) return;
+    let cutNode: string | null = null;
+    const cutGraph = editPair(graph, edgeId, (g) => {
+      const made = splitEdge(g, edgeId, lat, lng, login);
+      cutNode = made?.nodeId ?? null;
+      return made?.graph ?? g;
+    });
+    if (!cutNode) return;
+    const cut = { graph: cutGraph, nodeId: cutNode as string };
     if (!drawing?.anchor) {
       commit(cut.graph);
       if (drawing) setDrawing({ ...drawing, anchor: cut.nodeId });
@@ -238,20 +254,23 @@ export function GraphEditor() {
   };
 
   const patchEdge = (id: string, patch: Partial<GraphEdge>) =>
-    commit({ ...graph, edges: graph.edges.map((e) => (e.id === id ? { ...e, ...patch } : e)) });
+    commit(editPair(graph, id, (g) => ({ ...g, edges: g.edges.map((e) => (e.id === id ? { ...e, ...patch } : e)) })));
 
   const act = {
     flip: () => selectedEdge && patchEdge(selectedEdge.id, flipped(selectedEdge, login)),
     confirm: () => selectedEdge && patchEdge(selectedEdge.id, { provenance: { ...(selectedEdge.provenance ?? {}), ...userEdit(login) } }),
     twoWay: () => {
-      const back = selectedEdge && reverseLink(selectedEdge, nodeById, graph.edges, login);
+      if (!selectedEdge || selectedEdge.kind === "lift") return;
+      // Already two-way: back to one way, keeping the direction shown as selected.
+      if (selectedTwin) return commit({ ...graph, edges: graph.edges.filter((e) => e.id !== selectedTwin.id) });
+      const back = reverseLink(selectedEdge, nodeById, graph.edges, login);
       if (back) commit({ ...graph, edges: [...graph.edges, back] });
     },
     remove: () => {
       if (selectedEdge) {
         const at = review.findIndex((r) => r.edgeId === selectedEdge.id);
         const after = at >= 0 ? review[at + 1]?.edgeId : undefined;
-        commit(removeEdges(graph, [selectedEdge.id]));
+        commit(editPair(graph, selectedEdge.id, (g) => removeEdges(g, [selectedEdge.id])));
         setSelection(after ? { type: "edge", id: after } : null);
       } else if (selectedNode) {
         commit(removeNode(graph, selectedNode.id));
@@ -260,10 +279,20 @@ export function GraphEditor() {
     },
     cut: () => setCutArmed((on) => !on),
     rejoin: () => {
-      const joined = selectedEdge && joinEdges(graph, selectedEdge.id, login);
-      if (joined) {
-        commit(joined.graph);
-        setSelection({ type: "edge", id: joined.edgeId });
+      if (!selectedEdge) return;
+      // Rejoining a two-way line rejoins both directions: drop the far piece's way back, join, and mirror the result.
+      const far = continuation(graph, selectedEdge);
+      const farTwin = far && twinOf(graph, far);
+      const base: Graph = farTwin && selectedTwin ? { ...graph, edges: graph.edges.filter((e) => e.id !== farTwin.id) } : graph;
+      let joinedId: string | null = null;
+      const next = editPair(base, selectedEdge.id, (g) => {
+        const joined = joinEdges(g, selectedEdge.id, login);
+        joinedId = joined?.edgeId ?? null;
+        return joined?.graph ?? g;
+      });
+      if (joinedId) {
+        commit(next);
+        setSelection({ type: "edge", id: joinedId });
       }
     },
     next: () => {
@@ -405,6 +434,9 @@ export function GraphEditor() {
     }
 
     for (const e of graph.edges) {
+      // A two-way line is drawn once, with an arrow each way.
+      const twin = twinOf(graph, e);
+      if (twin && twin.id < e.id) continue;
       const rec = e.kind === "traverse" ? undefined : recordByKey.get(recordKey(e.kind, (e.kind === "slope" ? e.slope_id : e.lift_id) ?? ""));
       const selected = selection?.type === "edge" && selection.id === e.id;
       const inRecord = rec != null && highlighted === recordKey(rec.kind, rec.id);
@@ -424,16 +456,23 @@ export function GraphEditor() {
         zIndex: selected ? 40 : inRecord ? 30 : e.kind === "traverse" ? 12 : 20,
         icons: [
           ...(dashed ? [{ icon: { path: "M 0,-1 0,1", strokeOpacity: 1, strokeColor: colour, scale: weight }, offset: "0", repeat: "12px" }] : []),
-          { icon: arrow, offset: "55%" },
+          { icon: arrow, offset: twin ? "62%" : "55%" },
+          ...(twin ? [{ icon: { ...arrow, path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW }, offset: "38%" }] : []),
         ],
       });
       line.addListener("click", (ev: google.maps.MapMouseEvent) => {
         const s = live.current;
         if (!ev.latLng) return;
         if (s.cutArmed) {
-          const cut = splitEdge(s.graph, e.id, ev.latLng.lat(), ev.latLng.lng(), s.login);
+          const at = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+          let nodeId: string | null = null;
+          const next = editPair(s.graph, e.id, (g) => {
+            const cut = splitEdge(g, e.id, at.lat, at.lng, s.login);
+            nodeId = cut?.nodeId ?? null;
+            return cut?.graph ?? g;
+          });
           setCutArmed(false);
-          if (cut) { s.commit(cut.graph); setSelection({ type: "node", id: cut.nodeId }); }
+          if (nodeId) { s.commit(next); setSelection({ type: "node", id: nodeId }); }
         } else if (s.drawing) {
           if (e.kind !== "traverse") s.drawToLine(e.id, ev.latLng.lat(), ev.latLng.lng());
         } else {
@@ -443,7 +482,10 @@ export function GraphEditor() {
       if (selected && !drawing && !cutArmed) {
         // Dragging a point of the selected line reshapes it; its ends stay on their nodes.
         const path = line.getPath();
-        const sync = () => live.current.commit(reshapeEdge(live.current.graph, e.id, path.getArray().map((p) => ({ lat: p.lat(), lng: p.lng() })), live.current.login));
+        const sync = () => {
+          const shape = path.getArray().map((p) => ({ lat: p.lat(), lng: p.lng() }));
+          live.current.commit(editPair(live.current.graph, e.id, (g) => reshapeEdge(g, e.id, shape, live.current.login)));
+        };
         google.maps.event.addListener(path, "set_at", sync);
         google.maps.event.addListener(path, "insert_at", sync);
         google.maps.event.addListener(path, "remove_at", sync);
@@ -620,7 +662,7 @@ export function GraphEditor() {
                     <p className="truncate text-base font-bold">{edgeName(selectedEdge)}</p>
                     <p className="text-sm text-[var(--fg-muted)]">
                       {t(selectedEdge.kind === "slope" ? "slopePiece" : selectedEdge.kind === "lift" ? "liftPiece" : "link")}
-                      {selectedEdge.length_m ? ` · ${Math.round(selectedEdge.length_m)} m` : ""} · {originText(t, selectedEdge)}
+                      {selectedEdge.length_m ? ` · ${Math.round(selectedEdge.length_m)} m` : ""}{selectedTwin ? ` · ${t("bothWays")}` : ""} · {originText(t, selectedEdge)}
                     </p>
                   </div>
                   <button type="button" onClick={() => setSelection(null)} aria-label={t("close")} className="min-h-11 px-2 text-lg">✕</button>
@@ -639,10 +681,10 @@ export function GraphEditor() {
                   </label>
                 )}
                 <div className="mt-3 grid grid-cols-3 gap-2">
-                  <button type="button" className={button} onClick={act.flip}>{t("flip")} <kbd className="opacity-60">F</kbd></button>
+                  <button type="button" className={button} onClick={act.flip} disabled={selectedTwin != null}>{t("flip")} <kbd className="opacity-60">F</kbd></button>
                   <button type="button" className={button} onClick={act.cut} disabled={selectedEdge.kind === "traverse"}>{t("cut")} <kbd className="opacity-60">S</kbd></button>
                   <button type="button" className={button} onClick={act.rejoin} disabled={!continuation(graph, selectedEdge)}>{t("rejoin")} <kbd className="opacity-60">J</kbd></button>
-                  <button type="button" className={button} onClick={act.twoWay} disabled={selectedEdge.kind === "lift" || graph.edges.some((e) => e.from === selectedEdge.to && e.to === selectedEdge.from && e.kind === selectedEdge.kind)}>{t("twoWay")} <kbd className="opacity-60">T</kbd></button>
+                  <button type="button" className={button} onClick={act.twoWay} disabled={selectedEdge.kind === "lift"} aria-pressed={selectedTwin != null}>{selectedTwin ? t("oneWay") : t("twoWay")} <kbd className="opacity-60">T</kbd></button>
                   <button type="button" className={button} onClick={act.confirm} disabled={selectedEdge.provenance?.source === "user-edit"}>{t("confirm")} <kbd className="opacity-60">A</kbd></button>
                   <button type="button" className="min-h-11 rounded-md border border-red-500 bg-[var(--bg-elev-strong)] px-3 text-sm font-semibold text-red-500 hover:bg-red-500/10" onClick={act.remove}>{t("delete")} <kbd className="opacity-60">D</kbd></button>
                 </div>

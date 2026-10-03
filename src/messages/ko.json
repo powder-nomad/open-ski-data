@@ -350,6 +350,8 @@
     "loadingResorts": "목록을 가져오는 중…",
     "openingResort": "여는 중…",
     "resortFailed": "그 리조트를 열지 못했어요.",
-    "resortCount": "리조트 {count}곳"
+    "resortCount": "리조트 {count}곳",
+    "oneWay": "한 방향으로",
+    "bothWays": "양방향"
   }
 }

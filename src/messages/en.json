@@ -350,6 +350,8 @@
     "loadingResorts": "Getting the list…",
     "openingResort": "Opening…",
     "resortFailed": "Couldn't open that resort.",
-    "resortCount": "{count} resorts"
+    "resortCount": "{count} resorts",
+    "oneWay": "One-way",
+    "bothWays": "both ways"
   }
 }
