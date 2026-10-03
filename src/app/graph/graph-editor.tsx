@@ -933,7 +933,7 @@ export function GraphEditor() {
 
 const NODE_KINDS = ["waypoint", "fork", "merge", "lift_bottom", "lift_station", "lift_top", "summit", "base"] as const;
 /** How far from a click a line still counts as under it, in screen pixels. */
-const PICK_PX = 9;
+const PICK_PX = 6;
 const GRADES = ["beginner", "beginner_intermediate", "intermediate", "intermediate_advanced", "advanced", "expert", "terrain_park"] as const;
 const LIFT_TYPES = ["chair_lift", "gondola", "magic_carpet", "drag_lift", "cable_car"] as const;
 
