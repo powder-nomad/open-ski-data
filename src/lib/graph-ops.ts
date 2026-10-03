@@ -224,3 +224,105 @@ export function orientByElevation(g: Graph, elevations: Map<string, number>, con
 }
 
 export const positionKey = key;
+
+/** A new node on open ground. */
+export function addNode(g: Graph, lat: number, lng: number, altM: number): { graph: Graph; nodeId: string } {
+  const node: GraphNode = { id: uid("n"), lat, lng, alt_m: altM, kind: "waypoint" };
+  return { graph: { ...g, nodes: [...g.nodes, node] }, nodeId: node.id };
+}
+
+export type NewLine = { kind: GraphEdge["kind"]; recordId: string | null };
+
+/**
+ * Draw an edge from one node to another through the bends given. A slope
+ * or lift piece belongs to the record named; a link belongs to nothing.
+ * Bends get a straight-line altitude until elevations are measured.
+ */
+export function addEdge(g: Graph, fromId: string, toId: string, via: { lat: number; lng: number }[], line: NewLine, contributor?: string): { graph: Graph; edgeId: string } | null {
+  const from = g.nodes.find((n) => n.id === fromId);
+  const to = g.nodes.find((n) => n.id === toId);
+  if (!from || !to || from.id === to.id) return null;
+  const geometry: Vertex[] = [
+    { lat: from.lat, lng: from.lng, alt_m: from.alt_m },
+    ...via.map((p, i) => ({ lat: p.lat, lng: p.lng, alt_m: Math.round(from.alt_m + ((to.alt_m - from.alt_m) * (i + 1)) / (via.length + 1)) })),
+    { lat: to.lat, lng: to.lng, alt_m: to.alt_m },
+  ];
+  const edge: GraphEdge = {
+    id: uid("e"),
+    ...(line.kind === "slope" ? { slope_id: line.recordId } : line.kind === "lift" ? { lift_id: line.recordId } : { slope_id: null }),
+    kind: line.kind,
+    from: from.id,
+    to: to.id,
+    length_m: lengthM(geometry),
+    geometry,
+    provenance: userEdit(contributor),
+  };
+  return { graph: { ...g, edges: [...g.edges, edge] }, edgeId: edge.id };
+}
+
+/** Bring a catalog line (a slope or lift drawn before the graph existed) into the graph as one piece with a node at each end. */
+export function importLine(g: Graph, coords: { lat: number; lng: number }[], line: NewLine, contributor?: string): { graph: Graph; edgeId: string } | null {
+  if (coords.length < 2) return null;
+  const a = addNode(g, coords[0].lat, coords[0].lng, 0);
+  const b = addNode(a.graph, coords[coords.length - 1].lat, coords[coords.length - 1].lng, 0);
+  return addEdge(b.graph, a.nodeId, b.nodeId, coords.slice(1, -1), line, contributor);
+}
+
+/** The pieces that belong to a slope or lift. */
+export function piecesOf(g: Graph, kind: "slope" | "lift", recordId: string): GraphEdge[] {
+  return g.edges.filter((e) => e.kind === kind && (kind === "slope" ? e.slope_id : e.lift_id) === recordId);
+}
+
+/**
+ * Links that add nothing: a slope or lift already runs from the same
+ * start to the same end, directly or through one junction, and is not
+ * much longer than the link itself. Drawn beside the piste they look like
+ * a second copy of it.
+ */
+export function redundantLinks(g: Graph): string[] {
+  const out = new Map<string, GraphEdge[]>();
+  for (const e of g.edges) if (e.kind !== "traverse") out.set(e.from, [...(out.get(e.from) ?? []), e]);
+  const lengthOf = (e: GraphEdge) => e.length_m ?? lengthM(e.geometry);
+  const ids: string[] = [];
+  for (const link of g.edges) {
+    if (link.kind !== "traverse") continue;
+    const limit = lengthOf(link) * 1.5 + 50;
+    const direct = (out.get(link.from) ?? []).some((e) => e.to === link.to && lengthOf(e) <= limit);
+    const viaOne = (out.get(link.from) ?? []).some((e) => (out.get(e.to) ?? []).some((f) => f.to === link.to && lengthOf(e) + lengthOf(f) <= limit));
+    if (direct || viaOne) ids.push(link.id);
+  }
+  return ids;
+}
+
+/** Remove edges, and any node nothing uses afterwards. */
+export function removeEdges(g: Graph, ids: string[]): Graph {
+  const gone = new Set(ids);
+  const edges = g.edges.filter((e) => !gone.has(e.id));
+  const used = new Set(edges.flatMap((e) => [e.from, e.to]));
+  return { nodes: g.nodes.filter((n) => used.has(n.id)), edges };
+}
+
+/** Remove a node and every edge that starts or ends on it. */
+export function removeNode(g: Graph, nodeId: string): Graph {
+  return removeEdges({ nodes: g.nodes.filter((n) => n.id !== nodeId), edges: g.edges }, g.edges.filter((e) => e.from === nodeId || e.to === nodeId).map((e) => e.id));
+}
+
+/** Replace an edge's shape after its points were dragged; its ends stay on their nodes. */
+export function reshapeEdge(g: Graph, edgeId: string, path: { lat: number; lng: number }[], contributor?: string): Graph {
+  const edge = g.edges.find((e) => e.id === edgeId);
+  const from = edge && g.nodes.find((n) => n.id === edge.from);
+  const to = edge && g.nodes.find((n) => n.id === edge.to);
+  if (!edge || !from || !to || path.length < 2) return g;
+  const altNear = (p: { lat: number; lng: number }) => {
+    let best = edge.geometry[0];
+    for (const v of edge.geometry) if (distanceM(v, p) < distanceM(best, p)) best = v;
+    return best.alt_m;
+  };
+  const geometry: Vertex[] = [
+    { lat: from.lat, lng: from.lng, alt_m: from.alt_m },
+    ...path.slice(1, -1).map((p) => ({ lat: p.lat, lng: p.lng, alt_m: altNear(p) })),
+    { lat: to.lat, lng: to.lng, alt_m: to.alt_m },
+  ];
+  const next = { ...edge, geometry, length_m: lengthM(geometry), provenance: { ...(edge.provenance ?? {}), ...userEdit(contributor) } };
+  return { ...g, edges: g.edges.map((e) => (e.id === edgeId ? next : e)) };
+}
