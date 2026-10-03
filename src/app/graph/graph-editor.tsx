@@ -207,13 +207,16 @@ export function GraphEditor() {
   };
 
   /** A click while drawing that lands on a node: the start, or the end. */
-  const drawToNode = (nodeId: string) => {
+  const drawToNode = (nodeId: string, base: Graph = graph) => {
     if (!drawing) return;
-    if (!drawing.anchor) return setDrawing({ ...drawing, anchor: nodeId });
+    if (!drawing.anchor) {
+      if (base !== graph) commit(base);
+      return setDrawing({ ...drawing, anchor: nodeId });
+    }
     if (drawing.anchor === nodeId) return;
-    const to = nodeById.get(nodeId);
+    const to = base.nodes.find((n) => n.id === nodeId);
     const bends = to ? drawing.bends.filter((p) => Math.hypot(p.lat - to.lat, p.lng - to.lng) > 3e-5) : drawing.bends;
-    const drawn = addEdge(graph, drawing.anchor, nodeId, bends, { kind: drawing.kind, recordId: drawing.recordId }, login);
+    const drawn = addEdge(base, drawing.anchor, nodeId, bends, { kind: drawing.kind, recordId: drawing.recordId }, login);
     if (!drawn) return;
     commit(drawn.graph);
     // A link or a lift is one piece; a slope usually carries on, so keep drawing from where it ended.
@@ -221,14 +224,22 @@ export function GraphEditor() {
     setSelection({ type: "edge", id: drawn.edgeId });
   };
   /** A click while drawing that lands on a line: cut it there, and use the cut. */
-  const drawToLine = (edgeId: string, lat: number, lng: number) => {
+  const drawToLine = (edgeId: string, lat: number, lng: number, base: Graph = graph) => {
     let cutNode: string | null = null;
-    const cutGraph = editPair(graph, edgeId, (g) => {
+    const cutGraph = editPair(base, edgeId, (g) => {
       const made = splitEdge(g, edgeId, lat, lng, login);
       cutNode = made?.nodeId ?? null;
       return made?.graph ?? g;
     });
-    if (!cutNode) return;
+    if (!cutNode) {
+      // The click was at the very end of the line, where there is nothing to cut: use the point already there.
+      const edge = base.edges.find((e) => e.id === edgeId);
+      if (!edge || edge.geometry.length < 2) return;
+      const first = edge.geometry[0];
+      const last = edge.geometry[edge.geometry.length - 1];
+      const nearFirst = Math.hypot(first.lat - lat, first.lng - lng) <= Math.hypot(last.lat - lat, last.lng - lng);
+      return drawToNode(nearFirst ? edge.from : edge.to, base);
+    }
     const cut = { graph: cutGraph, nodeId: cutNode as string };
     if (!drawing?.anchor) {
       commit(cut.graph);
@@ -238,6 +249,11 @@ export function GraphEditor() {
     const drawn = addEdge(cut.graph, drawing.anchor, cut.nodeId, drawing.bends, { kind: drawing.kind, recordId: drawing.recordId }, login);
     commit(drawn?.graph ?? cut.graph);
     setDrawing(drawing.kind === "slope" ? { ...drawing, anchor: cut.nodeId, bends: [] } : null);
+  };
+  /** A click while drawing that lands on a slope or lift not yet in the graph: bring its line in, then use it like any other. */
+  const drawToCatalogLine = (r: Record_, lat: number, lng: number) => {
+    const brought = importLine(graph, r.coords, { kind: r.kind, recordId: r.id }, login);
+    if (brought) drawToLine(brought.edgeId, lat, lng, brought.graph);
   };
   /** A double-click on open map while drawing: a new node there, as the start or the end. */
   const drawToNewNode = (lat: number, lng: number) => {
@@ -342,8 +358,8 @@ export function GraphEditor() {
   // Handlers the map calls read the latest state through this ref: the
   // overlays are rebuilt on every change, but the map itself only once.
   const selectedEdgeId = selectedEdge?.id ?? null;
-  const live = useRef({ graph, drawing, cutArmed, joinOnDrop, login, drawToNode, drawToLine, drawToNewNode, commit, selectEdge, selectedEdgeId });
-  live.current = { graph, drawing, cutArmed, joinOnDrop, login, drawToNode, drawToLine, drawToNewNode, commit, selectEdge, selectedEdgeId };
+  const live = useRef({ graph, drawing, cutArmed, joinOnDrop, login, drawToNode, drawToLine, drawToCatalogLine, drawToNewNode, commit, selectEdge, selectedEdgeId });
+  live.current = { graph, drawing, cutArmed, joinOnDrop, login, drawToNode, drawToLine, drawToCatalogLine, drawToNewNode, commit, selectEdge, selectedEdgeId };
 
   // ── keyboard ────────────────────────────────────────────────────────
 
@@ -433,7 +449,10 @@ export function GraphEditor() {
         map: m, path: r.coords, strokeOpacity: 0, clickable: true, zIndex: 1,
         icons: [{ icon: { path: "M 0,-1 0,1", strokeOpacity: on ? 1 : 0.55, strokeColor: on ? SELECTED : "#6b7280", scale: on ? 4 : 2.5 }, offset: "0", repeat: "10px" }],
       });
-      line.addListener("click", () => { if (!live.current.drawing) setSelection({ type: "record", id: recordKey(r.kind, r.id) }); });
+      line.addListener("click", (ev: google.maps.MapMouseEvent) => {
+        if (!live.current.drawing) setSelection({ type: "record", id: recordKey(r.kind, r.id) });
+        else if (ev.latLng) live.current.drawToCatalogLine(r, ev.latLng.lat(), ev.latLng.lng());
+      });
       overlays.current.push(line);
     }
 
@@ -487,7 +506,9 @@ export function GraphEditor() {
           setCutArmed(false);
           if (nodeId) { s.commit(next); setSelection({ type: "node", id: nodeId }); }
         } else if (s.drawing) {
-          if (e.kind !== "traverse") s.drawToLine(e.id, ev.latLng.lat(), ev.latLng.lng());
+          // With a link lying over a slope or lift, the line meant is the slope or lift.
+          const onto = e.kind === "traverse" ? stacked.find((x) => x.kind !== "traverse") ?? e : e;
+          s.drawToLine(onto.id, ev.latLng.lat(), ev.latLng.lng());
         } else if (stacked.length > 1) {
           const dom = ev.domEvent as MouseEvent | undefined;
           setChoices({ x: dom?.clientX ?? 80, y: dom?.clientY ?? 80, ids: stacked.map((x) => x.id) });
