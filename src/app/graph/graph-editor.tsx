@@ -979,7 +979,7 @@ const NODE_KINDS = ["waypoint", "fork", "merge", "lift_bottom", "lift_station", 
 /** How far from a click a line still counts as under it, in screen pixels. */
 const PICK_PX = 6;
 /** How near a line's bend a click must be to land on it while drawing, in screen pixels. */
-const SNAP_PX = 12;
+const SNAP_PX = 16;
 const GRADES = ["beginner", "beginner_intermediate", "intermediate", "intermediate_advanced", "advanced", "expert", "terrain_park"] as const;
 const LIFT_TYPES = ["chair_lift", "gondola", "magic_carpet", "drag_lift", "cable_car"] as const;
 
