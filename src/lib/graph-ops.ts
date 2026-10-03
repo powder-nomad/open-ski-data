@@ -57,8 +57,10 @@ export function splitEdge(g: Graph, edgeId: string, lat: number, lng: number, co
   const last = edge.geometry[edge.geometry.length - 1];
   if (distanceM(at.point, first) < 1 || distanceM(at.point, last) < 1) return null;
   const node: GraphNode = { id: uid("n"), lat: at.point.lat, lng: at.point.lng, alt_m: at.point.alt_m, kind: "waypoint" };
-  const upper = [...edge.geometry.slice(0, at.segment), at.point];
-  const lower = [at.point, ...edge.geometry.slice(at.segment)];
+  // A cut exactly at a bend must not leave that bend twice in a piece.
+  const same = (p: Vertex) => p.lat === at.point.lat && p.lng === at.point.lng;
+  const upper = [...edge.geometry.slice(0, at.segment).filter((p) => !same(p)), at.point];
+  const lower = [at.point, ...edge.geometry.slice(at.segment).filter((p) => !same(p))];
   const piece = (from: string, to: string, geometry: Vertex[]): GraphEdge => ({
     ...edge,
     id: uid("e"),
@@ -374,4 +376,18 @@ export function edgesAt(g: Graph, lat: number, lng: number, withinM: number): Gr
     if (near && near.distM <= withinM) hits.push({ edge: e, distM: near.distM });
   }
   return hits.sort((a, b) => a.distM - b.distM).map((h) => h.edge);
+}
+
+/**
+ * The bend of a line nearest a position, if one is within reach. A line
+ * joined at one of its own bends keeps its shape; its ends are not bends,
+ * they are nodes already.
+ */
+export function nearestBend(edge: GraphEdge, lat: number, lng: number, withinM: number): Vertex | null {
+  let best: { v: Vertex; d: number } | null = null;
+  for (const v of edge.geometry.slice(1, -1)) {
+    const d = distanceM(v, { lat, lng });
+    if (d <= withinM && (!best || d < best.d)) best = { v, d };
+  }
+  return best?.v ?? null;
 }

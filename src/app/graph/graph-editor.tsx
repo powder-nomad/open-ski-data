@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { importLibrary, setOptions } from "@googlemaps/js-api-loader";
 import { PatchSaver, type PatchBundle } from "@/lib/ci-status";
 import {
-  addEdge, addNode, continuation, dropNode, edgesAt, editPair, importLine, joinEdges, mergeNode, moveNode, orientByElevation, piecesOf,
+  addEdge, addNode, continuation, dropNode, edgesAt, editPair, importLine, nearestBend, joinEdges, mergeNode, moveNode, orientByElevation, piecesOf,
   positionKey, positions, primaryOf, redundantLinks, removeEdges, removeNode, reshapeEdge, splitEdge, twinOf, type Graph,
 } from "@/lib/graph-ops";
 import { flipped, nearPairs, reverseLink, reviewItems, strandedEdges, userEdit } from "@/lib/graph-review";
@@ -78,6 +78,7 @@ export function GraphEditor() {
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
   const overlays = useRef<(google.maps.Polyline | google.maps.Marker)[]>([]);
+  const bendDots = useRef<google.maps.Marker[]>([]);
 
   // ── data ────────────────────────────────────────────────────────────
 
@@ -224,7 +225,12 @@ export function GraphEditor() {
     setSelection({ type: "edge", id: drawn.edgeId });
   };
   /** A click while drawing that lands on a line: cut it there, and use the cut. */
-  const drawToLine = (edgeId: string, lat: number, lng: number, base: Graph = graph) => {
+  const drawToLine = (edgeId: string, clickLat: number, clickLng: number, snapM: number, base: Graph = graph) => {
+    // Land on the line's own bend when the click is near one, so the join sits on a point the line already has.
+    const target = base.edges.find((e) => e.id === edgeId);
+    const bend = target ? nearestBend(target, clickLat, clickLng, snapM) : null;
+    const lat = bend?.lat ?? clickLat;
+    const lng = bend?.lng ?? clickLng;
     let cutNode: string | null = null;
     const cutGraph = editPair(base, edgeId, (g) => {
       const made = splitEdge(g, edgeId, lat, lng, login);
@@ -251,9 +257,9 @@ export function GraphEditor() {
     setDrawing(drawing.kind === "slope" ? { ...drawing, anchor: cut.nodeId, bends: [] } : null);
   };
   /** A click while drawing that lands on a slope or lift not yet in the graph: bring its line in, then use it like any other. */
-  const drawToCatalogLine = (r: Record_, lat: number, lng: number) => {
+  const drawToCatalogLine = (r: Record_, lat: number, lng: number, snapM: number) => {
     const brought = importLine(graph, r.coords, { kind: r.kind, recordId: r.id }, login);
-    if (brought) drawToLine(brought.edgeId, lat, lng, brought.graph);
+    if (brought) drawToLine(brought.edgeId, lat, lng, snapM, brought.graph);
   };
   /** A double-click on open map while drawing: a new node there, as the start or the end. */
   const drawToNewNode = (lat: number, lng: number) => {
@@ -440,6 +446,19 @@ export function GraphEditor() {
     if (!m || !mapReady) return;
     overlays.current.forEach((o) => o.setMap(null));
     overlays.current = [];
+    bendDots.current.forEach((o) => o.setMap(null));
+    bendDots.current = [];
+    const metresPerPx = (lat: number) => (156543 * Math.cos((lat * Math.PI) / 180)) / 2 ** (m.getZoom() ?? 15);
+    /** While drawing, the line under the pointer shows its bends: the places a click will snap to. */
+    const showBendsOnHover = (line: google.maps.Polyline, bends: { lat: number; lng: number }[]) => {
+      line.addListener("mouseover", () => {
+        bendDots.current.forEach((o) => o.setMap(null));
+        bendDots.current = bends.map((p) => new google.maps.Marker({
+          map: m, position: { lat: p.lat, lng: p.lng }, clickable: false, zIndex: 45,
+          icon: { path: google.maps.SymbolPath.CIRCLE, scale: 3.5, fillColor: "#facc15", fillOpacity: 1, strokeColor: "#111827", strokeWeight: 1 },
+        }));
+      });
+    };
 
     // Catalog lines that the graph doesn't have yet: faint, as a reference to draw over or bring in.
     for (const r of records) {
@@ -451,8 +470,9 @@ export function GraphEditor() {
       });
       line.addListener("click", (ev: google.maps.MapMouseEvent) => {
         if (!live.current.drawing) setSelection({ type: "record", id: recordKey(r.kind, r.id) });
-        else if (ev.latLng) live.current.drawToCatalogLine(r, ev.latLng.lat(), ev.latLng.lng());
+        else if (ev.latLng) live.current.drawToCatalogLine(r, ev.latLng.lat(), ev.latLng.lng(), metresPerPx(ev.latLng.lat()) * SNAP_PX);
       });
+      if (drawing) showBendsOnHover(line, r.coords.slice(1, -1));
       overlays.current.push(line);
     }
 
@@ -488,7 +508,7 @@ export function GraphEditor() {
         const s = live.current;
         if (!ev.latLng) return;
         // Everything under the click, about a finger's width around it.
-        const reachM = (PICK_PX * 156543 * Math.cos((ev.latLng.lat() * Math.PI) / 180)) / 2 ** (m.getZoom() ?? 15);
+        const reachM = metresPerPx(ev.latLng.lat()) * PICK_PX;
         const stacked = edgesAt(s.graph, ev.latLng.lat(), ev.latLng.lng(), reachM);
         if (s.cutArmed) {
           // With lines on top of each other, the cut goes to the one already selected.
@@ -496,7 +516,9 @@ export function GraphEditor() {
             google.maps.event.trigger(lineById.get(s.selectedEdgeId)!, "click", ev);
             return;
           }
-          const at = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+          // Like drawing, a cut lands on the line's own bend when the click is near one.
+          const bend = nearestBend(e, ev.latLng.lat(), ev.latLng.lng(), metresPerPx(ev.latLng.lat()) * SNAP_PX);
+          const at = { lat: bend?.lat ?? ev.latLng.lat(), lng: bend?.lng ?? ev.latLng.lng() };
           let nodeId: string | null = null;
           const next = editPair(s.graph, e.id, (g) => {
             const cut = splitEdge(g, e.id, at.lat, at.lng, s.login);
@@ -508,7 +530,7 @@ export function GraphEditor() {
         } else if (s.drawing) {
           // With a link lying over a slope or lift, the line meant is the slope or lift.
           const onto = e.kind === "traverse" ? stacked.find((x) => x.kind !== "traverse") ?? e : e;
-          s.drawToLine(onto.id, ev.latLng.lat(), ev.latLng.lng());
+          s.drawToLine(onto.id, ev.latLng.lat(), ev.latLng.lng(), metresPerPx(ev.latLng.lat()) * SNAP_PX);
         } else if (stacked.length > 1) {
           const dom = ev.domEvent as MouseEvent | undefined;
           setChoices({ x: dom?.clientX ?? 80, y: dom?.clientY ?? 80, ids: stacked.map((x) => x.id) });
@@ -520,6 +542,7 @@ export function GraphEditor() {
         }
       });
       lineById.set(e.id, line);
+      if (drawing || cutArmed) showBendsOnHover(line, e.geometry.slice(1, -1));
       if (selected && !drawing && !cutArmed) {
         // Dragging a point of the selected line reshapes it; its ends stay on their nodes.
         const path = line.getPath();
@@ -955,6 +978,8 @@ export function GraphEditor() {
 const NODE_KINDS = ["waypoint", "fork", "merge", "lift_bottom", "lift_station", "lift_top", "summit", "base"] as const;
 /** How far from a click a line still counts as under it, in screen pixels. */
 const PICK_PX = 6;
+/** How near a line's bend a click must be to land on it while drawing, in screen pixels. */
+const SNAP_PX = 12;
 const GRADES = ["beginner", "beginner_intermediate", "intermediate", "intermediate_advanced", "advanced", "expert", "terrain_park"] as const;
 const LIFT_TYPES = ["chair_lift", "gondola", "magic_carpet", "drag_lift", "cable_car"] as const;
 
