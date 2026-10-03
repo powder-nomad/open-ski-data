@@ -1751,7 +1751,7 @@ export function SlopeAuthor2() {
   // Connect mode on something that isn't a node yet: a click on a line cuts
   // it there, a double-click on open map drops a new node. Either becomes
   // the start of the line being drawn, or its end.
-  const connectAtPoint = (lat: number, lng: number, onEdgeId?: string, dropClicks = 0) => {
+  const connectAtPoint = (lat: number, lng: number, onEdgeId?: string) => {
     let g = liveGraph();
     const from = anchorNodeId ? g.nodes.find((n) => n.id === anchorNodeId) : undefined;
     let nodeId: string | undefined;
@@ -1773,8 +1773,9 @@ export function SlopeAuthor2() {
     const to = g.nodes.find((n) => n.id === nodeId);
     if (!to) return;
     if (from && from.id !== to.id) {
-      // A double-click arrives after its own two single clicks, which were taken for bends.
-      const via = dropClicks ? connectDraft.waypoints.slice(0, -dropClicks) : connectDraft.waypoints;
+      // A double-click can arrive after its own single clicks, which were taken
+      // for bends: bends sitting on the end point itself are not bends.
+      const via = connectDraft.waypoints.filter((p) => distanceM(p, { lat: to.lat, lng: to.lng }) > 3);
       const geometry = [
         { lat: from.lat, lng: from.lng, alt_m: from.alt_m },
         ...via.map((p, i) => ({ ...p, alt_m: Math.round(from.alt_m + ((to.alt_m - from.alt_m) * (i + 1)) / (via.length + 1)) })),
@@ -1807,7 +1808,7 @@ export function SlopeAuthor2() {
     map.setOptions({ disableDoubleClickZoom: mode === "connect-nodes" });
     if (mode !== "connect-nodes") return;
     const listener = map.addListener("dblclick", (e: google.maps.MapMouseEvent) => {
-      if (e.latLng) connectAtPointRef.current(e.latLng.lat(), e.latLng.lng(), undefined, 2);
+      if (e.latLng) connectAtPointRef.current(e.latLng.lat(), e.latLng.lng());
     });
     return () => listener.remove();
   }, [mode, mapReady]);
