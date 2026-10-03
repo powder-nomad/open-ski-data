@@ -310,6 +310,27 @@
     "originOsm": "OpenStreetMap, {count}번 탐",
     "originUser": "{who} 편집",
     "originUserAnon": "직접 편집",
-    "originUnknown": "출처 없음"
+    "originUnknown": "출처 없음",
+    "name": "이름",
+    "grade": "난이도",
+    "liftType": "리프트 종류",
+    "addSlope": "+ 슬로프",
+    "addLift": "+ 리프트",
+    "addAndDraw": "추가하고 그리기",
+    "cancel": "취소",
+    "grade_beginner": "초급",
+    "grade_beginner_intermediate": "초중급",
+    "grade_intermediate": "중급",
+    "grade_intermediate_advanced": "중상급",
+    "grade_advanced": "상급",
+    "grade_expert": "최상급",
+    "grade_terrain_park": "파크",
+    "liftType_chair_lift": "체어리프트",
+    "liftType_gondola": "곤돌라",
+    "liftType_magic_carpet": "무빙워크",
+    "liftType_drag_lift": "티바·견인",
+    "liftType_cable_car": "케이블카",
+    "stranded": "{count}구간은 갔다가 돌아오는 길이 없어요",
+    "strandedWhy": "들어가는 길이나 나오는 길이 없어요. 대개 리프트 위나 아래의 연결이 빠진 경우예요."
   }
 }

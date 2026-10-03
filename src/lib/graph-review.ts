@@ -150,3 +150,40 @@ export function edgeColour(edge: GraphEdge): { colour: string; dashed: boolean }
     default: return { colour: edge.kind === "lift" ? "#f8fafc" : "#94a3b8", dashed: false };
   }
 }
+
+/**
+ * Slope and lift pieces a rider couldn't be routed to and back from: they
+ * are outside the largest set of points that can all reach each other
+ * following the arrows. Suggested links don't count, because routing
+ * ignores them until someone confirms them. A gondola carries riders both ways.
+ */
+export function strandedEdges(nodes: GraphNode[], edges: GraphEdge[]): GraphEdge[] {
+  const out = new Map<string, string[]>();
+  const back = new Map<string, string[]>();
+  const hop = (a: string, b: string) => {
+    out.set(a, [...(out.get(a) ?? []), b]);
+    back.set(b, [...(back.get(b) ?? []), a]);
+  };
+  for (const e of edges) {
+    if (e.provenance?.source === "suggested") continue;
+    hop(e.from, e.to);
+    if (e.kind === "lift" && (e.lift_id ?? "").includes("gondola")) hop(e.to, e.from);
+  }
+  const reach = (start: string, next: Map<string, string[]>) => {
+    const seen = new Set([start]);
+    const stack = [start];
+    while (stack.length) for (const n of next.get(stack.pop()!) ?? []) if (!seen.has(n)) { seen.add(n); stack.push(n); }
+    return seen;
+  };
+  const left = new Set(nodes.map((n) => n.id));
+  let best = new Set<string>();
+  while (left.size) {
+    const start = left.values().next().value as string;
+    const down = reach(start, out);
+    const up = reach(start, back);
+    const loop = new Set([...down].filter((n) => up.has(n)));
+    for (const n of loop) left.delete(n);
+    if (loop.size > best.size) best = loop;
+  }
+  return edges.filter((e) => e.kind !== "traverse" && !(best.has(e.from) && best.has(e.to)));
+}

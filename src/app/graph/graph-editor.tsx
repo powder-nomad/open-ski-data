@@ -9,7 +9,7 @@ import {
   addEdge, addNode, continuation, dropNode, importLine, joinEdges, mergeNode, moveNode, orientByElevation, piecesOf,
   positionKey, positions, redundantLinks, removeEdges, removeNode, reshapeEdge, splitEdge, type Graph,
 } from "@/lib/graph-ops";
-import { flipped, nearPairs, reverseLink, reviewItems, userEdit } from "@/lib/graph-review";
+import { flipped, nearPairs, reverseLink, reviewItems, strandedEdges, userEdit } from "@/lib/graph-review";
 import { ResortLoader, stitchEdges, type GraphEdge, type GraphNode, type LiftRecord, type LoadedResort, type SlopeRecord } from "@/lib/resort-loader";
 import { webRuntimeConfig } from "@/lib/runtime-config";
 import { useSession } from "@/lib/use-session";
@@ -69,6 +69,11 @@ export function GraphEditor() {
   const [search, setSearch] = useState("");
   const [satellite, setSatellite] = useState(false);
   const [measuring, setMeasuring] = useState<"idle" | "busy" | "failed" | { flipped: number }>("idle");
+  // Slopes and lifts added here, and changes to the names or grades of existing ones.
+  const [addedSlopes, setAddedSlopes] = useState<SlopeRecord[]>([]);
+  const [addedLifts, setAddedLifts] = useState<LiftRecord[]>([]);
+  const [recordEdits, setRecordEdits] = useState<Record<string, { name?: string; difficulty?: string; type?: string }>>({});
+  const [adding, setAdding] = useState<"slope" | "lift" | null>(null);
 
   const mapEl = useRef<HTMLDivElement>(null);
   const map = useRef<google.maps.Map | null>(null);
@@ -85,6 +90,10 @@ export function GraphEditor() {
     setDrawing(null);
     setCutArmed(false);
     setMeasuring("idle");
+    setAddedSlopes([]);
+    setAddedLifts([]);
+    setRecordEdits({});
+    setAdding(null);
   }, [resort]);
 
   /** Every edit goes through here, so every edit can be undone. */
@@ -105,12 +114,12 @@ export function GraphEditor() {
 
   const records: Record_[] = useMemo(() => {
     if (!resort) return [];
-    const name = (r: SlopeRecord | LiftRecord) => r.name_i18n?.[locale] || r.name_i18n?.en || r.name || r.id;
+    const name = (kind: string, r: SlopeRecord | LiftRecord) => recordEdits[`${kind}:${r.id}`]?.name || r.name_i18n?.[locale] || r.name_i18n?.en || r.name || r.id;
     return [
-      ...resort.slopes.map((s) => ({ kind: "slope" as const, id: s.id, name: name(s), difficulty: s.difficulty, coords: (s.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) })),
-      ...resort.lifts.map((l) => ({ kind: "lift" as const, id: l.id, name: name(l), coords: (l.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) })),
+      ...[...resort.slopes, ...addedSlopes].map((s) => ({ kind: "slope" as const, id: s.id, name: name("slope", s), difficulty: recordEdits[`slope:${s.id}`]?.difficulty ?? s.difficulty, coords: (s.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) })),
+      ...[...resort.lifts, ...addedLifts].map((l) => ({ kind: "lift" as const, id: l.id, name: name("lift", l), coords: (l.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) })),
     ];
-  }, [resort, locale]);
+  }, [resort, locale, addedSlopes, addedLifts, recordEdits]);
   const recordByKey = useMemo(() => new Map(records.map((r) => [recordKey(r.kind, r.id), r])), [records]);
   const nodeById = useMemo(() => new Map(graph.nodes.map((n) => [n.id, n])), [graph.nodes]);
   const pieceCount = useMemo(() => {
@@ -139,6 +148,21 @@ export function GraphEditor() {
   const review = useMemo(() => reviewItems(graph.edges, nodeById), [graph.edges, nodeById]);
   const near = useMemo(() => nearPairs(graph.nodes, graph.edges), [graph]);
   const redundant = useMemo(() => redundantLinks(graph), [graph]);
+  const stranded = useMemo(() => strandedEdges(graph.nodes, graph.edges), [graph]);
+
+  /** A new slope or lift: a name in the list, ready to have its line drawn. */
+  const addRecord = (kind: "slope" | "lift", name: string, grade: string) => {
+    const taken = new Set(records.filter((r) => r.kind === kind).map((r) => r.id));
+    const slug = name.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    let id = slug || `${kind}-${Date.now().toString(36)}`;
+    for (let i = 2; taken.has(id); i++) id = `${slug || kind}-${i}`;
+    const names = { [locale]: name };
+    if (kind === "slope") setAddedSlopes((list) => [...list, { id, name, name_i18n: names, type: "run", difficulty: grade || null, coordinates: [] }]);
+    else setAddedLifts((list) => [...list, { id, name, name_i18n: names, type: grade || "chair_lift", coordinates: [] }]);
+    setAdding(null);
+    setSelection({ type: "record", id: recordKey(kind, id) });
+    startDrawing(kind, id);
+  };
 
   // ── actions ─────────────────────────────────────────────────────────
 
@@ -324,6 +348,8 @@ export function GraphEditor() {
         if (cancelled || !mapEl.current) return;
         const m = new Map(mapEl.current, {
           center: KOREA, zoom: 8, mapTypeId: "terrain", clickableIcons: false, gestureHandling: "greedy",
+          // Double-click belongs to drawing here; zoom with the wheel or the buttons.
+          disableDoubleClickZoom: true,
           zoomControl: true, mapTypeControl: false, streetViewControl: false, fullscreenControl: false,
         });
         map.current = m;
@@ -345,7 +371,7 @@ export function GraphEditor() {
   }, []);
 
   useEffect(() => { map.current?.setMapTypeId(satellite ? "hybrid" : "terrain"); }, [satellite, mapReady]);
-  useEffect(() => { map.current?.setOptions({ disableDoubleClickZoom: drawing != null, draggableCursor: drawing || cutArmed ? "crosshair" : undefined }); }, [drawing, cutArmed, mapReady]);
+  useEffect(() => { map.current?.setOptions({ draggableCursor: drawing || cutArmed ? "crosshair" : undefined }); }, [drawing, cutArmed, mapReady]);
   useEffect(() => {
     if (!mapReady || !resort) return;
     const pts = graph.edges.length ? graph.edges.flatMap((e) => e.geometry) : records.flatMap((r) => r.coords);
@@ -477,7 +503,8 @@ export function GraphEditor() {
     const unchanged =
       base != null && base.nodes.length === graph.nodes.length && base.edges.length === graph.edges.length &&
       graph.edges.every((e) => same(baseEdges.get(e.id), e)) && same(base.nodes, graph.nodes);
-    if (unchanged || graph.edges.length === 0 || graph.nodes.length < 2) return null;
+    const recordsTouched = addedSlopes.length + addedLifts.length + Object.keys(recordEdits).length > 0;
+    if ((unchanged && !recordsTouched) || graph.edges.length === 0 || graph.nodes.length < 2) return null;
 
     // An edge a person moved is theirs, even if only its points were dragged.
     const line = (e: GraphEdge) => e.geometry.map((v) => `${v.lat},${v.lng}`).join(" ");
@@ -498,9 +525,14 @@ export function GraphEditor() {
 
     // A slope's or lift's own line in the catalog follows its pieces, so nothing is left "without geometry".
     const edgeById = new Map(edges.map((e) => [e.id, e]));
-    const derive = <T extends SlopeRecord | LiftRecord>(kind: "slope" | "lift", list: T[]): { list: T[]; changed: boolean } => {
-      let changed = false;
-      const next = list.map((r) => {
+    const derive = <T extends SlopeRecord | LiftRecord>(kind: "slope" | "lift", list: T[], added: number): { list: T[]; changed: boolean } => {
+      let changed = added > 0;
+      const next = list.map((given) => {
+        const edit = recordEdits[`${kind}:${given.id}`];
+        const r: T = edit
+          ? { ...given, ...(edit.name ? { name_i18n: { ...(given.name_i18n ?? {}), [locale]: edit.name } } : {}), ...(edit.difficulty ? { difficulty: edit.difficulty } : {}), ...(edit.type ? { type: edit.type } : {}) }
+          : given;
+        if (edit) changed = true;
         const pieces = piecesOf({ nodes: graph.nodes, edges }, kind, r.id);
         if (pieces.length === 0) return r;
         const coordinates = stitchEdges(pieces.map((p) => p.id), edgeById);
@@ -512,7 +544,7 @@ export function GraphEditor() {
       return { list: next, changed };
     };
     const head = { country_code: resort.ref.countryCode, region_slug: resort.ref.regionSlug, place_slug: resort.ref.slug };
-    const slopes = derive("slope", resort.slopes);
+    const slopes = derive("slope", [...resort.slopes, ...addedSlopes], addedSlopes.length);
     if (slopes.changed) {
       const clean = slopes.list.map((s) => {
         if (s.difficulty !== null) return s;
@@ -522,11 +554,11 @@ export function GraphEditor() {
       });
       files["slopes.json"] = JSON.stringify({ $schema: "../../../schemas/slope.schema.json", ...head, slopes: clean }, null, 2) + "\n";
     }
-    const lifts = derive("lift", resort.lifts);
+    const lifts = derive("lift", [...resort.lifts, ...addedLifts], addedLifts.length);
     if (lifts.changed) files["lifts.json"] = JSON.stringify({ $schema: "../../../schemas/lift.schema.json", ...head, lifts: lifts.list }, null, 2) + "\n";
 
     return { slug: resort.ref.slug, countryCode: resort.ref.countryCode, regionSlug: resort.ref.regionSlug, files, message: `graph-editor: ${resort.ref.slug}` };
-  }, [resort, graph, login]);
+  }, [resort, graph, login, addedSlopes, addedLifts, recordEdits, locale]);
 
   // ── view ────────────────────────────────────────────────────────────
 
@@ -552,7 +584,7 @@ export function GraphEditor() {
         </p>
       )}
 
-      <aside className="absolute inset-x-2 bottom-2 top-[45%] z-10 flex flex-col gap-3 overflow-y-auto rounded-lg bg-white/95 p-3 shadow-xl md:inset-y-2 md:left-auto md:right-2 md:top-2 md:w-[26rem]">
+      <aside className="absolute inset-x-2 bottom-2 top-[45%] z-10 flex flex-col gap-3 overflow-y-auto rounded-lg bg-white/95 p-3 shadow-xl md:bottom-2 md:left-auto md:right-2 md:top-14 md:w-[26rem]">
         <header className="flex items-center justify-between gap-2">
           <h1 className="text-base font-bold">{t("title")}</h1>
           <div className="flex items-center gap-2">
@@ -627,6 +659,29 @@ export function GraphEditor() {
                     ? t("pieces", { count: pieceCount.get(recordKey(selectedRecord.kind, selectedRecord.id)) ?? 0 })
                     : t("noLine")}
                 </p>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <label className="text-sm text-slate-700">
+                    {t("name")}
+                    <input
+                      value={selectedRecord.name}
+                      onChange={(e) => setRecordEdits((m) => ({ ...m, [recordKey(selectedRecord.kind, selectedRecord.id)]: { ...m[recordKey(selectedRecord.kind, selectedRecord.id)], name: e.target.value } }))}
+                      className="mt-1 block min-h-11 w-full rounded-md border border-slate-300 px-2 text-sm text-slate-900"
+                    />
+                  </label>
+                  {selectedRecord.kind === "slope" && (
+                    <label className="text-sm text-slate-700">
+                      {t("grade")}
+                      <select
+                        value={selectedRecord.difficulty ?? ""}
+                        onChange={(e) => setRecordEdits((m) => ({ ...m, [recordKey("slope", selectedRecord.id)]: { ...m[recordKey("slope", selectedRecord.id)], difficulty: e.target.value } }))}
+                        className="mt-1 block min-h-11 w-full rounded-md border border-slate-300 bg-white px-2 text-sm text-slate-900"
+                      >
+                        <option value="">{t("none")}</option>
+                        {GRADES.map((g) => <option key={g} value={g}>{t(`grade_${g}`)}</option>)}
+                      </select>
+                    </label>
+                  )}
+                </div>
                 <div className="mt-2 flex flex-wrap gap-2">
                   <button type="button" className={primary} onClick={() => startDrawing(selectedRecord.kind, selectedRecord.id)}>{t("drawThis")}</button>
                   {!pieceCount.get(recordKey(selectedRecord.kind, selectedRecord.id)) && selectedRecord.coords.length >= 2 && (
@@ -645,7 +700,10 @@ export function GraphEditor() {
               </section>
             )}
 
+            {adding && <NewRecordForm kind={adding} t={t} onCancel={() => setAdding(null)} onAdd={(name, grade) => addRecord(adding, name, grade)} />}
             <div className="flex flex-wrap gap-2">
+              <button type="button" className={button} onClick={() => setAdding("slope")}>{t("addSlope")}</button>
+              <button type="button" className={button} onClick={() => setAdding("lift")}>{t("addLift")}</button>
               <button type="button" className={button} onClick={() => startDrawing("traverse", null)}>{t("drawLink")}</button>
               <button type="button" className={button} onClick={undo} disabled={history.length === 0}>{t("undo")} ({history.length})</button>
             </div>
@@ -685,7 +743,7 @@ export function GraphEditor() {
 
             {/* Things worth a look, and the two clean-ups. */}
             <details className="rounded-md border border-slate-300 p-3">
-              <summary className="min-h-11 cursor-pointer text-sm font-bold leading-[2.75rem]">{t("checks", { count: review.length + near.length + redundant.length })}</summary>
+              <summary className="min-h-11 cursor-pointer text-sm font-bold leading-[2.75rem]">{t("checks", { count: review.length + near.length + redundant.length + stranded.length })}</summary>
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <button type="button" className={button} onClick={measure} disabled={measuring === "busy" || graph.edges.length === 0}>
@@ -699,6 +757,19 @@ export function GraphEditor() {
                   <div className="flex flex-wrap items-center gap-2">
                     <button type="button" className={button} onClick={() => commit(removeEdges(graph, redundant))}>{t("removeRedundant", { count: redundant.length })}</button>
                     <span className="text-sm text-slate-700">{t("redundantWhy")}</span>
+                  </div>
+                )}
+                {stranded.length > 0 && (
+                  <div>
+                    <p className="text-sm font-bold">{t("stranded", { count: stranded.length })}</p>
+                    <p className="text-sm text-slate-700">{t("strandedWhy")}</p>
+                    <ul className="max-h-40 overflow-y-auto">
+                      {stranded.map((e) => (
+                        <li key={e.id}>
+                          <button type="button" className="min-h-11 w-full truncate text-left text-sm underline" onClick={() => selectEdge(e.id, true)}>{edgeName(e)}</button>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
                 {near.map((p) => (
@@ -732,6 +803,40 @@ export function GraphEditor() {
         )}
       </aside>
     </section>
+  );
+}
+
+const GRADES = ["beginner", "beginner_intermediate", "intermediate", "intermediate_advanced", "advanced", "expert", "terrain_park"] as const;
+const LIFT_TYPES = ["chair_lift", "gondola", "magic_carpet", "drag_lift", "cable_car"] as const;
+
+/** Name and grade (or lift type) for a slope or lift the catalog doesn't have yet. */
+function NewRecordForm({ kind, t, onAdd, onCancel }: { kind: "slope" | "lift"; t: ReturnType<typeof useTranslations>; onAdd: (name: string, grade: string) => void; onCancel: () => void }) {
+  const [name, setName] = useState("");
+  const [grade, setGrade] = useState<string>(kind === "slope" ? "intermediate" : "chair_lift");
+  return (
+    <form
+      className="rounded-md border border-slate-300 p-3"
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (name.trim()) onAdd(name.trim(), grade);
+      }}
+    >
+      <p className="text-base font-bold">{t(kind === "slope" ? "addSlope" : "addLift")}</p>
+      <label className="mt-2 block text-sm text-slate-700">
+        {t("name")}
+        <input autoFocus value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block min-h-11 w-full rounded-md border border-slate-300 px-2 text-sm text-slate-900" />
+      </label>
+      <label className="mt-2 block text-sm text-slate-700">
+        {t(kind === "slope" ? "grade" : "liftType")}
+        <select value={grade} onChange={(e) => setGrade(e.target.value)} className="mt-1 block min-h-11 w-full rounded-md border border-slate-300 bg-white px-2 text-sm text-slate-900">
+          {(kind === "slope" ? GRADES : LIFT_TYPES).map((g) => <option key={g} value={g}>{t(kind === "slope" ? `grade_${g}` : `liftType_${g}`)}</option>)}
+        </select>
+      </label>
+      <div className="mt-3 flex gap-2">
+        <button type="submit" disabled={!name.trim()} className="min-h-11 rounded-md bg-sky-700 px-3 text-sm font-bold text-white hover:bg-sky-800 disabled:opacity-40">{t("addAndDraw")}</button>
+        <button type="button" onClick={onCancel} className="min-h-11 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-100">{t("cancel")}</button>
+      </div>
+    </form>
   );
 }
 

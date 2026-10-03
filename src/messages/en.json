@@ -310,6 +310,27 @@
     "originOsm": "OpenStreetMap, ridden {count}×",
     "originUser": "set by {who}",
     "originUserAnon": "set by hand",
-    "originUnknown": "origin unknown"
+    "originUnknown": "origin unknown",
+    "name": "Name",
+    "grade": "Grade",
+    "liftType": "Lift type",
+    "addSlope": "+ Slope",
+    "addLift": "+ Lift",
+    "addAndDraw": "Add and draw it",
+    "cancel": "Cancel",
+    "grade_beginner": "Beginner",
+    "grade_beginner_intermediate": "Beginner–intermediate",
+    "grade_intermediate": "Intermediate",
+    "grade_intermediate_advanced": "Intermediate–advanced",
+    "grade_advanced": "Advanced",
+    "grade_expert": "Expert",
+    "grade_terrain_park": "Terrain park",
+    "liftType_chair_lift": "Chairlift",
+    "liftType_gondola": "Gondola",
+    "liftType_magic_carpet": "Magic carpet",
+    "liftType_drag_lift": "Drag lift",
+    "liftType_cable_car": "Cable car",
+    "stranded": "{count} pieces you can't be routed to and back from",
+    "strandedWhy": "Nothing leads onto them, or nothing leads off. Usually a missing link at a lift top or base."
   }
 }
