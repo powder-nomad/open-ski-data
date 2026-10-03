@@ -723,6 +723,55 @@
       "lng": 128.68115132617743,
       "alt_m": 759.9,
       "kind": "waypoint"
+    },
+    {
+      "id": "n-u-musk3kpa-wylr",
+      "lat": 37.64361351951799,
+      "lng": 128.67906862071302,
+      "alt_m": 802.8,
+      "kind": "waypoint"
+    },
+    {
+      "id": "n-u-musl4rmq-pfti",
+      "lat": 37.63654128364015,
+      "lng": 128.67345017131413,
+      "alt_m": 0,
+      "kind": "waypoint"
+    },
+    {
+      "id": "n-u-musl5li9-1orh",
+      "lat": 37.63986740859363,
+      "lng": 128.67773814821953,
+      "alt_m": 0,
+      "kind": "waypoint"
+    },
+    {
+      "id": "n-u-musl8jyq-qari",
+      "lat": 37.643855723541385,
+      "lng": 128.67937095712358,
+      "alt_m": 0,
+      "kind": "waypoint"
+    },
+    {
+      "id": "n-u-musl8nyz-nla8",
+      "lat": 37.64071034766191,
+      "lng": 128.67917102307308,
+      "alt_m": 0,
+      "kind": "waypoint"
+    },
+    {
+      "id": "n-u-musl94v4-5rg9",
+      "lat": 37.64436206229022,
+      "lng": 128.6807911386302,
+      "alt_m": 0,
+      "kind": "waypoint"
+    },
+    {
+      "id": "n-u-musl9g8f-u9me",
+      "lat": 37.63869196860492,
+      "lng": 128.68027294985504,
+      "alt_m": 0,
+      "kind": "waypoint"
     }
   ],
   "edges": [
@@ -6612,31 +6661,6 @@
       }
     },
     {
-      "id": "e-link-5173609283-5175129662",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5173609284",
-      "to": "n-5175129662",
-      "length_m": 41.7,
-      "geometry": [
-        {
-          "lat": 37.6388706,
-          "lng": 128.6783334,
-          "alt_m": 802.8
-        },
-        {
-          "lat": 37.6391795,
-          "lng": 128.6780629,
-          "alt_m": 796.9
-        }
-      ],
-      "provenance": {
-        "source": "user-edit",
-        "last_verified": "2026-10-03",
-        "contributor": "powder-nomad"
-      }
-    },
-    {
       "id": "e-link-5173734313-5173567128",
       "slope_id": null,
       "kind": "traverse",
@@ -6706,32 +6730,6 @@
       "provenance": {
         "source": "observed",
         "observed_count": 86
-      }
-    },
-    {
-      "id": "e-link-5173737181-5173734298",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5173734298",
-      "to": "n-5173737181",
-      "length_m": 43.5,
-      "geometry": [
-        {
-          "lat": 37.6155707,
-          "lng": 128.6691122,
-          "alt_m": 1292.5
-        },
-        {
-          "lat": 37.6159492,
-          "lng": 128.6692359,
-          "alt_m": 1283.1
-        }
-      ],
-      "provenance": {
-        "source": "user-edit",
-        "observed_count": 4,
-        "last_verified": "2026-10-03",
-        "contributor": "powder-nomad"
       }
     },
     {
@@ -6852,31 +6850,6 @@
       "provenance": {
         "source": "observed",
         "observed_count": 47
-      }
-    },
-    {
-      "id": "e-link-5174928957-4708345333",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174928957",
-      "to": "n-4708345333",
-      "length_m": 74.8,
-      "geometry": [
-        {
-          "lat": 37.6409506,
-          "lng": 128.6775313,
-          "alt_m": 787.4
-        },
-        {
-          "lat": 37.6402818,
-          "lng": 128.6776125,
-          "alt_m": 789.2
-        }
-      ],
-      "provenance": {
-        "source": "user-edit",
-        "last_verified": "2026-10-03",
-        "contributor": "powder-nomad"
       }
     },
     {
@@ -7342,31 +7315,6 @@
       "provenance": {
         "source": "observed",
         "observed_count": 22
-      }
-    },
-    {
-      "id": "e-link-5174966443-5174966442",
-      "slope_id": null,
-      "kind": "traverse",
-      "from": "n-5174966442",
-      "to": "n-5174966443",
-      "length_m": 35.8,
-      "geometry": [
-        {
-          "lat": 37.6397031,
-          "lng": 128.6788391,
-          "alt_m": 800.5
-        },
-        {
-          "lat": 37.6399186,
-          "lng": 128.6785376,
-          "alt_m": 794.7
-        }
-      ],
-      "provenance": {
-        "source": "user-edit",
-        "last_verified": "2026-10-03",
-        "contributor": "powder-nomad"
       }
     },
     {
@@ -7983,30 +7931,6 @@
       }
     },
     {
-      "id": "e-u-murt0ls8-vk1k",
-      "slope_id": null,
-      "from": "n-5173609284",
-      "to": "n-5174966443",
-      "kind": "traverse",
-      "geometry": [
-        {
-          "lat": 37.6388706,
-          "lng": 128.6783334,
-          "alt_m": 789
-        },
-        {
-          "lat": 37.6399186,
-          "lng": 128.6785376,
-          "alt_m": 784
-        }
-      ],
-      "provenance": {
-        "source": "user-edit",
-        "last_verified": "2026-10-03",
-        "contributor": "powder-nomad"
-      }
-    },
-    {
       "id": "e-u-murt1h1w-3wyt",
       "slope_id": null,
       "from": "n-5174928957",
@@ -8222,6 +8146,396 @@
         "source": "user-edit",
         "last_verified": "2026-10-03",
         "contributor": "powder-nomad"
+      }
+    },
+    {
+      "id": "e-u-musjtqki-p6i3",
+      "slope_id": "rainbow-4",
+      "kind": "slope",
+      "from": "n-5173762041",
+      "to": "n-5173762034",
+      "length_m": 23.1,
+      "geometry": [
+        {
+          "lat": 37.6179872,
+          "lng": 128.6652852,
+          "alt_m": 1139.9
+        },
+        {
+          "lat": 37.6179852,
+          "lng": 128.6650221,
+          "alt_m": 1136.6
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-musk3kpb-upxk",
+      "slope_id": "rainbow-paradise",
+      "kind": "slope",
+      "from": "n-5173609284",
+      "to": "n-u-musk3kpa-wylr",
+      "length_m": 561,
+      "geometry": [
+        {
+          "lat": 37.6388706,
+          "lng": 128.6783334,
+          "alt_m": 802.8
+        },
+        {
+          "lat": 37.639404347643136,
+          "lng": 128.6783531425118,
+          "alt_m": 803
+        },
+        {
+          "lat": 37.640005689252376,
+          "lng": 128.67832095600363,
+          "alt_m": 803
+        },
+        {
+          "lat": 37.64045482589116,
+          "lng": 128.67815808996707,
+          "alt_m": 803
+        },
+        {
+          "lat": 37.640860637536015,
+          "lng": 128.67792593432824,
+          "alt_m": 803
+        },
+        {
+          "lat": 37.641233243947035,
+          "lng": 128.67781343342597,
+          "alt_m": 803
+        },
+        {
+          "lat": 37.64163578997897,
+          "lng": 128.67787147957145,
+          "alt_m": 803
+        },
+        {
+          "lat": 37.64206764601468,
+          "lng": 128.67814049437217,
+          "alt_m": 803
+        },
+        {
+          "lat": 37.64245259780879,
+          "lng": 128.67849722194126,
+          "alt_m": 803
+        },
+        {
+          "lat": 37.642764936462534,
+          "lng": 128.67875646555134,
+          "alt_m": 803
+        },
+        {
+          "lat": 37.64316122857836,
+          "lng": 128.6788817973542,
+          "alt_m": 803
+        },
+        {
+          "lat": 37.64361351951799,
+          "lng": 128.67906862071302,
+          "alt_m": 802.8
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-musl5lib-08ty",
+      "slope_id": "dragon-park",
+      "kind": "slope",
+      "from": "n-u-musl4rmq-pfti",
+      "to": "n-u-musl5li9-1orh",
+      "length_m": 528.7,
+      "geometry": [
+        {
+          "lat": 37.63654128364015,
+          "lng": 128.67345017131413,
+          "alt_m": 0
+        },
+        {
+          "lat": 37.636714492923566,
+          "lng": 128.67381293332414,
+          "alt_m": 0
+        },
+        {
+          "lat": 37.63986740859363,
+          "lng": 128.67773814821953,
+          "alt_m": 0
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-musl6cbz-ej66",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5174961817",
+      "to": "n-5174966438",
+      "length_m": 44.6,
+      "geometry": [
+        {
+          "lat": 37.6400805,
+          "lng": 128.6799255,
+          "alt_m": 814.3
+        },
+        {
+          "lat": 37.6402449,
+          "lng": 128.6794621,
+          "alt_m": 806.5
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-musl7dgf-5twt",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-musl5li9-1orh",
+      "to": "n-4708345333",
+      "length_m": 47.3,
+      "geometry": [
+        {
+          "lat": 37.63986740859363,
+          "lng": 128.67773814821953,
+          "alt_m": 0
+        },
+        {
+          "lat": 37.6402818,
+          "lng": 128.6776125,
+          "alt_m": 789.2
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-musl7k0j-fcns",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-musl5li9-1orh",
+      "to": "n-5175129662",
+      "length_m": 81.5,
+      "geometry": [
+        {
+          "lat": 37.63986740859363,
+          "lng": 128.67773814821953,
+          "alt_m": 0
+        },
+        {
+          "lat": 37.6391795,
+          "lng": 128.6780629,
+          "alt_m": 796.9
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-musl8nyz-k2wx",
+      "lift_id": "new-yellow",
+      "kind": "lift",
+      "from": "n-u-musl8jyq-qari",
+      "to": "n-u-musl8nyz-nla8",
+      "length_m": 349.6,
+      "geometry": [
+        {
+          "lat": 37.643855723541385,
+          "lng": 128.67937095712358,
+          "alt_m": 0
+        },
+        {
+          "lat": 37.64071034766191,
+          "lng": 128.67917102307308,
+          "alt_m": 0
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-musl9g8g-j4y8",
+      "lift_id": "pink",
+      "kind": "lift",
+      "from": "n-u-musl94v4-5rg9",
+      "to": "n-u-musl9g8f-u9me",
+      "length_m": 631,
+      "geometry": [
+        {
+          "lat": 37.64436206229022,
+          "lng": 128.6807911386302,
+          "alt_m": 0
+        },
+        {
+          "lat": 37.63869196860492,
+          "lng": 128.68027294985504,
+          "alt_m": 0
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-muslb09v-pi11",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-musl9g8f-u9me",
+      "to": "n-5173276895",
+      "length_m": 51.3,
+      "geometry": [
+        {
+          "lat": 37.63869196860492,
+          "lng": 128.68027294985504,
+          "alt_m": 0
+        },
+        {
+          "lat": 37.638766,
+          "lng": 128.6808493,
+          "alt_m": 850.3
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-muslb8d7-l6od",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-murt6edx-96q3",
+      "to": "n-u-musl94v4-5rg9",
+      "length_m": 39.7,
+      "geometry": [
+        {
+          "lat": 37.64457806733765,
+          "lng": 128.68115132617743,
+          "alt_m": 759.9
+        },
+        {
+          "lat": 37.64436206229022,
+          "lng": 128.6807911386302,
+          "alt_m": 0
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-muslboah-rsv2",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-musl8nyz-nla8",
+      "to": "n-5174966438",
+      "length_m": 57.7,
+      "geometry": [
+        {
+          "lat": 37.64071034766191,
+          "lng": 128.67917102307308,
+          "alt_m": 0
+        },
+        {
+          "lat": 37.6402449,
+          "lng": 128.6794621,
+          "alt_m": 806.5
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-musldbhm-viug",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-musk3kpa-wylr",
+      "to": "n-u-murt67t1-fmym",
+      "length_m": 162.4,
+      "geometry": [
+        {
+          "lat": 37.64361351951799,
+          "lng": 128.67906862071302,
+          "alt_m": 802.8
+        },
+        {
+          "lat": 37.6439943512103,
+          "lng": 128.6793758234371,
+          "alt_m": 789
+        },
+        {
+          "lat": 37.64409204728874,
+          "lng": 128.67990153640403,
+          "alt_m": 775
+        },
+        {
+          "lat": 37.644556829209584,
+          "lng": 128.68034666347296,
+          "alt_m": 760.6
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
+      }
+    },
+    {
+      "id": "e-u-musldhjf-ldvb",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-musk3kpa-wylr",
+      "to": "n-3798009736",
+      "length_m": 48.6,
+      "geometry": [
+        {
+          "lat": 37.64361351951799,
+          "lng": 128.67906862071302,
+          "alt_m": 802.8
+        },
+        {
+          "lat": 37.6439797,
+          "lng": 128.6787661,
+          "alt_m": 765
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-03"
       }
     }
   ]
