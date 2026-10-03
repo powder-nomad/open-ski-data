@@ -353,6 +353,11 @@
     "resortCount": "{count} resorts",
     "oneWay": "One-way",
     "bothWays": "both ways",
-    "whichLine": "Which line?"
+    "whichLine": "Which line?",
+    "details": "Details",
+    "name_ko": "Name (Korean)",
+    "name_en": "Name (English)",
+    "name_ja": "Name (Japanese)",
+    "recordId": "ID: {id} (fixed)"
   }
 }

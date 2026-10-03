@@ -28,7 +28,8 @@ import { useSession } from "@/lib/use-session";
  * so undo is just the previous graph.
  */
 
-type Record_ = { kind: "slope" | "lift"; id: string; name: string; difficulty?: string | null; coords: { lat: number; lng: number }[] };
+type Record_ = { kind: "slope" | "lift"; id: string; name: string; names: Record<string, string>; liftType?: string; difficulty?: string | null; coords: { lat: number; lng: number }[] };
+type RecordEdit = { names?: Record<string, string>; difficulty?: string; type?: string };
 type Selection = { type: "edge" | "node" | "record"; id: string } | null;
 type Drawing = { kind: GraphEdge["kind"]; recordId: string | null; anchor: string | null; bends: { lat: number; lng: number }[] } | null;
 
@@ -65,7 +66,7 @@ export function GraphEditor() {
   // Slopes and lifts added here, and changes to the names or grades of existing ones.
   const [addedSlopes, setAddedSlopes] = useState<SlopeRecord[]>([]);
   const [addedLifts, setAddedLifts] = useState<LiftRecord[]>([]);
-  const [recordEdits, setRecordEdits] = useState<Record<string, { name?: string; difficulty?: string; type?: string }>>({});
+  const [recordEdits, setRecordEdits] = useState<Record<string, RecordEdit>>({});
   const [adding, setAdding] = useState<"slope" | "lift" | null>(null);
   /** Slopes and lifts taken out of the catalog here ("slope:id"). */
   const [removedRecords, setRemovedRecords] = useState<string[]>([]);
@@ -114,11 +115,15 @@ export function GraphEditor() {
 
   const records: Record_[] = useMemo(() => {
     if (!resort) return [];
-    const name = (kind: string, r: SlopeRecord | LiftRecord) => recordEdits[`${kind}:${r.id}`]?.name || r.name_i18n?.[locale] || r.name_i18n?.en || r.name || r.id;
     const gone = new Set(removedRecords);
+    const base = (kind: "slope" | "lift", r: SlopeRecord | LiftRecord) => {
+      const edit = recordEdits[`${kind}:${r.id}`];
+      const names: Record<string, string> = { ...(r.name_i18n ?? {}), ...(edit?.names ?? {}) };
+      return { id: r.id, names, name: names[locale] || names.en || r.name || r.id, coords: (r.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) };
+    };
     return [
-      ...[...resort.slopes, ...addedSlopes].filter((s) => !gone.has(`slope:${s.id}`)).map((s) => ({ kind: "slope" as const, id: s.id, name: name("slope", s), difficulty: recordEdits[`slope:${s.id}`]?.difficulty ?? s.difficulty, coords: (s.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) })),
-      ...[...resort.lifts, ...addedLifts].filter((l) => !gone.has(`lift:${l.id}`)).map((l) => ({ kind: "lift" as const, id: l.id, name: name("lift", l), coords: (l.coordinates ?? []).map((c) => ({ lat: c.lat, lng: c.lon })) })),
+      ...[...resort.slopes, ...addedSlopes].filter((s) => !gone.has(`slope:${s.id}`)).map((s) => ({ kind: "slope" as const, ...base("slope", s), difficulty: recordEdits[`slope:${s.id}`]?.difficulty ?? s.difficulty })),
+      ...[...resort.lifts, ...addedLifts].filter((l) => !gone.has(`lift:${l.id}`)).map((l) => ({ kind: "lift" as const, ...base("lift", l), liftType: recordEdits[`lift:${l.id}`]?.type ?? l.type ?? "" })),
     ];
   }, [resort, locale, addedSlopes, addedLifts, recordEdits, removedRecords]);
   const recordByKey = useMemo(() => new Map(records.map((r) => [recordKey(r.kind, r.id), r])), [records]);
@@ -158,6 +163,9 @@ export function GraphEditor() {
   const near = useMemo(() => nearPairs(graph.nodes, graph.edges), [graph]);
   const redundant = useMemo(() => redundantLinks(graph), [graph]);
   const stranded = useMemo(() => strandedEdges(graph.nodes, graph.edges), [graph]);
+
+  const editRecord = (r: Record_, patch: RecordEdit) =>
+    setRecordEdits((m) => ({ ...m, [recordKey(r.kind, r.id)]: { ...m[recordKey(r.kind, r.id)], ...patch } }));
 
   /** Take a slope or lift out of the catalog, with every piece of it. */
   const removeRecord = (r: Record_) => {
@@ -643,7 +651,7 @@ export function GraphEditor() {
       const next = list.map((given) => {
         const edit = recordEdits[`${kind}:${given.id}`];
         const r: T = edit
-          ? { ...given, ...(edit.name ? { name_i18n: { ...(given.name_i18n ?? {}), [locale]: edit.name } } : {}), ...(edit.difficulty ? { difficulty: edit.difficulty } : {}), ...(edit.type ? { type: edit.type } : {}) }
+          ? { ...given, ...renamed(given, edit.names), ...(edit.difficulty ? { difficulty: edit.difficulty } : {}), ...(edit.type ? { type: edit.type } : {}) }
           : given;
         if (edit) changed = true;
         const pieces = piecesOf({ nodes: graph.nodes, edges }, kind, r.id);
@@ -825,29 +833,37 @@ export function GraphEditor() {
                     ? t("pieces", { count: pieceCount.get(recordKey(selectedRecord.kind, selectedRecord.id)) ?? 0 })
                     : t("noLine")}
                 </p>
-                <div className="mt-2 grid grid-cols-2 gap-2">
-                  <label className="text-sm text-[var(--fg-muted)]">
-                    {t("name")}
-                    <input
-                      value={selectedRecord.name}
-                      onChange={(e) => setRecordEdits((m) => ({ ...m, [recordKey(selectedRecord.kind, selectedRecord.id)]: { ...m[recordKey(selectedRecord.kind, selectedRecord.id)], name: e.target.value } }))}
-                      className="mt-1 block min-h-11 w-full rounded-md border border-[var(--border-strong)] px-2 text-sm text-[var(--fg)]"
-                    />
-                  </label>
-                  {selectedRecord.kind === "slope" && (
-                    <label className="text-sm text-[var(--fg-muted)]">
+                <fieldset className="mt-3 rounded-md border border-[var(--border-strong)] p-3">
+                  <legend className="px-1 text-sm font-bold">{t("details")}</legend>
+                  {NAME_LANGS.map((lang) => (
+                    <label key={lang} className="mb-2 block text-sm text-[var(--fg-muted)]">
+                      {t(`name_${lang}`)}
+                      <input
+                        value={selectedRecord.names[lang] ?? ""}
+                        onChange={(e) => editRecord(selectedRecord, { names: { ...recordEdits[recordKey(selectedRecord.kind, selectedRecord.id)]?.names, [lang]: e.target.value } })}
+                        className={field}
+                      />
+                    </label>
+                  ))}
+                  {selectedRecord.kind === "slope" ? (
+                    <label className="block text-sm text-[var(--fg-muted)]">
                       {t("grade")}
-                      <select
-                        value={selectedRecord.difficulty ?? ""}
-                        onChange={(e) => setRecordEdits((m) => ({ ...m, [recordKey("slope", selectedRecord.id)]: { ...m[recordKey("slope", selectedRecord.id)], difficulty: e.target.value } }))}
-                        className="mt-1 block min-h-11 w-full rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev-strong)] px-2 text-sm text-[var(--fg)]"
-                      >
+                      <select value={selectedRecord.difficulty ?? ""} onChange={(e) => editRecord(selectedRecord, { difficulty: e.target.value })} className={field}>
                         <option value="">{t("none")}</option>
                         {GRADES.map((g) => <option key={g} value={g}>{t(`grade_${g}`)}</option>)}
                       </select>
                     </label>
+                  ) : (
+                    <label className="block text-sm text-[var(--fg-muted)]">
+                      {t("liftType")}
+                      <select value={selectedRecord.liftType ?? ""} onChange={(e) => editRecord(selectedRecord, { type: e.target.value })} className={field}>
+                        {!(LIFT_TYPES as readonly string[]).includes(selectedRecord.liftType ?? "") && <option value={selectedRecord.liftType ?? ""}>{selectedRecord.liftType || t("none")}</option>}
+                        {LIFT_TYPES.map((g) => <option key={g} value={g}>{t(`liftType_${g}`)}</option>)}
+                      </select>
+                    </label>
                   )}
-                </div>
+                  <p className="mt-2 text-sm text-[var(--fg-muted)]">{t("recordId", { id: selectedRecord.id })}</p>
+                </fieldset>
                 <div className="mt-2 flex flex-wrap gap-2">
                   <button type="button" className={primary} onClick={() => startDrawing(selectedRecord.kind, selectedRecord.id)}>{t("drawThis")}</button>
                   {!pieceCount.get(recordKey(selectedRecord.kind, selectedRecord.id)) && selectedRecord.coords.length >= 2 && (
@@ -980,6 +996,14 @@ const NODE_KINDS = ["waypoint", "fork", "merge", "lift_bottom", "lift_station", 
 const PICK_PX = 6;
 /** How near a line's bend a click must be to land on it while drawing, in screen pixels. */
 const SNAP_PX = 16;
+/** Names as edited: a cleared language is dropped, and the plain `name` follows the English one. */
+function renamed(given: { name: string; name_i18n?: Record<string, string> }, names: Record<string, string> | undefined) {
+  if (!names) return {};
+  const merged = Object.fromEntries(Object.entries({ ...(given.name_i18n ?? {}), ...names }).map(([k, v]) => [k, v.trim()]).filter(([, v]) => v));
+  return { name: merged.en || given.name, name_i18n: merged };
+}
+const field = "mt-1 block min-h-11 w-full rounded-md border border-[var(--border-strong)] bg-[var(--bg-elev-strong)] px-2 text-sm text-[var(--fg)]";
+const NAME_LANGS = ["ko", "en", "ja"] as const;
 const GRADES = ["beginner", "beginner_intermediate", "intermediate", "intermediate_advanced", "advanced", "expert", "terrain_park"] as const;
 const LIFT_TYPES = ["chair_lift", "gondola", "magic_carpet", "drag_lift", "cable_car"] as const;
 
@@ -998,7 +1022,7 @@ function NewRecordForm({ kind, t, onAdd, onCancel }: { kind: "slope" | "lift"; t
       <p className="text-base font-bold">{t(kind === "slope" ? "addSlope" : "addLift")}</p>
       <label className="mt-2 block text-sm text-[var(--fg-muted)]">
         {t("name")}
-        <input autoFocus value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block min-h-11 w-full rounded-md border border-[var(--border-strong)] px-2 text-sm text-[var(--fg)]" />
+        <input autoFocus value={name} onChange={(e) => setName(e.target.value)} className={field} />
       </label>
       <label className="mt-2 block text-sm text-[var(--fg-muted)]">
         {t(kind === "slope" ? "grade" : "liftType")}
