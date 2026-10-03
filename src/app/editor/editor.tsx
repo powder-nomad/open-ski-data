@@ -1748,6 +1748,69 @@ export function SlopeAuthor2() {
     commitGraph(dropped.graph);
     if (dropped.intoId) selectNode(dropped.intoId);
   };
+  // Connect mode on something that isn't a node yet: a click on a line cuts
+  // it there, a double-click on open map drops a new node. Either becomes
+  // the start of the line being drawn, or its end.
+  const connectAtPoint = (lat: number, lng: number, onEdgeId?: string, dropClicks = 0) => {
+    let g = liveGraph();
+    const from = anchorNodeId ? g.nodes.find((n) => n.id === anchorNodeId) : undefined;
+    let nodeId: string | undefined;
+    if (onEdgeId) {
+      const cut = splitEdge(g, onEdgeId, lat, lng, sessionUser?.login);
+      if (cut) {
+        g = cut.graph;
+        nodeId = cut.nodeId;
+      } else {
+        // The click was on one of the edge's own ends: use that node.
+        const e = g.edges.find((x) => x.id === onEdgeId);
+        const ends = e ? [e.from, e.to].map((id) => g.nodes.find((n) => n.id === id)).filter((n): n is GraphNode => !!n) : [];
+        nodeId = ends.sort((a, b) => Math.hypot(a.lat - lat, a.lng - lng) - Math.hypot(b.lat - lat, b.lng - lng))[0]?.id;
+      }
+    } else {
+      nodeId = `n-u-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+      g = { ...g, nodes: [...g.nodes, { id: nodeId, lat, lng, alt_m: from?.alt_m ?? 0, kind: "waypoint" }] };
+    }
+    const to = g.nodes.find((n) => n.id === nodeId);
+    if (!to) return;
+    if (from && from.id !== to.id) {
+      // A double-click arrives after its own two single clicks, which were taken for bends.
+      const via = dropClicks ? connectDraft.waypoints.slice(0, -dropClicks) : connectDraft.waypoints;
+      const geometry = [
+        { lat: from.lat, lng: from.lng, alt_m: from.alt_m },
+        ...via.map((p, i) => ({ ...p, alt_m: Math.round(from.alt_m + ((to.alt_m - from.alt_m) * (i + 1)) / (via.length + 1)) })),
+        { lat: to.lat, lng: to.lng, alt_m: to.alt_m },
+      ];
+      const kind = connectDraft.kind;
+      g = {
+        ...g,
+        edges: [...g.edges, {
+          id: `e-u-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
+          ...(kind === "slope" ? { slope_id: connectDraft.lineId || null } : kind === "lift" ? { lift_id: connectDraft.lineId || null } : { slope_id: null }),
+          from: from.id,
+          to: to.id,
+          kind,
+          geometry,
+          provenance: userEdit(sessionUser?.login),
+        }],
+      };
+    }
+    commitGraph(g);
+    setConnectDraft((d) => ({ ...d, waypoints: [] }));
+    setAnchorNodeId(to.id);
+  };
+  const connectAtPointRef = useRef(connectAtPoint);
+  connectAtPointRef.current = connectAtPoint;
+  // Double-click belongs to drawing while in connect mode, not to zooming.
+  useEffect(() => {
+    const map = googleMap.current;
+    if (!map) return;
+    map.setOptions({ disableDoubleClickZoom: mode === "connect-nodes" });
+    if (mode !== "connect-nodes") return;
+    const listener = map.addListener("dblclick", (e: google.maps.MapMouseEvent) => {
+      if (e.latLng) connectAtPointRef.current(e.latLng.lat(), e.latLng.lng(), undefined, 2);
+    });
+    return () => listener.remove();
+  }, [mode, mapReady]);
   const dropNodeAtRef = useRef(dropNodeAt);
   dropNodeAtRef.current = dropNodeAt;
   // "Cut" waits for a click on the line: that is where the edge is cut.
@@ -2610,6 +2673,10 @@ export function SlopeAuthor2() {
         const m = modeRef.current;
         if (cutArmedRef.current && ev.latLng) {
           cutEdgeAtRef.current(e.id, ev.latLng.lat(), ev.latLng.lng());
+          return;
+        }
+        if (m === "connect-nodes" && ev.latLng && e.kind !== "traverse") {
+          connectAtPointRef.current(ev.latLng.lat(), ev.latLng.lng(), e.id);
           return;
         }
         if (m === "select" || m === "edit-edge") {
