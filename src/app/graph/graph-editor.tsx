@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { importLibrary, setOptions } from "@googlemaps/js-api-loader";
 import { PatchSaver, type PatchBundle } from "@/lib/ci-status";
 import {
-  addEdge, addNode, continuation, dropNode, editPair, importLine, joinEdges, mergeNode, moveNode, orientByElevation, piecesOf,
+  addEdge, addNode, continuation, dropNode, edgesAt, editPair, importLine, joinEdges, mergeNode, moveNode, orientByElevation, piecesOf,
   positionKey, positions, primaryOf, redundantLinks, removeEdges, removeNode, reshapeEdge, splitEdge, twinOf, type Graph,
 } from "@/lib/graph-ops";
 import { flipped, nearPairs, reverseLink, reviewItems, strandedEdges, userEdit } from "@/lib/graph-review";
@@ -70,6 +70,8 @@ export function GraphEditor() {
   /** Slopes and lifts taken out of the catalog here ("slope:id"). */
   const [removedRecords, setRemovedRecords] = useState<string[]>([]);
   const [collapsed, setCollapsed] = useState(false);
+  /** Lines stacked under one click, waiting for the person to say which. */
+  const [choices, setChoices] = useState<{ x: number; y: number; ids: string[] } | null>(null);
 
   const mapEl = useRef<HTMLDivElement>(null);
   const map = useRef<google.maps.Map | null>(null);
@@ -308,7 +310,8 @@ export function GraphEditor() {
       });
     },
     escape: () => {
-      if (drawing) setDrawing(null);
+      if (choices) setChoices(null);
+      else if (drawing) setDrawing(null);
       else if (cutArmed) setCutArmed(false);
       else setSelection(null);
     },
@@ -338,8 +341,9 @@ export function GraphEditor() {
 
   // Handlers the map calls read the latest state through this ref: the
   // overlays are rebuilt on every change, but the map itself only once.
-  const live = useRef({ graph, drawing, cutArmed, joinOnDrop, login, drawToNode, drawToLine, drawToNewNode, commit, selectEdge });
-  live.current = { graph, drawing, cutArmed, joinOnDrop, login, drawToNode, drawToLine, drawToNewNode, commit, selectEdge };
+  const selectedEdgeId = selectedEdge?.id ?? null;
+  const live = useRef({ graph, drawing, cutArmed, joinOnDrop, login, drawToNode, drawToLine, drawToNewNode, commit, selectEdge, selectedEdgeId });
+  live.current = { graph, drawing, cutArmed, joinOnDrop, login, drawToNode, drawToLine, drawToNewNode, commit, selectEdge, selectedEdgeId };
 
   // ── keyboard ────────────────────────────────────────────────────────
 
@@ -391,7 +395,7 @@ export function GraphEditor() {
           const s = live.current;
           if (!e.latLng) return;
           if (s.drawing?.anchor) setDrawing({ ...s.drawing, bends: [...s.drawing.bends, { lat: e.latLng.lat(), lng: e.latLng.lng() }] });
-          else if (!s.drawing) setSelection(null);
+          else if (!s.drawing) { setSelection(null); setChoices(null); }
         });
         m.addListener("dblclick", (e: google.maps.MapMouseEvent) => {
           if (e.latLng && live.current.drawing) live.current.drawToNewNode(e.latLng.lat(), e.latLng.lng());
@@ -433,6 +437,7 @@ export function GraphEditor() {
       overlays.current.push(line);
     }
 
+    const lineById = new Map<string, google.maps.Polyline>();
     for (const e of graph.edges) {
       // A two-way line is drawn once, with an arrow each way.
       const twin = twinOf(graph, e);
@@ -463,7 +468,15 @@ export function GraphEditor() {
       line.addListener("click", (ev: google.maps.MapMouseEvent) => {
         const s = live.current;
         if (!ev.latLng) return;
+        // Everything under the click, about a finger's width around it.
+        const reachM = (PICK_PX * 156543 * Math.cos((ev.latLng.lat() * Math.PI) / 180)) / 2 ** (m.getZoom() ?? 15);
+        const stacked = edgesAt(s.graph, ev.latLng.lat(), ev.latLng.lng(), reachM);
         if (s.cutArmed) {
+          // With lines on top of each other, the cut goes to the one already selected.
+          if (s.selectedEdgeId && s.selectedEdgeId !== e.id && stacked.some((x) => x.id === s.selectedEdgeId)) {
+            google.maps.event.trigger(lineById.get(s.selectedEdgeId)!, "click", ev);
+            return;
+          }
           const at = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
           let nodeId: string | null = null;
           const next = editPair(s.graph, e.id, (g) => {
@@ -475,10 +488,17 @@ export function GraphEditor() {
           if (nodeId) { s.commit(next); setSelection({ type: "node", id: nodeId }); }
         } else if (s.drawing) {
           if (e.kind !== "traverse") s.drawToLine(e.id, ev.latLng.lat(), ev.latLng.lng());
+        } else if (stacked.length > 1) {
+          const dom = ev.domEvent as MouseEvent | undefined;
+          setChoices({ x: dom?.clientX ?? 80, y: dom?.clientY ?? 80, ids: stacked.map((x) => x.id) });
+          // Keep the current pick if it is one of them, so the list can be opened again without losing it.
+          if (!stacked.some((x) => x.id === s.selectedEdgeId)) setSelection(null);
         } else {
+          setChoices(null);
           setSelection({ type: "edge", id: e.id });
         }
       });
+      lineById.set(e.id, line);
       if (selected && !drawing && !cutArmed) {
         // Dragging a point of the selected line reshapes it; its ends stay on their nodes.
         const path = line.getPath();
@@ -633,6 +653,41 @@ export function GraphEditor() {
         </p>
       )}
 
+      {choices && (() => {
+        const stacked = choices.ids.map((id) => graph.edges.find((e) => e.id === id)).filter((e): e is GraphEdge => e != null);
+        if (stacked.length === 0) return null;
+        return (
+          <div
+            role="dialog"
+            aria-label={t("whichLine")}
+            className="fixed z-30 w-72 max-w-[calc(100vw-1rem)] rounded-lg border border-[var(--border-strong)] bg-[var(--bg-elev)] p-2 text-[var(--fg)] shadow-xl"
+            style={{ left: Math.max(8, Math.min(choices.x + 12, window.innerWidth - 296)), top: Math.max(8, Math.min(choices.y + 12, window.innerHeight - 76 - stacked.length * 52)) }}
+          >
+            <div className="flex items-center justify-between gap-2 px-1">
+              <p className="text-sm font-bold">{t("whichLine")}</p>
+              <button type="button" onClick={() => setChoices(null)} aria-label={t("close")} className="min-h-11 px-2 text-lg">✕</button>
+            </div>
+            <ul>
+              {stacked.map((e) => (
+                <li key={e.id}>
+                  <button
+                    type="button"
+                    aria-pressed={selectedEdge?.id === e.id}
+                    onClick={() => setSelection({ type: "edge", id: e.id })}
+                    className={`min-h-11 w-full rounded-md px-2 py-1 text-left hover:bg-[var(--border-strong)] ${selectedEdge?.id === e.id ? "bg-cyan-500/25" : ""}`}
+                  >
+                    <span className="block truncate text-sm font-semibold">{edgeName(e)}</span>
+                    <span className="block truncate text-sm text-[var(--fg-muted)]">
+                      {t(e.kind === "slope" ? "slopePiece" : e.kind === "lift" ? "liftPiece" : "link")}
+                      {e.length_m ? ` · ${Math.round(e.length_m)} m` : ""}{twinOf(graph, e) ? ` · ${t("bothWays")}` : ""} · {originText(t, e)}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
       <button
         type="button"
         onClick={() => setCollapsed((c) => !c)}
@@ -877,6 +932,8 @@ export function GraphEditor() {
 }
 
 const NODE_KINDS = ["waypoint", "fork", "merge", "lift_bottom", "lift_station", "lift_top", "summit", "base"] as const;
+/** How far from a click a line still counts as under it, in screen pixels. */
+const PICK_PX = 9;
 const GRADES = ["beginner", "beginner_intermediate", "intermediate", "intermediate_advanced", "advanced", "expert", "terrain_park"] as const;
 const LIFT_TYPES = ["chair_lift", "gondola", "magic_carpet", "drag_lift", "cable_car"] as const;
 

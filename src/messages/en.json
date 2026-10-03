@@ -352,6 +352,7 @@
     "resortFailed": "Couldn't open that resort.",
     "resortCount": "{count} resorts",
     "oneWay": "One-way",
-    "bothWays": "both ways"
+    "bothWays": "both ways",
+    "whichLine": "Which line?"
   }
 }

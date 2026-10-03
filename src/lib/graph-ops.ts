@@ -360,3 +360,18 @@ export function editPair(g: Graph, edgeId: string, op: (g: Graph) => Graph): Gra
   const mirrored = [...fresh, ...(unchanged ? [unchanged] : [])].map((e) => ({ ...e, id: uid("e"), from: e.to, to: e.from, geometry: [...e.geometry].reverse() }));
   return { nodes: after.nodes, edges: [...after.edges, ...mirrored] };
 }
+
+/**
+ * Every line passing within reach of a point, nearest first. Lines that
+ * lie on top of each other all come back, so the person can say which
+ * one they meant. A two-way line counts once.
+ */
+export function edgesAt(g: Graph, lat: number, lng: number, withinM: number): GraphEdge[] {
+  const hits: { edge: GraphEdge; distM: number }[] = [];
+  for (const e of g.edges) {
+    if (primaryOf(g, e).id !== e.id) continue;
+    const near = nearestOnEdge(e, lat, lng);
+    if (near && near.distM <= withinM) hits.push({ edge: e, distM: near.distM });
+  }
+  return hits.sort((a, b) => a.distM - b.distM).map((h) => h.edge);
+}

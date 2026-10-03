@@ -352,6 +352,7 @@
     "resortFailed": "그 리조트를 열지 못했어요.",
     "resortCount": "리조트 {count}곳",
     "oneWay": "한 방향으로",
-    "bothWays": "양방향"
+    "bothWays": "양방향",
+    "whichLine": "어느 선인가요?"
   }
 }
