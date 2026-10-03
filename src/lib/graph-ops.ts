@@ -391,3 +391,31 @@ export function nearestBend(edge: GraphEdge, lat: number, lng: number, withinM: 
   }
   return best?.v ?? null;
 }
+
+/** Positions drawn by hand that have no height yet (saved as 0). */
+export function withoutHeight(g: Graph): [number, number][] {
+  const seen = new Map<string, [number, number]>();
+  const look = (p: { lat: number; lng: number; alt_m: number }) => {
+    if (!p.alt_m) seen.set(key(p), [p.lat, p.lng]);
+  };
+  g.nodes.forEach(look);
+  g.edges.forEach((e) => e.geometry.forEach(look));
+  return [...seen.values()];
+}
+
+/** Give those positions their measured height; everything that already has one is left alone. */
+export function fillHeights(g: Graph, elevations: Map<string, number>): Graph {
+  const fill = <T extends { lat: number; lng: number; alt_m: number }>(p: T): T => {
+    const m = p.alt_m ? undefined : elevations.get(key(p));
+    return m === undefined ? p : { ...p, alt_m: m };
+  };
+  let touched = false;
+  const nodes = g.nodes.map((n) => { const f = fill(n); if (f !== n) touched = true; return f; });
+  const edges = g.edges.map((e) => {
+    const geometry = e.geometry.map(fill);
+    if (geometry.every((p, i) => p === e.geometry[i])) return e;
+    touched = true;
+    return { ...e, geometry };
+  });
+  return touched ? { nodes, edges } : g;
+}

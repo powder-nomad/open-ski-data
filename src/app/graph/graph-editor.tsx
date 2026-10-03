@@ -6,8 +6,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { importLibrary, setOptions } from "@googlemaps/js-api-loader";
 import { PatchSaver, type PatchBundle } from "@/lib/ci-status";
 import {
-  addEdge, addNode, continuation, dropNode, edgesAt, editPair, importLine, nearestBend, joinEdges, mergeNode, moveNode, orientByElevation, piecesOf,
-  positionKey, positions, primaryOf, redundantLinks, removeEdges, removeNode, reshapeEdge, splitEdge, twinOf, type Graph,
+  addEdge, addNode, continuation, dropNode, edgesAt, editPair, fillHeights, importLine, nearestBend, joinEdges, mergeNode, moveNode, orientByElevation, piecesOf,
+  positionKey, positions, primaryOf, redundantLinks, removeEdges, removeNode, reshapeEdge, splitEdge, twinOf, withoutHeight, type Graph,
 } from "@/lib/graph-ops";
 import { flipped, nearPairs, reverseLink, reviewItems, strandedEdges, userEdit } from "@/lib/graph-review";
 import { fetchManifest, loadResort, stitchEdges, type ResortRef, type GraphEdge, type GraphNode, type LiftRecord, type LoadedResort, type SlopeRecord } from "@/lib/resort-loader";
@@ -112,6 +112,27 @@ export function GraphEditor() {
       return h.slice(0, -1);
     });
   }, []);
+
+  // Points drawn by hand start with no height. Measure them quietly, so nothing is saved at 0 m.
+  const heightAsked = useRef(new Set<string>());
+  useEffect(() => {
+    const missing = withoutHeight(graph).filter(([lat, lng]) => !heightAsked.current.has(positionKey({ lat, lng }))).slice(0, 400);
+    if (missing.length === 0) return;
+    const timer = setTimeout(async () => {
+      missing.forEach(([lat, lng]) => heightAsked.current.add(positionKey({ lat, lng })));
+      try {
+        const res = await fetch("/api/elevation", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ points: missing }) });
+        if (!res.ok) return;
+        const body = (await res.json()) as { elevations: number[] };
+        const measured = new Map(missing.map(([lat, lng], i) => [positionKey({ lat, lng }), body.elevations[i]] as const));
+        // Not an edit of the person's: it goes in without an undo step.
+        setGraph((current) => fillHeights(current, measured));
+      } catch {
+        // No height is not worth interrupting the drawing for; "measure" in the checks fills it later.
+      }
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [graph]);
 
   const records: Record_[] = useMemo(() => {
     if (!resort) return [];
