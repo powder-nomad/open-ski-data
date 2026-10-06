@@ -6,6 +6,12 @@
       "from": "niseko-grand-hirafu",
       "to": "niseko-united",
       "at": "2026-10-06"
+    },
+    {
+      "seq": 2,
+      "from": "niseko-united",
+      "to": "niseko-grand-hirafu",
+      "at": "2026-10-06"
     }
   ],
   "items": [

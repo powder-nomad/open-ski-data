@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../../schemas/place.schema.json",
+  "country_code": "jp",
+  "region_slug": "hokkaido",
+  "place_slug": "niseko-hanazono",
+  "name": "Niseko Hanazono",
+  "region": "Hokkaido",
+  "country": "Japan",
+  "coordinates": {
+    "latitude": 42.8955,
+    "longitude": 140.7195
+  },
+  "elevations": {
+    "base_m": 308,
+    "summit_m": 1030
+  },
+  "tags": [
+    "hokkaido",
+    "niseko-united",
+    "resort",
+    "all-mountain-pass"
+  ]
+}

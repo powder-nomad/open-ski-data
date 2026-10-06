@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schemas/ski-domain.schema.json",
+  "country_code": "jp",
+  "region_slug": "hokkaido",
+  "slug": "niseko-united",
+  "name": "Niseko United",
+  "region": "Hokkaido",
+  "country": "Japan",
+  "member_place_slugs": [
+    "niseko-annupuri",
+    "niseko-village",
+    "niseko-grand-hirafu",
+    "niseko-hanazono"
+  ],
+  "tags": ["hokkaido", "interconnected", "ski-domain", "resort-network"]
+}
