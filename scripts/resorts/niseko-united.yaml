@@ -1,0 +1,10 @@
+# Resort import config — niseko-united.
+# One resort, four connected areas (Annupuri, Niseko Village, Grand Hirafu,
+# Hanazono): you ski between them over the top without taking your skis off,
+# so the registry holds them as one place. The box covers all four bases.
+slug: niseko-united
+country: jp
+region: hokkaido
+bbox: [42.835, 140.625, 42.905, 140.725]
+difficulty_overrides: {}
+name_overrides: {}

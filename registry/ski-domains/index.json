@@ -1,13 +1,5 @@
 {
   "$schema": "../../schemas/ski-domain-index.schema.json",
   "version": 1,
-  "ski_domains": [
-    {
-      "slug": "niseko-united",
-      "name": "Niseko United",
-      "country_code": "jp",
-      "region_slug": "hokkaido",
-      "path": "registry/ski-domains/niseko-united.json"
-    }
-  ]
+  "ski_domains": []
 }

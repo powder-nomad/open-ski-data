@@ -11,27 +11,9 @@
   },
   "places": [
     {
-      "place_slug": "niseko-annupuri",
-      "name": "Niseko Annupuri",
-      "path": "registry/jp/hokkaido/niseko-annupuri/place.json",
-      "kind": "resort"
-    },
-    {
-      "place_slug": "niseko-village",
-      "name": "Niseko Village",
-      "path": "registry/jp/hokkaido/niseko-village/place.json",
-      "kind": "resort"
-    },
-    {
-      "place_slug": "niseko-grand-hirafu",
-      "name": "Niseko Grand Hirafu",
-      "path": "registry/jp/hokkaido/niseko-grand-hirafu/place.json",
-      "kind": "resort"
-    },
-    {
-      "place_slug": "niseko-hanazono",
-      "name": "Niseko Hanazono",
-      "path": "registry/jp/hokkaido/niseko-hanazono/place.json",
+      "place_slug": "niseko-united",
+      "name": "Niseko United",
+      "path": "registry/jp/hokkaido/niseko-united/place.json",
       "kind": "resort"
     },
     {
@@ -77,11 +59,5 @@
       "kind": "resort"
     }
   ],
-  "ski_domains": [
-    {
-      "slug": "niseko-united",
-      "name": "Niseko United",
-      "path": "registry/ski-domains/niseko-united.json"
-    }
-  ]
+  "ski_domains": []
 }
