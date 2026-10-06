@@ -5,6 +5,7 @@
 slug: niseko-united
 country: jp
 region: hokkaido
-bbox: [42.835, 140.625, 42.905, 140.725]
+# West edge stops short of Niseko Moiwa (140.628-140.633), a separate resort on the next ridge.
+bbox: [42.835, 140.638, 42.905, 140.725]
 difficulty_overrides: {}
 name_overrides: {}
