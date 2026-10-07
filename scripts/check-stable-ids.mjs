@@ -223,11 +223,17 @@ function applyAliases(baseIds, aliases) {
   const PLACE_RENAMABLE_KINDS = new Set([
     "place", "slope", "lift", "webcam", "graph-node", "graph-edge",
   ]);
+  // Where each renamed slug ends up after the whole ledger, applied in
+  // seq order. A rename that was later undone (a -> b, then b -> a) is no
+  // rename at all, and a chain (a -> b -> c) lands on c.
+  const ordered = aliases.renames
+    .filter((r) => typeof r?.from === "string" && typeof r?.to === "string")
+    .sort((a, b) => (a.seq ?? 0) - (b.seq ?? 0));
   const placeRenameMap = new Map();
-  for (const r of aliases.renames) {
-    if (typeof r?.from === "string" && typeof r?.to === "string") {
-      placeRenameMap.set(r.from, r.to);
-    }
+  for (const start of new Set(ordered.map((r) => r.from))) {
+    let at = start;
+    for (const r of ordered) if (r.from === at) at = r.to;
+    if (at !== start) placeRenameMap.set(start, at);
   }
   const itemRenameMap = new Map();
   for (const it of aliases.items) {

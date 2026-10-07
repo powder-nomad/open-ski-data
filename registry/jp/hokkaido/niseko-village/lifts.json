@@ -1,0 +1,1844 @@
+{
+  "$schema": "../../../schemas/lift.schema.json",
+  "country_code": "jp",
+  "region_slug": "hokkaido",
+  "place_slug": "niseko-village",
+  "lifts": [
+    {
+      "id": "wonderland-chair-a-l22650078",
+      "name": "Wonderland Chair A",
+      "name_i18n": {
+        "en": "Wonderland Chair A"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 790.3,
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 42.862887,
+          "lon": 140.665795,
+          "alt_m": null
+        },
+        {
+          "lat": 42.86305,
+          "lon": 140.665684,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863212,
+          "lon": 140.665573,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863391,
+          "lon": 140.665474,
+          "alt_m": null
+        },
+        {
+          "lat": 42.86357,
+          "lon": 140.665375,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863748,
+          "lon": 140.665276,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863923,
+          "lon": 140.665179,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864098,
+          "lon": 140.665082,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864264,
+          "lon": 140.66499,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864429,
+          "lon": 140.664898,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864639,
+          "lon": 140.664782,
+          "alt_m": null
+        },
+        {
+          "lat": 42.86485,
+          "lon": 140.664665,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865076,
+          "lon": 140.66454,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865302,
+          "lon": 140.664414,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865516,
+          "lon": 140.664296,
+          "alt_m": null
+        },
+        {
+          "lat": 42.86573,
+          "lon": 140.664177,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865941,
+          "lon": 140.66406,
+          "alt_m": null
+        },
+        {
+          "lat": 42.866152,
+          "lon": 140.663943,
+          "alt_m": null
+        },
+        {
+          "lat": 42.866364,
+          "lon": 140.663826,
+          "alt_m": null
+        },
+        {
+          "lat": 42.866575,
+          "lon": 140.663709,
+          "alt_m": null
+        },
+        {
+          "lat": 42.866787,
+          "lon": 140.663591,
+          "alt_m": null
+        },
+        {
+          "lat": 42.866998,
+          "lon": 140.663474,
+          "alt_m": null
+        },
+        {
+          "lat": 42.867195,
+          "lon": 140.663365,
+          "alt_m": null
+        },
+        {
+          "lat": 42.867391,
+          "lon": 140.663256,
+          "alt_m": null
+        },
+        {
+          "lat": 42.867588,
+          "lon": 140.663147,
+          "alt_m": null
+        },
+        {
+          "lat": 42.86781,
+          "lon": 140.663024,
+          "alt_m": null
+        },
+        {
+          "lat": 42.868033,
+          "lon": 140.662901,
+          "alt_m": null
+        },
+        {
+          "lat": 42.86827,
+          "lon": 140.662769,
+          "alt_m": null
+        },
+        {
+          "lat": 42.868507,
+          "lon": 140.662638,
+          "alt_m": null
+        },
+        {
+          "lat": 42.868713,
+          "lon": 140.662524,
+          "alt_m": null
+        },
+        {
+          "lat": 42.868919,
+          "lon": 140.662409,
+          "alt_m": null
+        },
+        {
+          "lat": 42.869126,
+          "lon": 140.662295,
+          "alt_m": null
+        },
+        {
+          "lat": 42.869293,
+          "lon": 140.662203,
+          "alt_m": null
+        },
+        {
+          "lat": 42.869461,
+          "lon": 140.662111,
+          "alt_m": null
+        }
+      ]
+    },
+    {
+      "id": "niseko-gondola-l22650208",
+      "name": "Niseko Gondola",
+      "name_i18n": {
+        "en": "Niseko Gondola"
+      },
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 2497.3,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-33123293100"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 42.846955,
+          "lon": 140.684204,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847159,
+          "lon": 140.684019,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847363,
+          "lon": 140.683835,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847567,
+          "lon": 140.68365,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847731,
+          "lon": 140.683501,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847895,
+          "lon": 140.683352,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848098,
+          "lon": 140.683169,
+          "alt_m": null
+        },
+        {
+          "lat": 42.8483,
+          "lon": 140.682986,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848502,
+          "lon": 140.682803,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848705,
+          "lon": 140.68262,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848907,
+          "lon": 140.682437,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849072,
+          "lon": 140.682287,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849238,
+          "lon": 140.682137,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849432,
+          "lon": 140.681961,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849626,
+          "lon": 140.681785,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849831,
+          "lon": 140.681601,
+          "alt_m": null
+        },
+        {
+          "lat": 42.850035,
+          "lon": 140.681416,
+          "alt_m": null
+        },
+        {
+          "lat": 42.850239,
+          "lon": 140.681231,
+          "alt_m": null
+        },
+        {
+          "lat": 42.850443,
+          "lon": 140.681046,
+          "alt_m": null
+        },
+        {
+          "lat": 42.850647,
+          "lon": 140.680862,
+          "alt_m": null
+        },
+        {
+          "lat": 42.850851,
+          "lon": 140.680677,
+          "alt_m": null
+        },
+        {
+          "lat": 42.851065,
+          "lon": 140.680483,
+          "alt_m": null
+        },
+        {
+          "lat": 42.851278,
+          "lon": 140.68029,
+          "alt_m": null
+        },
+        {
+          "lat": 42.851498,
+          "lon": 140.680092,
+          "alt_m": null
+        },
+        {
+          "lat": 42.851717,
+          "lon": 140.679893,
+          "alt_m": null
+        },
+        {
+          "lat": 42.851936,
+          "lon": 140.679695,
+          "alt_m": null
+        },
+        {
+          "lat": 42.852155,
+          "lon": 140.679496,
+          "alt_m": null
+        },
+        {
+          "lat": 42.852374,
+          "lon": 140.679298,
+          "alt_m": null
+        },
+        {
+          "lat": 42.852556,
+          "lon": 140.679133,
+          "alt_m": null
+        },
+        {
+          "lat": 42.852738,
+          "lon": 140.678969,
+          "alt_m": null
+        },
+        {
+          "lat": 42.85292,
+          "lon": 140.678804,
+          "alt_m": null
+        },
+        {
+          "lat": 42.853102,
+          "lon": 140.678639,
+          "alt_m": null
+        },
+        {
+          "lat": 42.853284,
+          "lon": 140.678475,
+          "alt_m": null
+        },
+        {
+          "lat": 42.853479,
+          "lon": 140.678298,
+          "alt_m": null
+        },
+        {
+          "lat": 42.853674,
+          "lon": 140.678121,
+          "alt_m": null
+        },
+        {
+          "lat": 42.85387,
+          "lon": 140.677944,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854069,
+          "lon": 140.677764,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854269,
+          "lon": 140.677583,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854468,
+          "lon": 140.677402,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854668,
+          "lon": 140.677222,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854867,
+          "lon": 140.677041,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855067,
+          "lon": 140.67686,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855267,
+          "lon": 140.67668,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855437,
+          "lon": 140.676526,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855607,
+          "lon": 140.676372,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855776,
+          "lon": 140.676218,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855983,
+          "lon": 140.676031,
+          "alt_m": null
+        },
+        {
+          "lat": 42.856189,
+          "lon": 140.675844,
+          "alt_m": null
+        },
+        {
+          "lat": 42.856388,
+          "lon": 140.675664,
+          "alt_m": null
+        },
+        {
+          "lat": 42.856587,
+          "lon": 140.675484,
+          "alt_m": null
+        },
+        {
+          "lat": 42.856786,
+          "lon": 140.675305,
+          "alt_m": null
+        },
+        {
+          "lat": 42.856984,
+          "lon": 140.675125,
+          "alt_m": null
+        },
+        {
+          "lat": 42.857183,
+          "lon": 140.674945,
+          "alt_m": null
+        },
+        {
+          "lat": 42.857374,
+          "lon": 140.674772,
+          "alt_m": null
+        },
+        {
+          "lat": 42.857566,
+          "lon": 140.674598,
+          "alt_m": null
+        },
+        {
+          "lat": 42.857757,
+          "lon": 140.674425,
+          "alt_m": null
+        },
+        {
+          "lat": 42.857948,
+          "lon": 140.674252,
+          "alt_m": null
+        },
+        {
+          "lat": 42.858139,
+          "lon": 140.674079,
+          "alt_m": null
+        },
+        {
+          "lat": 42.858342,
+          "lon": 140.673896,
+          "alt_m": null
+        },
+        {
+          "lat": 42.858544,
+          "lon": 140.673712,
+          "alt_m": null
+        },
+        {
+          "lat": 42.858747,
+          "lon": 140.673529,
+          "alt_m": null
+        },
+        {
+          "lat": 42.858966,
+          "lon": 140.67333,
+          "alt_m": null
+        },
+        {
+          "lat": 42.859186,
+          "lon": 140.673132,
+          "alt_m": null
+        },
+        {
+          "lat": 42.859405,
+          "lon": 140.672933,
+          "alt_m": null
+        },
+        {
+          "lat": 42.85959,
+          "lon": 140.672765,
+          "alt_m": null
+        },
+        {
+          "lat": 42.859776,
+          "lon": 140.672597,
+          "alt_m": null
+        },
+        {
+          "lat": 42.859961,
+          "lon": 140.67243,
+          "alt_m": null
+        },
+        {
+          "lat": 42.86015,
+          "lon": 140.672259,
+          "alt_m": null
+        },
+        {
+          "lat": 42.860339,
+          "lon": 140.672088,
+          "alt_m": null
+        },
+        {
+          "lat": 42.860538,
+          "lon": 140.671908,
+          "alt_m": null
+        },
+        {
+          "lat": 42.860737,
+          "lon": 140.671728,
+          "alt_m": null
+        },
+        {
+          "lat": 42.860935,
+          "lon": 140.671548,
+          "alt_m": null
+        },
+        {
+          "lat": 42.861071,
+          "lon": 140.671425,
+          "alt_m": null
+        },
+        {
+          "lat": 42.861165,
+          "lon": 140.67134,
+          "alt_m": null
+        },
+        {
+          "lat": 42.861375,
+          "lon": 140.671149,
+          "alt_m": null
+        },
+        {
+          "lat": 42.861586,
+          "lon": 140.670959,
+          "alt_m": null
+        },
+        {
+          "lat": 42.861796,
+          "lon": 140.670769,
+          "alt_m": null
+        },
+        {
+          "lat": 42.862006,
+          "lon": 140.670578,
+          "alt_m": null
+        },
+        {
+          "lat": 42.862175,
+          "lon": 140.670426,
+          "alt_m": null
+        },
+        {
+          "lat": 42.862343,
+          "lon": 140.670273,
+          "alt_m": null
+        },
+        {
+          "lat": 42.862536,
+          "lon": 140.670098,
+          "alt_m": null
+        },
+        {
+          "lat": 42.862729,
+          "lon": 140.669924,
+          "alt_m": null
+        },
+        {
+          "lat": 42.862938,
+          "lon": 140.669734,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863147,
+          "lon": 140.669545,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863357,
+          "lon": 140.669355,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863566,
+          "lon": 140.669166,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863776,
+          "lon": 140.668976,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863985,
+          "lon": 140.668786,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864158,
+          "lon": 140.66863,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864331,
+          "lon": 140.668473,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864412,
+          "lon": 140.6684,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864615,
+          "lon": 140.668216,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864817,
+          "lon": 140.668033,
+          "alt_m": null
+        },
+        {
+          "lat": 42.86502,
+          "lon": 140.66785,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865222,
+          "lon": 140.667666,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865445,
+          "lon": 140.667465,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865668,
+          "lon": 140.667263,
+          "alt_m": null
+        }
+      ]
+    },
+    {
+      "id": "country-road-chair-l194602310",
+      "name": "Country Road Chair",
+      "name_i18n": {
+        "en": "Country Road Chair"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 985.2,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "dabesa",
+        "unnamed-33459680000",
+        "unnamed-33459680002",
+        "unnamed-334596801"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 42.853861,
+          "lon": 140.668042,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854006,
+          "lon": 140.668003,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854152,
+          "lon": 140.667964,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854292,
+          "lon": 140.667926,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854433,
+          "lon": 140.667888,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854636,
+          "lon": 140.667833,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854839,
+          "lon": 140.667779,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855022,
+          "lon": 140.667729,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855205,
+          "lon": 140.66768,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855388,
+          "lon": 140.667631,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855602,
+          "lon": 140.667573,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855815,
+          "lon": 140.667515,
+          "alt_m": null
+        },
+        {
+          "lat": 42.856029,
+          "lon": 140.667458,
+          "alt_m": null
+        },
+        {
+          "lat": 42.856236,
+          "lon": 140.667402,
+          "alt_m": null
+        },
+        {
+          "lat": 42.856442,
+          "lon": 140.667346,
+          "alt_m": null
+        },
+        {
+          "lat": 42.856649,
+          "lon": 140.667291,
+          "alt_m": null
+        },
+        {
+          "lat": 42.856877,
+          "lon": 140.667229,
+          "alt_m": null
+        },
+        {
+          "lat": 42.857104,
+          "lon": 140.667168,
+          "alt_m": null
+        },
+        {
+          "lat": 42.857332,
+          "lon": 140.667106,
+          "alt_m": null
+        },
+        {
+          "lat": 42.85756,
+          "lon": 140.667045,
+          "alt_m": null
+        },
+        {
+          "lat": 42.857802,
+          "lon": 140.66698,
+          "alt_m": null
+        },
+        {
+          "lat": 42.858044,
+          "lon": 140.666914,
+          "alt_m": null
+        },
+        {
+          "lat": 42.858224,
+          "lon": 140.666866,
+          "alt_m": null
+        },
+        {
+          "lat": 42.858405,
+          "lon": 140.666817,
+          "alt_m": null
+        },
+        {
+          "lat": 42.858585,
+          "lon": 140.666768,
+          "alt_m": null
+        },
+        {
+          "lat": 42.858849,
+          "lon": 140.666697,
+          "alt_m": null
+        },
+        {
+          "lat": 42.859113,
+          "lon": 140.666626,
+          "alt_m": null
+        },
+        {
+          "lat": 42.859377,
+          "lon": 140.666555,
+          "alt_m": null
+        },
+        {
+          "lat": 42.859641,
+          "lon": 140.666484,
+          "alt_m": null
+        },
+        {
+          "lat": 42.859892,
+          "lon": 140.666416,
+          "alt_m": null
+        },
+        {
+          "lat": 42.860143,
+          "lon": 140.666348,
+          "alt_m": null
+        },
+        {
+          "lat": 42.860394,
+          "lon": 140.666281,
+          "alt_m": null
+        },
+        {
+          "lat": 42.860644,
+          "lon": 140.666213,
+          "alt_m": null
+        },
+        {
+          "lat": 42.860847,
+          "lon": 140.666159,
+          "alt_m": null
+        },
+        {
+          "lat": 42.861049,
+          "lon": 140.666104,
+          "alt_m": null
+        },
+        {
+          "lat": 42.861218,
+          "lon": 140.666058,
+          "alt_m": null
+        },
+        {
+          "lat": 42.861388,
+          "lon": 140.666013,
+          "alt_m": null
+        },
+        {
+          "lat": 42.861581,
+          "lon": 140.665961,
+          "alt_m": null
+        },
+        {
+          "lat": 42.861804,
+          "lon": 140.665901,
+          "alt_m": null
+        },
+        {
+          "lat": 42.862053,
+          "lon": 140.665833,
+          "alt_m": null
+        },
+        {
+          "lat": 42.862303,
+          "lon": 140.665766,
+          "alt_m": null
+        },
+        {
+          "lat": 42.862552,
+          "lon": 140.665699,
+          "alt_m": null
+        }
+      ]
+    },
+    {
+      "id": "mori-no-chair-l194602316",
+      "name": "Mori-no Chair",
+      "name_i18n": {
+        "en": "Mori-no Chair"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 1022.5,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "jagaimo",
+        "superstition",
+        "unnamed-50640344000",
+        "unnamed-50640344001"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 42.847257,
+          "lon": 140.677324,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847443,
+          "lon": 140.677163,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847629,
+          "lon": 140.677001,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847791,
+          "lon": 140.676861,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847953,
+          "lon": 140.676721,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848141,
+          "lon": 140.676558,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848329,
+          "lon": 140.676395,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848491,
+          "lon": 140.676255,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848653,
+          "lon": 140.676115,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848831,
+          "lon": 140.67596,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84901,
+          "lon": 140.675805,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849185,
+          "lon": 140.675653,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84936,
+          "lon": 140.675501,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849564,
+          "lon": 140.675325,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849768,
+          "lon": 140.675148,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849937,
+          "lon": 140.675001,
+          "alt_m": null
+        },
+        {
+          "lat": 42.850107,
+          "lon": 140.674854,
+          "alt_m": null
+        },
+        {
+          "lat": 42.850276,
+          "lon": 140.674707,
+          "alt_m": null
+        },
+        {
+          "lat": 42.850504,
+          "lon": 140.67451,
+          "alt_m": null
+        },
+        {
+          "lat": 42.850732,
+          "lon": 140.674313,
+          "alt_m": null
+        },
+        {
+          "lat": 42.850925,
+          "lon": 140.674145,
+          "alt_m": null
+        },
+        {
+          "lat": 42.851119,
+          "lon": 140.673978,
+          "alt_m": null
+        },
+        {
+          "lat": 42.851312,
+          "lon": 140.67381,
+          "alt_m": null
+        },
+        {
+          "lat": 42.851506,
+          "lon": 140.673642,
+          "alt_m": null
+        },
+        {
+          "lat": 42.85165,
+          "lon": 140.673517,
+          "alt_m": null
+        },
+        {
+          "lat": 42.851795,
+          "lon": 140.673392,
+          "alt_m": null
+        },
+        {
+          "lat": 42.851958,
+          "lon": 140.673251,
+          "alt_m": null
+        },
+        {
+          "lat": 42.852121,
+          "lon": 140.673109,
+          "alt_m": null
+        },
+        {
+          "lat": 42.852284,
+          "lon": 140.672968,
+          "alt_m": null
+        },
+        {
+          "lat": 42.852481,
+          "lon": 140.672797,
+          "alt_m": null
+        },
+        {
+          "lat": 42.852679,
+          "lon": 140.672626,
+          "alt_m": null
+        },
+        {
+          "lat": 42.852876,
+          "lon": 140.672455,
+          "alt_m": null
+        },
+        {
+          "lat": 42.853094,
+          "lon": 140.672266,
+          "alt_m": null
+        },
+        {
+          "lat": 42.853311,
+          "lon": 140.672078,
+          "alt_m": null
+        },
+        {
+          "lat": 42.853523,
+          "lon": 140.671894,
+          "alt_m": null
+        },
+        {
+          "lat": 42.853735,
+          "lon": 140.67171,
+          "alt_m": null
+        },
+        {
+          "lat": 42.853947,
+          "lon": 140.671526,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854159,
+          "lon": 140.671342,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854372,
+          "lon": 140.671158,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854588,
+          "lon": 140.670972,
+          "alt_m": null
+        },
+        {
+          "lat": 42.854803,
+          "lon": 140.670785,
+          "alt_m": null
+        },
+        {
+          "lat": 42.855019,
+          "lon": 140.670598,
+          "alt_m": null
+        }
+      ]
+    },
+    {
+      "id": "community-chair-l194602319",
+      "name": "Community Chair",
+      "name_i18n": {
+        "en": "Community Chair"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 649.7,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "final-fling",
+        "next-stage"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 42.846567,
+          "lon": 140.683859,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846599,
+          "lon": 140.683793,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846699,
+          "lon": 140.683588,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846798,
+          "lon": 140.683383,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846898,
+          "lon": 140.683178,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847034,
+          "lon": 140.682898,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84717,
+          "lon": 140.682618,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847307,
+          "lon": 140.682338,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847442,
+          "lon": 140.682059,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847578,
+          "lon": 140.681779,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847714,
+          "lon": 140.6815,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847863,
+          "lon": 140.681194,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848011,
+          "lon": 140.680889,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84816,
+          "lon": 140.680583,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848309,
+          "lon": 140.680277,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848431,
+          "lon": 140.680025,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848554,
+          "lon": 140.679773,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848676,
+          "lon": 140.679521,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84882,
+          "lon": 140.679226,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848963,
+          "lon": 140.678931,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849106,
+          "lon": 140.678636,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84925,
+          "lon": 140.678341,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849393,
+          "lon": 140.678047,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849528,
+          "lon": 140.67777,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849662,
+          "lon": 140.677493,
+          "alt_m": null
+        },
+        {
+          "lat": 42.849797,
+          "lon": 140.677216,
+          "alt_m": null
+        }
+      ]
+    },
+    {
+      "id": "wonderland-chair-b-l457906857",
+      "name": "Wonderland Chair B",
+      "name_i18n": {
+        "en": "Wonderland Chair B"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 763.7,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "snorkel",
+        "ukairo",
+        "unnamed-334596797",
+        "wonderland"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 42.862887,
+          "lon": 140.665795,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863058,
+          "lon": 140.665713,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863229,
+          "lon": 140.66563,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863408,
+          "lon": 140.665531,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863588,
+          "lon": 140.665431,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863767,
+          "lon": 140.665332,
+          "alt_m": null
+        },
+        {
+          "lat": 42.863943,
+          "lon": 140.665234,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864119,
+          "lon": 140.665136,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864289,
+          "lon": 140.665042,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864459,
+          "lon": 140.664948,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864664,
+          "lon": 140.664834,
+          "alt_m": null
+        },
+        {
+          "lat": 42.864868,
+          "lon": 140.664721,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865099,
+          "lon": 140.664593,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865329,
+          "lon": 140.664465,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865541,
+          "lon": 140.664348,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865752,
+          "lon": 140.66423,
+          "alt_m": null
+        },
+        {
+          "lat": 42.865964,
+          "lon": 140.664113,
+          "alt_m": null
+        },
+        {
+          "lat": 42.866176,
+          "lon": 140.663995,
+          "alt_m": null
+        },
+        {
+          "lat": 42.866387,
+          "lon": 140.663878,
+          "alt_m": null
+        },
+        {
+          "lat": 42.866598,
+          "lon": 140.663761,
+          "alt_m": null
+        },
+        {
+          "lat": 42.866809,
+          "lon": 140.663644,
+          "alt_m": null
+        },
+        {
+          "lat": 42.867019,
+          "lon": 140.663527,
+          "alt_m": null
+        },
+        {
+          "lat": 42.867216,
+          "lon": 140.663419,
+          "alt_m": null
+        },
+        {
+          "lat": 42.867412,
+          "lon": 140.66331,
+          "alt_m": null
+        },
+        {
+          "lat": 42.867608,
+          "lon": 140.663201,
+          "alt_m": null
+        },
+        {
+          "lat": 42.867831,
+          "lon": 140.663077,
+          "alt_m": null
+        },
+        {
+          "lat": 42.868054,
+          "lon": 140.662954,
+          "alt_m": null
+        },
+        {
+          "lat": 42.86829,
+          "lon": 140.662822,
+          "alt_m": null
+        },
+        {
+          "lat": 42.868527,
+          "lon": 140.662691,
+          "alt_m": null
+        },
+        {
+          "lat": 42.868731,
+          "lon": 140.662578,
+          "alt_m": null
+        },
+        {
+          "lat": 42.868934,
+          "lon": 140.662465,
+          "alt_m": null
+        },
+        {
+          "lat": 42.869138,
+          "lon": 140.662352,
+          "alt_m": null
+        },
+        {
+          "lat": 42.869256,
+          "lon": 140.662288,
+          "alt_m": null
+        }
+      ]
+    },
+    {
+      "id": "banzai-chair-l506403453",
+      "name": "Banzai Chair",
+      "name_i18n": {
+        "en": "Banzai Chair"
+      },
+      "type": "chair_lift",
+      "capacity_per_hour": null,
+      "length_m": 391.8,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "banzai",
+        "cruiser"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 42.845539,
+          "lon": 140.672076,
+          "alt_m": null
+        },
+        {
+          "lat": 42.845695,
+          "lon": 140.671968,
+          "alt_m": null
+        },
+        {
+          "lat": 42.845852,
+          "lon": 140.671861,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846068,
+          "lon": 140.671713,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846284,
+          "lon": 140.671564,
+          "alt_m": null
+        },
+        {
+          "lat": 42.8465,
+          "lon": 140.671416,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846661,
+          "lon": 140.671306,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846823,
+          "lon": 140.671195,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847016,
+          "lon": 140.671062,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84721,
+          "lon": 140.670929,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847403,
+          "lon": 140.670797,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847597,
+          "lon": 140.670664,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847834,
+          "lon": 140.670501,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84807,
+          "lon": 140.670339,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848276,
+          "lon": 140.670198,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848481,
+          "lon": 140.670057,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848687,
+          "lon": 140.669916,
+          "alt_m": null
+        }
+      ]
+    },
+    {
+      "id": "village-express-l967692896",
+      "name": "Village Express",
+      "name_i18n": {
+        "en": "Village Express"
+      },
+      "type": "mixed_lift",
+      "capacity_per_hour": null,
+      "length_m": 823.2,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "unnamed-123137832200"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 42.844172,
+          "lon": 140.684446,
+          "alt_m": null
+        },
+        {
+          "lat": 42.844333,
+          "lon": 140.684161,
+          "alt_m": null
+        },
+        {
+          "lat": 42.844493,
+          "lon": 140.683875,
+          "alt_m": null
+        },
+        {
+          "lat": 42.844654,
+          "lon": 140.683589,
+          "alt_m": null
+        },
+        {
+          "lat": 42.844814,
+          "lon": 140.683304,
+          "alt_m": null
+        },
+        {
+          "lat": 42.844975,
+          "lon": 140.683018,
+          "alt_m": null
+        },
+        {
+          "lat": 42.845136,
+          "lon": 140.682733,
+          "alt_m": null
+        },
+        {
+          "lat": 42.845296,
+          "lon": 140.682447,
+          "alt_m": null
+        },
+        {
+          "lat": 42.845457,
+          "lon": 140.682162,
+          "alt_m": null
+        },
+        {
+          "lat": 42.845618,
+          "lon": 140.681875,
+          "alt_m": null
+        },
+        {
+          "lat": 42.845779,
+          "lon": 140.681589,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84594,
+          "lon": 140.681303,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846101,
+          "lon": 140.681016,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846262,
+          "lon": 140.68073,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846423,
+          "lon": 140.680443,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846584,
+          "lon": 140.680157,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846745,
+          "lon": 140.679871,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846906,
+          "lon": 140.679584,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847067,
+          "lon": 140.679298,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847228,
+          "lon": 140.679012,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847389,
+          "lon": 140.678725,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84755,
+          "lon": 140.678439,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847711,
+          "lon": 140.678152,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847872,
+          "lon": 140.677866,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848033,
+          "lon": 140.67758,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848194,
+          "lon": 140.677293,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848355,
+          "lon": 140.677007,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848516,
+          "lon": 140.67672,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848677,
+          "lon": 140.676434,
+          "alt_m": null
+        }
+      ]
+    },
+    {
+      "id": "upper-village-gondola-l967692897",
+      "name": "Upper Village Gondola",
+      "name_i18n": {
+        "en": "Upper Village Gondola",
+        "ja": "アッパービレッジゴンドラ"
+      },
+      "type": "gondola",
+      "capacity_per_hour": null,
+      "length_m": 248.1,
+      "vertical_m": null,
+      "connected_slope_ids": [
+        "banzai",
+        "unnamed-123137832200",
+        "unnamed-123137832204",
+        "unnamed-1231622502"
+      ],
+      "connected_lift_ids": [],
+      "coordinates": [
+        {
+          "lat": 42.8464,
+          "lon": 140.674966,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846504,
+          "lon": 140.675022,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846539,
+          "lon": 140.67504,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846682,
+          "lon": 140.675117,
+          "alt_m": null
+        },
+        {
+          "lat": 42.846826,
+          "lon": 140.675193,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847023,
+          "lon": 140.675299,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847221,
+          "lon": 140.675404,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847418,
+          "lon": 140.67551,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847616,
+          "lon": 140.675615,
+          "alt_m": null
+        },
+        {
+          "lat": 42.847817,
+          "lon": 140.675723,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848019,
+          "lon": 140.67583,
+          "alt_m": null
+        },
+        {
+          "lat": 42.84822,
+          "lon": 140.675938,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848349,
+          "lon": 140.676007,
+          "alt_m": null
+        },
+        {
+          "lat": 42.848478,
+          "lon": 140.676075,
+          "alt_m": null
+        }
+      ]
+    }
+  ]
+}
