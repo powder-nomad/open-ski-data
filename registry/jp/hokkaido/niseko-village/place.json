@@ -4,6 +4,11 @@
   "region_slug": "hokkaido",
   "place_slug": "niseko-village",
   "name": "Niseko Village",
+  "name_i18n": {
+    "en": "Niseko Village",
+    "ko": "니세코 빌리지",
+    "ja": "ニセコビレッジ"
+  },
   "region": "Hokkaido",
   "country": "Japan",
   "coordinates": {

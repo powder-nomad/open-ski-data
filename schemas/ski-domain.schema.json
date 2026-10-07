@@ -19,6 +19,16 @@
     "name": {
       "type": "string"
     },
+    "name_i18n": {
+      "type": "object",
+      "description": "Locale-keyed display names for the domain. Keys are ISO 639-1 language codes (e.g. ko, en, ja). Same shape as a place's name_i18n.",
+      "patternProperties": {
+        "^[a-z]{2}$": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "region": {
       "type": "string"
     },
@@ -39,5 +49,11 @@
       }
     }
   },
-  "required": ["country_code", "region_slug", "slug", "name", "member_place_slugs"]
+  "required": [
+    "country_code",
+    "region_slug",
+    "slug",
+    "name",
+    "member_place_slugs"
+  ]
 }

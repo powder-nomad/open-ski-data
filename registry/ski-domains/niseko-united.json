@@ -4,6 +4,11 @@
   "region_slug": "hokkaido",
   "slug": "niseko-united",
   "name": "Niseko United",
+  "name_i18n": {
+    "en": "Niseko United",
+    "ko": "니세코 유나이티드",
+    "ja": "ニセコユナイテッド"
+  },
   "region": "Hokkaido",
   "country": "Japan",
   "member_place_slugs": [
@@ -12,5 +17,10 @@
     "niseko-grand-hirafu",
     "niseko-hanazono"
   ],
-  "tags": ["hokkaido", "interconnected", "ski-domain", "resort-network"]
+  "tags": [
+    "hokkaido",
+    "interconnected",
+    "ski-domain",
+    "resort-network"
+  ]
 }

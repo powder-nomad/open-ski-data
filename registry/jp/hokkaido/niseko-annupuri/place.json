@@ -4,6 +4,11 @@
   "region_slug": "hokkaido",
   "place_slug": "niseko-annupuri",
   "name": "Niseko Annupuri",
+  "name_i18n": {
+    "en": "Niseko Annupuri",
+    "ko": "니세코 안누푸리",
+    "ja": "ニセコアンヌプリ国際スキー場"
+  },
   "region": "Hokkaido",
   "country": "Japan",
   "coordinates": {
