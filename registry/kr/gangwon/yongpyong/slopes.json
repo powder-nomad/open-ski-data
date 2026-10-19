@@ -709,7 +709,9 @@
       "id": "unnamed-533194496",
       "name": "Gold Paradise to Gold Valley",
       "name_i18n": {
-        "en": "Gold Paradise to Gold Valley"
+        "ko": "골드파라다이스 → 골드밸리",
+        "en": "Gold Paradise to Gold Valley",
+        "ja": "ゴールドパラダイス → ゴールドバレー"
       },
       "type": "run",
       "difficulty": "intermediate",
@@ -1049,7 +1051,9 @@
       "id": "unnamed-533199661",
       "name": "Red to Red Paradise",
       "name_i18n": {
-        "en": "Red to Red Paradise"
+        "ko": "레드 → 레드파라다이스",
+        "en": "Red to Red Paradise",
+        "ja": "レッド → レッドパラダイス"
       },
       "type": "run",
       "difficulty": "intermediate",
@@ -2150,7 +2154,9 @@
       "id": "unnamed-533239978",
       "name": "Silver Paradise to Silver",
       "name_i18n": {
-        "en": "Silver Paradise to Silver"
+        "ko": "실버파라다이스 → 실버",
+        "en": "Silver Paradise to Silver",
+        "ja": "シルバーパラダイス → シルバー"
       },
       "type": "run",
       "difficulty": "advanced",
@@ -2590,7 +2596,9 @@
       "id": "unnamed-53340624700",
       "name": "Yellow to Green",
       "name_i18n": {
-        "en": "Yellow to Green"
+        "ko": "옐로우 → 그린",
+        "en": "Yellow to Green",
+        "ja": "イエロー → グリーン"
       },
       "type": "run",
       "difficulty": "beginner",
@@ -3223,7 +3231,7 @@
     },
     {
       "id": "osm-533196095",
-      "name": "Red → Gold",
+      "name": "Red to Gold",
       "type": "run",
       "difficulty": "intermediate",
       "coordinates": [
@@ -3289,7 +3297,8 @@
       },
       "name_i18n": {
         "ko": "레드 → 골드",
-        "en": "Red → Gold"
+        "en": "Red to Gold",
+        "ja": "レッド → ゴールド"
       }
     },
     {
@@ -3409,7 +3418,9 @@
         "last_verified": "2026-07-19"
       },
       "name_i18n": {
-        "en": "Rainbow 3 to Rainbow 2"
+        "ko": "레인보우 3 → 레인보우 2",
+        "en": "Rainbow 3 to Rainbow 2",
+        "ja": "レインボー 3 → レインボー 2"
       }
     },
     {
@@ -3447,7 +3458,9 @@
         "last_verified": "2026-07-19"
       },
       "name_i18n": {
-        "en": "Rainbow 1 to Rainbow 2"
+        "ko": "레인보우 1 → 레인보우 2",
+        "en": "Rainbow 1 to Rainbow 2",
+        "ja": "レインボー 1 → レインボー 2"
       }
     }
   ]
