@@ -2926,6 +2926,30 @@
       "from": "unnamed-293598184",
       "to": "echo",
       "at": "2026-10-19"
+    },
+    {
+      "seq": 365,
+      "kind": "slope",
+      "place_slug": "yongpyong",
+      "from": "osm-533196094",
+      "to": "red-paradise",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 366,
+      "kind": "slope",
+      "place_slug": "yongpyong",
+      "from": "osm-533401531",
+      "to": "mega-green",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 367,
+      "kind": "slope",
+      "place_slug": "yongpyong",
+      "from": "osm-533259303",
+      "to": "rainbow-1",
+      "at": "2026-10-19"
     }
   ]
 }

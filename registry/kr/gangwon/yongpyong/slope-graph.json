@@ -1890,7 +1890,7 @@
     },
     {
       "id": "e-533196094-5173221242",
-      "slope_id": "osm-533196094",
+      "slope_id": "red-paradise",
       "kind": "slope",
       "difficulty": "intermediate",
       "from": "n-5173221242",
@@ -4682,7 +4682,7 @@
     },
     {
       "id": "e-533401531-5174928958",
-      "slope_id": "osm-533401531",
+      "slope_id": "mega-green",
       "kind": "slope",
       "difficulty": "intermediate",
       "from": "n-5174928958",
@@ -4723,7 +4723,7 @@
     },
     {
       "id": "e-533401531-5174928953",
-      "slope_id": "osm-533401531",
+      "slope_id": "mega-green",
       "kind": "slope",
       "difficulty": "intermediate",
       "from": "n-5174928953",
@@ -5355,7 +5355,7 @@
     },
     {
       "id": "e-996685258-5173256939",
-      "slope_id": "osm-533196094",
+      "slope_id": "red-paradise",
       "kind": "slope",
       "from": "n-5173256939",
       "to": "n-9203028529",
@@ -8047,7 +8047,7 @@
     },
     {
       "id": "e-u-muslf6dv-0jso",
-      "slope_id": "osm-533196094",
+      "slope_id": "red-paradise",
       "kind": "slope",
       "from": "n-9203028529",
       "to": "n-9203028531",
