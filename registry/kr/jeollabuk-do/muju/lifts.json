@@ -1771,171 +1771,6 @@
       "connected_lift_ids": []
     },
     {
-      "id": "ssang-ssang",
-      "name": "Ssang Ssang",
-      "name_i18n": {
-        "en": "Ssang Ssang"
-      },
-      "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 768.2,
-      "vertical_m": null,
-      "coordinates": [
-        {
-          "lat": 35.889171,
-          "lon": 127.743823,
-          "alt_m": null
-        },
-        {
-          "lat": 35.88905,
-          "lon": 127.743632,
-          "alt_m": null
-        },
-        {
-          "lat": 35.888929,
-          "lon": 127.743442,
-          "alt_m": null
-        },
-        {
-          "lat": 35.888808,
-          "lon": 127.743251,
-          "alt_m": null
-        },
-        {
-          "lat": 35.888662,
-          "lon": 127.743022,
-          "alt_m": null
-        },
-        {
-          "lat": 35.888517,
-          "lon": 127.742793,
-          "alt_m": null
-        },
-        {
-          "lat": 35.888371,
-          "lon": 127.742564,
-          "alt_m": null
-        },
-        {
-          "lat": 35.888218,
-          "lon": 127.742323,
-          "alt_m": null
-        },
-        {
-          "lat": 35.888065,
-          "lon": 127.742082,
-          "alt_m": null
-        },
-        {
-          "lat": 35.887912,
-          "lon": 127.741842,
-          "alt_m": null
-        },
-        {
-          "lat": 35.887759,
-          "lon": 127.741601,
-          "alt_m": null
-        },
-        {
-          "lat": 35.887606,
-          "lon": 127.74136,
-          "alt_m": null
-        },
-        {
-          "lat": 35.887453,
-          "lon": 127.741119,
-          "alt_m": null
-        },
-        {
-          "lat": 35.887301,
-          "lon": 127.740877,
-          "alt_m": null
-        },
-        {
-          "lat": 35.887148,
-          "lon": 127.740636,
-          "alt_m": null
-        },
-        {
-          "lat": 35.886995,
-          "lon": 127.740395,
-          "alt_m": null
-        },
-        {
-          "lat": 35.886843,
-          "lon": 127.740154,
-          "alt_m": null
-        },
-        {
-          "lat": 35.88669,
-          "lon": 127.739913,
-          "alt_m": null
-        },
-        {
-          "lat": 35.886537,
-          "lon": 127.739672,
-          "alt_m": null
-        },
-        {
-          "lat": 35.886391,
-          "lon": 127.739441,
-          "alt_m": null
-        },
-        {
-          "lat": 35.886245,
-          "lon": 127.73921,
-          "alt_m": null
-        },
-        {
-          "lat": 35.886098,
-          "lon": 127.738979,
-          "alt_m": null
-        },
-        {
-          "lat": 35.885952,
-          "lon": 127.738747,
-          "alt_m": null
-        },
-        {
-          "lat": 35.885806,
-          "lon": 127.738516,
-          "alt_m": null
-        },
-        {
-          "lat": 35.885659,
-          "lon": 127.738285,
-          "alt_m": null
-        },
-        {
-          "lat": 35.885513,
-          "lon": 127.738054,
-          "alt_m": null
-        },
-        {
-          "lat": 35.885363,
-          "lon": 127.737817,
-          "alt_m": null
-        },
-        {
-          "lat": 35.885213,
-          "lon": 127.737581,
-          "alt_m": null
-        },
-        {
-          "lat": 35.885064,
-          "lon": 127.737344,
-          "alt_m": null
-        },
-        {
-          "lat": 35.884914,
-          "lon": 127.737108,
-          "alt_m": null
-        }
-      ],
-      "connected_slope_ids": [],
-      "connected_lift_ids": []
-    },
-    {
       "id": "canoe",
       "name": "Canoe",
       "name_i18n": {
@@ -2898,15 +2733,171 @@
       "id": "ssangssang",
       "name": "Ssangssang",
       "name_i18n": {
-        "ko": "쌍쌍",
         "en": "Ssangssang",
+        "ko": "쌍쌍",
         "ja": "サアンサアン"
       },
       "capacity_per_hour": 3200,
       "length_m": 750,
       "seats": 6,
       "cabin_count": 51,
-      "speed_mps": 5
+      "speed_mps": 5,
+      "type": "chair_lift",
+      "coordinates": [
+        {
+          "lat": 35.889171,
+          "lon": 127.743823,
+          "alt_m": null
+        },
+        {
+          "lat": 35.88905,
+          "lon": 127.743632,
+          "alt_m": null
+        },
+        {
+          "lat": 35.888929,
+          "lon": 127.743442,
+          "alt_m": null
+        },
+        {
+          "lat": 35.888808,
+          "lon": 127.743251,
+          "alt_m": null
+        },
+        {
+          "lat": 35.888662,
+          "lon": 127.743022,
+          "alt_m": null
+        },
+        {
+          "lat": 35.888517,
+          "lon": 127.742793,
+          "alt_m": null
+        },
+        {
+          "lat": 35.888371,
+          "lon": 127.742564,
+          "alt_m": null
+        },
+        {
+          "lat": 35.888218,
+          "lon": 127.742323,
+          "alt_m": null
+        },
+        {
+          "lat": 35.888065,
+          "lon": 127.742082,
+          "alt_m": null
+        },
+        {
+          "lat": 35.887912,
+          "lon": 127.741842,
+          "alt_m": null
+        },
+        {
+          "lat": 35.887759,
+          "lon": 127.741601,
+          "alt_m": null
+        },
+        {
+          "lat": 35.887606,
+          "lon": 127.74136,
+          "alt_m": null
+        },
+        {
+          "lat": 35.887453,
+          "lon": 127.741119,
+          "alt_m": null
+        },
+        {
+          "lat": 35.887301,
+          "lon": 127.740877,
+          "alt_m": null
+        },
+        {
+          "lat": 35.887148,
+          "lon": 127.740636,
+          "alt_m": null
+        },
+        {
+          "lat": 35.886995,
+          "lon": 127.740395,
+          "alt_m": null
+        },
+        {
+          "lat": 35.886843,
+          "lon": 127.740154,
+          "alt_m": null
+        },
+        {
+          "lat": 35.88669,
+          "lon": 127.739913,
+          "alt_m": null
+        },
+        {
+          "lat": 35.886537,
+          "lon": 127.739672,
+          "alt_m": null
+        },
+        {
+          "lat": 35.886391,
+          "lon": 127.739441,
+          "alt_m": null
+        },
+        {
+          "lat": 35.886245,
+          "lon": 127.73921,
+          "alt_m": null
+        },
+        {
+          "lat": 35.886098,
+          "lon": 127.738979,
+          "alt_m": null
+        },
+        {
+          "lat": 35.885952,
+          "lon": 127.738747,
+          "alt_m": null
+        },
+        {
+          "lat": 35.885806,
+          "lon": 127.738516,
+          "alt_m": null
+        },
+        {
+          "lat": 35.885659,
+          "lon": 127.738285,
+          "alt_m": null
+        },
+        {
+          "lat": 35.885513,
+          "lon": 127.738054,
+          "alt_m": null
+        },
+        {
+          "lat": 35.885363,
+          "lon": 127.737817,
+          "alt_m": null
+        },
+        {
+          "lat": 35.885213,
+          "lon": 127.737581,
+          "alt_m": null
+        },
+        {
+          "lat": 35.885064,
+          "lon": 127.737344,
+          "alt_m": null
+        },
+        {
+          "lat": 35.884914,
+          "lon": 127.737108,
+          "alt_m": null
+        }
+      ],
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     },
     {
       "id": "echo",

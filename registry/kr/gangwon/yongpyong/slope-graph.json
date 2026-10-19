@@ -777,7 +777,7 @@
   "edges": [
     {
       "id": "e-376364815-3798009736",
-      "lift_id": "rainbow-gondola",
+      "lift_id": "gondola",
       "kind": "lift",
       "from": "n-3798009736",
       "to": "n-4627532729",

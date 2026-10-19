@@ -4129,7 +4129,7 @@
     },
     {
       "id": "e-535760437-5191998258",
-      "lift_id": "mountain-gondola",
+      "lift_id": "mountain",
       "kind": "lift",
       "from": "n-5191998258",
       "to": "n-5191998256",
@@ -4409,7 +4409,7 @@
     },
     {
       "id": "e-632081931-5968216052",
-      "lift_id": "valley-gondola",
+      "lift_id": "valley",
       "kind": "lift",
       "from": "n-5968216052",
       "to": "n-5968216050",

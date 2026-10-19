@@ -2830,6 +2830,86 @@
       "from": "unnamed",
       "to": "blue",
       "at": "2026-10-02"
+    },
+    {
+      "seq": 353,
+      "kind": "lift",
+      "place_slug": "yongpyong",
+      "from": "rainbow-gondola",
+      "to": "gondola",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 354,
+      "kind": "lift",
+      "place_slug": "high1",
+      "from": "mountain-gondola",
+      "to": "mountain",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 355,
+      "kind": "lift",
+      "place_slug": "high1",
+      "from": "valley-gondola",
+      "to": "valley",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 356,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "a-lift",
+      "to": "a",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 357,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "a1-lift",
+      "to": "a1",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 358,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "b-lift",
+      "to": "b",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 359,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "c-lift",
+      "to": "c",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 360,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "d-lift",
+      "to": "d",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 361,
+      "kind": "lift",
+      "place_slug": "elysian-gangchon",
+      "from": "e-lift",
+      "to": "e",
+      "at": "2026-10-19"
+    },
+    {
+      "seq": 362,
+      "kind": "lift",
+      "place_slug": "muju",
+      "from": "ssang-ssang",
+      "to": "ssangssang",
+      "at": "2026-10-19"
     }
   ]
 }

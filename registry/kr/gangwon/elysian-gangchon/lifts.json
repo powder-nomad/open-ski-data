@@ -5,142 +5,197 @@
   "place_slug": "elysian-gangchon",
   "lifts": [
     {
-      "id": "e-lift",
-      "name": "E lift",
+      "id": "a1",
+      "name": "A1",
       "name_i18n": {
-        "en": "E lift"
+        "en": "A1",
+        "ko": "A1",
+        "ja": "A1"
       },
+      "capacity_per_hour": 1100,
+      "length_m": 210,
+      "vertical_m": 20,
+      "seats": 4,
+      "speed_mps": 1.2,
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 507.9,
-      "vertical_m": null,
       "coordinates": [
         {
-          "lat": 37.820861,
-          "lon": 127.589278,
+          "lat": 37.815946,
+          "lon": 127.591351,
           "alt_m": null
         },
         {
-          "lat": 37.820779,
-          "lon": 127.589145,
+          "lat": 37.816163,
+          "lon": 127.591191,
           "alt_m": null
         },
         {
-          "lat": 37.820691,
-          "lon": 127.58901,
+          "lat": 37.81638,
+          "lon": 127.591031,
           "alt_m": null
         },
         {
-          "lat": 37.820602,
-          "lon": 127.588875,
+          "lat": 37.816597,
+          "lon": 127.590871,
           "alt_m": null
         },
         {
-          "lat": 37.820507,
-          "lon": 127.588718,
+          "lat": 37.816813,
+          "lon": 127.590711,
           "alt_m": null
         },
         {
-          "lat": 37.82035,
-          "lon": 127.58846,
+          "lat": 37.81703,
+          "lon": 127.590551,
           "alt_m": null
         },
         {
-          "lat": 37.820194,
-          "lon": 127.588201,
+          "lat": 37.817247,
+          "lon": 127.590391,
           "alt_m": null
         },
         {
-          "lat": 37.820037,
-          "lon": 127.587943,
+          "lat": 37.817464,
+          "lon": 127.590231,
           "alt_m": null
         },
         {
-          "lat": 37.819881,
-          "lon": 127.587684,
+          "lat": 37.817681,
+          "lon": 127.590071,
           "alt_m": null
         },
         {
-          "lat": 37.819725,
-          "lon": 127.587425,
+          "lat": 37.817897,
+          "lon": 127.589911,
           "alt_m": null
         },
         {
-          "lat": 37.819568,
-          "lon": 127.587167,
-          "alt_m": null
-        },
-        {
-          "lat": 37.819508,
-          "lon": 127.587081,
-          "alt_m": null
-        },
-        {
-          "lat": 37.819359,
-          "lon": 127.586837,
-          "alt_m": null
-        },
-        {
-          "lat": 37.81921,
-          "lon": 127.586594,
-          "alt_m": null
-        },
-        {
-          "lat": 37.819061,
-          "lon": 127.58635,
-          "alt_m": null
-        },
-        {
-          "lat": 37.818944,
-          "lon": 127.586156,
-          "alt_m": null
-        },
-        {
-          "lat": 37.818828,
-          "lon": 127.585963,
-          "alt_m": null
-        },
-        {
-          "lat": 37.818684,
-          "lon": 127.585696,
-          "alt_m": null
-        },
-        {
-          "lat": 37.818534,
-          "lon": 127.585431,
-          "alt_m": null
-        },
-        {
-          "lat": 37.818385,
-          "lon": 127.585167,
-          "alt_m": null
-        },
-        {
-          "lat": 37.818235,
-          "lon": 127.584903,
-          "alt_m": null
-        },
-        {
-          "lat": 37.818092,
-          "lon": 127.584681,
+          "lat": 37.818114,
+          "lon": 127.589751,
           "alt_m": null
         }
       ],
       "connected_slope_ids": [
-        "leopard"
+        "penda",
+        "zebra"
       ],
       "connected_lift_ids": []
     },
     {
-      "id": "b-lift",
-      "name": "B lift",
+      "id": "a",
+      "name": "A",
       "name_i18n": {
-        "en": "B lift"
+        "en": "A",
+        "ko": "A",
+        "ja": "A"
       },
+      "capacity_per_hour": 2400,
+      "length_m": 360,
+      "vertical_m": 36,
+      "seats": 4,
+      "speed_mps": 4,
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 675.1,
-      "vertical_m": null,
+      "coordinates": [
+        {
+          "lat": 37.815204,
+          "lon": 127.591426,
+          "alt_m": null
+        },
+        {
+          "lat": 37.815154,
+          "lon": 127.591213,
+          "alt_m": null
+        },
+        {
+          "lat": 37.815078,
+          "lon": 127.590915,
+          "alt_m": null
+        },
+        {
+          "lat": 37.815003,
+          "lon": 127.590617,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814936,
+          "lon": 127.59034,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814868,
+          "lon": 127.590062,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814801,
+          "lon": 127.589785,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814738,
+          "lon": 127.589563,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814675,
+          "lon": 127.58934,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814612,
+          "lon": 127.589118,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814546,
+          "lon": 127.588838,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814481,
+          "lon": 127.588558,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814415,
+          "lon": 127.588278,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814349,
+          "lon": 127.587998,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814306,
+          "lon": 127.587818,
+          "alt_m": null
+        },
+        {
+          "lat": 37.814262,
+          "lon": 127.587638,
+          "alt_m": null
+        }
+      ],
+      "connected_slope_ids": [
+        "dragon"
+      ],
+      "connected_lift_ids": []
+    },
+    {
+      "id": "b",
+      "name": "B",
+      "name_i18n": {
+        "en": "B",
+        "ko": "B",
+        "ja": "B"
+      },
+      "capacity_per_hour": 2400,
+      "length_m": 747,
+      "vertical_m": 166,
+      "seats": 4,
+      "speed_mps": 4,
+      "type": "chair_lift",
       "coordinates": [
         {
           "lat": 37.815387,
@@ -284,112 +339,19 @@
       "connected_lift_ids": []
     },
     {
-      "id": "a-lift",
-      "name": "A lift",
+      "id": "c",
+      "name": "C",
       "name_i18n": {
-        "en": "A lift"
+        "en": "C",
+        "ko": "C",
+        "ja": "C"
       },
+      "capacity_per_hour": 3200,
+      "length_m": 807,
+      "vertical_m": 173,
+      "seats": 6,
+      "speed_mps": 4,
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 349,
-      "vertical_m": null,
-      "coordinates": [
-        {
-          "lat": 37.815204,
-          "lon": 127.591426,
-          "alt_m": null
-        },
-        {
-          "lat": 37.815154,
-          "lon": 127.591213,
-          "alt_m": null
-        },
-        {
-          "lat": 37.815078,
-          "lon": 127.590915,
-          "alt_m": null
-        },
-        {
-          "lat": 37.815003,
-          "lon": 127.590617,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814936,
-          "lon": 127.59034,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814868,
-          "lon": 127.590062,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814801,
-          "lon": 127.589785,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814738,
-          "lon": 127.589563,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814675,
-          "lon": 127.58934,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814612,
-          "lon": 127.589118,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814546,
-          "lon": 127.588838,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814481,
-          "lon": 127.588558,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814415,
-          "lon": 127.588278,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814349,
-          "lon": 127.587998,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814306,
-          "lon": 127.587818,
-          "alt_m": null
-        },
-        {
-          "lat": 37.814262,
-          "lon": 127.587638,
-          "alt_m": null
-        }
-      ],
-      "connected_slope_ids": [
-        "dragon"
-      ],
-      "connected_lift_ids": []
-    },
-    {
-      "id": "c-lift",
-      "name": "C lift",
-      "name_i18n": {
-        "en": "C lift"
-      },
-      "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 793.6,
-      "vertical_m": null,
       "coordinates": [
         {
           "lat": 37.820243,
@@ -558,15 +520,19 @@
       "connected_lift_ids": []
     },
     {
-      "id": "d-lift",
-      "name": "D lift",
+      "id": "d",
+      "name": "D",
       "name_i18n": {
-        "en": "D lift"
+        "en": "D",
+        "ko": "D",
+        "ja": "D"
       },
+      "capacity_per_hour": 2400,
+      "length_m": 795,
+      "vertical_m": 173,
+      "seats": 4,
+      "speed_mps": 4,
       "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 528.7,
-      "vertical_m": null,
       "coordinates": [
         {
           "lat": 37.820567,
@@ -691,161 +657,135 @@
       "connected_lift_ids": []
     },
     {
-      "id": "a1-lift",
-      "name": "A1 lift",
-      "name_i18n": {
-        "en": "A1 lift"
-      },
-      "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 279,
-      "vertical_m": null,
-      "coordinates": [
-        {
-          "lat": 37.815946,
-          "lon": 127.591351,
-          "alt_m": null
-        },
-        {
-          "lat": 37.816163,
-          "lon": 127.591191,
-          "alt_m": null
-        },
-        {
-          "lat": 37.81638,
-          "lon": 127.591031,
-          "alt_m": null
-        },
-        {
-          "lat": 37.816597,
-          "lon": 127.590871,
-          "alt_m": null
-        },
-        {
-          "lat": 37.816813,
-          "lon": 127.590711,
-          "alt_m": null
-        },
-        {
-          "lat": 37.81703,
-          "lon": 127.590551,
-          "alt_m": null
-        },
-        {
-          "lat": 37.817247,
-          "lon": 127.590391,
-          "alt_m": null
-        },
-        {
-          "lat": 37.817464,
-          "lon": 127.590231,
-          "alt_m": null
-        },
-        {
-          "lat": 37.817681,
-          "lon": 127.590071,
-          "alt_m": null
-        },
-        {
-          "lat": 37.817897,
-          "lon": 127.589911,
-          "alt_m": null
-        },
-        {
-          "lat": 37.818114,
-          "lon": 127.589751,
-          "alt_m": null
-        }
-      ],
-      "connected_slope_ids": [
-        "penda",
-        "zebra"
-      ],
-      "connected_lift_ids": []
-    },
-    {
-      "id": "a1",
-      "name": "A1",
-      "name_i18n": {
-        "ko": "A1",
-        "en": "A1",
-        "ja": "A1"
-      },
-      "capacity_per_hour": 1100,
-      "length_m": 210,
-      "vertical_m": 20,
-      "seats": 4,
-      "speed_mps": 1.2
-    },
-    {
-      "id": "a",
-      "name": "A",
-      "name_i18n": {
-        "ko": "A",
-        "en": "A",
-        "ja": "A"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 360,
-      "vertical_m": 36,
-      "seats": 4,
-      "speed_mps": 4
-    },
-    {
-      "id": "b",
-      "name": "B",
-      "name_i18n": {
-        "ko": "B",
-        "en": "B",
-        "ja": "B"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 747,
-      "vertical_m": 166,
-      "seats": 4,
-      "speed_mps": 4
-    },
-    {
-      "id": "c",
-      "name": "C",
-      "name_i18n": {
-        "ko": "C",
-        "en": "C",
-        "ja": "C"
-      },
-      "capacity_per_hour": 3200,
-      "length_m": 807,
-      "vertical_m": 173,
-      "seats": 6,
-      "speed_mps": 4
-    },
-    {
-      "id": "d",
-      "name": "D",
-      "name_i18n": {
-        "ko": "D",
-        "en": "D",
-        "ja": "D"
-      },
-      "capacity_per_hour": 2400,
-      "length_m": 795,
-      "vertical_m": 173,
-      "seats": 4,
-      "speed_mps": 4
-    },
-    {
       "id": "e",
       "name": "E",
       "name_i18n": {
-        "ko": "E",
         "en": "E",
+        "ko": "E",
         "ja": "E"
       },
       "capacity_per_hour": 1800,
       "length_m": 509,
       "vertical_m": 125,
       "seats": 4,
-      "speed_mps": 4
+      "speed_mps": 4,
+      "type": "chair_lift",
+      "coordinates": [
+        {
+          "lat": 37.820861,
+          "lon": 127.589278,
+          "alt_m": null
+        },
+        {
+          "lat": 37.820779,
+          "lon": 127.589145,
+          "alt_m": null
+        },
+        {
+          "lat": 37.820691,
+          "lon": 127.58901,
+          "alt_m": null
+        },
+        {
+          "lat": 37.820602,
+          "lon": 127.588875,
+          "alt_m": null
+        },
+        {
+          "lat": 37.820507,
+          "lon": 127.588718,
+          "alt_m": null
+        },
+        {
+          "lat": 37.82035,
+          "lon": 127.58846,
+          "alt_m": null
+        },
+        {
+          "lat": 37.820194,
+          "lon": 127.588201,
+          "alt_m": null
+        },
+        {
+          "lat": 37.820037,
+          "lon": 127.587943,
+          "alt_m": null
+        },
+        {
+          "lat": 37.819881,
+          "lon": 127.587684,
+          "alt_m": null
+        },
+        {
+          "lat": 37.819725,
+          "lon": 127.587425,
+          "alt_m": null
+        },
+        {
+          "lat": 37.819568,
+          "lon": 127.587167,
+          "alt_m": null
+        },
+        {
+          "lat": 37.819508,
+          "lon": 127.587081,
+          "alt_m": null
+        },
+        {
+          "lat": 37.819359,
+          "lon": 127.586837,
+          "alt_m": null
+        },
+        {
+          "lat": 37.81921,
+          "lon": 127.586594,
+          "alt_m": null
+        },
+        {
+          "lat": 37.819061,
+          "lon": 127.58635,
+          "alt_m": null
+        },
+        {
+          "lat": 37.818944,
+          "lon": 127.586156,
+          "alt_m": null
+        },
+        {
+          "lat": 37.818828,
+          "lon": 127.585963,
+          "alt_m": null
+        },
+        {
+          "lat": 37.818684,
+          "lon": 127.585696,
+          "alt_m": null
+        },
+        {
+          "lat": 37.818534,
+          "lon": 127.585431,
+          "alt_m": null
+        },
+        {
+          "lat": 37.818385,
+          "lon": 127.585167,
+          "alt_m": null
+        },
+        {
+          "lat": 37.818235,
+          "lon": 127.584903,
+          "alt_m": null
+        },
+        {
+          "lat": 37.818092,
+          "lon": 127.584681,
+          "alt_m": null
+        }
+      ],
+      "connected_slope_ids": [
+        "leopard"
+      ],
+      "connected_lift_ids": []
     }
   ]
 }
