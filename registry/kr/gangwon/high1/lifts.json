@@ -442,7 +442,7 @@
       },
       "type": "gondola",
       "capacity_per_hour": null,
-      "length_m": 1671.3,
+      "length_m": 2523,
       "vertical_m": null,
       "coordinates": [
         {
@@ -509,7 +509,10 @@
       "connected_slope_ids": [
         "zeus2"
       ],
-      "connected_lift_ids": []
+      "connected_lift_ids": [],
+      "seats": 8,
+      "speed_mps": 5,
+      "ride_time_s": 600
     },
     {
       "id": "valley",
