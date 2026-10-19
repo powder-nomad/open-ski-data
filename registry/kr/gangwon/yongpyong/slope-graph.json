@@ -4533,6 +4533,10 @@
         "source": "osm",
         "osm_way_id": 533260311,
         "observed_count": 7
+      },
+      "status": {
+        "follows": "rainbow-2",
+        "stays_closed": true
       }
     },
     {
@@ -4566,6 +4570,10 @@
         "observed_count": 0,
         "contributor": "powder-nomad",
         "last_verified": "2026-10-03"
+      },
+      "status": {
+        "follows": "rainbow-2",
+        "stays_closed": true
       }
     },
     {
@@ -5310,6 +5318,9 @@
         "observed_count": 36,
         "contributor": "powder-nomad",
         "last_verified": "2026-10-03"
+      },
+      "status": {
+        "follows": "rainbow-2"
       }
     },
     {
