@@ -616,51 +616,6 @@
       "connected_lift_ids": []
     },
     {
-      "id": "unnamed-293598184",
-      "name": "unnamed-293598184",
-      "name_i18n": {},
-      "type": "chair_lift",
-      "capacity_per_hour": null,
-      "length_m": 696.3,
-      "vertical_m": null,
-      "coordinates": [
-        {
-          "lat": 35.888377,
-          "lon": 127.7451571
-        },
-        {
-          "lat": 35.887414,
-          "lon": 127.7451436
-        },
-        {
-          "lat": 35.8866247,
-          "lon": 127.745132
-        },
-        {
-          "lat": 35.8844328,
-          "lon": 127.7450999
-        },
-        {
-          "lat": 35.8837552,
-          "lon": 127.7450862
-        },
-        {
-          "lat": 35.8828506,
-          "lon": 127.7450636
-        },
-        {
-          "lat": 35.8826599,
-          "lon": 127.7450588
-        },
-        {
-          "lat": 35.8821156,
-          "lon": 127.7450615
-        }
-      ],
-      "connected_slope_ids": [],
-      "connected_lift_ids": []
-    },
-    {
       "id": "liner",
       "name": "Liner",
       "name_i18n": {
@@ -876,7 +831,45 @@
       "length_m": 712,
       "seats": 6,
       "cabin_count": 45,
-      "speed_mps": 5
+      "speed_mps": 5,
+      "type": "chair_lift",
+      "coordinates": [
+        {
+          "lat": 35.888377,
+          "lon": 127.7451571
+        },
+        {
+          "lat": 35.887414,
+          "lon": 127.7451436
+        },
+        {
+          "lat": 35.8866247,
+          "lon": 127.745132
+        },
+        {
+          "lat": 35.8844328,
+          "lon": 127.7450999
+        },
+        {
+          "lat": 35.8837552,
+          "lon": 127.7450862
+        },
+        {
+          "lat": 35.8828506,
+          "lon": 127.7450636
+        },
+        {
+          "lat": 35.8826599,
+          "lon": 127.7450588
+        },
+        {
+          "lat": 35.8821156,
+          "lon": 127.7450615
+        }
+      ],
+      "vertical_m": null,
+      "connected_slope_ids": [],
+      "connected_lift_ids": []
     }
   ]
 }
