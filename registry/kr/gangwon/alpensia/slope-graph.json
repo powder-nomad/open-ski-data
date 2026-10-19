@@ -7,126 +7,126 @@
       "id": "n-4708345283",
       "lat": 37.6564143,
       "lng": 128.672134,
-      "alt_m": 773.0,
+      "alt_m": 773,
       "kind": "lift_bottom"
     },
     {
       "id": "n-4708345286",
       "lat": 37.6518552,
       "lng": 128.6689502,
-      "alt_m": 819.0,
+      "alt_m": 819,
       "kind": "lift_top"
     },
     {
       "id": "n-4708345287",
       "lat": 37.6561029,
       "lng": 128.6731383,
-      "alt_m": 773.0,
+      "alt_m": 773,
       "kind": "lift_bottom"
     },
     {
       "id": "n-4708345292",
       "lat": 37.650243,
       "lng": 128.6730091,
-      "alt_m": 941.0,
+      "alt_m": 941,
       "kind": "lift_top"
     },
     {
       "id": "n-4708345293",
       "lat": 37.6561422,
       "lng": 128.6746726,
-      "alt_m": 778.0,
+      "alt_m": 778,
       "kind": "lift_bottom"
     },
     {
       "id": "n-4708345297",
       "lat": 37.6502592,
       "lng": 128.6735664,
-      "alt_m": 950.0,
+      "alt_m": 950,
       "kind": "lift_top"
     },
     {
       "id": "n-4719091455",
       "lat": 37.6500732,
       "lng": 128.6726537,
-      "alt_m": 941.0,
+      "alt_m": 941,
       "kind": "waypoint"
     },
     {
       "id": "n-4719091456",
       "lat": 37.6560702,
       "lng": 128.6724928,
-      "alt_m": 773.0,
+      "alt_m": 773,
       "kind": "waypoint"
     },
     {
       "id": "n-4719091459",
       "lat": 37.6518061,
       "lng": 128.6694244,
-      "alt_m": 840.0,
+      "alt_m": 840,
       "kind": "waypoint"
     },
     {
       "id": "n-4719091460",
       "lat": 37.6560447,
       "lng": 128.6739197,
-      "alt_m": 774.0,
+      "alt_m": 774,
       "kind": "waypoint"
     },
     {
       "id": "n-4719091461",
       "lat": 37.6546177,
       "lng": 128.6733189,
-      "alt_m": 795.0,
+      "alt_m": 795,
       "kind": "merge"
     },
     {
       "id": "n-4719091465",
       "lat": 37.6503875,
       "lng": 128.6728147,
-      "alt_m": 941.0,
+      "alt_m": 941,
       "kind": "waypoint"
     },
     {
       "id": "n-4719091466",
       "lat": 37.6560447,
       "lng": 128.6744133,
-      "alt_m": 778.0,
+      "alt_m": 778,
       "kind": "waypoint"
     },
     {
       "id": "n-4719091471",
       "lat": 37.6502074,
       "lng": 128.6733426,
-      "alt_m": 950.0,
+      "alt_m": 950,
       "kind": "fork"
     },
     {
       "id": "n-4719091472",
       "lat": 37.6558578,
       "lng": 128.6746922,
-      "alt_m": 778.0,
+      "alt_m": 778,
       "kind": "waypoint"
     },
     {
       "id": "n-4719091476",
       "lat": 37.6500987,
       "lng": 128.6733297,
-      "alt_m": 950.0,
+      "alt_m": 950,
       "kind": "waypoint"
     },
     {
       "id": "n-4719091477",
       "lat": 37.6561381,
       "lng": 128.6752609,
-      "alt_m": 779.0,
+      "alt_m": 779,
       "kind": "waypoint"
     },
     {
       "id": "n-4719091482",
       "lat": 37.6501157,
       "lng": 128.6738017,
-      "alt_m": 950.0,
+      "alt_m": 950,
       "kind": "waypoint"
     }
   ],
@@ -142,22 +142,22 @@
         {
           "lat": 37.6564143,
           "lng": 128.672134,
-          "alt_m": 773.0
+          "alt_m": 773
         },
         {
           "lat": 37.6555741,
           "lng": 128.671629,
-          "alt_m": 783.0
+          "alt_m": 783
         },
         {
           "lat": 37.6533785,
           "lng": 128.6699141,
-          "alt_m": 810.0
+          "alt_m": 810
         },
         {
           "lat": 37.6518552,
           "lng": 128.6689502,
-          "alt_m": 819.0
+          "alt_m": 819
         }
       ],
       "provenance": {
@@ -177,32 +177,32 @@
         {
           "lat": 37.6561029,
           "lng": 128.6731383,
-          "alt_m": 773.0
+          "alt_m": 773
         },
         {
           "lat": 37.6550611,
           "lng": 128.6730511,
-          "alt_m": 779.0
+          "alt_m": 779
         },
         {
           "lat": 37.6538699,
           "lng": 128.672972,
-          "alt_m": 816.0
+          "alt_m": 816
         },
         {
           "lat": 37.6525848,
           "lng": 128.6729257,
-          "alt_m": 842.0
+          "alt_m": 842
         },
         {
           "lat": 37.6505446,
           "lng": 128.6730091,
-          "alt_m": 941.0
+          "alt_m": 941
         },
         {
           "lat": 37.650243,
           "lng": 128.6730091,
-          "alt_m": 941.0
+          "alt_m": 941
         }
       ],
       "provenance": {
@@ -222,27 +222,27 @@
         {
           "lat": 37.6561422,
           "lng": 128.6746726,
-          "alt_m": 778.0
+          "alt_m": 778
         },
         {
           "lat": 37.6559344,
           "lng": 128.6745954,
-          "alt_m": 778.0
+          "alt_m": 778
         },
         {
           "lat": 37.6546027,
           "lng": 128.6743738,
-          "alt_m": 797.0
+          "alt_m": 797
         },
         {
           "lat": 37.6505423,
           "lng": 128.673582,
-          "alt_m": 950.0
+          "alt_m": 950
         },
         {
           "lat": 37.6502592,
           "lng": 128.6735664,
-          "alt_m": 950.0
+          "alt_m": 950
         }
       ],
       "provenance": {
@@ -263,82 +263,82 @@
         {
           "lat": 37.6500732,
           "lng": 128.6726537,
-          "alt_m": 941.0
+          "alt_m": 941
         },
         {
           "lat": 37.6502091,
           "lng": 128.6724821,
-          "alt_m": 923.0
+          "alt_m": 923
         },
         {
           "lat": 37.6501752,
           "lng": 128.6721924,
-          "alt_m": 923.0
+          "alt_m": 923
         },
         {
           "lat": 37.6498014,
           "lng": 128.6715916,
-          "alt_m": 925.0
+          "alt_m": 925
         },
         {
           "lat": 37.6493597,
           "lng": 128.6712268,
-          "alt_m": 925.0
+          "alt_m": 925
         },
         {
           "lat": 37.6490879,
           "lng": 128.6706582,
-          "alt_m": 917.0
+          "alt_m": 917
         },
         {
           "lat": 37.6491218,
           "lng": 128.6699286,
-          "alt_m": 915.0
+          "alt_m": 915
         },
         {
           "lat": 37.6494276,
           "lng": 128.6697784,
-          "alt_m": 895.0
+          "alt_m": 895
         },
         {
           "lat": 37.6498354,
           "lng": 128.6699072,
-          "alt_m": 895.0
+          "alt_m": 895
         },
         {
           "lat": 37.6505065,
           "lng": 128.6696819,
-          "alt_m": 867.0
+          "alt_m": 867
         },
         {
           "lat": 37.6509991,
           "lng": 128.6698857,
-          "alt_m": 849.0
+          "alt_m": 849
         },
         {
           "lat": 37.6515173,
           "lng": 128.6704114,
-          "alt_m": 860.0
+          "alt_m": 860
         },
         {
           "lat": 37.6524432,
           "lng": 128.6708298,
-          "alt_m": 851.0
+          "alt_m": 851
         },
         {
           "lat": 37.6532502,
           "lng": 128.6713126,
-          "alt_m": 831.0
+          "alt_m": 831
         },
         {
           "lat": 37.6543034,
           "lng": 128.6727396,
-          "alt_m": 796.0
+          "alt_m": 796
         },
         {
           "lat": 37.6546177,
           "lng": 128.6733189,
-          "alt_m": 795.0
+          "alt_m": 795
         }
       ],
       "provenance": {
@@ -359,22 +359,22 @@
         {
           "lat": 37.6518061,
           "lng": 128.6694244,
-          "alt_m": 840.0
+          "alt_m": 840
         },
         {
           "lat": 37.6530123,
           "lng": 128.6700359,
-          "alt_m": 825.0
+          "alt_m": 825
         },
         {
           "lat": 37.6540826,
           "lng": 128.6710015,
-          "alt_m": 812.0
+          "alt_m": 812
         },
         {
           "lat": 37.6560702,
           "lng": 128.6724928,
-          "alt_m": 773.0
+          "alt_m": 773
         }
       ],
       "provenance": {
@@ -395,27 +395,27 @@
         {
           "lat": 37.6503875,
           "lng": 128.6728147,
-          "alt_m": 941.0
+          "alt_m": 941
         },
         {
           "lat": 37.6513899,
           "lng": 128.6723426,
-          "alt_m": 891.0
+          "alt_m": 891
         },
         {
           "lat": 37.6527745,
           "lng": 128.671656,
-          "alt_m": 837.0
+          "alt_m": 837
         },
         {
           "lat": 37.6536579,
           "lng": 128.6720744,
-          "alt_m": 816.0
+          "alt_m": 816
         },
         {
           "lat": 37.6546177,
           "lng": 128.6733189,
-          "alt_m": 795.0
+          "alt_m": 795
         }
       ],
       "provenance": {
@@ -436,12 +436,12 @@
         {
           "lat": 37.6546177,
           "lng": 128.6733189,
-          "alt_m": 795.0
+          "alt_m": 795
         },
         {
           "lat": 37.6560447,
           "lng": 128.6739197,
-          "alt_m": 774.0
+          "alt_m": 774
         }
       ],
       "provenance": {
@@ -462,32 +462,32 @@
         {
           "lat": 37.6502074,
           "lng": 128.6733426,
-          "alt_m": 950.0
+          "alt_m": 950
         },
         {
           "lat": 37.6517212,
           "lng": 128.6733618,
-          "alt_m": 889.0
+          "alt_m": 889
         },
         {
           "lat": 37.6526131,
           "lng": 128.6732331,
-          "alt_m": 842.0
+          "alt_m": 842
         },
         {
           "lat": 37.65342,
           "lng": 128.6736944,
-          "alt_m": 814.0
+          "alt_m": 814
         },
         {
           "lat": 37.6544139,
           "lng": 128.6741451,
-          "alt_m": 795.0
+          "alt_m": 795
         },
         {
           "lat": 37.6560447,
           "lng": 128.6744133,
-          "alt_m": 778.0
+          "alt_m": 778
         }
       ],
       "provenance": {
@@ -508,12 +508,12 @@
         {
           "lat": 37.6500987,
           "lng": 128.6733297,
-          "alt_m": 950.0
+          "alt_m": 950
         },
         {
           "lat": 37.6502074,
           "lng": 128.6733426,
-          "alt_m": 950.0
+          "alt_m": 950
         }
       ],
       "provenance": {
@@ -524,7 +524,7 @@
     },
     {
       "id": "e-478695577-4719091471",
-      "slope_id": null,
+      "slope_id": "echo",
       "kind": "slope",
       "difficulty": "intermediate",
       "from": "n-4719091471",
@@ -534,33 +534,35 @@
         {
           "lat": 37.6502074,
           "lng": 128.6733426,
-          "alt_m": 950.0
+          "alt_m": 950
         },
         {
           "lat": 37.6516362,
           "lng": 128.6735121,
-          "alt_m": 921.0
+          "alt_m": 921
         },
         {
           "lat": 37.6527405,
           "lng": 128.6744025,
-          "alt_m": 846.0
+          "alt_m": 846
         },
         {
           "lat": 37.6536579,
           "lng": 128.6746922,
-          "alt_m": 817.0
+          "alt_m": 817
         },
         {
           "lat": 37.6558578,
           "lng": 128.6746922,
-          "alt_m": 778.0
+          "alt_m": 778
         }
       ],
       "provenance": {
-        "source": "osm",
+        "source": "user-edit",
         "osm_way_id": 478695577,
-        "observed_count": 0
+        "observed_count": 0,
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -575,32 +577,32 @@
         {
           "lat": 37.6501157,
           "lng": 128.6738017,
-          "alt_m": 950.0
+          "alt_m": 950
         },
         {
           "lat": 37.6507528,
           "lng": 128.6749497,
-          "alt_m": 954.0
+          "alt_m": 954
         },
         {
           "lat": 37.6514409,
           "lng": 128.6757973,
-          "alt_m": 918.0
+          "alt_m": 918
         },
         {
           "lat": 37.6522818,
           "lng": 128.6761406,
-          "alt_m": 869.0
+          "alt_m": 869
         },
         {
           "lat": 37.6538193,
           "lng": 128.676087,
-          "alt_m": 815.0
+          "alt_m": 815
         },
         {
           "lat": 37.6561381,
           "lng": 128.6752609,
-          "alt_m": 779.0
+          "alt_m": 779
         }
       ],
       "provenance": {
@@ -620,16 +622,18 @@
         {
           "lat": 37.6518552,
           "lng": 128.6689502,
-          "alt_m": 819.0
+          "alt_m": 819
         },
         {
           "lat": 37.6518061,
           "lng": 128.6694244,
-          "alt_m": 840.0
+          "alt_m": 840
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -643,16 +647,18 @@
         {
           "lat": 37.650243,
           "lng": 128.6730091,
-          "alt_m": 941.0
+          "alt_m": 941
         },
         {
           "lat": 37.6500732,
           "lng": 128.6726537,
-          "alt_m": 941.0
+          "alt_m": 941
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -666,16 +672,18 @@
         {
           "lat": 37.650243,
           "lng": 128.6730091,
-          "alt_m": 941.0
+          "alt_m": 941
         },
         {
           "lat": 37.6503875,
           "lng": 128.6728147,
-          "alt_m": 941.0
+          "alt_m": 941
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -689,16 +697,18 @@
         {
           "lat": 37.650243,
           "lng": 128.6730091,
-          "alt_m": 941.0
+          "alt_m": 941
         },
         {
           "lat": 37.6502074,
           "lng": 128.6733426,
-          "alt_m": 950.0
+          "alt_m": 950
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -712,16 +722,18 @@
         {
           "lat": 37.650243,
           "lng": 128.6730091,
-          "alt_m": 941.0
+          "alt_m": 941
         },
         {
           "lat": 37.6500987,
           "lng": 128.6733297,
-          "alt_m": 950.0
+          "alt_m": 950
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -735,16 +747,18 @@
         {
           "lat": 37.650243,
           "lng": 128.6730091,
-          "alt_m": 941.0
+          "alt_m": 941
         },
         {
           "lat": 37.6501157,
           "lng": 128.6738017,
-          "alt_m": 950.0
+          "alt_m": 950
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -758,16 +772,18 @@
         {
           "lat": 37.6502592,
           "lng": 128.6735664,
-          "alt_m": 950.0
+          "alt_m": 950
         },
         {
           "lat": 37.6500732,
           "lng": 128.6726537,
-          "alt_m": 941.0
+          "alt_m": 941
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -781,16 +797,18 @@
         {
           "lat": 37.6502592,
           "lng": 128.6735664,
-          "alt_m": 950.0
+          "alt_m": 950
         },
         {
           "lat": 37.6503875,
           "lng": 128.6728147,
-          "alt_m": 941.0
+          "alt_m": 941
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -804,16 +822,18 @@
         {
           "lat": 37.6502592,
           "lng": 128.6735664,
-          "alt_m": 950.0
+          "alt_m": 950
         },
         {
           "lat": 37.6502074,
           "lng": 128.6733426,
-          "alt_m": 950.0
+          "alt_m": 950
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -827,16 +847,18 @@
         {
           "lat": 37.6502592,
           "lng": 128.6735664,
-          "alt_m": 950.0
+          "alt_m": 950
         },
         {
           "lat": 37.6500987,
           "lng": 128.6733297,
-          "alt_m": 950.0
+          "alt_m": 950
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -850,16 +872,18 @@
         {
           "lat": 37.6502592,
           "lng": 128.6735664,
-          "alt_m": 950.0
+          "alt_m": 950
         },
         {
           "lat": 37.6501157,
           "lng": 128.6738017,
-          "alt_m": 950.0
+          "alt_m": 950
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -873,16 +897,18 @@
         {
           "lat": 37.6560702,
           "lng": 128.6724928,
-          "alt_m": 773.0
+          "alt_m": 773
         },
         {
           "lat": 37.6564143,
           "lng": 128.672134,
-          "alt_m": 773.0
+          "alt_m": 773
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -891,21 +917,23 @@
       "kind": "traverse",
       "from": "n-4719091456",
       "to": "n-4708345287",
-      "length_m": 57.0,
+      "length_m": 57,
       "geometry": [
         {
           "lat": 37.6560702,
           "lng": 128.6724928,
-          "alt_m": 773.0
+          "alt_m": 773
         },
         {
           "lat": 37.6561029,
           "lng": 128.6731383,
-          "alt_m": 773.0
+          "alt_m": 773
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -919,16 +947,18 @@
         {
           "lat": 37.6560447,
           "lng": 128.6739197,
-          "alt_m": 774.0
+          "alt_m": 774
         },
         {
           "lat": 37.6561029,
           "lng": 128.6731383,
-          "alt_m": 773.0
+          "alt_m": 773
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -942,16 +972,18 @@
         {
           "lat": 37.6560447,
           "lng": 128.6739197,
-          "alt_m": 774.0
+          "alt_m": 774
         },
         {
           "lat": 37.6561422,
           "lng": 128.6746726,
-          "alt_m": 778.0
+          "alt_m": 778
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -965,16 +997,18 @@
         {
           "lat": 37.6560447,
           "lng": 128.6744133,
-          "alt_m": 778.0
+          "alt_m": 778
         },
         {
           "lat": 37.6561029,
           "lng": 128.6731383,
-          "alt_m": 773.0
+          "alt_m": 773
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -988,16 +1022,18 @@
         {
           "lat": 37.6560447,
           "lng": 128.6744133,
-          "alt_m": 778.0
+          "alt_m": 778
         },
         {
           "lat": 37.6561422,
           "lng": 128.6746726,
-          "alt_m": 778.0
+          "alt_m": 778
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -1011,16 +1047,18 @@
         {
           "lat": 37.6558578,
           "lng": 128.6746922,
-          "alt_m": 778.0
+          "alt_m": 778
         },
         {
           "lat": 37.6561422,
           "lng": 128.6746726,
-          "alt_m": 778.0
+          "alt_m": 778
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     },
     {
@@ -1034,16 +1072,18 @@
         {
           "lat": 37.6561381,
           "lng": 128.6752609,
-          "alt_m": 779.0
+          "alt_m": 779
         },
         {
           "lat": 37.6561422,
           "lng": 128.6746726,
-          "alt_m": 778.0
+          "alt_m": 778
         }
       ],
       "provenance": {
-        "source": "suggested"
+        "source": "user-edit",
+        "contributor": "powder-nomad",
+        "last_verified": "2026-10-19"
       }
     }
   ]
