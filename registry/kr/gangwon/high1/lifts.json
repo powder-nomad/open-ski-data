@@ -433,10 +433,12 @@
       "connected_lift_ids": []
     },
     {
-      "id": "high1-gondola",
+      "id": "palace",
       "name": "High1 Gondola",
       "name_i18n": {
-        "en": "High1 Gondola"
+        "ko": "하이원 곤돌라",
+        "en": "High1 Gondola",
+        "ja": "ハイワン ゴンドラ"
       },
       "type": "gondola",
       "capacity_per_hour": null,

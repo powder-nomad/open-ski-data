@@ -2910,6 +2910,14 @@
       "from": "ssang-ssang",
       "to": "ssangssang",
       "at": "2026-10-19"
+    },
+    {
+      "seq": 363,
+      "kind": "lift",
+      "place_slug": "high1",
+      "from": "high1-gondola",
+      "to": "palace",
+      "at": "2026-10-19"
     }
   ]
 }
