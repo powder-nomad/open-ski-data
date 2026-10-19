@@ -106,6 +106,16 @@
           "type": "string",
           "description": "Optional author commentary."
         },
+        "status": {
+          "type": "object",
+          "description": "Optional. Where this piece's open/closed state comes from when it differs from its own slope's: a connector that opens with the slope it leads into, or the part of a slope that stays shut while the resort reports the slope open (only its lower part runs). Absent: the piece takes its own slope's or lift's state.",
+          "required": ["follows"],
+          "additionalProperties": false,
+          "properties": {
+            "follows": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "The catalog slope id whose reported state this piece takes." },
+            "stays_closed": { "type": "boolean", "description": "True: closed whenever that slope has a reported state, open included. For a part the resort never opens." }
+          }
+        },
         "provenance": { "$ref": "#/$defs/edgeProvenance" }
       }
     },

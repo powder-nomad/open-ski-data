@@ -166,6 +166,8 @@ export type GraphEdge = {
   difficulty?: string;
   length_m?: number;
   notes?: string;
+  /** Open/closed taken from another slope (a connector), or held closed while that slope reports open. Kept through edits. */
+  status?: { follows: string; stays_closed?: boolean };
   provenance?: EdgeProvenance;
 };
 
