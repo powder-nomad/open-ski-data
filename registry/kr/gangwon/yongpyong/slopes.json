@@ -707,39 +707,41 @@
     },
     {
       "id": "unnamed-533194496",
-      "name": "unnamed-533194496",
-      "name_i18n": {},
+      "name": "Gold Paradise to Gold Valley",
+      "name_i18n": {
+        "en": "Gold Paradise to Gold Valley"
+      },
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 129.3,
       "coordinates": [
         {
-          "lat": 37.625442,
-          "lon": 128.6864167
-        },
-        {
-          "lat": 37.6254696,
-          "lon": 128.6861822
-        },
-        {
-          "lat": 37.625518,
-          "lon": 128.6860069
-        },
-        {
-          "lat": 37.6256106,
-          "lon": 128.6858369
-        },
-        {
-          "lat": 37.6259304,
-          "lon": 128.685364
+          "lat": 37.6259872,
+          "lon": 128.6851648
         },
         {
           "lat": 37.6259767,
           "lon": 128.6852737
         },
         {
-          "lat": 37.6259872,
-          "lon": 128.6851648
+          "lat": 37.6259304,
+          "lon": 128.685364
+        },
+        {
+          "lat": 37.6256106,
+          "lon": 128.6858369
+        },
+        {
+          "lat": 37.625518,
+          "lon": 128.6860069
+        },
+        {
+          "lat": 37.6254696,
+          "lon": 128.6861822
+        },
+        {
+          "lat": 37.625442,
+          "lon": 128.6864167
         }
       ],
       "connected_slope_ids": [
@@ -1045,8 +1047,10 @@
     },
     {
       "id": "unnamed-533199661",
-      "name": "unnamed-533199661",
-      "name_i18n": {},
+      "name": "Red to Red Paradise",
+      "name_i18n": {
+        "en": "Red to Red Paradise"
+      },
       "type": "run",
       "difficulty": "intermediate",
       "length_m": 74.7,
@@ -1090,6 +1094,18 @@
       "difficulty": "expert",
       "length_m": 1000,
       "coordinates": [
+        {
+          "lat": 37.6362028,
+          "lon": 128.6830457
+        },
+        {
+          "lat": 37.636319,
+          "lon": 128.6830126
+        },
+        {
+          "lat": 37.6369641,
+          "lon": 128.6829354
+        },
         {
           "lat": 37.6372508,
           "lon": 128.6828888
@@ -1171,6 +1187,14 @@
       "difficulty": "advanced",
       "length_m": 300,
       "coordinates": [
+        {
+          "lat": 37.6369641,
+          "lon": 128.6829354
+        },
+        {
+          "lat": 37.6369752,
+          "lon": 128.6826939
+        },
         {
           "lat": 37.6370004,
           "lon": 128.6824668
@@ -2124,8 +2148,10 @@
     },
     {
       "id": "unnamed-533239978",
-      "name": "unnamed-533239978",
-      "name_i18n": {},
+      "name": "Silver Paradise to Silver",
+      "name_i18n": {
+        "en": "Silver Paradise to Silver"
+      },
       "type": "run",
       "difficulty": "advanced",
       "length_m": 288.8,
@@ -2562,8 +2588,10 @@
     },
     {
       "id": "unnamed-53340624700",
-      "name": "unnamed-53340624700",
-      "name_i18n": {},
+      "name": "Yellow to Green",
+      "name_i18n": {
+        "en": "Yellow to Green"
+      },
       "type": "run",
       "difficulty": "beginner",
       "length_m": 44.9,
@@ -2650,6 +2678,22 @@
       "length_m": 350,
       "coordinates": [
         {
+          "lat": 37.6396977,
+          "lon": 128.6805144
+        },
+        {
+          "lat": 37.6397593,
+          "lon": 128.680332
+        },
+        {
+          "lat": 37.6398549,
+          "lon": 128.6801094
+        },
+        {
+          "lat": 37.6399616,
+          "lon": 128.6799691
+        },
+        {
           "lat": 37.6400805,
           "lon": 128.6799255
         },
@@ -2691,22 +2735,6 @@
         {
           "lat": 37.6396977,
           "lon": 128.6805144
-        },
-        {
-          "lat": 37.6397593,
-          "lon": 128.680332
-        },
-        {
-          "lat": 37.6398549,
-          "lon": 128.6801094
-        },
-        {
-          "lat": 37.6399616,
-          "lon": 128.6799691
-        },
-        {
-          "lat": 37.6400805,
-          "lon": 128.6799255
         }
       ],
       "connected_slope_ids": [
@@ -2803,6 +2831,42 @@
       "avg_angle_deg": 17.2,
       "max_angle_deg": 29.7,
       "coordinates": [
+        {
+          "lat": 37.6125555,
+          "lon": 128.6718096
+        },
+        {
+          "lat": 37.6127251,
+          "lon": 128.6717349
+        },
+        {
+          "lat": 37.6129334,
+          "lon": 128.6716214
+        },
+        {
+          "lat": 37.6130867,
+          "lon": 128.6715053
+        },
+        {
+          "lat": 37.6132864,
+          "lon": 128.6713251
+        },
+        {
+          "lat": 37.6135236,
+          "lon": 128.671078
+        },
+        {
+          "lat": 37.6138089,
+          "lon": 128.6707987
+        },
+        {
+          "lat": 37.6143051,
+          "lon": 128.6703207
+        },
+        {
+          "lat": 37.6152261,
+          "lon": 128.6694242
+        },
         {
           "lat": 37.6155707,
           "lon": 128.6691122
@@ -3324,7 +3388,7 @@
     },
     {
       "id": "osm-996680564",
-      "name": "unnamed-osm-996680564",
+      "name": "Rainbow 3 to Rainbow 2",
       "type": "run",
       "difficulty": "intermediate",
       "coordinates": [
@@ -3343,11 +3407,14 @@
         "source": "user-edit",
         "contributor": "powder-nomad",
         "last_verified": "2026-07-19"
+      },
+      "name_i18n": {
+        "en": "Rainbow 3 to Rainbow 2"
       }
     },
     {
       "id": "osm-996685257",
-      "name": "unnamed-osm-996685257",
+      "name": "Rainbow 1 to Rainbow 2",
       "type": "run",
       "difficulty": "intermediate",
       "coordinates": [
@@ -3378,6 +3445,9 @@
         "source": "user-edit",
         "contributor": "powder-nomad",
         "last_verified": "2026-07-19"
+      },
+      "name_i18n": {
+        "en": "Rainbow 1 to Rainbow 2"
       }
     }
   ]
