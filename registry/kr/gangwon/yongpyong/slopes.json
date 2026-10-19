@@ -3159,7 +3159,7 @@
     },
     {
       "id": "osm-533196095",
-      "name": "Red to Gold",
+      "name": "Red → Gold",
       "type": "run",
       "difficulty": "intermediate",
       "coordinates": [
@@ -3222,6 +3222,10 @@
         "source": "user-edit",
         "contributor": "powder-nomad",
         "last_verified": "2026-07-19"
+      },
+      "name_i18n": {
+        "ko": "레드 → 골드",
+        "en": "Red → Gold"
       }
     },
     {
