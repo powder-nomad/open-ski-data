@@ -2526,6 +2526,7 @@
       "type": "run",
       "difficulty": "beginner_intermediate",
       "length_m": 1000,
+      "width_m": 180,
       "coordinates": [
         {
           "lat": 37.6368907,

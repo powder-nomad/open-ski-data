@@ -100,6 +100,7 @@
       "type": "run",
       "difficulty": "beginner",
       "length_m": 648,
+      "width_m": 60,
       "coordinates": [
         {
           "lat": 37.6518061,
