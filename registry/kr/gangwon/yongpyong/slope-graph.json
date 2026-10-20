@@ -5362,6 +5362,10 @@
         "source": "osm",
         "osm_way_id": 996685257,
         "observed_count": 1
+      },
+      "status": {
+        "follows": "rainbow-2",
+        "stays_closed": true
       }
     },
     {
