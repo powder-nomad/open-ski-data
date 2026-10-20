@@ -814,6 +814,41 @@
       "lng": 128.67815808996707,
       "alt_m": 803,
       "kind": "waypoint"
+    },
+    {
+      "id": "n-u-mvgvqt05-aq5m",
+      "lat": 37.6395592,
+      "lng": 128.6829346,
+      "alt_m": 834.9,
+      "kind": "waypoint"
+    },
+    {
+      "id": "n-u-mvgvqt05-8kta",
+      "lat": 37.639494,
+      "lng": 128.6824245,
+      "alt_m": 844.4,
+      "kind": "waypoint"
+    },
+    {
+      "id": "n-u-mvgvqt05-atng",
+      "lat": 37.6420744,
+      "lng": 128.6821843,
+      "alt_m": 785.9,
+      "kind": "waypoint"
+    },
+    {
+      "id": "n-u-mvgvqt06-bnkv",
+      "lat": 37.6420496,
+      "lng": 128.6819561,
+      "alt_m": 786.0,
+      "kind": "waypoint"
+    },
+    {
+      "id": "n-u-mvgvqt06-1k1v",
+      "lat": 37.6427349,
+      "lng": 128.6818514,
+      "alt_m": 778.5,
+      "kind": "waypoint"
     }
   ],
   "edges": [
@@ -2285,13 +2320,13 @@
       }
     },
     {
-      "id": "e-533199662-5173256932",
+      "id": "e-u-mvgvqt05-udu2",
       "slope_id": "red",
       "kind": "slope",
       "difficulty": "expert",
       "from": "n-5173256932",
-      "to": "n-5173256933",
-      "length_m": 422.3,
+      "to": "n-u-mvgvqt05-8kta",
+      "length_m": 251.3,
       "geometry": [
         {
           "lat": 37.6372508,
@@ -2314,6 +2349,32 @@
           "alt_m": 870.5
         },
         {
+          "lat": 37.639494,
+          "lng": 128.6824245,
+          "alt_m": 844.4
+        }
+      ],
+      "provenance": {
+        "source": "osm",
+        "osm_way_id": 533199662,
+        "observed_count": 148
+      }
+    },
+    {
+      "id": "e-u-mvgvqt05-wo6j",
+      "slope_id": "red",
+      "kind": "slope",
+      "difficulty": "expert",
+      "from": "n-u-mvgvqt05-8kta",
+      "to": "n-5173256933",
+      "length_m": 168.1,
+      "geometry": [
+        {
+          "lat": 37.639494,
+          "lng": 128.6824245,
+          "alt_m": 844.4
+        },
+        {
           "lat": 37.6409946,
           "lng": 128.6821172,
           "alt_m": 797.6
@@ -2326,18 +2387,70 @@
       }
     },
     {
-      "id": "e-533199662-5173256933",
+      "id": "e-u-mvgvqt06-ix0l",
       "slope_id": "red",
       "kind": "slope",
       "difficulty": "expert",
       "from": "n-5173256933",
-      "to": "n-5173311789",
-      "length_m": 249.7,
+      "to": "n-u-mvgvqt06-bnkv",
+      "length_m": 117.5,
       "geometry": [
         {
           "lat": 37.6409946,
           "lng": 128.6821172,
           "alt_m": 797.6
+        },
+        {
+          "lat": 37.6420496,
+          "lng": 128.6819561,
+          "alt_m": 786.0
+        }
+      ],
+      "provenance": {
+        "source": "osm",
+        "osm_way_id": 533199662,
+        "observed_count": 203
+      }
+    },
+    {
+      "id": "e-u-mvgvqt06-kadv",
+      "slope_id": "red",
+      "kind": "slope",
+      "difficulty": "expert",
+      "from": "n-u-mvgvqt06-bnkv",
+      "to": "n-u-mvgvqt06-1k1v",
+      "length_m": 76.3,
+      "geometry": [
+        {
+          "lat": 37.6420496,
+          "lng": 128.6819561,
+          "alt_m": 786.0
+        },
+        {
+          "lat": 37.6427349,
+          "lng": 128.6818514,
+          "alt_m": 778.5
+        }
+      ],
+      "provenance": {
+        "source": "osm",
+        "osm_way_id": 533199662,
+        "observed_count": 203
+      }
+    },
+    {
+      "id": "e-u-mvgvqt06-obnb",
+      "slope_id": "red",
+      "kind": "slope",
+      "difficulty": "expert",
+      "from": "n-u-mvgvqt06-1k1v",
+      "to": "n-5173311789",
+      "length_m": 54.2,
+      "geometry": [
+        {
+          "lat": 37.6427349,
+          "lng": 128.6818514,
+          "alt_m": 778.5
         },
         {
           "lat": 37.6432213,
@@ -5575,13 +5688,13 @@
       }
     },
     {
-      "id": "e-996685259-5173233648",
+      "id": "e-u-mvgvqt05-cadt",
       "slope_id": "red-paradise",
       "kind": "slope",
       "difficulty": "intermediate",
       "from": "n-5173233648",
-      "to": "n-5173221223",
-      "length_m": 320.7,
+      "to": "n-u-mvgvqt05-aq5m",
+      "length_m": 226.5,
       "geometry": [
         {
           "lat": 37.6380996,
@@ -5652,6 +5765,32 @@
           "lat": 37.6395069,
           "lng": 128.6829452,
           "alt_m": 836.7
+        },
+        {
+          "lat": 37.6395592,
+          "lng": 128.6829346,
+          "alt_m": 834.9
+        }
+      ],
+      "provenance": {
+        "source": "osm",
+        "osm_way_id": 996685259,
+        "observed_count": 21
+      }
+    },
+    {
+      "id": "e-u-mvgvqt05-pv3a",
+      "slope_id": "red-paradise",
+      "kind": "slope",
+      "difficulty": "intermediate",
+      "from": "n-u-mvgvqt05-aq5m",
+      "to": "n-5173221223",
+      "length_m": 92.7,
+      "geometry": [
+        {
+          "lat": 37.6395592,
+          "lng": 128.6829346,
+          "alt_m": 834.9
         },
         {
           "lat": 37.6398244,
@@ -5743,18 +5882,44 @@
       }
     },
     {
-      "id": "e-996685259-5174966429",
+      "id": "e-u-mvgvqt05-2t93",
       "slope_id": "red-paradise",
       "kind": "slope",
       "difficulty": "intermediate",
       "from": "n-5174966429",
-      "to": "n-5174966428",
-      "length_m": 185.7,
+      "to": "n-u-mvgvqt05-atng",
+      "length_m": 58.0,
       "geometry": [
         {
           "lat": 37.6415559,
           "lng": 128.6822846,
           "alt_m": 791.2
+        },
+        {
+          "lat": 37.6420744,
+          "lng": 128.6821843,
+          "alt_m": 785.9
+        }
+      ],
+      "provenance": {
+        "source": "osm",
+        "osm_way_id": 996685259,
+        "observed_count": 41
+      }
+    },
+    {
+      "id": "e-u-mvgvqt05-3i21",
+      "slope_id": "red-paradise",
+      "kind": "slope",
+      "difficulty": "intermediate",
+      "from": "n-u-mvgvqt05-atng",
+      "to": "n-5174966428",
+      "length_m": 126.5,
+      "geometry": [
+        {
+          "lat": 37.6420744,
+          "lng": 128.6821843,
+          "alt_m": 785.9
         },
         {
           "lat": 37.643205,
@@ -8885,6 +9050,131 @@
         "source": "user-edit",
         "contributor": "powder-nomad",
         "last_verified": "2026-10-19"
+      }
+    },
+    {
+      "id": "e-u-mvgvqt05-3epd",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-mvgvqt05-aq5m",
+      "to": "n-u-mvgvqt05-8kta",
+      "length_m": 45.5,
+      "geometry": [
+        {
+          "lat": 37.6395592,
+          "lng": 128.6829346,
+          "alt_m": 834.9
+        },
+        {
+          "lat": 37.639494,
+          "lng": 128.6824245,
+          "alt_m": 844.4
+        }
+      ],
+      "notes": "Recorded rides crossed from red-paradise to red here 13 times.",
+      "provenance": {
+        "source": "suggested",
+        "observed_count": 13
+      }
+    },
+    {
+      "id": "e-u-mvgvqt05-0ck5",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-mvgvqt05-8kta",
+      "to": "n-u-mvgvqt05-aq5m",
+      "length_m": 45.5,
+      "geometry": [
+        {
+          "lat": 37.639494,
+          "lng": 128.6824245,
+          "alt_m": 844.4
+        },
+        {
+          "lat": 37.6395592,
+          "lng": 128.6829346,
+          "alt_m": 834.9
+        }
+      ],
+      "notes": "Recorded rides crossed from red to red-paradise here 6 times.",
+      "provenance": {
+        "source": "suggested",
+        "observed_count": 6
+      }
+    },
+    {
+      "id": "e-u-mvgvqt06-2dxn",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-mvgvqt05-atng",
+      "to": "n-u-mvgvqt06-bnkv",
+      "length_m": 20.3,
+      "geometry": [
+        {
+          "lat": 37.6420744,
+          "lng": 128.6821843,
+          "alt_m": 785.9
+        },
+        {
+          "lat": 37.6420496,
+          "lng": 128.6819561,
+          "alt_m": 786.0
+        }
+      ],
+      "notes": "Recorded rides crossed from red-paradise to red here 5 times.",
+      "provenance": {
+        "source": "suggested",
+        "observed_count": 5
+      }
+    },
+    {
+      "id": "e-u-mvgvqt06-xgid",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-mvgvqt06-bnkv",
+      "to": "n-u-mvgvqt05-atng",
+      "length_m": 20.3,
+      "geometry": [
+        {
+          "lat": 37.6420496,
+          "lng": 128.6819561,
+          "alt_m": 786.0
+        },
+        {
+          "lat": 37.6420744,
+          "lng": 128.6821843,
+          "alt_m": 785.9
+        }
+      ],
+      "notes": "Recorded rides crossed from red to red-paradise here 9 times.",
+      "provenance": {
+        "source": "suggested",
+        "observed_count": 9
+      }
+    },
+    {
+      "id": "e-u-mvgvqt06-53d8",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-u-mvgvqt06-1k1v",
+      "to": "n-5174966432",
+      "length_m": 39.9,
+      "geometry": [
+        {
+          "lat": 37.6427349,
+          "lng": 128.6818514,
+          "alt_m": 778.5
+        },
+        {
+          "lat": 37.6426383,
+          "lng": 128.6814149,
+          "alt_m": 778
+        }
+      ],
+      "notes": "Recorded rides crossed from red to pink here 8 times.",
+      "provenance": {
+        "source": "suggested",
+        "observed_count": 8
       }
     }
   ]
