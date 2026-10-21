@@ -9,9 +9,19 @@
       "url": "https://live.yongpyong.co.kr/cam11/index.m3u8",
       "type": "stream",
       "label_i18n": {
-        "ko": "옐로우 슬로프",
-        "en": "Yellow Slope",
-        "ja": "イエロー スロープ"
+        "ko": "옐로우",
+        "en": "Yellow",
+        "ja": "イエロー"
+      }
+    },
+    {
+      "label": "Pink",
+      "url": "https://live.yongpyong.co.kr/cam10/index.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "핑크",
+        "en": "Pink",
+        "ja": "ピンク"
       }
     },
     {
@@ -25,13 +35,53 @@
       }
     },
     {
-      "label": "Balwangsan Sky Walk",
+      "label": "Mega Green",
+      "url": "https://live.yongpyong.co.kr/cam04/index.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "메가그린",
+        "en": "Mega Green",
+        "ja": "メガグリーン"
+      }
+    },
+    {
+      "label": "Gold Base",
+      "url": "https://live.yongpyong.co.kr/cam09/index.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "골드 베이스",
+        "en": "Gold Base",
+        "ja": "ゴールド ベース"
+      }
+    },
+    {
+      "label": "Gold Peak",
+      "url": "https://live.yongpyong.co.kr/cam03/index.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "골드 정상",
+        "en": "Gold Peak",
+        "ja": "ゴールド 山頂"
+      }
+    },
+    {
+      "label": "Rainbow Base",
+      "url": "https://live.yongpyong.co.kr/cam07/index.m3u8",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "레인보우 베이스",
+        "en": "Rainbow Base",
+        "ja": "レインボー ベース"
+      }
+    },
+    {
+      "label": "Rainbow Peak",
       "url": "https://live.yongpyong.co.kr/cam01/index.m3u8",
       "type": "stream",
       "label_i18n": {
-        "ko": "발왕산 氣 스카이워크",
-        "en": "Balwangsan Sky Walk",
-        "ja": "バルワンサン スカイウォーク"
+        "ko": "레인보우 정상",
+        "en": "Rainbow Peak",
+        "ja": "レインボー 山頂"
       }
     },
     {
