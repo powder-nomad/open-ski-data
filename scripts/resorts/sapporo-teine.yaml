@@ -1,0 +1,9 @@
+# Resort import config — sapporo-teine.
+# Sapporo Teine (Highland and Olympia zones).
+# The box is OpenStreetMap's ski-area outline (way 1083658291) plus about 400 m.
+slug: sapporo-teine
+country: jp
+region: hokkaido
+bbox: [43.0652, 141.1908, 43.1079, 141.2176]
+difficulty_overrides: {}
+name_overrides: {}

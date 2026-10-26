@@ -1,0 +1,9 @@
+# Resort import config — zao-onsen.
+# Zao Onsen Ski Resort.
+# The box is OpenStreetMap's ski-area outline (way 488305112) plus about 400 m.
+slug: zao-onsen
+country: jp
+region: yamagata
+bbox: [38.1405, 140.3755, 38.1821, 140.437]
+difficulty_overrides: {}
+name_overrides: {}

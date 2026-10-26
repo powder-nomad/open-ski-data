@@ -1,0 +1,9 @@
+# Resort import config — rusutsu.
+# Rusutsu Resort (East, West and Isola).
+# The box is OpenStreetMap's ski-area outline (way 1081650975) plus about 400 m.
+slug: rusutsu
+country: jp
+region: hokkaido
+bbox: [42.6989, 140.8803, 42.7633, 140.9501]
+difficulty_overrides: {}
+name_overrides: {}

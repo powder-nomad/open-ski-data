@@ -1,0 +1,9 @@
+# Resort import config — furano.
+# Furano Ski Resort (Furano and Kitanomine zones).
+# The box is OpenStreetMap's ski-area outline (way 598421263) plus about 400 m.
+slug: furano
+country: jp
+region: hokkaido
+bbox: [43.3162, 142.3131, 43.3492, 142.3657]
+difficulty_overrides: {}
+name_overrides: {}

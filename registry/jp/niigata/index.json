@@ -51,6 +51,12 @@
       "name": "Kagura",
       "path": "registry/jp/niigata/kagura/place.json",
       "kind": "resort"
+    },
+    {
+      "place_slug": "naeba",
+      "name": "Naeba",
+      "path": "registry/jp/niigata/naeba/place.json",
+      "kind": "resort"
     }
   ]
 }

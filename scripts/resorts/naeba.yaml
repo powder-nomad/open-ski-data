@@ -1,0 +1,9 @@
+# Resort import config — naeba.
+# Naeba Ski Resort; the Dragondola to Tashiro is kept, Kagura is its own place.
+# The box is OpenStreetMap's ski-area outline (way 952129313) plus about 400 m.
+slug: naeba
+country: jp
+region: niigata
+bbox: [36.7805, 138.7511, 36.8073, 138.7909]
+difficulty_overrides: {}
+name_overrides: {}

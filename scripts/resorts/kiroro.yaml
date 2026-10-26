@@ -1,0 +1,9 @@
+# Resort import config — kiroro.
+# Kiroro Resort.
+# The box is OpenStreetMap's ski-area outline (way 1081650641) plus about 400 m.
+slug: kiroro
+country: jp
+region: hokkaido
+bbox: [43.0468, 140.9828, 43.0793, 141.0329]
+difficulty_overrides: {}
+name_overrides: {}
