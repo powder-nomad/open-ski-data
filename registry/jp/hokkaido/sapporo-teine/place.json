@@ -13,11 +13,5 @@
   "elevations": {
     "base_m": 300,
     "summit_m": 1023
-  },
-  "tags": [
-    "hokkaido",
-    "resort",
-    "city-access",
-    "olympic-history"
-  ]
+  }
 }

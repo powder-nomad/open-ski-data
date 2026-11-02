@@ -9176,6 +9176,32 @@
         "source": "suggested",
         "observed_count": 8
       }
+    },
+    {
+      "id": "e-link-5173311789-5174966433",
+      "slope_id": null,
+      "kind": "traverse",
+      "from": "n-5173311789",
+      "to": "n-5174966433",
+      "length_m": 197.0,
+      "geometry": [
+        {
+          "lat": 37.6432213,
+          "lng": 128.6817771,
+          "alt_m": 773.2
+        },
+        {
+          "lat": 37.6435995,
+          "lng": 128.6795856,
+          "alt_m": 767.0
+        }
+      ],
+      "provenance": {
+        "source": "user-edit",
+        "last_verified": "2026-11-02",
+        "contributor": "powder-nomad"
+      },
+      "notes": "From the foot of Red, under the Pink and Yellow lifts and across the foot of Yellow to the gondola base."
     }
   ]
 }

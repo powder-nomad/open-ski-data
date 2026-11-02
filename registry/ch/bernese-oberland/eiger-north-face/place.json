@@ -13,10 +13,5 @@
   "elevations": {
     "base_m": 1034,
     "summit_m": 3967
-  },
-  "tags": [
-    "extreme",
-    "alpine",
-    "glacier"
-  ]
+  }
 }

@@ -63,10 +63,6 @@
         "summit_m": { "type": "integer" }
       }
     },
-    "tags": {
-      "type": "array",
-      "items": { "type": "string" }
-    },
     "homepage": {
       "type": "string",
       "format": "uri",

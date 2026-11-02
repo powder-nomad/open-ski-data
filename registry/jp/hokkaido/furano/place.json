@@ -13,11 +13,5 @@
   "elevations": {
     "base_m": 245,
     "summit_m": 1209
-  },
-  "tags": [
-    "hokkaido",
-    "resort",
-    "city-access",
-    "destination"
-  ]
+  }
 }

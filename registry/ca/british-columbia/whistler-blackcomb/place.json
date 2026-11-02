@@ -13,10 +13,5 @@
   "elevations": {
     "base_m": 675,
     "summit_m": 2284
-  },
-  "tags": [
-    "big-mountain",
-    "resort",
-    "alpine"
-  ]
+  }
 }
