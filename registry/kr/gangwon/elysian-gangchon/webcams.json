@@ -5,23 +5,63 @@
   "place_slug": "elysian-gangchon",
   "webcams": [
     {
-      "label": "Ski House, Alp House, Challenge House, Snow Sled",
-      "url": "https://www.youtube.com/embed/lDg9E7h3nGE",
-      "type": "link",
+      "label": "Challenge House Plaza",
+      "url": "https://webcam01.elysian.co.kr/main.stream/playlist.m3u8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRoIjoiL21haW4uc3RyZWFtIiwiZXhwIjoxODI0ODcyNDAwfQ.ZQxQ30C3ZxdlaA88LHJTN1dhdMhxxjPUAEI1ymZnB1g",
+      "type": "stream",
       "label_i18n": {
-        "ko": "스키하우스, 알프하우스, 챌린지하우스, 눈썰매장",
-        "en": "Ski House, Alp House, Challenge House, Snow Sled",
-        "ja": "Ski ハウス, Alp ハウス, Challenge ハウス, 雪そり"
+        "ko": "챌린지하우스 광장",
+        "en": "Challenge House Plaza",
+        "ja": "チャレンジ ハウス 広場"
       }
     },
     {
-      "label": "Pegasus, Deer-Leopard, Deer Lower Zone, Dragon",
-      "url": "https://www.youtube.com/embed/O6_8VBu4FSA",
-      "type": "link",
+      "label": "Pegasus",
+      "url": "https://webcam02.elysian.co.kr/main.stream/playlist.m3u8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRoIjoiL21haW4uc3RyZWFtIiwiZXhwIjoxODI0ODcyNDAwfQ.ZQxQ30C3ZxdlaA88LHJTN1dhdMhxxjPUAEI1ymZnB1g",
+      "type": "stream",
       "label_i18n": {
-        "ko": "페가수스, 디어래퍼드, 디어하단, 드래곤",
-        "en": "Pegasus, Deer-Leopard, Deer Lower Zone, Dragon",
-        "ja": "ペガサス, ディア-レオパード, ディア 下部, ドラゴン"
+        "ko": "페가수스 슬로프",
+        "en": "Pegasus",
+        "ja": "ペガサス"
+      }
+    },
+    {
+      "label": "Deer",
+      "url": "https://webcam03.elysian.co.kr/main.stream/playlist.m3u8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRoIjoiL21haW4uc3RyZWFtIiwiZXhwIjoxODI0ODcyNDAwfQ.ZQxQ30C3ZxdlaA88LHJTN1dhdMhxxjPUAEI1ymZnB1g",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "디어 슬로프",
+        "en": "Deer",
+        "ja": "ディア"
+      }
+    },
+    {
+      "label": "Rabbit",
+      "url": "https://webcam04.elysian.co.kr/main.stream/playlist.m3u8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRoIjoiL21haW4uc3RyZWFtIiwiZXhwIjoxODI0ODcyNDAwfQ.ZQxQ30C3ZxdlaA88LHJTN1dhdMhxxjPUAEI1ymZnB1g",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "래빗 슬로프",
+        "en": "Rabbit",
+        "ja": "ラビット"
+      }
+    },
+    {
+      "label": "Dragon",
+      "url": "https://webcam05.elysian.co.kr/main.stream/playlist.m3u8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRoIjoiL21haW4uc3RyZWFtIiwiZXhwIjoxODI0ODcyNDAwfQ.ZQxQ30C3ZxdlaA88LHJTN1dhdMhxxjPUAEI1ymZnB1g",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "드래곤 슬로프",
+        "en": "Dragon",
+        "ja": "ドラゴン"
+      }
+    },
+    {
+      "label": "Alp House",
+      "url": "https://webcam06.elysian.co.kr/main.stream/playlist.m3u8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRoIjoiL21haW4uc3RyZWFtIiwiZXhwIjoxODI0ODcyNDAwfQ.ZQxQ30C3ZxdlaA88LHJTN1dhdMhxxjPUAEI1ymZnB1g",
+      "type": "stream",
+      "label_i18n": {
+        "ko": "알프하우스 광장",
+        "en": "Alp House",
+        "ja": "アルプハウス"
       }
     }
   ]
